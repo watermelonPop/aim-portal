@@ -4,30 +4,53 @@ from faker import Faker
 from datetime import date
 fake = Faker()
 
+generated_uins = set()
 
+def generate_students(student_accounts, important_dates, file_directory):
 
-def generate_students(number_students):
-    
-    # Generate dummy student data
-    num_students = number_students
-    #students = []
-    for _ in range(num_students):
-        student_id = fake.uuid4()
-        name = fake.name()
+    students = []
+    for account, i in enumerate(student_accounts):
+        student_id = account[0]
+        name = account[4]
         dob = fake.date_of_birth(minimum_age=18, maximum_age=30).strftime('%Y-%m-%d')
-        email = fake.email()
-        uin = fake.random_int(min=100000, max=999999)
+        email = account[1]
+        
+        
+        num = fake.random_int(min=1000000, max=9999999)
+        while num not in generated_uins:
+            num = fake.random_int(min=1000000, max=9999999)
+            
+        generated_uins.add(num)
+        uin = int(str(num)[:2]+"00"+str(num)[3:])
         phone_number = fake.phone_number()
         date_registered = fake.date_this_decade().strftime('%Y-%m-%d')
-        registered_disabilities = fake.random_element(elements=[None, "Dyslexia", "ADHD", "Hearing Impairment", "Vision Impairment"])
+        registered_disabilities = fake.random_element(elements=["None", "Dyslexia", "ADHD", "Hearing Impairment", "Vision Impairment", "Anxiety","Depression","Physical Impairment"])
         available_accommodations = fake.random_element(elements=["Extended Time", "Note Taker", "Braille Materials", "Quiet Room"])
-        courses = [fake.uuid4() for _ in range(random.randint(1, 5))]  # Simulating foreign keys to courses
-        deadlines_dates = [fake.uuid4() for _ in range(random.randint(1, 3))]  # Simulating foreign keys to Important Dates
+        #MAKE COURSES courses
+        
+        #deadlines = 
+        
+    
+    # Generate dummy student data
+    # num_students = number_students
+    # #students = []
+    # for _ in range(num_students):
+    #     student_id = fake.uuid4()
+    #     name = fake.name()
+    #     dob = fake.date_of_birth(minimum_age=18, maximum_age=30).strftime('%Y-%m-%d')
+    #     email = fake.email()
+    #     uin = fake.random_int(min=100000, max=999999)
+    #     phone_number = fake.phone_number()
+    #     date_registered = fake.date_this_decade().strftime('%Y-%m-%d')
+    #     registered_disabilities = fake.random_element(elements=[None, "Dyslexia", "ADHD", "Hearing Impairment", "Vision Impairment"])
+    #     available_accommodations = fake.random_element(elements=["Extended Time", "Note Taker", "Braille Materials", "Quiet Room"])
+    #     courses = [fake.uuid4() for _ in range(random.randint(1, 5))]  # Simulating foreign keys to courses
+    #     deadlines_dates = [fake.uuid4() for _ in range(random.randint(1, 3))]  # Simulating foreign keys to Important Dates
 
-        students.append([
-            student_id, name, dob, email, uin, phone_number, date_registered,
-            registered_disabilities, available_accommodations, ";".join(courses), ";".join(deadlines_dates)
-        ])
+    #     students.append([
+    #         student_id, name, dob, email, uin, phone_number, date_registered,
+    #         registered_disabilities, available_accommodations, ";".join(courses), ";".join(deadlines_dates)
+    #     ])
         
     # Writing to CSV file
     csv_file_path = "/Users/unamazin/Documents/GitHub/aim-portal/data_generation/data/students.csv"

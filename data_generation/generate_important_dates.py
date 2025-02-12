@@ -18,11 +18,11 @@ def generate_important_dates(file_directory):
     start_date = date(today.year - 1, 1, 1)  # Jan 1st of last year
     end_date = date(today.year - 1, 12, 31)  # Dec 31st of last year
     important_dates = []
-    types = ["break", "office closure", "weather", "last_day"]
+    types = ["break", "office closure", "weather", "deadline"]
     names = {"break":["spring break","winter break", "summer break", "fall break", "thanksgiving break"],
              "office closure": ["MLK Day", "Christmas", "New Years Eve", "Labor Day"], 
              "weather": ["Winter Storm", "Monsoon", "Hurricane"],
-             "last_day": ["last day"]
+             "deadline": ["accomodations application deadline", "early registration deadline", "q-drop deadline", "testing request deadline"]
              }
     
     for name in names.keys():
@@ -41,6 +41,10 @@ def generate_important_dates(file_directory):
         writer = csv.writer(file)
         writer.writerow(["event_id", "event_name", "event_type", "event_date"])
         writer.writerows(important_dates)
+        
+    
 
     print(f"Dummy data for students saved to {csv_file_path}")
+    
+    return important_dates
         
