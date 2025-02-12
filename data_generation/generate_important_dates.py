@@ -2,6 +2,7 @@ import csv
 import random
 from faker import Faker
 from datetime import date
+
 fake = Faker()
 
 #=============== generate important dates ===============
@@ -11,7 +12,7 @@ fake = Faker()
 # Generate a random date from last year
 
 
-def generate_important_dates_(csv_file_path):
+def generate_important_dates(file_directory):
     
     today = date.today()
     start_date = date(today.year - 1, 1, 1)  # Jan 1st of last year
@@ -34,6 +35,8 @@ def generate_important_dates_(csv_file_path):
         
             important_dates.append([event_id,event_name,event_type,event_date])
 
+    
+    csv_file_path = file_directory + "important_dates.csv"
     with open(csv_file_path, mode='w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(["event_id", "event_name", "event_type", "event_date"])
@@ -41,4 +44,3 @@ def generate_important_dates_(csv_file_path):
 
     print(f"Dummy data for students saved to {csv_file_path}")
         
-generate_important_dates()
