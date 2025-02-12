@@ -1,13 +1,209 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+html{
+  overflow-x: hidden;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body {
+  background-color: gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 0;
+}
+
+main{
+  
+}
+
+#root{
+  background-color: #FFEDED;
+  width: 100%;
+  height: 51rem;
+  display: flex;
+  margin: 0;
+  row-gap: 5rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.loginScreen{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  margin: 0;
+  row-gap: 5rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.basicScreen{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  margin: 0;
+  row-gap: 5rem;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1{
+  font-family: "Mitr", serif;
+  font-weight: 700;
+  letter-spacing: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  width: fit-content;
+  height: 10rem;
+  padding: 0;
+}
+
+.loginTitle{
+  color: #4F0000;
+  font-size: 5rem;
+}
+
+button{
+  font-family: "Mitr", serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  border-radius: 1rem;
+  border-color: none;
+  cursor: pointer;
+}
+
+#loginBtn{
+  background-color: #4F0000;
+  color: #FFEDED;
+  font-weight: 650;
+  letter-spacing: 2px;
+  font-size: 3rem;
+  width: 50%;
+  height: 7rem;
+  max-width: 20rem;
+}
+
+.profileBtn{
+  background-color: #FFEDED;
+  font-weight: 650;
+  letter-spacing: 2px;
+  font-size: 3rem;
+  height: 60%;
+  max-width: 20rem;
+  border-radius: 50rem;
+}
+
+.searchBtn{
+  background-color: #FFEDED;
+  font-weight: 650;
+  letter-spacing: 2px;
+  font-size: 3rem;
+  height: 70%;
+  width: 15%;
+  max-width: 4rem;
+  min-width: 2rem;
+  border-radius: 50rem;
+}
+
+.searchIcon{
+  color: #4F0000;
+  font-size: 1rem;
+  margin: 0;
+  padding: 1rem;
+  width: fit-content;
+  border-radius: 2rem;
+  max-height: 2rem;
+}
+
+.logoImg{
+  width: 20%;
+  height: auto;
+  margin: 0;
+  max-width: 8rem;
+}
+
+.basicLogoImg{
+  width: auto;
+  height: 70%;
+  margin: 0;
+  border: 1px black solid;
+}
+
+.loginHeader{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 75%;
+  margin: 0;
+  column-gap: 2rem;
+}
+
+.basicHeader{
+  display: flex;
+  width: 100%;
+  height: 15%;
+  justify-content: space-evenly;
+  align-items: center;
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 0;
+  align-self: flex-start;
+  background-color: #4F0000;
+}
+
+.basicTitle{
+  color: #FFEDED;
+  font-size: 3rem;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 30%;
+  min-width: 17rem;
+}
+
+.profileIcon{
+  color: #4F0000;
+  font-size: 1rem;
+  margin: 0;
+  padding: 1rem;
+  height: 40%;
+  width: fit-content;
+  border-radius: 2rem;
+  max-height: 2rem;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.searchForm{
+  width: 40%;
+  height: 70%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+#search{
+  border-radius: 1rem;
+  width: 80%;
+  height: 70%;
+  background-color: #FFEDED;
+  font-family: "Mitr", serif;
+  font-weight: 400;
+  font-size: 1rem;
+  padding: 1rem
 }
