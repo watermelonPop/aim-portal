@@ -1,0 +1,14 @@
+event_id,event_name,event_type,event_date
+1592e349-952d-4f54-bb55-364ebfc16d35,spring break,break,2024-01-28
+1afaa0b1-ddf6-4c35-aeaa-75280435f493,winter break,break,2024-09-07
+1849174d-0816-4a13-ad39-761d0a18b766,summer break,break,2024-07-11
+1688f786-003a-4409-9c1c-97cd1f32c52f,fall break,break,2024-08-20
+26c72be3-5bdc-4892-aa0a-f2396eb86e2a,thanksgiving break,break,2024-06-19
+cbb0b9d1-bd90-4dd3-aec8-ea8209ad64b3,MLK Day,office closure,2024-09-16
+dd3f9a70-2b06-4294-af07-b5c7ee1fda39,Christmas,office closure,2024-12-02
+ce4a5cbc-dad1-49cd-9b5a-a840ae2f999e,New Years Eve,office closure,2024-12-01
+c112d332-e7ba-4717-b378-93dae11f0608,Labor Day,office closure,2024-02-18
+b30f3ce4-ce08-4126-a43d-1213e2c6452e,Winter Storm,weather,2024-01-19
+ddfe0746-d403-4149-ada0-d236f6d81529,Monsoon,weather,2024-09-02
+48f8a6f5-2d3b-4c84-9c42-cf984a79d6a4,Hurricane,weather,2024-09-02
+9eecbc0c-9cfd-4d6f-9d65-0bd474d3b984,last day,last_day,2024-02-24
