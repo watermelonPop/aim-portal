@@ -18,7 +18,11 @@ def generate_accounts(num_accounts, file_directory: str):
         
         
         user_password = fake.uuid4()
-        user_role = fake.random_element(elements=["Student", "Professor", "Advisor"])
+        roles = ["Student", "Professor", "Advisor"]
+        weights = [8, 1, 1]  # 8:1:1 ratio
+
+        # Generate a single user role with the correct ratio
+        user_role = random.choices(roles, weights=weights, k=1)[0]
 
         accounts.append([ user_id, user_email, user_password, user_role, user_name])
 
