@@ -6,7 +6,7 @@ fake = Faker()
 
 generated_uins = set()
 
-def generate_students(student_accounts, important_dates, file_directory):
+def generate_students(student_accounts, advisors, file_directory):
 
     students = []
     for account in student_accounts:
@@ -17,7 +17,7 @@ def generate_students(student_accounts, important_dates, file_directory):
         
         
         num = fake.random_int(min=1000000, max=9999999)
-        while num not in generated_uins:
+        while num in generated_uins:
             num = fake.random_int(min=1000000, max=9999999)
             
         generated_uins.add(num)
@@ -25,12 +25,16 @@ def generate_students(student_accounts, important_dates, file_directory):
         phone_number = fake.phone_number()
         date_registered = fake.date_this_decade().strftime('%Y-%m-%d')
         registered_disabilities = fake.random_element(elements=["None", "Dyslexia", "ADHD", "Hearing Impairment", "Vision Impairment", "Anxiety","Depression","Physical Impairment"])
+        
+        advisor_id = fake.random_element(elements=[ad_id[0] for ad_id in advisors if ad_id[3]=="Coordinator"])
+        
+        
         #MAKE ADVISOR
         
-    #     students.append([
-    #         student_id, name, dob, email, uin, phone_number, date_registered,
-    #         registered_disabilities, available_accommodations, ";".join(courses), ";".join(deadlines_dates)
-    #     ])
+        students.append([
+            student_id, name, dob, email, uin, phone_number, date_registered,
+            registered_disabilities, advisor_id
+        ])
         
     # Writing to CSV file
     csv_file_path = "/Users/unamazin/Documents/GitHub/aim-portal/data_generation/data/students.csv"
@@ -38,8 +42,8 @@ def generate_students(student_accounts, important_dates, file_directory):
         writer = csv.writer(file)
         # Writing header
         writer.writerow([
-            "student_id", "name", "dob", "email", "uni", "phone_number", "date_registered",
-            "registered_disabilities", "available_accommodations", "courses", "deadlines_dates"
+            "student_id", "name", "dob", "email", "uin", "phone_number", "date_registered",
+            "registered_disabilities", "advisor_id"
         ])
         # Writing data rows
         writer.writerows(students)

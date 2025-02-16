@@ -52,6 +52,7 @@ advisor_accounts = [account for account in user_ids if account[3] == "Advisor"]
 
 advisors = generate_advisors.generate_advisors(advisor_accounts=advisor_accounts,file_directory=file_destination)
 professors = generate_professors.generate_professors(professor_accounts=professor_accounts,file_directory=file_destination)
+student_accounts = generate_students.generate_students(student_accounts=student_accounts,advisors=advisors, file_directory=file_destination)
 #generate_students.generate_students(student_accounts=student_accounts, important_dates=important_dates, file_directory=file_destination)
 
 

@@ -37,7 +37,7 @@ def generate_professors(professor_accounts, file_directory):
         professors.append([professor_id, name, email, department])
 
         
-    csv_file_path = "/Users/unamazin/Documents/GitHub/aim-portal/data_generation/data/professors.csv"
+    csv_file_path = file_directory + "professors.csv"
     with open(csv_file_path, mode='w', newline='') as file:
         writer = csv.writer(file)
         # Writing header
