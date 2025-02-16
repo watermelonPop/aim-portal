@@ -8,17 +8,17 @@ import generate_advisors
 import generate_professors
 import generate_courses
 import generate_course_student
+import generate_accomodations
+import generate_accomodation_student
+import generate_exam_scheduling
+
 """
 TODO: 
-Exam Scheduling
 Assistive Technology
-Forms
 Testing Center
 
-
 DOING:
-Accomodations
-Accomodations | Students Join table
+Forms
 
 
 DONE: 
@@ -30,6 +30,9 @@ Student
 Professors
 Courses
 Course | Students Join table
+Accomodations
+Accomodations | Students Join table
+Exam Scheduling
 
 
 """
@@ -41,13 +44,13 @@ file_destination = "/Users/unamazin/Documents/GitHub/aim-portal/data_generation/
 #user_ids = []
 
 important_dates = generate_important_dates.generate_important_dates(file_directory=file_destination)
-user_ids = generate_accounts.generate_accounts(num_accounts=2000,file_directory=file_destination)
-generate_settings.generate_settings(num_accounts=2000,file_directory=file_destination, user_ids=user_ids)
+accounts = generate_accounts.generate_accounts(num_accounts=2000,file_directory=file_destination)
+generate_settings.generate_settings(num_accounts=2000,file_directory=file_destination, user_ids=accounts)
 
 #filter and sort user ids by the role
-professor_accounts = [account for account in user_ids if account[3] == "Professor"]
-student_accounts = [account for account in user_ids if account[3] == "Student"]
-advisor_accounts = [account for account in user_ids if account[3] == "Advisor"]
+professor_accounts = [account for account in accounts if account[3] == "Professor"]
+student_accounts = [account for account in accounts if account[3] == "Student"]
+advisor_accounts = [account for account in accounts if account[3] == "Advisor"]
 
 
 advisors = generate_advisors.generate_advisors(advisor_accounts=advisor_accounts,file_directory=file_destination)
@@ -56,8 +59,8 @@ students = generate_students.generate_students(student_accounts=student_accounts
 
 courses = generate_courses.generate_courses(professors=professors,file_directory=file_destination)
 join_course_student = generate_course_student.generate_join_courses_students(students=students,courses=courses,file_directory=file_destination)
-#generate_students.generate_students(student_accounts=student_accounts, important_dates=important_dates, file_directory=file_destination)
 
+accomodations = generate_accomodations.generate_accomodations(num_accounts=3000,advisors=advisors,file_directory=file_destination)
+join_accomodation_student = generate_accomodation_student.generate_join_accomodations_students(accomodations=accomodations,students=students,file_directory=file_destination)
 
-
-#print(user_ids)
+generate_exam_scheduling.generate_exam_scheduling(courses=courses, advisors=advisors,file_directory=file_destination)

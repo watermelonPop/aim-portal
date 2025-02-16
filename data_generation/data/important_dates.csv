@@ -1,17 +1,17 @@
 event_id,event_name,event_type,event_date
-8416c07c-8863-4828-86a2-7fbf557bde00,spring break,break,2024-04-27
-041307ea-5579-429a-a053-33c16815533c,winter break,break,2024-03-22
-4f391ab6-6382-49f6-9508-dd25176118d7,summer break,break,2024-04-25
-726f0efe-fd02-44bb-85d4-0095415eee74,fall break,break,2024-02-05
-edb4eac0-b2ab-446f-9611-4de5344fb04b,thanksgiving break,break,2024-12-03
-48717d05-42c8-45d0-8cce-fec318c3a1a7,MLK Day,office closure,2024-11-13
-1ca65db7-5180-4a76-96a2-3d2758bcb8d8,Christmas,office closure,2024-10-04
-23c5922a-6a9d-4d57-ada7-da5ccc53d363,New Years Eve,office closure,2024-01-09
-ccac6be3-9a60-4ca3-b8cd-4f23bc0fda12,Labor Day,office closure,2024-05-06
-643292f6-c36e-4c38-aae9-27981aa31614,Winter Storm,weather,2024-01-16
-b98b05df-03b2-4aac-b824-626b488cb288,Monsoon,weather,2024-05-25
-807c06bf-4aee-4b4e-8525-1ebf6d87b174,Hurricane,weather,2024-01-06
-80ce3075-d371-4da7-8907-773df1f91be8,accomodations application deadline,deadline,2024-09-19
-2a681456-a864-4c38-bb34-31554e6e77ca,early registration deadline,deadline,2024-05-01
-f0ce7437-7d92-47db-bab1-26e61792d216,q-drop deadline,deadline,2024-04-20
-9d7bfab5-24e0-43ac-be32-1b4f87df0112,testing request deadline,deadline,2024-03-21
+78ce1538-79b5-4530-8706-3ad3b7c15021,spring break,break,2024-06-16
+91efbffb-c6de-4a35-a114-aaeba875e339,winter break,break,2024-02-21
+9f4e28b3-0c96-4798-8b1b-c3968c33eb1d,summer break,break,2024-09-15
+8fea1f42-243e-4edb-9c3a-54cf08d298db,fall break,break,2024-12-12
+f27fa14c-6fbf-45d9-9f9a-2f458dd45bb5,thanksgiving break,break,2024-04-16
+a15ee45e-5e0a-4717-bcef-c5003066b02c,MLK Day,office closure,2024-06-21
+b05ee1ff-234c-4850-a71c-8ee147b35aef,Christmas,office closure,2024-10-09
+f127a85e-b62c-4ec6-ae3e-eec348f7867a,New Years Eve,office closure,2024-07-21
+c8e9f896-638f-44ea-958f-5418c81b8ab6,Labor Day,office closure,2024-08-05
+15118313-7219-42f4-aaa4-0cec0901ee9b,Winter Storm,weather,2024-08-01
+e679cbfe-e55b-46bd-8718-5ad8fd88f8fd,Monsoon,weather,2024-10-05
+4e5135d6-42db-460a-9767-23bdd9d37095,Hurricane,weather,2024-03-20
+30a232ff-adc5-4c76-9c0b-4417e7877fb8,accomodations application deadline,deadline,2024-10-27
+7419fae8-08c8-424f-bbd9-6cfbc756e9ee,early registration deadline,deadline,2024-07-22
+23f44fe2-8624-4b0b-b25c-d151fbbeda8c,q-drop deadline,deadline,2024-06-19
+e1381c07-4005-4aba-8a5e-b5dd1156d231,testing request deadline,deadline,2024-03-23

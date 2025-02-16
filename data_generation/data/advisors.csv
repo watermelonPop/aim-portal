@@ -1,209 +1,203 @@
 user_id,name,email,role
-156d4301-4eb5-4bc2-b7be-1d049940f03f,Tanner Snyder,tsnyder@tamu.edu,Admin
-81ce87cc-2f9c-4b9e-8708-f30b9d2a0175,Patrick Barrera,pbarrera@tamu.edu,Tech Staff
-a2743e99-88e3-4e38-aff1-e471adf07b38,Dominique Marshall,dmarshall@tamu.edu,Coordinator
-bdd81b0e-f728-4b94-bf80-5f35221395e6,Joel Wright,jwright@tamu.edu,Tech Staff
-b12e9837-7504-4556-96cc-b45ec26f9a15,John Diaz,jdiaz@tamu.edu,Admin
-8c81e6e3-8370-4507-9250-9be27a2183de,Kelly Brewer,kbrewer@tamu.edu,Tech Staff
-231cdc67-5f48-4a34-bd99-4307907127e5,Sean Brown,sbrown@tamu.edu,Tech Staff
-fd7e782e-734b-4e0c-9483-bb72090ee6d9,Thomas Parker,tparker@tamu.edu,Admin
-5c9f93a6-2838-4a1d-8e7b-1421fbdd8615,Harry Allen,hallen@tamu.edu,Testing Staff
-1edb746a-3a8b-425c-94c2-8120ca0c6fc9,Thomas Martinez,tmartinez@tamu.edu,Admin
-71fecba4-ceaa-4e7b-b47f-6d37476984cf,Joseph Hall,jhall@tamu.edu,Coordinator
-38b260db-99fe-4726-8253-37a4963ae188,Lisa Schultz,lschultz@tamu.edu,Testing Staff
-95088473-e144-4ee7-8bc0-076b89f20c46,Dr. Andrea Sutton,dandrea@tamu.edu,Testing Staff
-cbd2a033-3ec5-4623-afec-583510884fa7,Curtis Ferguson,cferguson@tamu.edu,Tech Staff
-df5d3ff8-3ca1-4459-a69f-4a2900dc8558,Mary Mcclain,mmcclain@tamu.edu,Tech Staff
-36833821-0839-4345-86d1-9ec7d5a7ba2e,Christopher Estrada,cestrada@tamu.edu,Testing Staff
-935120f4-48f2-4a5d-a2da-91f1fc5c2661,Lance Fuentes,lfuentes@tamu.edu,Tech Staff
-37107841-b88a-4707-aff3-0f73a948a1f7,Susan Marshall,smarshall@tamu.edu,Coordinator
-0c37f124-0ac1-4848-a886-b5fb3a7f491c,Amber Wilson,awilson@tamu.edu,Admin
-a9fac7f1-667e-424a-a10d-fa42d7a06bdb,Brenda York,byork@tamu.edu,Coordinator
-02470dbd-35ea-4d6e-ac06-3367a398f305,Dana Peterson,dpeterson@tamu.edu,Tech Staff
-49c372c0-c5c8-4208-b27b-1f2e5d75f04b,Traci Hines,thines@tamu.edu,Coordinator
-382c3ffe-9282-44b0-b4b7-bf2040776d85,Emily Lee,elee@tamu.edu,Coordinator
-09b320a2-e6a8-47fd-9797-23e80545bed2,Melissa Jordan,mjordan@tamu.edu,Coordinator
-d940db90-bf8c-4aaf-9924-4a18f9322b34,Jenny Brown,jbrown@tamu.edu,Admin
-b84483ac-80f5-4775-b711-7dfd39089ebc,Madison Jackson,mjackson@tamu.edu,Admin
-ff4fb846-ac05-4a92-bedd-d63a2bbe8d42,Renee Martinez,rmartinez@tamu.edu,Testing Staff
-aa00d547-eed4-44b9-ada4-821adac726c5,Michael Richards,mrichards@tamu.edu,Testing Staff
-d790ba69-1252-4db4-9497-2096f60a5030,Kelsey Sanders,ksanders@tamu.edu,Coordinator
-4740db60-8f5e-4fb0-b107-2d6fc8b2ce32,Daisy Thomas,dthomas@tamu.edu,Admin
-467dafb3-5058-4419-9492-c37a25828171,Denise Cooper,dcooper@tamu.edu,Admin
-14073744-b76d-4be5-a696-b017580c9ba8,April Davis,adavis@tamu.edu,Tech Staff
-590e6073-bf9f-4b59-808c-bb050721eedd,Matthew Young,myoung@tamu.edu,Testing Staff
-079e2707-2d32-48bc-a4c0-42273fed4e5e,Christopher Warren Jr.,cwarren@tamu.edu,Coordinator
-87117dc8-c6a2-42c7-9814-3c015ab33a4e,Russell Hill,rhill@tamu.edu,Tech Staff
-1f03db81-43e7-4a55-936d-3d5ff52c0ef1,Rachel Durham,rdurham@tamu.edu,Coordinator
-85c6c861-053a-4f51-82d5-60fa4e5a5e08,Kayla White DVM,kwhite@tamu.edu,Admin
-44490391-4149-4f39-83ac-ddb1b3d4f524,James Liu,jliu@tamu.edu,Tech Staff
-498dbdc7-1c19-438a-b63f-08c0ce81924d,Dominique Butler,dbutler@tamu.edu,Admin
-7a5552ec-ed4c-4b27-ac60-bf9c04b2c157,Catherine Wilkerson,cwilkerson@tamu.edu,Tech Staff
-00af6431-ce08-4b28-a529-e0e4e5ecfb68,Darren Parker,dparker@tamu.edu,Coordinator
-0548d94c-645f-4624-8762-823f6a7a6f73,Michael Wilson,mwilson@tamu.edu,Admin
-881608f3-d7c4-4980-87b7-bf39d78f41d3,Stacey Banks,sbanks@tamu.edu,Admin
-019fe345-9bdb-480a-8824-980a906527b3,John Robinson,jrobinson@tamu.edu,Coordinator
-e4b8e53c-f05b-4b5a-b08f-7bc281ae7005,Patricia Lutz,plutz@tamu.edu,Testing Staff
-d404a7b3-8f9f-4278-99ef-299c68db71cc,Robert Arnold DDS,rarnold@tamu.edu,Admin
-f4c5c885-8b2f-4637-b7a1-3e69961981a8,Sharon Miller,smiller@tamu.edu,Testing Staff
-1b9feca5-bf64-4a8c-8ee8-c00cda8aca85,Jamie Ellis,jellis@tamu.edu,Tech Staff
-4e2efd23-908b-4f9d-89d8-dda1a71c8605,Sylvia Adams,sadams@tamu.edu,Coordinator
-b8c4ba00-67b9-41d2-9d4e-12c6075490bc,Pamela Bailey,pbailey@tamu.edu,Coordinator
-142bd5bf-4359-4b41-8bc1-502cd5469e67,Kelly Ritter,kritter@tamu.edu,Admin
-29027a0c-3908-49b6-ace3-363d50bcdae9,Joyce Johnson,jjohnson@tamu.edu,Coordinator
-5f38155a-dbf2-4cda-b5e7-f2c34ead4ce2,Carla Obrien,cobrien@tamu.edu,Tech Staff
-2b01ca03-c9bf-4487-863b-33c5611f1a82,April Lee,alee@tamu.edu,Testing Staff
-63b15cea-a736-4311-aae4-3edbaf1f9177,Catherine Ortiz,cortiz@tamu.edu,Testing Staff
-d4ce5b9e-57ad-4ef7-9ad0-d15eb1eaf158,Shawn Gardner,sgardner@tamu.edu,Coordinator
-4ce5ab0a-2136-4366-b414-70e045adb99f,Heather Hogan,hhogan@tamu.edu,Coordinator
-db4f65ff-5532-4b7c-bc41-86f397bd38e4,Suzanne Taylor,staylor@tamu.edu,Admin
-b6755b98-71a5-424c-9941-6827c98194ca,Gabriel Brown,gbrown@tamu.edu,Testing Staff
-eb4e9820-f1c1-4287-9622-58d463cbcb4e,Michael Williams,mwilliams@tamu.edu,Coordinator
-bdee986d-88d7-4935-ba9d-1a4c70b50155,Paul Bennett,pbennett@tamu.edu,Admin
-dbb33fc4-ca01-411c-ba47-c6d43faeec2f,Ann Carlson,acarlson@tamu.edu,Coordinator
-ac3ead31-3707-4759-b958-c3f87525611e,Christopher Gonzalez,cgonzalez@tamu.edu,Tech Staff
-5c11fef0-ab88-4e3d-89cb-0bc991649513,Alex Duncan,aduncan@tamu.edu,Testing Staff
-143fa07d-1acb-4c16-bb49-9eef96f6c48c,Clayton Hall,chall@tamu.edu,Tech Staff
-24c4dd75-7d6d-4418-83e7-7bdd2b355ce2,Sarah Mckinney,smckinney@tamu.edu,Testing Staff
-5cf05857-6d90-4f1c-a8b0-16f534006c1b,Richard Williams,rwilliams@tamu.edu,Testing Staff
-7833a2a9-7c56-49fd-8a89-be55008d224b,Sonya Zhang,szhang@tamu.edu,Admin
-cb33b878-edbe-4bb1-8a2d-46d258fc6b78,Anthony Young,ayoung@tamu.edu,Admin
-2f6de48b-6f20-424e-bc3c-70938ebc6a98,Steve Murphy,smurphy@tamu.edu,Tech Staff
-e45f8e34-5af7-4cc9-8194-b2481265f03d,Becky Martinez,bmartinez@tamu.edu,Tech Staff
-1cb81572-7758-4d8f-8d16-787af7583c2c,Haley Williams,hwilliams@tamu.edu,Testing Staff
-018ee90a-4426-4b1e-a0f2-7d39f8f5794a,Jennifer Kramer MD,jkramer@tamu.edu,Admin
-0fa99416-340f-498a-9cb4-08d4f24483d7,Jamie Welch,jwelch@tamu.edu,Tech Staff
-113b5108-e08a-42a8-b297-3ee6ce0b3c2b,Emily Alexander,ealexander@tamu.edu,Coordinator
-141e23b0-32ba-411b-87e5-10fb7e07c1d4,Keith Davis,kdavis@tamu.edu,Testing Staff
-2e03d82a-aac7-46af-ba9d-7d4141fd299f,Christopher Wise,cwise@tamu.edu,Tech Staff
-4181da67-8845-46b1-9186-832a2d16b2a2,Monica Calderon,mcalderon@tamu.edu,Tech Staff
-c4e7f7ad-0b46-4c69-beab-c32f19b09371,Joshua Vazquez,jvazquez@tamu.edu,Admin
-67533781-2a71-438d-82c2-413e169ede18,Kelsey Hicks,khicks@tamu.edu,Tech Staff
-f7a1568a-ad3c-41aa-8aec-d3cf24c1e869,Debra Hawkins,dhawkins@tamu.edu,Testing Staff
-a5129163-7e47-43ba-97fa-bbe0add7dd88,Ryan Silva,rsilva@tamu.edu,Testing Staff
-9ec68f4d-e9b6-40f4-8496-73fce8638f58,Andrew Johnson,ajohnson@tamu.edu,Admin
-5d69ba0b-b74b-4e9a-89e8-98e9af28a7d1,Eric Romero,eromero@tamu.edu,Admin
-20aa82cd-3772-4e68-9afa-f7076d015ce1,Michael Jennings,mjennings@tamu.edu,Coordinator
-6f537312-e729-42ca-ae2f-9947fd85813b,Michelle Walker,mwalker@tamu.edu,Tech Staff
-428af299-f17f-4f88-a5ed-5b9021503065,Becky Hopkins,bhopkins@tamu.edu,Admin
-c106c565-aa2b-4af3-b0a9-5c51a6ec5f06,Jennifer Washington,jwashington@tamu.edu,Admin
-dfe84a64-e8f5-43c7-95df-9c74cee88828,Eric Santiago,esantiago@tamu.edu,Testing Staff
-816b3159-5de2-4ad2-8786-c9f1346f231f,Kathryn Mills,kmills@tamu.edu,Coordinator
-90c9aa2d-747e-42e8-9e06-b57ec72fbb2e,Margaret Roth,mroth@tamu.edu,Coordinator
-e72e639d-a468-442b-ae96-97611616715f,Kevin Hall,khall@tamu.edu,Coordinator
-df7810fa-1bc0-41e9-a350-79d6d2cb7844,Jill Cook,jcook@tamu.edu,Testing Staff
-18c74d7f-254f-4db6-96b0-96e5c5209809,Jennifer Casey,jcasey@tamu.edu,Admin
-bf4899df-fd07-4c2a-a806-f4724be683dd,Amanda Smith,asmith@tamu.edu,Admin
-3ef4874c-f78f-4190-ac34-aaba2dcaf691,Gabriela Patterson,gpatterson@tamu.edu,Tech Staff
-0e60f7e3-b952-49a5-9112-2c3daf9ce64d,Jonathan Johnson MD,jjohnson@tamu.edu,Tech Staff
-586c76e8-b634-4162-bb67-d3ea6cabdcda,Ashley Kelley,akelley@tamu.edu,Coordinator
-488c69ee-f5d8-4821-adec-b6fd02a0e581,Lauren Villanueva,lvillanueva@tamu.edu,Admin
-71623766-52de-4fae-afae-e5cbf55b98eb,Olivia Gibson,ogibson@tamu.edu,Testing Staff
-6c36c64e-7948-4fc0-8c75-a1efcc734636,Nicole Bryan,nbryan@tamu.edu,Admin
-245f49b2-d0b4-4410-85cf-85e7fe994386,Andrew Adams,aadams@tamu.edu,Tech Staff
-616723fb-5813-4881-89c6-5fb24543768d,Heather Bowers,hbowers@tamu.edu,Testing Staff
-7d8c90a2-f374-4779-bb87-4424ae605324,Susan Jenkins,sjenkins@tamu.edu,Coordinator
-014696d7-b16a-40d5-9433-0b742b9528d5,Justin Martin DDS,jmartin@tamu.edu,Coordinator
-a598b96a-7f3e-4052-9be4-010bfba8c2dc,Elizabeth Peterson,epeterson@tamu.edu,Admin
-543ef144-fbe3-4cd8-9cc5-1fd1a31bff79,Daniel Martin,dmartin@tamu.edu,Admin
-74b8b5f5-1ecd-472b-9206-989be268f198,Jennifer Walker,jwalker@tamu.edu,Coordinator
-cf900c25-078c-41e5-9088-a8a198c8d448,Michael Jenkins,mjenkins@tamu.edu,Coordinator
-7738bedb-83f4-4925-8bb1-dfba33356bab,Thomas Rodriguez,trodriguez@tamu.edu,Testing Staff
-58b3a34c-21ac-45f3-88a0-2ad786c9e2b2,Lauren Dominguez,ldominguez@tamu.edu,Tech Staff
-87d89e5f-b048-487d-ae08-2e786ae8267e,Lori West,lwest@tamu.edu,Tech Staff
-89b00ddf-b193-42a6-a600-6782e37c2d49,James Turner,jturner@tamu.edu,Testing Staff
-8ce9d4e3-a6a2-4a72-8440-c3cb979035f0,Anthony Sanders,asanders@tamu.edu,Coordinator
-5c3ac2ff-d8f1-4d76-b1ad-b76b139f2f95,Tracy Sanchez,tsanchez@tamu.edu,Testing Staff
-14f4427e-cec8-46bd-a3f8-5a9da1235bdb,Meredith Smith,msmith@tamu.edu,Testing Staff
-94edd757-9a3f-46ad-859f-f63529fbdb98,Christopher Hoffman,choffman@tamu.edu,Testing Staff
-333aa801-e307-4aa9-9f62-2234ef7b372e,Deborah Mccarty,dmccarty@tamu.edu,Testing Staff
-8a72ee2b-54f6-4f5b-8eed-aef349ad75f0,Melissa Smith,msmith@tamu.edu,Coordinator
-575d4ad5-6407-40a3-8bde-55071a350177,Andrew Black,ablack@tamu.edu,Testing Staff
-51b36211-f15f-4ecc-9dba-0124a4b600ab,Melissa Harris,mharris@tamu.edu,Testing Staff
-74991fc7-8bdb-4903-8d8a-2db18a31b345,Jennifer Hernandez,jhernandez@tamu.edu,Coordinator
-78c23009-cfac-498e-95b9-144d6bc43291,Richard Sullivan,rsullivan@tamu.edu,Admin
-cfb85631-bcf0-4ddd-b221-7ed42a5ef650,Stephanie Bell,sbell@tamu.edu,Coordinator
-deda5946-189d-4b57-8774-63742c8bc04e,Scott Ortiz,sortiz@tamu.edu,Testing Staff
-10fe3d33-96a2-4d8e-8c4b-86ec187045c5,Gavin Smith,gsmith@tamu.edu,Admin
-28b9c96d-f820-440d-921f-4bf36d201b4f,Christopher Navarro,cnavarro@tamu.edu,Admin
-e02e6797-2003-4af4-94f3-d764b40919f0,Lisa Romero,lromero@tamu.edu,Coordinator
-2e83102e-7ff4-43a9-89fc-def2b18d0653,Dr. Joanna Hall,djoanna@tamu.edu,Tech Staff
-cfb7913b-9964-4d38-b3d5-4a569ff940e7,Joshua Thompson,jthompson@tamu.edu,Coordinator
-bf51eab9-a6a3-492b-bf82-96547548e2e6,Beverly Nelson,bnelson@tamu.edu,Coordinator
-b6015bed-246c-4e9b-9b02-1f9be6b8858b,Natalie Watkins,nwatkins@tamu.edu,Admin
-d4a7b040-6537-4479-be3b-a43c9213fd6c,Natasha Munoz,nmunoz@tamu.edu,Admin
-a1e9a99d-ee09-4321-8c1f-f6ff426a01b0,Emily Garza,egarza@tamu.edu,Testing Staff
-2674b39b-a621-4ce0-b784-ac270498f74e,Joan Mcgee,jmcgee@tamu.edu,Tech Staff
-51ed2bf0-18d4-456d-93a1-be48d8b6ca29,Erika Thomas,ethomas@tamu.edu,Testing Staff
-f1e0e092-8fec-4855-a8af-59d85c41b307,Dr. Jared Cunningham,djared@tamu.edu,Admin
-6dd4d5ea-0de3-48d9-ad87-8df7ffe86bb5,Antonio Brooks,abrooks@tamu.edu,Coordinator
-3281e7e7-d72f-4497-8e50-9ca6c09e7994,David Sexton,dsexton@tamu.edu,Testing Staff
-714a3fd6-efa7-41d5-8434-b67a595977c1,Amanda Jones,ajones@tamu.edu,Tech Staff
-14d354da-b19a-4160-8e7d-e49e76327409,Heather Shields,hshields@tamu.edu,Coordinator
-d1fdc036-cfc0-48f4-87cd-c0e6fb11659e,Sarah Harris,sharris@tamu.edu,Coordinator
-e60b3253-19af-480c-b96e-ea948f835c78,Jennifer Phillips,jphillips@tamu.edu,Testing Staff
-76622ee0-1466-4e20-9851-5e20734ec07c,Christine Johnson,cjohnson@tamu.edu,Tech Staff
-007333f5-6a4a-414c-8437-11bbb666253f,Christina Crawford,ccrawford@tamu.edu,Admin
-f530eca5-21ac-4647-9516-79e0ffb0395a,Noah Reid,nreid@tamu.edu,Admin
-3399e04b-c4e3-4300-8716-7a87c31cbc07,Rebecca Hernandez,rhernandez@tamu.edu,Coordinator
-3b48d092-77dc-42fb-879d-0baedc820e46,James Walton,jwalton@tamu.edu,Testing Staff
-f35cf48e-f88b-4194-853d-6ecbceb97131,Dr. Kayla Baxter,dkayla@tamu.edu,Admin
-350ae3d4-8aa5-4856-8ba6-7a0cea0411a2,Shane Haynes,shaynes@tamu.edu,Testing Staff
-3a295062-af79-4eba-b0f1-94994168a1ff,Dana Taylor,dtaylor@tamu.edu,Admin
-724cef8f-8b9d-4c49-b7ed-6cfcf13741c8,Jasmine Crawford,jcrawford@tamu.edu,Admin
-a2b81ce9-476e-4f35-8c4a-8208fe3617c0,Annette Johnson,ajohnson@tamu.edu,Tech Staff
-98ea208f-70ff-4b46-82bc-9c0e580ef372,Tamara Adams,tadams@tamu.edu,Coordinator
-6c9e8805-fbe9-4bdb-a53d-4678789f2c36,Erik Townsend,etownsend@tamu.edu,Testing Staff
-4e81c866-b4b2-4c8f-84f4-66d08d8391e7,Megan Kim,mkim@tamu.edu,Tech Staff
-705a20e6-f191-44b9-ae2f-2b1d5b96e753,Ray Hamilton,rhamilton@tamu.edu,Testing Staff
-8efb89f8-bbcc-4401-86f0-e2bd6122523b,Eric Romero,eromero@tamu.edu,Admin
-a8c89179-eda5-48c7-8aa8-bd6410742358,Jill Wheeler,jwheeler@tamu.edu,Testing Staff
-4a612ccb-b669-4d3f-aeb2-db0bf01183b3,Adam Cook,acook@tamu.edu,Tech Staff
-53b53303-f12b-48b1-b21c-24c662ae8af0,Holly Williams,hwilliams@tamu.edu,Coordinator
-9038664e-9a86-4718-9228-686f755485a5,Robert Dixon,rdixon@tamu.edu,Admin
-25a75edb-4fcf-4f0b-a1ff-173fb4931858,Jasmine Weaver,jweaver@tamu.edu,Testing Staff
-557b83cc-d8e3-4ca7-b97b-8445332c945f,Douglas King,dking@tamu.edu,Coordinator
-f8385b4f-2967-4a6c-b752-6b4176b81181,Michelle Anthony,manthony@tamu.edu,Admin
-8d4b2803-3929-40e4-8b68-0c8dd74d2397,Tyler Castro,tcastro@tamu.edu,Testing Staff
-a601d359-79f9-4cef-9f79-00c3df821961,David Rowland,drowland@tamu.edu,Tech Staff
-e123c4bc-7d47-4f48-8eb1-c75d6b9a345c,Ruth Brooks,rbrooks@tamu.edu,Coordinator
-dd29c178-c195-4b3b-a720-dfa167ab2467,Jennifer Ray,jray@tamu.edu,Testing Staff
-a29bf078-ac5b-4d4d-b0e6-695510e154fe,Mark Armstrong,marmstrong@tamu.edu,Tech Staff
-9c8c26b5-1825-4045-998f-504ee71e46d0,Meghan Carey,mcarey@tamu.edu,Testing Staff
-1ae499c7-661c-409a-8adc-87415d31908a,Joanna Howard,jhoward@tamu.edu,Testing Staff
-8d46dc4d-8b91-4088-af30-140f0a522096,Andrea Wheeler,awheeler@tamu.edu,Tech Staff
-86f39b57-864e-4209-86ab-4391cc9eba28,Cynthia Grant,cgrant@tamu.edu,Admin
-302732ab-ab23-43ad-abb3-690ec82b7139,Terri Brewer,tbrewer@tamu.edu,Testing Staff
-9825a5a9-132b-4761-a7ea-fdae0d7e8888,David Jones,djones@tamu.edu,Testing Staff
-7dab63a1-91c5-459d-b1dc-67aacf2573fa,Suzanne Daugherty,sdaugherty@tamu.edu,Admin
-375e85c7-50a9-48ec-b94b-b354a7bf56da,Tonya Griffin,tgriffin@tamu.edu,Tech Staff
-882eed72-f05c-4e3d-b149-adf763baf341,Courtney Snyder,csnyder@tamu.edu,Admin
-f15c98f9-c2ea-47b2-b7e3-326624a749d5,Kelli Butler,kbutler@tamu.edu,Testing Staff
-9046d2b2-7477-4ccb-a170-a2e67371910b,Andrea Smith,asmith@tamu.edu,Admin
-951fe31c-843f-4b69-9913-c9c68f63c461,Mary Anderson,manderson@tamu.edu,Testing Staff
-de0a5014-f2d7-4117-8f05-87e9bdc0b7fa,Sheryl Miller,smiller@tamu.edu,Testing Staff
-5e78f283-5200-47ba-bf36-c0ef99c95bbe,Lauren Garcia,lgarcia@tamu.edu,Admin
-8b6b029e-4917-49a1-86e5-384b71b4d477,Dean Gonzalez,dgonzalez@tamu.edu,Admin
-32a69874-0e4e-4cba-8cf1-d5b6f8277eeb,Alicia Friedman,afriedman@tamu.edu,Admin
-cde38f3b-16a8-435c-9ce1-261b1f80f0e0,Andrew Rios,arios@tamu.edu,Coordinator
-46b751a5-225c-4d1b-87cc-eb8ff0324639,Ann Dunn,adunn@tamu.edu,Tech Staff
-59886d90-fd0f-464f-b783-3160c6745430,John Crosby,jcrosby@tamu.edu,Testing Staff
-56137aa3-c2b8-4dfa-bc21-84e7f87f81dc,Joseph Moore,jmoore@tamu.edu,Coordinator
-258a4d1e-4906-482a-a9c9-4233da7568c9,Christopher Perry,cperry@tamu.edu,Coordinator
-deeb594d-2795-4ea8-a0be-5c31ed879cdd,Terry Mcgrath,tmcgrath@tamu.edu,Testing Staff
-36e8e8ed-f071-4791-86e3-96c211e74be6,Richard Bell,rbell@tamu.edu,Tech Staff
-9e1e40a4-ae94-4bf0-b17a-66a184617de6,Scott Matthews,smatthews@tamu.edu,Tech Staff
-5e407d1e-725d-4080-b9a1-f3c9a4c768d3,Laurie Vazquez,lvazquez@tamu.edu,Admin
-fdb5538b-58e1-4a5e-bcad-083ed4c5bf0f,Justin Hill,jhill@tamu.edu,Admin
-251cb618-6b97-4912-9667-1c5d8b1dde8b,John Roy,jroy@tamu.edu,Testing Staff
-6ec05b5c-3288-4af2-9233-5c55395c4f3a,Patrick Harrell,pharrell@tamu.edu,Admin
-4c5c422c-37c9-47b4-8695-a1f0f08c0d9b,Laura Hogan,lhogan@tamu.edu,Admin
-4fa14d48-dd99-41fc-ba14-d6223f9c25ef,Derrick Meyers,dmeyers@tamu.edu,Coordinator
-e04cb913-96aa-4a30-b91f-3efc246cdc4e,Crystal Sanchez,csanchez@tamu.edu,Coordinator
-02d46209-5956-41bc-910f-8e1663b3c3ee,Laura Martinez,lmartinez@tamu.edu,Coordinator
-93235d47-c8d2-45a4-89a3-34f763aabeab,Tonya Hill,thill@tamu.edu,Coordinator
-88ef76d7-1358-4d0f-9b47-c04f5f920cf0,Colin Mason,cmason@tamu.edu,Coordinator
-192150cc-b5e5-425c-8dc6-037e8755116e,Mr. Chad Kennedy,mchad@tamu.edu,Tech Staff
-d34faee3-a247-4cd7-8b1e-787efd1a8a7b,Christine Everett,ceverett@tamu.edu,Tech Staff
-b4bc94d2-bc86-4691-a2e1-bfb07fcb3aa9,Mary Mcclain,mmcclain@tamu.edu,Admin
-423f0d15-1b40-4c16-9705-cf8f3527ed62,Aaron Ramos,aramos@tamu.edu,Testing Staff
+7a8cee4d-5391-44b7-b17c-208708e0ecee,Terri Mcdowell,tmcdowell@tamu.edu,Testing Staff
+4f6940f2-837f-49c9-97ce-9f01edb320c5,Anthony Hardin,ahardin@tamu.edu,Admin
+e0c5f93b-2fdf-4f73-a515-eb89ace945ff,James Bishop,jbishop@tamu.edu,Testing Staff
+0faefa1c-a6f4-4764-adff-26dae57cf407,Troy Bartlett,tbartlett@tamu.edu,Admin
+67dea654-eb15-489e-90c6-e2233f25a9cc,Marcus Martin,mmartin@tamu.edu,Coordinator
+ff1f654a-cd51-4d3c-a2d2-de424076ad11,Patricia Allison,pallison@tamu.edu,Admin
+fc159169-462e-46dd-af0f-d5b990833105,Michael Robinson,mrobinson@tamu.edu,Tech Staff
+365934f8-fcff-4c51-bb5b-63def12deefb,Andre Shepherd,ashepherd@tamu.edu,Admin
+f95aff7c-2865-4b2b-91aa-ee616cdb8920,Ronald Baker,rbaker@tamu.edu,Coordinator
+c947d294-8c00-4eb4-b9b1-199a420808b8,Matthew West,mwest@tamu.edu,Admin
+fa4d108a-b454-4a47-8e71-bbbbd306b0d5,Christine Davis,cdavis@tamu.edu,Admin
+ec5aa394-4dc6-485b-9ce5-950b8f2c30cd,Shelby Jordan,sjordan@tamu.edu,Coordinator
+465b934a-af24-4651-adae-5fd2e0ae828c,Edward Lewis,elewis@tamu.edu,Testing Staff
+90650f7e-2a85-4266-8a99-f9faf5eac7b5,Lisa Montoya,lmontoya@tamu.edu,Testing Staff
+58c9e923-27ad-418c-9518-a8f89e077e36,Susan Smith,ssmith@tamu.edu,Admin
+bf2b9192-503a-4bc5-8938-be95f710d18b,Regina Garcia,rgarcia@tamu.edu,Admin
+f55e296e-e7ff-4033-92b8-882b7f485ef7,Kelly Sanchez,ksanchez@tamu.edu,Testing Staff
+eb200412-7475-4e1b-b1a4-9974c9832840,Jesus Baker,jbaker@tamu.edu,Admin
+be285db2-b50e-4db4-bed6-ed81753d9cde,Scott Lynch,slynch@tamu.edu,Tech Staff
+443073d8-6f1c-41c9-b4eb-292095249c88,Jonathan Wilson,jwilson@tamu.edu,Coordinator
+2ff44f20-0c26-4392-931d-5a2a412ca426,Janet Jenkins,jjenkins@tamu.edu,Testing Staff
+4487ccec-fda5-4509-8837-42ced519b726,Gabriela Leon,gleon@tamu.edu,Testing Staff
+e6c1a5cb-6d3f-4623-b5f3-aae94e734389,Becky Clarke,bclarke@tamu.edu,Admin
+74057bc7-4b1e-41c5-bb83-ae660e26c2f0,Sandra Munoz,smunoz@tamu.edu,Testing Staff
+cdbe8037-c3ae-4df6-b6e8-a52080011790,Darrell Smith,dsmith@tamu.edu,Testing Staff
+d0fbae41-9d6c-4396-9525-10b3447efac2,Andrew Jackson,ajackson@tamu.edu,Tech Staff
+0c27cc0a-eb0f-4638-9c34-3aca3a1a643c,Michelle Hardy,mhardy@tamu.edu,Testing Staff
+0a94aea3-fa45-48c7-bbe9-51f5e523808a,Diana Sharp,dsharp@tamu.edu,Tech Staff
+6d5b49bd-bc93-44bc-a368-48baa9d345b7,Aaron Martin,amartin@tamu.edu,Testing Staff
+bfbbfd88-ab8d-41a8-9b7a-ae14c5af4939,Anna Smith,asmith@tamu.edu,Coordinator
+5ef74936-b84d-4376-a775-d6ee253588cf,Deborah Porter,dporter@tamu.edu,Testing Staff
+1ec7c5a7-8890-4a5d-8b08-a3f11e7ae2e2,Shelly Flores,sflores@tamu.edu,Coordinator
+ac3034d5-1318-422a-9b8a-554bd44986bc,Morgan Carney,mcarney@tamu.edu,Testing Staff
+7a912d3b-3ce0-406a-ac5c-45a334ecb486,Katelyn Peterson,kpeterson@tamu.edu,Admin
+2e6ae327-34dd-4488-8156-2b2940347ca4,Michael Caldwell,mcaldwell@tamu.edu,Tech Staff
+d703ba74-87e9-437f-aec8-f77b8c99210d,Jesse Bennett,jbennett@tamu.edu,Tech Staff
+295b8ca1-356f-4f19-b9a9-936c3d8eeb3f,Allen Patton,apatton@tamu.edu,Coordinator
+bbc84690-4e2b-4488-a431-738d25a479a3,Brittany Wood,bwood@tamu.edu,Coordinator
+3361cd31-19a8-4d8c-b301-3bc0d4e5e6d0,Joshua Marquez,jmarquez@tamu.edu,Testing Staff
+841e6b21-842b-4f5b-b843-7d265968e178,Brianna Miller,bmiller@tamu.edu,Tech Staff
+21fd13dc-7d84-434d-af44-a6efd317b42c,Christine Ramirez,cramirez@tamu.edu,Admin
+aa851ae5-e1ba-4718-9ddd-7e36a0c7afaa,Katherine Reyes,kreyes@tamu.edu,Testing Staff
+cbd351e9-5907-4227-913d-183d6c80b202,Kathy Hahn,khahn@tamu.edu,Coordinator
+e5149b36-4fe5-4b17-bd75-496e025bf31a,Alyssa Acosta,aacosta@tamu.edu,Testing Staff
+9f0ad4d2-6581-4ce2-b704-9c74e721caf1,Melissa Adams,madams@tamu.edu,Testing Staff
+12f989c0-5594-4cf0-a386-8ac979c13445,Preston Colon,pcolon@tamu.edu,Coordinator
+b84699f0-487b-44e1-9e1c-94e6c4d45bee,Abigail Mcintyre,amcintyre@tamu.edu,Testing Staff
+be88bcc0-7d5f-426d-8073-9bb5e7da482b,Clinton Carson,ccarson@tamu.edu,Testing Staff
+7d2c58e6-6ecb-4620-9f82-25cfe8a399d4,Andrew Cook,acook@tamu.edu,Tech Staff
+f6f5e562-5082-4017-b45b-9e2332b1d7b5,Norman Waters,nwaters@tamu.edu,Tech Staff
+0b5f7771-0784-4c93-a921-565a2110c9d9,Jennifer Hopkins,jhopkins@tamu.edu,Admin
+86f0e41f-e61e-4aed-8e15-a4590f9e3f40,Riley Atkins,ratkins@tamu.edu,Admin
+1a311fcc-a515-4562-bf14-7ed11b7e9319,Valerie Bryant,vbryant@tamu.edu,Coordinator
+5b012381-3385-426a-b280-4295330b9886,Vicki Miles,vmiles@tamu.edu,Tech Staff
+37173f93-a00c-45ef-befa-b09871f14d7f,Mercedes Griffith,mgriffith@tamu.edu,Tech Staff
+be9820d0-fde4-4915-ba55-c32dd1f0e749,Leslie Morris,lmorris@tamu.edu,Coordinator
+07adeec8-ef3d-421c-9d89-b78273d1f7f6,John Erickson,jerickson@tamu.edu,Admin
+5662cb00-34da-462d-9ed0-fa6e2e606bb4,Gabriel Wise,gwise@tamu.edu,Tech Staff
+39ede062-3fd5-49bc-a8ab-7fb3668a69fa,Gabriel Alexander,galexander@tamu.edu,Admin
+4c9caa6f-4215-4dcd-96f2-9dea3564ab69,Roy Burton,rburton@tamu.edu,Coordinator
+8d18f2c8-f849-4839-bf34-e853caae668c,Tyrone Oliver,toliver@tamu.edu,Coordinator
+5a53ac30-fcc8-49b8-a6fa-270c8d52be21,Jennifer Smith,jsmith@tamu.edu,Coordinator
+6de0a7e3-43d5-4596-8bf4-7475960ce2e3,Jeff Obrien,jobrien@tamu.edu,Testing Staff
+2bb89759-c6c2-4303-b411-06f93c762831,Rebecca Morgan,rmorgan@tamu.edu,Coordinator
+86e29aff-48a4-4cc6-b701-b2696bb6c445,Kathryn Merritt,kmerritt@tamu.edu,Tech Staff
+16a29287-f697-4f2f-a317-13ca50be6df6,Dr. Lawrence Robinson Jr.,dlawrence@tamu.edu,Testing Staff
+e62c4162-0cc8-4a18-ae53-759083221531,Steven Brown,sbrown@tamu.edu,Testing Staff
+115ee64e-ad04-4593-9f7d-3110c308655a,Omar Garcia,ogarcia@tamu.edu,Admin
+54850c2e-18d8-40dd-bc83-cf696d03657a,Ricky Jones,rjones@tamu.edu,Tech Staff
+ff3931f8-398f-45f2-9140-36925088a8fa,Tyler Brooks,tbrooks@tamu.edu,Testing Staff
+19787194-e206-4c7a-8fc0-07872850ae39,Amanda Sanchez,asanchez@tamu.edu,Admin
+90fc02d2-4221-48fd-ab7d-65de4c4998ef,Christina Klein,cklein@tamu.edu,Admin
+e8584e71-ebb4-4333-93b8-e444906eda9b,Brent Lopez,blopez@tamu.edu,Coordinator
+ab659d47-ed20-4f77-a1ed-bddda7539fc5,Stephanie Ray,sray@tamu.edu,Coordinator
+c6384b30-181f-44d3-a0ee-ff7fe97c8bf6,Crystal Marshall,cmarshall@tamu.edu,Testing Staff
+5cdff46f-8710-499f-8cdc-261c639a31bf,James Phillips,jphillips@tamu.edu,Admin
+90ee1be7-870b-4e44-bf96-b546e41983c2,Wendy Joyce,wjoyce@tamu.edu,Tech Staff
+07de5d2e-7522-49f7-bb85-b6a184919051,Gordon Kelly,gkelly@tamu.edu,Tech Staff
+d53aeaa2-d03d-45eb-bddf-fd8368cdf589,Michael Herrera,mherrera@tamu.edu,Testing Staff
+df253653-12f4-4842-80ac-140cf1a3bb45,Wendy Newman,wnewman@tamu.edu,Tech Staff
+3b0f0b79-c4ed-45d4-bced-6f8a4a444a7c,David Fowler,dfowler@tamu.edu,Tech Staff
+248eb901-052d-4d71-9ce0-0ea64f009d4e,Richard Stuart,rstuart@tamu.edu,Admin
+1cfc7cef-0dbe-4ba8-922b-d8ce9fd20992,Anne King,aking@tamu.edu,Coordinator
+20d79518-4225-4fc8-807c-c132da64d959,Ryan Gray,rgray@tamu.edu,Tech Staff
+9870751f-0a63-4e6a-bb86-2f73ab03098f,Amy Baker,abaker@tamu.edu,Tech Staff
+397cb0a1-119b-469b-8005-777e2f484fd5,Maureen Thomas,mthomas@tamu.edu,Tech Staff
+86cf0922-c02b-44af-a90e-d8ab042a1e12,John Taylor,jtaylor@tamu.edu,Tech Staff
+d8bb0869-d52c-44dd-8b37-7bc63cfa6a4e,Pamela Tyler,ptyler@tamu.edu,Tech Staff
+bcb8f9f7-c953-402b-bf80-2ebb1b952051,Katie Mason,kmason@tamu.edu,Testing Staff
+96aa908f-2345-4c19-b256-e7a22c1350c8,Denise Davis,ddavis@tamu.edu,Admin
+39af958d-edc9-4b51-a45a-40b951370ac5,Jonathan Hamilton,jhamilton@tamu.edu,Testing Staff
+a6edf142-d598-466b-94b6-a65de7e49990,Maria Hanson,mhanson@tamu.edu,Testing Staff
+1b539a0e-3904-48eb-a887-eea598d491a1,Chloe Gonzalez,cgonzalez@tamu.edu,Testing Staff
+bfe1620f-c0ee-4313-b5c7-1360e5762363,Jessica Walsh,jwalsh@tamu.edu,Coordinator
+e75e9d62-9fc9-4650-96b3-9b465edd4202,Michael Thompson,mthompson@tamu.edu,Admin
+9aa974eb-9bc6-4407-b4c0-6125d1c5f98b,Ashley Burke,aburke@tamu.edu,Tech Staff
+b7c693c0-021d-4193-b969-40ddfe93a3a9,Gabrielle Meyer,gmeyer@tamu.edu,Testing Staff
+5dc860ea-3b1f-410a-9a3a-4e5113a7d6d1,Tyrone Bradford,tbradford@tamu.edu,Coordinator
+bcb02d22-121a-481c-ab68-99040b1509a4,Kent Taylor,ktaylor@tamu.edu,Tech Staff
+b3e2a114-0fc1-4b8f-927f-a5de796ac617,William Olson,wolson@tamu.edu,Testing Staff
+d8f7ac4b-d78e-4718-ba98-f887bc36c9ac,Jessica White,jwhite@tamu.edu,Tech Staff
+632ffafc-e04c-4477-9899-ba17811306b0,Christina Hart,chart@tamu.edu,Admin
+d87e6f7d-9725-47b5-8b13-36e1d1ccf638,Michael Aguirre,maguirre@tamu.edu,Testing Staff
+c962e93d-b87a-469c-afec-6dd022a0e35b,David Parker,dparker@tamu.edu,Tech Staff
+041db570-023d-40ba-b59e-2b7fd8877587,Kylie Scott,kscott@tamu.edu,Coordinator
+c0b0c468-beba-4c25-92ce-a664140f99d9,Ernest Estrada,eestrada@tamu.edu,Tech Staff
+3f387448-d116-416f-9566-47663760b61f,Ryan Hall,rhall@tamu.edu,Tech Staff
+8c8935cc-9f2b-4838-b5c2-7f41a534774c,Sabrina Bennett DVM,sbennett@tamu.edu,Admin
+c9b4294c-6f09-44dd-b5cf-239cf40344cf,Michael Thornton,mthornton@tamu.edu,Testing Staff
+a098f5aa-9af8-4cee-9c5d-2b65866009b0,Robert Carter,rcarter@tamu.edu,Admin
+40ccdfa9-e42b-4cd3-ab3d-7d09a48d6cf9,Krystal Hall,khall@tamu.edu,Coordinator
+34e817e1-fb05-44b0-9a2e-4b73244de687,Brandon Vargas,bvargas@tamu.edu,Testing Staff
+c627831b-8309-4070-8720-a9d0ba29a18f,Thomas Moreno,tmoreno@tamu.edu,Tech Staff
+b132b142-6b8d-443b-9db7-3b3429fe8c2f,Kelly Garcia,kgarcia@tamu.edu,Admin
+c4c2b11b-38b9-4036-8779-3e800acfd5f6,Lisa Smith,lsmith@tamu.edu,Coordinator
+ab129b70-f26c-452a-822d-f14331fdc54b,Mary Thomas,mthomas@tamu.edu,Testing Staff
+1f2638a0-c0f6-4ea6-a789-dfdcb1c568bb,Mckenzie Nguyen,mnguyen@tamu.edu,Coordinator
+b919d3da-1fc2-44e4-85be-497021d7dd21,Jay Mejia,jmejia@tamu.edu,Tech Staff
+97448d0b-b361-40f4-8a1a-c218507cb2e9,Brandon White,bwhite@tamu.edu,Testing Staff
+5a06638e-a5c5-42ec-95da-f3a3274f39cd,Ashley Callahan,acallahan@tamu.edu,Tech Staff
+c25f3df2-7fe2-4bdc-8fd3-5e593088f640,Christy Hernandez,chernandez@tamu.edu,Coordinator
+f0e9be9c-3a5d-4b9d-b74c-ebb94ae3711b,Andrea Reynolds,areynolds@tamu.edu,Admin
+92f2ad44-fce7-4a77-9810-e2167621b182,Doris Vaughn,dvaughn@tamu.edu,Tech Staff
+09c36c57-4228-43b1-ad04-7dd6fd11330d,Randall Carey MD,rcarey@tamu.edu,Coordinator
+ecfadd08-2fca-43e1-b276-e656a9240379,Dana Noble,dnoble@tamu.edu,Testing Staff
+117ba0de-dcb4-4ebc-8fe2-487da46411e4,Amanda Miles,amiles@tamu.edu,Testing Staff
+4343ad15-4e12-4afc-b632-b9b43d94a7ae,Perry Lane,plane@tamu.edu,Testing Staff
+90e36dff-db03-430c-956c-a8a2d8e12033,Amy Scott,ascott@tamu.edu,Tech Staff
+f5ec9df3-37fb-48ec-bea2-4dd6c728c661,Luis Booth,lbooth@tamu.edu,Testing Staff
+073dc5d8-e349-4690-8a23-014f525de25e,Sarah Reed,sreed@tamu.edu,Admin
+88279525-59d1-44af-a93b-727f67f7f285,Mark Hernandez,mhernandez@tamu.edu,Testing Staff
+24e3606b-ee1e-468a-8772-7f5635caf0b0,Eileen Collier,ecollier@tamu.edu,Tech Staff
+969625ea-f7c3-4125-860e-4600bc5c8827,Scott Thompson,sthompson@tamu.edu,Coordinator
+ffa28fe5-14e3-45ff-88a2-a216f2ae1084,David Crane,dcrane@tamu.edu,Coordinator
+5e37a530-09d4-412e-84a2-e54b7282a50d,Cheryl Fowler,cfowler@tamu.edu,Coordinator
+cd2d042c-b394-407c-884e-abd17b99b8cb,Raymond Perry,rperry@tamu.edu,Tech Staff
+4963bc67-8892-4612-bbcd-e898501404c1,Clifford Martin,cmartin@tamu.edu,Coordinator
+39cac75e-1d0f-4509-8551-c5d235790afd,Tara Miller,tmiller@tamu.edu,Admin
+b10c1622-6bf7-48e5-95ea-4e534c75023e,Heidi Griffith,hgriffith@tamu.edu,Admin
+553e4f5f-dcc5-4645-9b58-614ab6cc1e9c,Thomas Davis,tdavis@tamu.edu,Tech Staff
+ddcf35e8-c69a-4566-92e5-44a357be825d,Andres Pope,apope@tamu.edu,Coordinator
+3f2e81fc-ed2d-4839-9f9f-7d5cdf5ca9b1,Jessica Castillo,jcastillo@tamu.edu,Tech Staff
+5fb22abe-1f42-4526-bb87-2b06eb635573,Jessica Clark,jclark@tamu.edu,Coordinator
+7d02a088-3117-4891-80e0-363ed9956f00,Katherine Tate,ktate@tamu.edu,Admin
+5beca9ab-ae50-4025-b040-d4f6c7ae2ba2,Jacob Larson,jlarson@tamu.edu,Testing Staff
+e5542a10-d352-4848-adf8-efa3294f161b,Crystal Gibson,cgibson@tamu.edu,Coordinator
+30be4c5e-1e15-40c5-a019-f5ac2b602efb,Katherine Campos,kcampos@tamu.edu,Coordinator
+a9109a93-c41f-4ba5-8cd4-8a71a87407ce,Erik Stanley,estanley@tamu.edu,Testing Staff
+34d8980c-9f64-4f92-b6ca-e93093937bb9,Kathy Hughes,khughes@tamu.edu,Testing Staff
+74093053-0b2b-45c7-a5ab-a44d97319b3f,Jacqueline Johnson,jjohnson@tamu.edu,Admin
+b496f32e-2c81-4cd6-ab9e-dcf51d131eff,Gary Thomas,gthomas@tamu.edu,Testing Staff
+ecf20dd4-f25f-4294-84ed-1f8faed702df,Lindsay Pennington,lpennington@tamu.edu,Tech Staff
+889fc692-1e85-458c-b3e7-8394a59d787a,Eric Maxwell,emaxwell@tamu.edu,Tech Staff
+eeac4db2-b381-4a09-9161-b9febd82df78,Matthew Smith,msmith@tamu.edu,Admin
+6b71ceaf-8573-4fa8-bd5d-1320072851c7,Melissa Mcgee,mmcgee@tamu.edu,Tech Staff
+c82978ee-cd00-4b06-aba2-962aca3bfb9e,Patricia Welch,pwelch@tamu.edu,Admin
+15281859-2b7b-4e7b-b3cb-64b1973268c8,Julia Sullivan,jsullivan@tamu.edu,Testing Staff
+c72b72f6-f447-45fd-a4fa-3c615758f476,Madison Long,mlong@tamu.edu,Testing Staff
+25f7b6fa-6455-4205-999c-822bbf49119f,Trevor Clark,tclark@tamu.edu,Testing Staff
+e44b3bc2-98e8-4c23-8260-9fdd3bfbb8c2,Troy Pena,tpena@tamu.edu,Tech Staff
+ad312e28-e28d-4e20-a767-8e5fb0a0fe20,Mariah Nelson,mnelson@tamu.edu,Tech Staff
+671bddac-8553-4a58-887a-066006720b2f,Daniel Greer,dgreer@tamu.edu,Admin
+fef8664b-c7ba-4ff1-a723-8aafeb886510,Kelsey Roberts,kroberts@tamu.edu,Testing Staff
+de2ce1b5-b474-47ed-b6a7-b9cc371cde45,Mark Cook,mcook@tamu.edu,Testing Staff
+c5c2c57d-827a-4213-915d-c541ebb14c17,Adam Vasquez,avasquez@tamu.edu,Admin
+b92f3dac-b879-40ba-92db-1bcc6cc19a56,Regina Morgan,rmorgan@tamu.edu,Tech Staff
+b20594fc-c47f-465f-8609-151a098650ca,Charlotte Olson,colson@tamu.edu,Testing Staff
+9f85b17e-76e8-4e9d-8f7f-6bafbe425589,Roger Dixon,rdixon@tamu.edu,Coordinator
+bb4a1e4c-0b1d-4473-8cb1-f3e040d6ed60,Richard Martin,rmartin@tamu.edu,Coordinator
+c19e3ffd-c1d9-49d1-a0b5-0554d878dd3c,Glenn Flores,gflores@tamu.edu,Admin
+ef9d569c-2852-430d-bbf3-d6d7081c124a,John White,jwhite@tamu.edu,Testing Staff
+80a979a2-9283-4101-956f-d438be719c09,Jennifer Rodriguez,jrodriguez@tamu.edu,Tech Staff
+5df16150-f9a0-4404-927d-f0e50a0085ca,Christopher Armstrong,carmstrong@tamu.edu,Admin
+28e1a096-667b-477a-8f58-2bd126fd716c,Justin West,jwest@tamu.edu,Coordinator
+7ad4f1fa-e798-4aad-af67-9ae3ac84be49,Dr. William Murphy,dwilliam@tamu.edu,Coordinator
+5bc2597b-2853-4317-8d2c-eb4ec90e1e1e,Jennifer Smith,jsmith@tamu.edu,Admin
+cd8f8e1d-fe77-4d60-8257-8d0b65d72671,Erin Roberts,eroberts@tamu.edu,Testing Staff
+5cbc39b8-0770-499b-8708-0653b8e6ee6a,Courtney Patel,cpatel@tamu.edu,Testing Staff
+dedba825-39de-4980-96e0-d99aa521f429,Tyler Anderson,tanderson@tamu.edu,Coordinator
+95b61637-6250-4be4-a5fa-a93475b182b8,Corey Fisher,cfisher@tamu.edu,Testing Staff
+31e7e9dc-9a5f-4c2a-8095-7a471c98ba51,John Barrett,jbarrett@tamu.edu,Tech Staff
+121ca26a-ee5d-4771-8a88-176ea64bac7d,Alexandra Gentry,agentry@tamu.edu,Tech Staff
+14c9615a-8ffc-4ce4-98ed-cb5c6aa9e948,Rebecca Gomez,rgomez@tamu.edu,Coordinator
+cb9c33de-ba4e-40e7-aa96-c526de910100,Stacey Smith,ssmith@tamu.edu,Coordinator
+c06577f9-4c14-47c8-a396-4644a3494943,Stephanie Olson,solson@tamu.edu,Tech Staff
+b045121b-f1af-46e5-8c58-370f5b9579ea,Omar Murphy,omurphy@tamu.edu,Coordinator
+d3199d7c-daaa-40d6-8bdc-d7259df1ef6f,Robert Hamilton,rhamilton@tamu.edu,Testing Staff
+3d23b4a5-b893-4422-8582-1899bc1ba08b,Lindsay Ortiz,lortiz@tamu.edu,Testing Staff
+68d965b2-1d9f-4a36-9f8c-b451c03696ea,Adam Brady,abrady@tamu.edu,Admin
+d9a9ccf7-e482-4c22-aa04-15835f9e008c,Gloria Lynn,glynn@tamu.edu,Coordinator
+bbf6ad85-e667-45cb-b7ca-03c8f176aed5,Victoria Hancock,vhancock@tamu.edu,Testing Staff
+d1b85d79-0914-4b0e-98b9-9b859d7c67b0,Trevor Berg,tberg@tamu.edu,Admin
+b149eacc-afe4-4163-80b4-b995df10b69a,Danny Blankenship,dblankenship@tamu.edu,Tech Staff
+76a3bbab-81bd-433f-bcae-0a4b5a4353bd,Larry Luna,lluna@tamu.edu,Tech Staff
+1956e4e0-db27-4b2f-883c-036603415481,Sierra Becker,sbecker@tamu.edu,Testing Staff
+96edb3ae-249d-4af6-93c4-bd9c8edb9ad5,Holly Hudson,hhudson@tamu.edu,Testing Staff
+c2e1d9e2-e0e2-4e5e-8be1-5c3c5d69609c,Carrie Baxter,cbaxter@tamu.edu,Tech Staff
+f0ef7921-d1bf-4d96-ad9c-8287ccac315c,Sharon Park,spark@tamu.edu,Testing Staff
+75ad6eca-cdbf-4573-8378-b670e345b1bb,Courtney Tyler,ctyler@tamu.edu,Tech Staff
+9263982f-7223-4949-ba24-d5aef403ad28,James Solomon,jsolomon@tamu.edu,Testing Staff
+3ebf439e-e609-407a-adda-4cbf3dcb32e6,Christopher Murphy,cmurphy@tamu.edu,Coordinator
+7aa224a1-4114-43bc-bca9-a4f4c052f094,Ashlee Jackson,ajackson@tamu.edu,Coordinator
