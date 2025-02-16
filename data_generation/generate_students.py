@@ -49,3 +49,4 @@ def generate_students(student_accounts, advisors, file_directory):
         writer.writerows(students)
 
     print(f"Dummy data for students saved to {csv_file_path}")
+    return students

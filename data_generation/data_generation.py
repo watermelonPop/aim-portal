@@ -6,23 +6,19 @@ import generate_settings
 import generate_important_dates
 import generate_advisors
 import generate_professors
-
+import generate_courses
+import generate_course_student
 """
 TODO: 
-Advisor
-Accomodations
 Exam Scheduling
 Assistive Technology
 Forms
 Testing Center
-Course | Students Join table
-Accomodations | Students Join table
 
 
 DOING:
-Student
-Professors
-Courses
+Accomodations
+Accomodations | Students Join table
 
 
 DONE: 
@@ -30,6 +26,10 @@ Important Dates
 Accounts
 Accessibility Settings
 Advisor
+Student
+Professors
+Courses
+Course | Students Join table
 
 
 """
@@ -52,7 +52,10 @@ advisor_accounts = [account for account in user_ids if account[3] == "Advisor"]
 
 advisors = generate_advisors.generate_advisors(advisor_accounts=advisor_accounts,file_directory=file_destination)
 professors = generate_professors.generate_professors(professor_accounts=professor_accounts,file_directory=file_destination)
-student_accounts = generate_students.generate_students(student_accounts=student_accounts,advisors=advisors, file_directory=file_destination)
+students = generate_students.generate_students(student_accounts=student_accounts,advisors=advisors, file_directory=file_destination)
+
+courses = generate_courses.generate_courses(professors=professors,file_directory=file_destination)
+join_course_student = generate_course_student.generate_join_courses_students(students=students,courses=courses,file_directory=file_destination)
 #generate_students.generate_students(student_accounts=student_accounts, important_dates=important_dates, file_directory=file_destination)
 
 
