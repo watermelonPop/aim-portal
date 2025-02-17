@@ -1,0 +1,501 @@
+course_id,course_name,department,professor_id
+a2885cce-4bda-4989-93ad-95ac1157b4c1,ARTS 123,College of Arts and Sciences,fd997237-f812-4a73-be4e-74c1a6ac7e1a
+31e26b60-b8d9-458f-bd3e-bacb42e23bca,OCEA 216,College of Marine Sciences and Maritime Studies,e1b4440b-c734-4692-a0e0-d4fe9c136b57
+1c1b186c-5f81-4701-9a33-e07c6196e443,OCEA 501,College of Marine Sciences and Maritime Studies,e1b4440b-c734-4692-a0e0-d4fe9c136b57
+4a0f86cf-37d6-45eb-8a7d-6e71b9d17348,OCEA 417,College of Marine Sciences and Maritime Studies,e1b4440b-c734-4692-a0e0-d4fe9c136b57
+96a8d48f-073a-45f7-b9f3-f8378a169bab,PERF 438,"College of Performance, Visualization and Fine Arts",58f6b011-59c5-4763-a1e2-64d53a79b29c
+d89e8949-0520-4aca-ac2a-55ebea2abaf2,PERF 483,"College of Performance, Visualization and Fine Arts",58f6b011-59c5-4763-a1e2-64d53a79b29c
+1e34710d-44cf-4d81-922b-cad24707f1cf,MEDC 349,College of Medicine,8360a043-9c30-4ddf-94d4-27cd109e5b34
+a00e0bcf-5dfe-459d-986d-a2585dc253d7,DENT 210,College of Dentistry,5ca5e26b-5ac7-46e5-8d41-d52c449f29b0
+4be80480-dab6-45e1-8375-92510251b719,DENT 506,College of Dentistry,5ca5e26b-5ac7-46e5-8d41-d52c449f29b0
+65d2d037-1ba5-4869-819b-1e4e93707068,DENT 465,College of Dentistry,5ca5e26b-5ac7-46e5-8d41-d52c449f29b0
+4ff3e324-ef63-487f-9eb4-ae2237b04188,DENT 249,College of Dentistry,5ca5e26b-5ac7-46e5-8d41-d52c449f29b0
+8a04df83-a518-4423-9be1-89d3f1c7129f,GOVT 570,Bush School of Government and Public Service,78356684-8d14-4356-8774-ce5c4ebda380
+e88f57d2-6628-43ab-812a-3c279ea429c8,GOVT 482,Bush School of Government and Public Service,78356684-8d14-4356-8774-ce5c4ebda380
+13ad96e7-d558-4869-a93a-46973984f4ee,GOVT 492,Bush School of Government and Public Service,78356684-8d14-4356-8774-ce5c4ebda380
+aee5e499-5cb6-4636-91c8-a8cb8a8efa19,OCEA 316,College of Marine Sciences and Maritime Studies,46ea1405-dd51-4556-811c-b5d5ae3cc47a
+ad597c60-b21e-46c3-aa33-efc5abfc732a,OCEA 327,College of Marine Sciences and Maritime Studies,02489131-9764-4332-a2c3-2c73d6fe4e9b
+68c96488-b3d2-4e1c-bb3d-87221ff704dd,AGSC 180,College of Agriculture and Life Sciences,dd739135-69f1-46e5-9e6c-1f0436e6945e
+ec978cee-bc28-4638-9f2a-ea1529cfcc51,OCEA 308,College of Marine Sciences and Maritime Studies,1477cb2d-efdd-434c-991d-20135c70f2a3
+0b591497-943c-455d-80c3-5edfd041c5c8,OCEA 170,College of Marine Sciences and Maritime Studies,1477cb2d-efdd-434c-991d-20135c70f2a3
+2bb3bbaf-ad5b-49a0-a778-930ca0708798,OCEA 567,College of Marine Sciences and Maritime Studies,1477cb2d-efdd-434c-991d-20135c70f2a3
+e2dc7b33-9b46-4cd8-9b49-2dc3dc77049f,DENT 252,College of Dentistry,d09308d3-9df3-4093-8ffd-ccc46fa178d2
+63b46c97-b7b9-4308-9318-c82ca44c90d6,DENT 294,College of Dentistry,d09308d3-9df3-4093-8ffd-ccc46fa178d2
+16dee099-091c-42c4-97b9-c2229ca89839,DENT 622,College of Dentistry,d09308d3-9df3-4093-8ffd-ccc46fa178d2
+c305ac7d-86a7-4057-a887-2799fdb62bed,MEDC 110,College of Medicine,9a2380d1-4a03-48d6-adb8-80c27f8a8a1e
+05e6a64b-4079-4db3-9b4e-7f86d7802b68,PHAR 399,Irma Lerma Rangel College of Pharmacy,0ae7a959-5174-4418-a3c5-be29acbb420e
+b2037cd4-880f-4598-a97e-a00af6782706,LAWX 381,School of Law,f2a7bef8-57a4-4be1-a59d-9538fa66286d
+75af91ab-5ec2-4e2b-a24a-683ca7d0353d,LAWX 590,School of Law,f2a7bef8-57a4-4be1-a59d-9538fa66286d
+6aff6ece-7ea6-4e85-8e74-a588a8c69dcf,LAWX 129,School of Law,f2a7bef8-57a4-4be1-a59d-9538fa66286d
+b6e755f8-e998-4a28-a17b-5b0c774a1562,LAWX 122,School of Law,f2a7bef8-57a4-4be1-a59d-9538fa66286d
+b4c576b7-ac70-4ad2-be67-bcd1c3d4ae3b,HLTH 437,School of Public Health,be059855-10cb-4fb4-8046-7b8c6b74ac46
+e1dc9485-4b5d-45f0-9a6c-09ce9f4df7b1,HLTH 461,School of Public Health,be059855-10cb-4fb4-8046-7b8c6b74ac46
+ba266582-f3df-404a-828f-40ee5955b6b8,HLTH 529,School of Public Health,d81f4cc3-9033-47dc-afc1-8cb619fd376c
+042fe478-6b85-4a8f-b442-3689febd26f0,HLTH 685,School of Public Health,72e7d17a-dbd1-43fe-bde8-6068bc94184f
+c6e3574e-f3df-4b61-91eb-442c21c5957b,HLTH 444,School of Public Health,72e7d17a-dbd1-43fe-bde8-6068bc94184f
+16b9f1dc-c637-44d6-8a1f-48a322fab82c,HLTH 155,School of Public Health,72e7d17a-dbd1-43fe-bde8-6068bc94184f
+1ec2f614-4001-4a37-a02b-3aaf08c8c38b,EDUC 321,College of Education and Human Development,fa9125a8-45cd-459c-9a1f-e41439a5f75a
+3444d613-1d2c-43ea-87cf-2da1cff53e72,NURS 422,College of Nursing,cab7c7f6-2429-4ddd-9ce9-8671a5e3d435
+7d8def66-d5c8-427e-89bb-d14c4b42ab3d,NURS 525,College of Nursing,cab7c7f6-2429-4ddd-9ce9-8671a5e3d435
+5920d9c0-d91e-4451-b4d6-fd0e627122fa,NURS 392,College of Nursing,cab7c7f6-2429-4ddd-9ce9-8671a5e3d435
+cd1eb0e2-2f7d-4aff-b0ff-aa7b2679ecd3,PHAR 185,Irma Lerma Rangel College of Pharmacy,e772986f-5f5f-40d0-ac29-04ed95a2a2ff
+abc5376a-3309-4185-bfb7-68503f402c1d,PHAR 239,Irma Lerma Rangel College of Pharmacy,e772986f-5f5f-40d0-ac29-04ed95a2a2ff
+f5b0481d-092d-4adc-93ee-17f939d85540,EDUC 215,College of Education and Human Development,cb92b30d-6e23-45c8-8eeb-a18051a09d13
+df7b319c-714a-4075-b0e2-325342c16164,EDUC 602,College of Education and Human Development,cb92b30d-6e23-45c8-8eeb-a18051a09d13
+507ab068-0791-4599-ad11-e66e9364d380,EDUC 236,College of Education and Human Development,cb92b30d-6e23-45c8-8eeb-a18051a09d13
+5267c003-9f22-4c1e-a971-f5a2341d6387,LAWX 511,School of Law,7b7c0f2a-83a9-486b-a702-5f6f193b95da
+b5e4b613-9146-42dc-bcb0-4b9b21156ae3,LAWX 352,School of Law,7b7c0f2a-83a9-486b-a702-5f6f193b95da
+eefb1fc1-fae9-44fd-baaa-b859f1c4cb5a,LAWX 300,School of Law,7b7c0f2a-83a9-486b-a702-5f6f193b95da
+4da7c4f9-78b9-42a5-8886-1ed43d634843,ENGR 173,College of Engineering,2fd72f5f-920e-4d40-a169-3c1994a0137b
+b429e1a8-b001-4c0f-b85b-e1450de4c3cd,HLTH 391,School of Public Health,9ac8ad32-d248-4500-8a4f-5d59aadd9068
+2687e10b-ef62-4a9f-b4af-5dde2aae3954,HLTH 318,School of Public Health,9ac8ad32-d248-4500-8a4f-5d59aadd9068
+9417742d-d9b6-4046-b2ae-5ea995859891,HLTH 325,School of Public Health,9ac8ad32-d248-4500-8a4f-5d59aadd9068
+a4a06d1c-ee25-48f6-9fa6-d0d699bd4f30,BMEN 188,School of Engineering Medicine,ff6e9404-0db2-4de0-aeaf-d23f4c182de9
+9d0b5159-37a9-4f52-ad5b-73823a0ade72,BMEN 547,School of Engineering Medicine,ff6e9404-0db2-4de0-aeaf-d23f4c182de9
+ca110d83-1343-498d-9e06-287bb2141b75,BMEN 620,School of Engineering Medicine,ff6e9404-0db2-4de0-aeaf-d23f4c182de9
+33088731-a031-4b11-a9eb-449b56eb1628,BMEN 329,School of Engineering Medicine,ff6e9404-0db2-4de0-aeaf-d23f4c182de9
+706d3026-0a13-4779-92c8-bf6100ed52bf,ARCH 536,College of Architecture,5815a5b8-4bf3-48e0-bc9a-c488adac25fe
+475c6d09-67cc-40bb-8224-fe22b8cd6f1d,ARCH 104,College of Architecture,5815a5b8-4bf3-48e0-bc9a-c488adac25fe
+0934467a-90ad-4ca3-b5f7-7df4c41d8e25,ARCH 556,College of Architecture,5815a5b8-4bf3-48e0-bc9a-c488adac25fe
+309fea01-5663-46fa-ab77-3801d45e1849,PERF 230,"College of Performance, Visualization and Fine Arts",f5dd5ec9-526e-472e-924f-356233aac967
+1207aff5-e794-4824-9d2c-6aff7e4ddaf7,PERF 248,"College of Performance, Visualization and Fine Arts",f5dd5ec9-526e-472e-924f-356233aac967
+c48a3c55-f3f6-4282-8317-e076d9a8b080,AGSC 433,College of Agriculture and Life Sciences,2d074276-6064-47ae-89d0-60a333274af1
+3a8f0d12-4ef9-4be0-909e-d5163585eb79,AGSC 448,College of Agriculture and Life Sciences,2d074276-6064-47ae-89d0-60a333274af1
+6b01fd34-9bd9-4d33-b58a-2b3d7ea447cb,PERF 326,"College of Performance, Visualization and Fine Arts",a3d2275a-7114-423c-9867-804010ce8a97
+2456095e-e690-4bb6-854e-8fa6f366f662,ARTS 284,College of Arts and Sciences,56539707-d801-4f6c-8b63-913173675950
+952e0a69-2048-485c-ab90-b8f3e2107df9,PHAR 360,Irma Lerma Rangel College of Pharmacy,e0d2f2bf-eb61-4eef-8319-7b4ff02cc03b
+d30a262d-44cb-4b10-80e3-f5ec4704fe38,PHAR 371,Irma Lerma Rangel College of Pharmacy,e0d2f2bf-eb61-4eef-8319-7b4ff02cc03b
+ac574bd5-f047-44e5-a49d-9b9a83c54db8,PHAR 141,Irma Lerma Rangel College of Pharmacy,e0d2f2bf-eb61-4eef-8319-7b4ff02cc03b
+1b92f11a-8bdf-461b-a0bb-aef18fa2d3d5,HLTH 323,School of Public Health,e2ce662a-ab79-4d46-a0bb-2c697c80876b
+7568d1f9-f739-4738-a838-9299f3bb211c,ARCH 100,College of Architecture,1aec2a36-c207-4fce-ac14-06e7e46288d9
+d5fb8c81-0b93-490e-bbf6-7d143380f936,ARCH 487,College of Architecture,1aec2a36-c207-4fce-ac14-06e7e46288d9
+3e4b00ab-83f9-4072-b725-b0f1aeebf572,ARCH 386,College of Architecture,1aec2a36-c207-4fce-ac14-06e7e46288d9
+dc50daab-3b8a-4dbb-83a1-b3b5d5af238c,ARCH 588,College of Architecture,1aec2a36-c207-4fce-ac14-06e7e46288d9
+99d2b3da-e3c1-4960-b731-f9b46adde96a,PERF 618,"College of Performance, Visualization and Fine Arts",6d7809f2-9a08-4519-a0f6-4ff03eea88c4
+147f19f0-f489-4c34-a0c1-dbac14696f99,PERF 656,"College of Performance, Visualization and Fine Arts",6d7809f2-9a08-4519-a0f6-4ff03eea88c4
+7cb6ef79-8b79-46e2-9a84-7debee4ee5a7,PERF 260,"College of Performance, Visualization and Fine Arts",6d7809f2-9a08-4519-a0f6-4ff03eea88c4
+eb350789-6289-4dc0-8148-2ba208ee011e,ARCH 461,College of Architecture,4920ed44-1917-41a2-8d9d-88343577f328
+f025e225-cced-47e3-877e-fe599d9f81fb,ARCH 363,College of Architecture,4920ed44-1917-41a2-8d9d-88343577f328
+6aabcd0e-dbc8-40fb-8247-38c8090f811e,BUSN 527,Mays Business School,f6949ada-b106-4ff0-b83e-583bbfa4f65a
+9752fdd4-39a7-4c16-a8f8-b21aa401b55b,BUSN 344,Mays Business School,f6949ada-b106-4ff0-b83e-583bbfa4f65a
+0eb41b05-1576-432f-9cb2-c10182596b7f,BUSN 123,Mays Business School,f6949ada-b106-4ff0-b83e-583bbfa4f65a
+62b35bc8-1a7b-4456-a461-dabcfb3fb726,PHAR 547,Irma Lerma Rangel College of Pharmacy,b1202933-e155-472e-a131-03a073a3a562
+22356f5a-a0e8-45cc-8bf1-bf32c7bf96d3,PHAR 494,Irma Lerma Rangel College of Pharmacy,b1202933-e155-472e-a131-03a073a3a562
+e82156f3-a217-4d82-8d7d-9cb3c67a51a9,PHAR 414,Irma Lerma Rangel College of Pharmacy,b1202933-e155-472e-a131-03a073a3a562
+1fb40bb4-8d9d-4527-90a3-65a9a529bf91,ARTS 362,College of Arts and Sciences,965c3e0f-4c1c-4774-ba6f-f122b2295ed8
+a669892f-a34c-43cd-922d-b722b48d8a13,ARTS 239,College of Arts and Sciences,965c3e0f-4c1c-4774-ba6f-f122b2295ed8
+78ec4dd5-6511-4e9e-ab7b-3d8f7b06713a,ARTS 437,College of Arts and Sciences,ccf52fe1-8d18-423c-85fb-3cbc33de26ab
+b9a36fe8-e3b2-47b0-96e3-40d441626559,PHAR 623,Irma Lerma Rangel College of Pharmacy,836198f1-3685-4d93-a693-f288bda74f14
+218611ce-2949-4364-bbc1-021853edd2d9,PHAR 602,Irma Lerma Rangel College of Pharmacy,836198f1-3685-4d93-a693-f288bda74f14
+e90acc28-fd89-42cc-a8e6-b0aec3c58d6d,BMEN 247,School of Engineering Medicine,b56d8688-3e2a-4cd1-908b-5d164d7f341c
+8230243d-71cf-4d1a-8026-2bbc80b82307,BMEN 217,School of Engineering Medicine,b56d8688-3e2a-4cd1-908b-5d164d7f341c
+17f03db7-ec63-414f-9065-02e5892edb13,BMEN 495,School of Engineering Medicine,b56d8688-3e2a-4cd1-908b-5d164d7f341c
+3719053c-e36d-4151-8ed0-fb6433da9d07,BMEN 560,School of Engineering Medicine,b56d8688-3e2a-4cd1-908b-5d164d7f341c
+13dc7942-2118-408f-b05d-340f58be2b2d,ENGR 400,College of Engineering,e67d9a4a-6424-4111-a4c7-9b3c9cb9e4ef
+871e4c3f-4e39-42b4-85ba-1e7b23dca67c,ENGR 123,College of Engineering,e67d9a4a-6424-4111-a4c7-9b3c9cb9e4ef
+1fed6fbf-d475-48c7-957a-47d7139078a7,ENGR 652,College of Engineering,e67d9a4a-6424-4111-a4c7-9b3c9cb9e4ef
+72ff9905-1f0b-4f88-b151-88231a5dd3c1,ENGR 366,College of Engineering,e67d9a4a-6424-4111-a4c7-9b3c9cb9e4ef
+cd0d9cd6-5380-4b07-b9a6-19523af4ea29,VETS 443,College of Veterinary Medicine and Biomedical Sciences,943960a1-67f4-4f2a-8aba-55939e8cfde4
+06c0d21f-6da3-4621-9d49-c8fea52cfb50,NURS 633,College of Nursing,506648ea-2fbf-4961-a251-6ea102f7e18e
+fa4ec6c8-c745-49de-9b71-0ad6f07749c9,NURS 182,College of Nursing,506648ea-2fbf-4961-a251-6ea102f7e18e
+01e282ba-d401-4687-b098-dc7ca15f412c,GOVT 374,Bush School of Government and Public Service,4cfeaeec-fe6e-440a-9639-8dd0d1da9dfb
+ca43831b-4c2b-4fa2-aa2d-c52c5f72a6d5,GOVT 362,Bush School of Government and Public Service,6b89a066-5bc7-4471-a445-b657e087e12a
+49ee8a63-792c-49fd-ac4d-14647e1c9bcc,GOVT 380,Bush School of Government and Public Service,6b89a066-5bc7-4471-a445-b657e087e12a
+7f91969c-40fd-4f1b-ab37-26f576378e22,GOVT 359,Bush School of Government and Public Service,6b89a066-5bc7-4471-a445-b657e087e12a
+00b5d13b-2921-4dea-b9ce-721a3207e50b,ARCH 481,College of Architecture,5ccf2fcd-969e-49b7-96d8-f28564d72963
+b5618839-ba19-4fa3-ae35-b00075c962e2,VETS 104,College of Veterinary Medicine and Biomedical Sciences,cb3ba93a-4421-47e6-a1fe-c929a53545d7
+3370a0b1-a9ab-465c-a25f-030f3631230c,EDUC 297,College of Education and Human Development,77c0179e-623e-49bb-8517-3a8bfcbb5340
+25fb616b-9561-4fea-a6d6-965412f28513,EDUC 440,College of Education and Human Development,77c0179e-623e-49bb-8517-3a8bfcbb5340
+51643b2f-60fb-4dc4-a5c7-b8ab0b603f35,DENT 485,College of Dentistry,5e75118a-c03f-40a1-a6b8-1e27492d3e9d
+08a1c746-4b98-4d7b-8dd5-fb5c7ebc079e,DENT 601,College of Dentistry,5e75118a-c03f-40a1-a6b8-1e27492d3e9d
+ca970df4-a8c9-475d-b305-92ac3a868cc0,DENT 380,College of Dentistry,5e75118a-c03f-40a1-a6b8-1e27492d3e9d
+d8a69ac4-d2d5-466b-93f8-1281ed4ed33a,NURS 274,College of Nursing,7c1421c8-1851-41a1-9e92-8a7f1e8c882c
+1920e165-73c5-4fff-a0aa-175a83208e95,NURS 154,College of Nursing,7c1421c8-1851-41a1-9e92-8a7f1e8c882c
+bfba83b2-956d-4c2b-9afe-7646c2011cf2,NURS 360,College of Nursing,7c1421c8-1851-41a1-9e92-8a7f1e8c882c
+d5f748d1-9044-48ab-9e38-56ea9fdaa18f,NURS 420,College of Nursing,7c1421c8-1851-41a1-9e92-8a7f1e8c882c
+109699b6-6344-4576-9ef3-e7cc51fd26bb,GOVT 649,Bush School of Government and Public Service,001b6c98-57ba-40c4-ad11-fbeef6e0dddb
+c360e36e-a91c-4a2b-97c5-001a1f437c2a,BUSN 489,Mays Business School,88b3de7d-8939-4f9b-adba-02463b010900
+20d70768-cfad-4371-b355-12950fd32954,BUSN 390,Mays Business School,88b3de7d-8939-4f9b-adba-02463b010900
+44ebe24e-d90f-4444-a105-334868c9c029,BUSN 318,Mays Business School,88b3de7d-8939-4f9b-adba-02463b010900
+dca55eb0-9090-4930-9563-d9527c74e199,HLTH 176,School of Public Health,d29681cd-59fc-455a-91a6-436d3b17ba50
+a0b91367-e616-4832-9726-314aeedfa817,HLTH 585,School of Public Health,d29681cd-59fc-455a-91a6-436d3b17ba50
+baa37f88-39dc-40b4-bd9a-321fccdc6aab,HLTH 306,School of Public Health,d29681cd-59fc-455a-91a6-436d3b17ba50
+b02017e0-6322-46c9-9eb6-af20923e1249,HLTH 555,School of Public Health,d29681cd-59fc-455a-91a6-436d3b17ba50
+92b52c3d-dd73-41e8-a76c-3e264ec3a79e,PHAR 491,Irma Lerma Rangel College of Pharmacy,7112067b-771f-4712-a45c-8eaeb58abedc
+f8d884b0-2622-4531-b71a-c4bcec27c625,PHAR 543,Irma Lerma Rangel College of Pharmacy,7112067b-771f-4712-a45c-8eaeb58abedc
+5e95d50d-22a5-43e6-a057-3b3db1e77ce8,PHAR 180,Irma Lerma Rangel College of Pharmacy,7112067b-771f-4712-a45c-8eaeb58abedc
+a445ab5c-5c1e-4285-825b-3b165754689e,PHAR 245,Irma Lerma Rangel College of Pharmacy,7112067b-771f-4712-a45c-8eaeb58abedc
+c12fe3dc-b2ef-4f63-b9be-63bce2ad573f,NURS 434,College of Nursing,1c8c9213-c9fb-4199-9ba1-d98d0b23b5cf
+0d796c67-1332-4102-9c6f-422afb714e05,AGSC 625,College of Agriculture and Life Sciences,debe6dd8-4235-44ac-83c6-c1ac8aa189e9
+e48f57c4-ee2c-4e91-9cd7-5eb7ef776b3f,AGSC 517,College of Agriculture and Life Sciences,debe6dd8-4235-44ac-83c6-c1ac8aa189e9
+edecf64b-6bce-49c1-8365-2e3b78995feb,LAWX 498,School of Law,1d425c81-b49a-4301-a31d-776479d42e68
+ec888878-c500-4269-bce1-20cc5dfafea4,LAWX 650,School of Law,1d425c81-b49a-4301-a31d-776479d42e68
+4d954950-c79a-4b8d-8003-e0a1d99ee689,LAWX 592,School of Law,1d425c81-b49a-4301-a31d-776479d42e68
+b9945803-6fce-4075-8e4a-6dab04e37028,LAWX 294,School of Law,1d425c81-b49a-4301-a31d-776479d42e68
+0afb9b1f-3be1-4444-becc-0d70fab7c9b2,EDUC 209,College of Education and Human Development,a318cf9d-5dbc-411e-a2ad-90b7f216ba0a
+d844b9c6-145a-4cb6-9faa-15ca5016fc9a,EDUC 632,College of Education and Human Development,a318cf9d-5dbc-411e-a2ad-90b7f216ba0a
+f743a9df-6c1c-49b2-b2da-868c2682047d,EDUC 416,College of Education and Human Development,a318cf9d-5dbc-411e-a2ad-90b7f216ba0a
+13d1b711-5306-48f6-9473-c7ecae80d3ae,EDUC 124,College of Education and Human Development,a318cf9d-5dbc-411e-a2ad-90b7f216ba0a
+2d35486e-e133-41f9-9a26-266b2787f017,LAWX 143,School of Law,b2209976-8b30-4c25-8ce3-a9f25155da14
+c247b53c-edc4-4e93-9942-63bded835aec,LAWX 346,School of Law,b2209976-8b30-4c25-8ce3-a9f25155da14
+87a98bb1-a023-437a-91c4-e24e4ca537d9,LAWX 392,School of Law,b2209976-8b30-4c25-8ce3-a9f25155da14
+08240c53-1038-4164-9c5c-4f02e3edbfab,LAWX 298,School of Law,b2209976-8b30-4c25-8ce3-a9f25155da14
+511d734c-b62d-4793-87d2-f03cb5e08dd7,BUSN 693,Mays Business School,c6dfda2e-9437-4399-b314-623c5a7010f8
+4e563e82-992a-4126-a767-86f042bb1028,BUSN 446,Mays Business School,c6dfda2e-9437-4399-b314-623c5a7010f8
+f67124b8-be60-44f4-8e97-f35921218adc,BUSN 546,Mays Business School,c6dfda2e-9437-4399-b314-623c5a7010f8
+e5c0acb6-327c-40d9-94f8-6fec8ccd6ceb,BUSN 556,Mays Business School,c6dfda2e-9437-4399-b314-623c5a7010f8
+6a5315b5-96c2-4862-a6d9-9b4828aa3f95,EDUC 420,College of Education and Human Development,aeb3b96e-ffba-44b8-80f2-234a05870434
+528d83a8-6e46-4048-9202-7396da3fd790,ARCH 543,College of Architecture,80f19e6f-4727-4735-a83d-e430883de45c
+b1298c9f-0a7d-4792-a29c-12916c3840e9,ARCH 451,College of Architecture,80f19e6f-4727-4735-a83d-e430883de45c
+03e93d94-5c38-4d63-b5dc-a0866822b352,ARCH 438,College of Architecture,80f19e6f-4727-4735-a83d-e430883de45c
+2217efc9-5559-4e07-b949-c898f615dd01,PERF 232,"College of Performance, Visualization and Fine Arts",28c91856-4881-499d-8ce4-bfa22f793155
+bab19f3e-4720-4bc0-868a-686af5fe4b5b,PERF 639,"College of Performance, Visualization and Fine Arts",28c91856-4881-499d-8ce4-bfa22f793155
+9a51fb36-e436-4182-8c58-da1a76a92d42,PERF 552,"College of Performance, Visualization and Fine Arts",28c91856-4881-499d-8ce4-bfa22f793155
+87181581-2e24-4548-b249-3fe259110ce8,VETS 595,College of Veterinary Medicine and Biomedical Sciences,0562594b-8cd9-4da3-bb32-cedab7871aa1
+3dc14fa7-7f9e-43e0-acb9-142733419947,VETS 391,College of Veterinary Medicine and Biomedical Sciences,0562594b-8cd9-4da3-bb32-cedab7871aa1
+95c70ef9-b821-4705-8246-50ee71377258,ARTS 407,College of Arts and Sciences,1162248b-7bfb-434e-894e-11bf5962f6a0
+a461bd29-b9c9-41f7-adb0-411430cefbfb,ARTS 605,College of Arts and Sciences,1162248b-7bfb-434e-894e-11bf5962f6a0
+4bcdeac3-87bf-401b-ad9c-d5d66aa096d8,ARTS 506,College of Arts and Sciences,1162248b-7bfb-434e-894e-11bf5962f6a0
+6cbb3dbf-47b9-42a0-b861-632cfbb42fc1,MEDC 273,College of Medicine,495cacde-2f63-4a73-8f9c-2fb0fa00e1be
+48c06201-d3be-4e8b-9ef4-a03bb94f1315,PERF 194,"College of Performance, Visualization and Fine Arts",0ec8db56-ed9d-43c2-b4f9-d4b4d587c899
+247020c8-5237-46d3-96c1-431be7f5777b,AGSC 251,College of Agriculture and Life Sciences,8aa8e589-97e7-4d91-a3fc-5bd30cd21a6d
+4f783072-cb5f-475a-9597-41d24cd7acb9,AGSC 535,College of Agriculture and Life Sciences,8aa8e589-97e7-4d91-a3fc-5bd30cd21a6d
+cd4bec55-c052-460b-99cb-b21609056bb5,AGSC 590,College of Agriculture and Life Sciences,8aa8e589-97e7-4d91-a3fc-5bd30cd21a6d
+14757a68-cddd-4113-a39d-6b41c5633ca5,AGSC 145,College of Agriculture and Life Sciences,8aa8e589-97e7-4d91-a3fc-5bd30cd21a6d
+1bde74d5-bdda-42cc-a276-dbdeb5984066,ARTS 666,College of Arts and Sciences,40445d64-5be6-4310-b790-7ac09e01764e
+e5292621-9743-4852-ad09-3e1e00645185,ARTS 177,College of Arts and Sciences,40445d64-5be6-4310-b790-7ac09e01764e
+40da782c-2935-4e0b-9c70-e7c1bd058535,EDUC 600,College of Education and Human Development,8066b67f-2c66-45d4-835b-b68951a1cde6
+a8c9b9e5-b8ea-4d07-890e-ba763f8b61c1,EDUC 496,College of Education and Human Development,8066b67f-2c66-45d4-835b-b68951a1cde6
+c668a0b7-5949-41f7-a14a-a57ebce55b5a,MEDC 479,College of Medicine,ddcf0b33-fb4f-41c6-9205-8bf1be3eccaa
+eb0fbf7f-f54e-458f-87c3-a7ae40ac102d,PERF 389,"College of Performance, Visualization and Fine Arts",fc2c6c65-89fe-433d-b757-b9cda373c280
+9f5be172-b245-48cb-a931-152ade4ab80e,PERF 129,"College of Performance, Visualization and Fine Arts",fc2c6c65-89fe-433d-b757-b9cda373c280
+3e3444e3-e4b7-4b11-a474-6ca350da3f4e,EDUC 242,College of Education and Human Development,5c5e0b4c-9a74-4ea7-b7ea-687e86713ab1
+dda7504a-98f0-48fd-8e5f-ef5ba2dda76a,LAWX 620,School of Law,188dfcac-1b77-4de5-996e-ac3606067f99
+a0533c6c-d5fd-405d-a77d-70c7e3c77de5,LAWX 195,School of Law,188dfcac-1b77-4de5-996e-ac3606067f99
+31e55a8e-205c-4c6f-8a48-17582680d186,LAWX 340,School of Law,188dfcac-1b77-4de5-996e-ac3606067f99
+fbc023ff-5957-4e41-9855-48bbf197a1db,LAWX 155,School of Law,188dfcac-1b77-4de5-996e-ac3606067f99
+6f147124-511b-40f7-92f0-5d5355167def,HLTH 637,School of Public Health,7d242612-5694-46f5-b6d8-b752f4fd7fa0
+3af95a80-a6fe-4234-8298-f91c99031642,PHAR 616,Irma Lerma Rangel College of Pharmacy,136e1693-dd09-411d-a403-24b763bbc54a
+731c1148-dd25-40d4-bf73-2fecfc5c6c9b,PHAR 553,Irma Lerma Rangel College of Pharmacy,136e1693-dd09-411d-a403-24b763bbc54a
+99376d6a-2d29-4efc-a6fc-bf3f8cfcfc1d,AGSC 510,College of Agriculture and Life Sciences,ec019d43-6f49-418b-82ad-19bc50a0e426
+d1dde61f-6420-42c6-964a-53106899cf07,AGSC 592,College of Agriculture and Life Sciences,ec019d43-6f49-418b-82ad-19bc50a0e426
+b2728008-3d58-4f80-be2d-1ca444a55cf0,VETS 459,College of Veterinary Medicine and Biomedical Sciences,dece61e5-0162-419c-b4d6-396fa31b746a
+4e9e70c8-9f01-4842-9666-e9db1ac0b0bb,VETS 271,College of Veterinary Medicine and Biomedical Sciences,dece61e5-0162-419c-b4d6-396fa31b746a
+141b4ced-8400-452d-8781-9c6f8e9701f2,VETS 140,College of Veterinary Medicine and Biomedical Sciences,dece61e5-0162-419c-b4d6-396fa31b746a
+39f583b5-31dc-4998-a51d-4b094bb92177,LAWX 255,School of Law,56668c62-7ce7-4c52-b69e-5929cfd8f43f
+ff51c498-ea17-4c95-acbf-7f46769178f5,LAWX 480,School of Law,56668c62-7ce7-4c52-b69e-5929cfd8f43f
+42d07481-f219-4b6b-897d-0622a5d3341b,ARCH 404,College of Architecture,cadec10d-53f1-483d-a3d6-f092333cde99
+4dc6e6d4-a5cb-4bf2-b139-ed2f6edb8af7,ARCH 514,College of Architecture,cadec10d-53f1-483d-a3d6-f092333cde99
+cd971ae4-8059-4609-a370-20eb59b07db7,DENT 677,College of Dentistry,9570517a-79d7-4e90-89ee-f71081967cc0
+e763c6cd-82f1-41b9-a229-c3569484840c,HLTH 391,School of Public Health,9bb6b237-ec79-47b8-9f93-c02c8165a2e8
+a116a393-ca00-4a1d-a3ec-45361efd3164,ARTS 634,College of Arts and Sciences,0a295cd1-d713-4792-ba00-906ae68b5f61
+d9f92734-15db-4a6e-8491-68bcfbcf7d6b,VETS 173,College of Veterinary Medicine and Biomedical Sciences,60612c9d-83d7-4596-ba1a-7a7d2344ae6d
+e01bf2dc-2fa4-45ec-af1d-42bc51169677,VETS 260,College of Veterinary Medicine and Biomedical Sciences,60612c9d-83d7-4596-ba1a-7a7d2344ae6d
+6faae652-8f13-4aca-adb2-ebc987fb316d,VETS 386,College of Veterinary Medicine and Biomedical Sciences,60612c9d-83d7-4596-ba1a-7a7d2344ae6d
+03f47db8-0ea1-4c46-ac6c-40e300564bf4,ARCH 172,College of Architecture,ebc6ff3a-e660-42ac-9567-adc8b37e441d
+1d96e50f-e5af-4d8c-9441-e82e2ca14717,ARCH 337,College of Architecture,ebc6ff3a-e660-42ac-9567-adc8b37e441d
+ccbb8231-d541-486f-abd5-aace2c037986,ARCH 457,College of Architecture,ebc6ff3a-e660-42ac-9567-adc8b37e441d
+1a56e1de-b32d-4c9d-84cc-d5224ca20389,VETS 258,College of Veterinary Medicine and Biomedical Sciences,ef49b005-93f6-49e4-87f9-357bf9f5f9e7
+e4ad546e-3e6f-4270-ae46-2a3916fce1e2,VETS 328,College of Veterinary Medicine and Biomedical Sciences,ef49b005-93f6-49e4-87f9-357bf9f5f9e7
+2b2505a3-1af7-475e-b3f4-b47fd7ee3e8f,VETS 342,College of Veterinary Medicine and Biomedical Sciences,ef49b005-93f6-49e4-87f9-357bf9f5f9e7
+f1052995-4a19-4563-a368-1d81b90aea37,LAWX 648,School of Law,6e58d0e5-9183-4870-8f12-57be765ab52b
+adb9292c-4b8e-450a-8806-11063cf790f7,LAWX 692,School of Law,6e58d0e5-9183-4870-8f12-57be765ab52b
+fc2019e2-8250-4067-98d9-fd3fa4dd547e,ARTS 308,College of Arts and Sciences,10bcca77-997d-4541-837b-bebe654aec48
+a74a0f80-0af3-4262-986a-22622748fc95,ARTS 571,College of Arts and Sciences,10bcca77-997d-4541-837b-bebe654aec48
+ffcf294e-af45-465b-b2ef-04ae9471ac79,ARTS 678,College of Arts and Sciences,10bcca77-997d-4541-837b-bebe654aec48
+cd90de01-2a77-4499-abb3-536f0bc076e6,MEDC 585,College of Medicine,82fd105f-7247-4b50-a836-a7fade0609e8
+0ec141cc-5f60-4663-8368-2bd48c3e03c4,MEDC 335,College of Medicine,82fd105f-7247-4b50-a836-a7fade0609e8
+4c67a452-d884-41f9-95fd-c0b239c6e13a,LAWX 545,School of Law,00b72e75-078a-453b-a180-6ab77cf1a1c5
+9db796b4-bcf4-41b5-a4f8-0200cd2b9994,LAWX 328,School of Law,00b72e75-078a-453b-a180-6ab77cf1a1c5
+cdb89b73-718f-4b45-9661-e5029dc5aa5e,LAWX 499,School of Law,00b72e75-078a-453b-a180-6ab77cf1a1c5
+7cc86fec-494b-4856-b79d-158166b469a0,NURS 330,College of Nursing,07ddb212-ff02-42bc-880d-0225260a294c
+a468cf4d-6594-45c2-b82c-5b8bc3f6a8c4,NURS 249,College of Nursing,07ddb212-ff02-42bc-880d-0225260a294c
+3266c70f-4871-4783-94b5-639e066c70cd,NURS 480,College of Nursing,07ddb212-ff02-42bc-880d-0225260a294c
+5c5bd93e-ae3f-4118-b30d-afe2fd6fcfff,NURS 487,College of Nursing,07ddb212-ff02-42bc-880d-0225260a294c
+645c4b14-a485-4b83-8ceb-568abd48b4ae,ARTS 444,College of Arts and Sciences,da76acda-1fb2-4f30-9cf8-048299b45e91
+95cf76ce-ed05-4743-aeff-7c898f67ea83,ARTS 419,College of Arts and Sciences,da76acda-1fb2-4f30-9cf8-048299b45e91
+aceecb01-5bfb-4b3c-9b54-d411fe4df3cf,ARTS 338,College of Arts and Sciences,da76acda-1fb2-4f30-9cf8-048299b45e91
+cc297b8a-e9e2-48d7-989c-abcfda96bc97,ARTS 499,College of Arts and Sciences,da76acda-1fb2-4f30-9cf8-048299b45e91
+109a8c2a-2193-4650-bc6c-bb391aeb839c,ARTS 407,College of Arts and Sciences,4548012a-e210-4dbb-b752-fcb2b8486177
+e9065e21-a659-4d22-a295-8a18de445853,ARTS 538,College of Arts and Sciences,4548012a-e210-4dbb-b752-fcb2b8486177
+830ac775-9a86-4931-b2d1-7359a3bd0173,GOVT 102,Bush School of Government and Public Service,a49538d5-0980-4201-be3e-2864e418caf7
+f86f9172-871c-49bd-8220-21dcc55c4b96,GOVT 617,Bush School of Government and Public Service,a49538d5-0980-4201-be3e-2864e418caf7
+637aa107-134d-4b0f-a2e4-60aa19fd8cc9,GOVT 340,Bush School of Government and Public Service,a49538d5-0980-4201-be3e-2864e418caf7
+1d68e96e-8351-48ae-ad16-0b30da3b024d,GOVT 673,Bush School of Government and Public Service,a49538d5-0980-4201-be3e-2864e418caf7
+78ce9829-3852-4ef5-ab8c-1aa8269e5f3d,PERF 435,"College of Performance, Visualization and Fine Arts",93750ad4-7c39-4975-b8a0-7ae52ecf373c
+43becacb-298e-45df-afb2-ccb29c8e26cd,PERF 684,"College of Performance, Visualization and Fine Arts",93750ad4-7c39-4975-b8a0-7ae52ecf373c
+ab22af79-a135-4cce-964d-703a7a1f3424,PERF 145,"College of Performance, Visualization and Fine Arts",93750ad4-7c39-4975-b8a0-7ae52ecf373c
+e1e481b2-8c77-4b2c-a690-c4b8cd1a63f5,PERF 150,"College of Performance, Visualization and Fine Arts",93750ad4-7c39-4975-b8a0-7ae52ecf373c
+1f31f1f6-684b-4a63-a459-338f540e211a,VETS 159,College of Veterinary Medicine and Biomedical Sciences,0637f361-a7a3-4f13-ba05-e3c930696a0f
+b289dc37-3097-4851-9934-64440af3184c,VETS 350,College of Veterinary Medicine and Biomedical Sciences,0637f361-a7a3-4f13-ba05-e3c930696a0f
+5118ae7a-258f-4aac-93ec-64d24e10d652,VETS 387,College of Veterinary Medicine and Biomedical Sciences,0637f361-a7a3-4f13-ba05-e3c930696a0f
+c479c472-1e03-4c5d-8252-96bb2ccfbe95,VETS 167,College of Veterinary Medicine and Biomedical Sciences,0637f361-a7a3-4f13-ba05-e3c930696a0f
+7dd354d9-96ce-4257-9443-a7350950c04b,PERF 311,"College of Performance, Visualization and Fine Arts",c2ee0690-a372-423e-8942-786e48867328
+0fae524e-fca2-4696-ab41-b80d1b13b421,EDUC 126,College of Education and Human Development,c966685b-1f90-4bc8-817e-c22564432b9b
+262aa0eb-d3b2-4749-861a-41498ababe31,EDUC 600,College of Education and Human Development,c966685b-1f90-4bc8-817e-c22564432b9b
+31e22eee-3b07-4f4e-b99c-484c122c59a9,EDUC 100,College of Education and Human Development,c966685b-1f90-4bc8-817e-c22564432b9b
+d613a958-4f57-4ca6-80e9-6f7c0d933afb,VETS 384,College of Veterinary Medicine and Biomedical Sciences,79ba70b4-05cd-4f06-babd-59917e7f2238
+09d7d132-5a1d-4c5d-b695-370f1a73f8cc,PERF 677,"College of Performance, Visualization and Fine Arts",b12504b8-f9db-4eb3-acb9-bf1ef96c6a00
+f730961c-441d-4bb8-a4f4-97d92f1172c5,PERF 114,"College of Performance, Visualization and Fine Arts",b12504b8-f9db-4eb3-acb9-bf1ef96c6a00
+4747ec2b-4067-4c82-837c-2157a754be28,PERF 616,"College of Performance, Visualization and Fine Arts",b12504b8-f9db-4eb3-acb9-bf1ef96c6a00
+fed393b5-14df-4eb0-83c6-effc85685455,PERF 500,"College of Performance, Visualization and Fine Arts",b12504b8-f9db-4eb3-acb9-bf1ef96c6a00
+507bcf3b-9e53-420f-911d-51a7d60bf658,NURS 241,College of Nursing,924fee76-84b9-45a9-bb2d-a5b74bc8c968
+afea6c55-394e-4568-814c-54676d96b8e4,NURS 641,College of Nursing,924fee76-84b9-45a9-bb2d-a5b74bc8c968
+f8c291a9-043e-40b3-85c0-c97ad7020f42,NURS 124,College of Nursing,924fee76-84b9-45a9-bb2d-a5b74bc8c968
+2bd20fa8-d671-4067-8e20-a8137674afc1,NURS 392,College of Nursing,924fee76-84b9-45a9-bb2d-a5b74bc8c968
+4f5f0e67-eeea-418e-90d6-557df7c46d4d,GOVT 449,Bush School of Government and Public Service,5f8f18e4-8bd0-4507-ad2e-b5df678039a3
+1743ceee-b25f-4d9a-98b6-97dc4a0a6c8d,GOVT 100,Bush School of Government and Public Service,5f8f18e4-8bd0-4507-ad2e-b5df678039a3
+74399f67-8623-43f2-9f59-c2e96bebe949,GOVT 663,Bush School of Government and Public Service,5f8f18e4-8bd0-4507-ad2e-b5df678039a3
+af1c22bd-580b-4fb5-b588-53760e60ef21,GOVT 464,Bush School of Government and Public Service,5f8f18e4-8bd0-4507-ad2e-b5df678039a3
+9d5f6041-11c2-4d30-87ad-1e83c23dc9f8,NURS 495,College of Nursing,0fb1c1e2-fe2d-46aa-a4ac-f8ebcf0fded0
+5ad453b5-8b8b-45a6-8b43-67c32ef8a9d1,NURS 413,College of Nursing,0fb1c1e2-fe2d-46aa-a4ac-f8ebcf0fded0
+70653a44-4a11-4ae3-b572-8596a9f6bdc8,BMEN 576,School of Engineering Medicine,95619487-c665-458f-a4fa-33f1726569ce
+ae7c0e53-8635-4dba-824f-6598fa941460,HLTH 395,School of Public Health,f255fdba-dcbc-435e-89cf-d214ff93b304
+f2c7b494-2ca5-4df5-a145-5e1463452afe,DENT 164,College of Dentistry,8d5ff628-c55c-4ee2-b566-207dd1cd7e0e
+df6a1c6d-96f8-47ab-b576-8bef88f4adb3,DENT 560,College of Dentistry,8d5ff628-c55c-4ee2-b566-207dd1cd7e0e
+de1821c6-24f3-49dd-b009-c96773bcbbc2,DENT 566,College of Dentistry,8d5ff628-c55c-4ee2-b566-207dd1cd7e0e
+e903c6f1-a70c-4748-8e96-da45deccdb9c,DENT 434,College of Dentistry,8d5ff628-c55c-4ee2-b566-207dd1cd7e0e
+b31614a3-4573-49c4-b296-4d14e4b2772d,ENGR 590,College of Engineering,b0d53aed-ff6d-4731-aa85-e6a4aa61dd12
+6b07e79f-5ee0-4df6-a2ea-7441f6e8018f,PHAR 423,Irma Lerma Rangel College of Pharmacy,fef90e8d-3dee-455d-b8fd-ad38f9213aff
+578174e2-9551-4e4b-8235-5eec5453a948,ENGR 449,College of Engineering,dbbb2371-993e-4630-b05f-429dd4734915
+af24ac2d-126d-4fc2-88b4-e4eb9f90c8a1,ENGR 591,College of Engineering,dbbb2371-993e-4630-b05f-429dd4734915
+0deac02c-5347-489c-aee7-b2a88e696a40,ENGR 529,College of Engineering,dbbb2371-993e-4630-b05f-429dd4734915
+dc11cb91-f88c-4979-99e2-0eae8fb556eb,BMEN 268,School of Engineering Medicine,64abfb7d-bf4b-4cf6-8ee7-127e3ffecf4c
+985d8eea-ab24-4cb6-be01-c2ab7c81139e,BMEN 594,School of Engineering Medicine,64abfb7d-bf4b-4cf6-8ee7-127e3ffecf4c
+326b861c-5492-4854-8305-c96423ca5152,BMEN 334,School of Engineering Medicine,64abfb7d-bf4b-4cf6-8ee7-127e3ffecf4c
+71a13d7e-a29e-4249-8390-19ab33af2ec8,DENT 568,College of Dentistry,ddada587-90f9-4d98-8aea-7e765556154d
+2f26e2f9-4c65-40ec-a70f-d4db6cd035d8,PHAR 270,Irma Lerma Rangel College of Pharmacy,b38f0f97-1995-46d9-baf4-467ab324d796
+0451fb43-3d8f-45c2-b464-1bf223341654,HLTH 546,School of Public Health,6adbb687-446e-4785-ad81-4c4a0bc02908
+d8bd1889-6d4e-429b-9e80-ee499568fe2b,HLTH 488,School of Public Health,6adbb687-446e-4785-ad81-4c4a0bc02908
+6d369495-978b-4813-acf1-e61b15e9aabc,HLTH 512,School of Public Health,6adbb687-446e-4785-ad81-4c4a0bc02908
+108737bf-359c-41d0-91dc-d1746808c091,HLTH 568,School of Public Health,6adbb687-446e-4785-ad81-4c4a0bc02908
+4cb7ce43-a64e-44d0-bf44-626057b9512f,BUSN 188,Mays Business School,d498ee0b-47eb-4298-8eee-11d9625ea58b
+4889b667-c632-466a-b382-d1d417ea55b0,BUSN 658,Mays Business School,d498ee0b-47eb-4298-8eee-11d9625ea58b
+52038236-fd8d-48fe-84f6-257b32f44959,BUSN 321,Mays Business School,d498ee0b-47eb-4298-8eee-11d9625ea58b
+c04d3e3e-7476-446e-a633-16a9a70c49ef,BUSN 551,Mays Business School,d498ee0b-47eb-4298-8eee-11d9625ea58b
+8ebbedbc-ab61-4711-b86b-06edd227462e,BUSN 349,Mays Business School,ff9bdc6b-7b02-4af6-9b84-9222be11fef0
+8c6b9601-d940-4fd4-b2a7-fd063eeea787,AGSC 121,College of Agriculture and Life Sciences,e426ff70-f578-4a2f-940e-253ccee7233a
+67259ca2-eec3-4c97-822a-10bb26820cb1,AGSC 119,College of Agriculture and Life Sciences,e426ff70-f578-4a2f-940e-253ccee7233a
+99eaaa12-904d-4e8e-a52f-ae71e667a882,AGSC 610,College of Agriculture and Life Sciences,e426ff70-f578-4a2f-940e-253ccee7233a
+ef046ddd-b816-4794-af59-a25009e8f19e,BUSN 129,Mays Business School,2f288b50-4806-41b9-8f29-cc1e3626e98f
+55463a8a-16c8-420c-a641-7ebf14fad03f,BUSN 247,Mays Business School,2f288b50-4806-41b9-8f29-cc1e3626e98f
+6ef1817e-2b1b-40c1-9e43-9b1693b0087a,BUSN 511,Mays Business School,2f288b50-4806-41b9-8f29-cc1e3626e98f
+a366d0b0-cda5-492b-92de-1c03b9b2d1bb,BUSN 169,Mays Business School,2f288b50-4806-41b9-8f29-cc1e3626e98f
+db011f16-e860-43a2-84ee-f0547afbe477,ARTS 160,College of Arts and Sciences,188eb69c-76e7-4a97-a464-2e3fcf40811d
+7a5dba7f-b7c1-4aae-9490-633ba92b018e,ARTS 201,College of Arts and Sciences,188eb69c-76e7-4a97-a464-2e3fcf40811d
+9986cd37-571a-4806-a901-043c66472a00,VETS 645,College of Veterinary Medicine and Biomedical Sciences,171b547a-f5f5-4f49-adce-18dec6a85f62
+2eb41b5f-6641-439d-862b-e5ae86633129,VETS 470,College of Veterinary Medicine and Biomedical Sciences,171b547a-f5f5-4f49-adce-18dec6a85f62
+f0560d0d-0038-471f-86b0-6efe923c7b15,VETS 403,College of Veterinary Medicine and Biomedical Sciences,171b547a-f5f5-4f49-adce-18dec6a85f62
+1d2aec94-34b4-481b-b11c-0a6faecb5d8d,VETS 120,College of Veterinary Medicine and Biomedical Sciences,171b547a-f5f5-4f49-adce-18dec6a85f62
+a43ad0ed-7440-440e-ab75-f4332f7f67ef,AGSC 600,College of Agriculture and Life Sciences,60377747-8dc1-47c0-b3a6-fe5f74eca143
+57f92da7-6d51-4e61-9bf2-3255cdd06541,AGSC 205,College of Agriculture and Life Sciences,60377747-8dc1-47c0-b3a6-fe5f74eca143
+8155fb90-604f-4359-9a82-fc9c8b47430e,AGSC 452,College of Agriculture and Life Sciences,60377747-8dc1-47c0-b3a6-fe5f74eca143
+ba37bfdc-5dba-4e3f-8014-3590141702b3,AGSC 319,College of Agriculture and Life Sciences,60377747-8dc1-47c0-b3a6-fe5f74eca143
+ef7f44f4-016d-497c-b63b-39261e5c95a9,HLTH 559,School of Public Health,a46a2b3a-72ca-4955-abab-b87725db2b6e
+ceee4e35-d69a-4af9-af94-55ecf8e1e12a,GOVT 363,Bush School of Government and Public Service,750d849f-691d-4b09-8ce4-166f01ab5fe6
+aea5c765-4e05-468e-83bf-6821e17b2845,GOVT 641,Bush School of Government and Public Service,750d849f-691d-4b09-8ce4-166f01ab5fe6
+332d3b25-84ed-4d2c-953f-3da465f36e2b,VETS 204,College of Veterinary Medicine and Biomedical Sciences,60e22c49-1f10-410c-90b6-cc47a2421620
+fd25704d-8b18-4823-a393-21563b7035d2,VETS 675,College of Veterinary Medicine and Biomedical Sciences,60e22c49-1f10-410c-90b6-cc47a2421620
+20addf20-3c2a-4223-bcdc-f6e965744459,VETS 140,College of Veterinary Medicine and Biomedical Sciences,60e22c49-1f10-410c-90b6-cc47a2421620
+eb103145-0881-438d-8a4a-eb1fb1d22add,VETS 426,College of Veterinary Medicine and Biomedical Sciences,60e22c49-1f10-410c-90b6-cc47a2421620
+37a3b911-f6f9-47b5-bb1d-1bcd7299c49b,DENT 447,College of Dentistry,99ce6aac-4813-4b0e-b642-e01eb1a7627e
+1a74013e-7363-42e7-8114-421da7a546d2,DENT 690,College of Dentistry,99ce6aac-4813-4b0e-b642-e01eb1a7627e
+25673750-777b-4af7-aaf2-ffa8a4e7a48e,BUSN 622,Mays Business School,2c6bf9fd-e472-40ab-bf2a-1813f7749fe6
+0c1351cd-a0e2-4d0a-bcca-a7934362f722,PHAR 320,Irma Lerma Rangel College of Pharmacy,6b75d0ef-a594-41b0-866e-95a7b64ec51c
+6200215d-bca0-486b-bd0c-8effb8c73edc,PHAR 385,Irma Lerma Rangel College of Pharmacy,6b75d0ef-a594-41b0-866e-95a7b64ec51c
+0ea9fed6-5cab-4967-ba04-ab40c56875f6,LAWX 394,School of Law,08f6d63c-a792-4099-9d5d-b81df07ebc04
+61015d74-b8e5-4b89-a4f7-94dc6249ec1f,LAWX 289,School of Law,08f6d63c-a792-4099-9d5d-b81df07ebc04
+bf05cd49-4147-4c51-9286-43a82aac3b5c,LAWX 400,School of Law,08f6d63c-a792-4099-9d5d-b81df07ebc04
+022f8e18-b290-49e1-8d46-43f8b16d9117,ENGR 142,College of Engineering,dae3b5d4-003c-40d8-9e25-ed6fe2765ddb
+24376160-933e-4fa9-bf9a-91b87ff06206,AGSC 246,College of Agriculture and Life Sciences,0a37a266-0db5-4a9e-b951-59ccb7cf1e9b
+2ae0177c-88c5-4af6-99b1-d7733d038ec1,AGSC 246,College of Agriculture and Life Sciences,0a37a266-0db5-4a9e-b951-59ccb7cf1e9b
+1f5bab1f-82a4-4b93-b2c3-8b635098bf6b,AGSC 622,College of Agriculture and Life Sciences,ce108e19-4996-4f82-ae93-dad7a7b30365
+182d6555-5e14-479d-9714-73a666501884,AGSC 551,College of Agriculture and Life Sciences,ce108e19-4996-4f82-ae93-dad7a7b30365
+f96131cf-44d3-4d9d-add9-3d4eccd96487,AGSC 591,College of Agriculture and Life Sciences,ce108e19-4996-4f82-ae93-dad7a7b30365
+5a84e5b7-d9ef-4915-8fee-834407b1bbc7,AGSC 666,College of Agriculture and Life Sciences,ce108e19-4996-4f82-ae93-dad7a7b30365
+4d55fc83-0563-485e-870b-daf76ec16d08,PERF 596,"College of Performance, Visualization and Fine Arts",03374fa9-e157-47b9-9c41-b9c7a3f721af
+e8ffbef5-1c19-42a7-a097-df950aba0a13,PERF 563,"College of Performance, Visualization and Fine Arts",03374fa9-e157-47b9-9c41-b9c7a3f721af
+2ec48b91-e5a1-465a-adfc-bee9c78a78bf,PERF 366,"College of Performance, Visualization and Fine Arts",03374fa9-e157-47b9-9c41-b9c7a3f721af
+45abbfd2-343b-4552-beab-8d284234afe7,PERF 616,"College of Performance, Visualization and Fine Arts",03374fa9-e157-47b9-9c41-b9c7a3f721af
+67c8b685-0eb3-488a-a1e4-1258dfda323a,AGSC 697,College of Agriculture and Life Sciences,527a69db-4b4e-4bcb-8487-b72206e32b42
+d3dd2099-24fd-451a-bb90-cf8fc4dad57c,AGSC 213,College of Agriculture and Life Sciences,527a69db-4b4e-4bcb-8487-b72206e32b42
+139d3bb7-eead-4658-986e-a863d88c1828,MEDC 550,College of Medicine,ec078e27-c398-4548-8060-9730668a8dab
+ead78b88-9912-47df-bf45-b69cc222a1a0,OCEA 659,College of Marine Sciences and Maritime Studies,ea97f194-35a5-46b0-8ba9-e3a882dfd58e
+f80ea26b-2f90-4bb6-bdbd-4844853fb50d,EDUC 341,College of Education and Human Development,b2f59847-19e0-42d8-b1f4-4527cb2ba6ba
+3277d66f-1054-4f94-9b8d-f399f2623de5,ARCH 529,College of Architecture,66ab1061-0c10-498f-9f97-0fecb426d828
+a0c47070-6130-4c7d-b2f9-89517c1bd509,ARCH 176,College of Architecture,66ab1061-0c10-498f-9f97-0fecb426d828
+f6ebae95-361a-480c-b262-228dc9bdc432,ARCH 521,College of Architecture,66ab1061-0c10-498f-9f97-0fecb426d828
+afd0fd9b-8a51-4874-957a-3df7d583973c,ARCH 273,College of Architecture,66ab1061-0c10-498f-9f97-0fecb426d828
+fb0b5c4b-e733-4aba-af34-d1aed17f5bc1,NURS 136,College of Nursing,7b51c8f2-2ecb-4162-9263-208207c1446d
+8a50d7aa-b9b3-495c-a53b-29f0c32a1572,NURS 534,College of Nursing,1511d765-b169-4232-b608-16d655049109
+6c18d875-eb13-4f80-8d10-6fac0eaa4589,NURS 607,College of Nursing,1511d765-b169-4232-b608-16d655049109
+334e62a1-b561-497b-9a4a-9eebcfed6740,AGSC 210,College of Agriculture and Life Sciences,2dce09e3-58f8-4b00-a01a-c7dd1dfbd161
+f8a70e94-8594-470e-9340-1f01a7686c1a,DENT 429,College of Dentistry,6c6ccb7f-0b3b-45ca-919a-801fd8c75ede
+ac8566f6-eedd-4c7a-b7cd-c972fda5c69b,DENT 508,College of Dentistry,6c6ccb7f-0b3b-45ca-919a-801fd8c75ede
+466ba790-5757-42f0-ac64-d2b0b3887582,DENT 369,College of Dentistry,6c6ccb7f-0b3b-45ca-919a-801fd8c75ede
+311ba83b-a7ba-49d5-9c0b-8f8d7b41d2aa,DENT 579,College of Dentistry,6c6ccb7f-0b3b-45ca-919a-801fd8c75ede
+2701fb24-774d-4fb2-ae45-06675e948de2,OCEA 238,College of Marine Sciences and Maritime Studies,9738c4c8-1069-486d-b169-d9fef8f6a01e
+c5a86639-bd7f-4687-9e01-7dd521917a55,OCEA 530,College of Marine Sciences and Maritime Studies,9738c4c8-1069-486d-b169-d9fef8f6a01e
+c3b3be99-07e8-4606-8bf9-47b8b78acfc5,OCEA 243,College of Marine Sciences and Maritime Studies,9738c4c8-1069-486d-b169-d9fef8f6a01e
+a0030f45-bb0e-4fd6-a833-f651ffca5508,ARTS 445,College of Arts and Sciences,e5fde22a-abfb-4534-897e-473726a5a1c8
+1af03ed9-d07e-4e64-b068-83de2a396346,ARTS 469,College of Arts and Sciences,e5fde22a-abfb-4534-897e-473726a5a1c8
+36ea1c15-23c6-40bf-8f4e-2b8580d81914,ARTS 587,College of Arts and Sciences,e5fde22a-abfb-4534-897e-473726a5a1c8
+8db68b3c-30eb-4836-8d27-5c3f51aabd68,GOVT 215,Bush School of Government and Public Service,8c194447-54bb-45ea-bc64-cd9ccb9fbb43
+2605e27f-0b59-44ff-ac0c-784e18088f9f,GOVT 185,Bush School of Government and Public Service,8c194447-54bb-45ea-bc64-cd9ccb9fbb43
+f427a7a9-d0a0-44f9-8f71-6a025ac0ad70,GOVT 227,Bush School of Government and Public Service,8c194447-54bb-45ea-bc64-cd9ccb9fbb43
+9cfa11ea-fdab-4b37-81d5-8481400796c7,NURS 436,College of Nursing,89e6db5e-2de6-4c29-9c46-b5dacc704a0e
+c093a3dd-8a6e-4b13-a7c8-ecab23b0a9a4,NURS 591,College of Nursing,89e6db5e-2de6-4c29-9c46-b5dacc704a0e
+662835cc-f8da-4b03-892a-3cf35194e800,NURS 517,College of Nursing,89e6db5e-2de6-4c29-9c46-b5dacc704a0e
+ab997490-3d96-454d-b5ae-f86358421c51,NURS 319,College of Nursing,89e6db5e-2de6-4c29-9c46-b5dacc704a0e
+a0c5c7bf-6564-4ad4-8a47-938e905c5890,PHAR 634,Irma Lerma Rangel College of Pharmacy,1a814dea-465b-4c71-a9c9-c45490ea2120
+baf67a70-f611-4804-b66e-52cba9b49270,PHAR 345,Irma Lerma Rangel College of Pharmacy,1a814dea-465b-4c71-a9c9-c45490ea2120
+070c5c52-16dd-418c-a9bc-6e8385cbe464,PHAR 316,Irma Lerma Rangel College of Pharmacy,1a814dea-465b-4c71-a9c9-c45490ea2120
+d30a4385-1d92-43ae-aa4d-a18a6429b519,BUSN 600,Mays Business School,06a38dd7-bfb1-4ff8-8bc7-0fef8c7f365c
+b42b516a-9eee-4330-8c26-8ab5f275423e,OCEA 288,College of Marine Sciences and Maritime Studies,a878ef83-e479-42d4-a616-93715bcb7fac
+b00429bf-b970-46ba-bfe5-f329da0847e4,OCEA 379,College of Marine Sciences and Maritime Studies,a878ef83-e479-42d4-a616-93715bcb7fac
+896daec1-a0e2-454f-a82e-ea5abfeb47ac,OCEA 127,College of Marine Sciences and Maritime Studies,a878ef83-e479-42d4-a616-93715bcb7fac
+fdaf8d7a-1038-452c-9f8c-54fccaa28d48,VETS 537,College of Veterinary Medicine and Biomedical Sciences,23e66125-bd21-4a9c-8118-9490f71d0dce
+aa565e03-2f37-4e95-bdae-56d480588016,EDUC 176,College of Education and Human Development,2a5a3fc8-5126-4141-bb7e-7919f884514e
+172a831e-0983-4b7f-8490-b6ebf9c52ca4,BMEN 524,School of Engineering Medicine,f08f20da-d981-4a07-9ced-dd21f603e591
+4cf69c7c-1c91-4bcd-b1df-feb169d41c14,OCEA 659,College of Marine Sciences and Maritime Studies,f000d95f-53b9-4ae8-aa78-0c49ee1abe8a
+cbedc8d4-cdce-42ed-b895-f81be9bdcecd,NURS 235,College of Nursing,5d668f09-819a-4f3c-a9cb-fe72f5ce5b39
+1597416c-77eb-4bd5-a508-d803b1b8949a,NURS 404,College of Nursing,5d668f09-819a-4f3c-a9cb-fe72f5ce5b39
+e1d71ed4-fa4b-4a99-b4d8-2a2febf3e33a,ARTS 196,College of Arts and Sciences,6b77aeb9-1897-421a-aabe-27aba1b1ea0e
+18eed723-31c2-4221-9004-7314048fd22d,ARTS 639,College of Arts and Sciences,6b77aeb9-1897-421a-aabe-27aba1b1ea0e
+366bcac8-4152-4e70-a6b0-8fa13abd31b9,BUSN 602,Mays Business School,c6c8886a-004e-4b14-9603-8cf644a9ba72
+e8348bf8-eccc-44ee-a9be-ed391532b128,BUSN 484,Mays Business School,c6c8886a-004e-4b14-9603-8cf644a9ba72
+b5d919e2-c93e-47cd-b020-036cfa80f804,BUSN 479,Mays Business School,c6c8886a-004e-4b14-9603-8cf644a9ba72
+ce6420b6-3cb1-4403-92db-66ab7c184990,BUSN 312,Mays Business School,c6c8886a-004e-4b14-9603-8cf644a9ba72
+476ec199-4e30-4a47-af76-22a19fed07b1,NURS 129,College of Nursing,e805dc3d-79de-43cc-a302-5e0b8d5606eb
+c4f5833b-32b2-40e6-b76b-88003f3d0d35,ARCH 554,College of Architecture,40e19fa8-1b81-42f7-9317-3990e135afba
+2ffc01f9-8a0f-44d5-b77e-4deeb108f4a2,ARCH 190,College of Architecture,40e19fa8-1b81-42f7-9317-3990e135afba
+9cd8a2a0-9e49-4553-8388-b44487db921b,OCEA 476,College of Marine Sciences and Maritime Studies,66ce85ef-9d73-4396-b81f-9bcd942c3a7c
+d988a20f-6f41-4dd2-b5f3-c75233a097bf,HLTH 259,School of Public Health,e419a519-dcea-4d6f-b0f4-8a8ca471e77a
+44810627-c9c1-42fa-838e-009cf3cbddb6,HLTH 376,School of Public Health,e419a519-dcea-4d6f-b0f4-8a8ca471e77a
+a3eb05b8-9eb5-47c2-9640-f5f19a3d24c1,ENGR 564,College of Engineering,fc1a8beb-8468-4e2c-8fed-105d47336af0
+f333c8ce-26b0-4d24-a50a-4e44f3ec4267,ENGR 134,College of Engineering,fc1a8beb-8468-4e2c-8fed-105d47336af0
+b64ee4f9-0890-4348-a156-90bb08bfceb8,ENGR 219,College of Engineering,fc1a8beb-8468-4e2c-8fed-105d47336af0
+ecb228b5-64c7-47e2-8c9a-eaf7148d81e2,BMEN 555,School of Engineering Medicine,bc416156-8e24-4399-b9d5-565484dc940c
+3bdf157e-00ae-47d7-b0ab-667e3dc57489,ARCH 230,College of Architecture,3c7db0b0-4177-48f5-9262-0e8c071e2baf
+ae0b6544-ab5c-41f0-98cc-ef1534cc644d,ARCH 368,College of Architecture,3c7db0b0-4177-48f5-9262-0e8c071e2baf
+3a4ba3d1-6e12-4528-9796-58ce16b4af2a,ARCH 613,College of Architecture,3c7db0b0-4177-48f5-9262-0e8c071e2baf
+e761bb0f-7b8c-454a-a91c-e318d1a9df3f,ARCH 303,College of Architecture,cc18ad2a-61e8-4345-8be5-40a05aef966d
+2bc4d835-41d1-46ad-a4c2-ff8075708f6e,ARCH 387,College of Architecture,cc18ad2a-61e8-4345-8be5-40a05aef966d
+0f874ab8-a15b-475c-8410-419f218ac0b0,ARCH 388,College of Architecture,cc18ad2a-61e8-4345-8be5-40a05aef966d
+252702e6-fb3c-4f3d-baf8-00266b70a379,OCEA 107,College of Marine Sciences and Maritime Studies,75a64871-4479-4c2f-aa85-cee2d778d7ab
+f0f0dba6-e852-4597-a6e5-65f5c1393e20,OCEA 263,College of Marine Sciences and Maritime Studies,75a64871-4479-4c2f-aa85-cee2d778d7ab
+b714d8b5-9064-4470-91b5-537a60c500db,HLTH 391,School of Public Health,b3b528cc-849a-4754-877b-dc104ce163cd
+0820127c-d382-416c-ae22-c32bfbc818cd,HLTH 348,School of Public Health,b3b528cc-849a-4754-877b-dc104ce163cd
+3e688a68-7f1c-4d23-93b7-ea3c28da621d,ARTS 284,College of Arts and Sciences,ff49c596-fcc2-4fe3-bb5e-e971df85eaaa
+54a8721e-18c1-471f-9d22-407c13722e6a,ARTS 656,College of Arts and Sciences,ff49c596-fcc2-4fe3-bb5e-e971df85eaaa
+3653e7ac-da2a-47ad-b1a5-83363739d8e8,ARTS 154,College of Arts and Sciences,ff49c596-fcc2-4fe3-bb5e-e971df85eaaa
+fbf0fec0-5467-47d8-a22d-cea9da7d11aa,ARTS 563,College of Arts and Sciences,ff49c596-fcc2-4fe3-bb5e-e971df85eaaa
+961b54e9-4285-4fb2-9a48-7899152c63e7,ARTS 696,College of Arts and Sciences,2cd47da3-98a0-44f8-9709-3316120283c4
+891b8cb7-4c03-4987-8b3d-f143ec7d933c,ARTS 181,College of Arts and Sciences,2cd47da3-98a0-44f8-9709-3316120283c4
+b0ba0dfe-0d2e-45f0-a691-cdaa10fff551,ARTS 373,College of Arts and Sciences,2cd47da3-98a0-44f8-9709-3316120283c4
+943714b0-ed41-4211-a235-85fca4771c9f,NURS 579,College of Nursing,cd8f0a57-2538-4797-a5f0-ac1c912851e4
+d2671d75-bc4f-4b5f-899a-1f70d8e411eb,NURS 163,College of Nursing,cd8f0a57-2538-4797-a5f0-ac1c912851e4
+0b932a46-eff1-4202-860c-28bc29518229,NURS 274,College of Nursing,cd8f0a57-2538-4797-a5f0-ac1c912851e4
+25d99db5-aa79-446f-be08-ebd89e62e59d,AGSC 515,College of Agriculture and Life Sciences,3dd3f6c6-35bb-4517-9f0e-b071b3bc428c
+8980329a-9f51-4c09-a4c6-5daae9bd399c,AGSC 371,College of Agriculture and Life Sciences,3dd3f6c6-35bb-4517-9f0e-b071b3bc428c
+3707b35f-f2f6-45a4-af82-f6bdabcdadfa,AGSC 560,College of Agriculture and Life Sciences,3dd3f6c6-35bb-4517-9f0e-b071b3bc428c
+3dc99773-cda1-4e59-a042-00db3d1dd374,AGSC 629,College of Agriculture and Life Sciences,3dd3f6c6-35bb-4517-9f0e-b071b3bc428c
+d006f519-77a4-4322-8825-2f92900aac4e,EDUC 590,College of Education and Human Development,42cc7aa6-7eb9-4a48-83f5-241a16937773
+4aba94d7-4928-4d8e-9aab-4a9f69095844,EDUC 294,College of Education and Human Development,b7ed1113-c675-4a5b-b7b2-aec8c9a66d23
+093b8974-647f-482d-9587-7c06ba66ff63,EDUC 267,College of Education and Human Development,b7ed1113-c675-4a5b-b7b2-aec8c9a66d23
+925930e6-ba74-43a9-86dd-273f49eddd8e,EDUC 125,College of Education and Human Development,b7ed1113-c675-4a5b-b7b2-aec8c9a66d23
+e05553db-5228-4ccd-8400-182f83227f9e,EDUC 384,College of Education and Human Development,b7ed1113-c675-4a5b-b7b2-aec8c9a66d23
+163d11f2-d4d1-4797-8e7a-13edfc9af9da,LAWX 156,School of Law,2166eec6-b559-4234-8567-6a1935c70ee8
+09d21eb0-f603-43f7-8588-ae82e45b97bf,LAWX 454,School of Law,2166eec6-b559-4234-8567-6a1935c70ee8
+2dc386dd-8645-4ecd-b55a-a2bbfdee3e00,LAWX 190,School of Law,2166eec6-b559-4234-8567-6a1935c70ee8
+f178a2a7-7471-4967-838f-38229f49e1b7,BUSN 322,Mays Business School,692a9623-3c67-41ac-ab1b-438a74dae59d
+e371da14-9708-4b5c-850e-8cdced5f993c,BUSN 187,Mays Business School,692a9623-3c67-41ac-ab1b-438a74dae59d
+ed7183fc-48ed-49f0-8081-279b8befe65a,BUSN 482,Mays Business School,692a9623-3c67-41ac-ab1b-438a74dae59d
+d8a4703a-da70-4477-9cb0-6b0ba373275b,BMEN 248,School of Engineering Medicine,ae2b830d-ec89-49c3-b73c-a514b700116c
+074bd829-10bd-4edf-8814-13fab02d4709,DENT 395,College of Dentistry,b2acc663-2e10-416e-a789-85831228f658
+d737354e-80ba-46fb-97f3-e9e53380345f,NURS 632,College of Nursing,80ce2c74-033d-49e0-842e-dd364005e34e
+e878cb98-1ae2-4642-9206-8ccd0a5b57fa,NURS 316,College of Nursing,80ce2c74-033d-49e0-842e-dd364005e34e
+4d3b50b9-1b7a-4d93-8941-29e1e9cfb1cc,MEDC 300,College of Medicine,f07fed70-a7d9-4300-9129-e4dafbf34176
+c5cc436a-881f-484d-b5f1-647e589103c7,MEDC 433,College of Medicine,f07fed70-a7d9-4300-9129-e4dafbf34176
+98576482-2efe-4420-9d1b-58fb77b2aca0,MEDC 430,College of Medicine,f07fed70-a7d9-4300-9129-e4dafbf34176
+90257787-7897-4eb7-96aa-2c0a630a3f0c,PHAR 617,Irma Lerma Rangel College of Pharmacy,e4ee7a2e-0408-407e-b29a-ddbb8b0a6725
+9ffe68a4-e0fe-4a66-89e6-70aa632beba0,PHAR 369,Irma Lerma Rangel College of Pharmacy,e4ee7a2e-0408-407e-b29a-ddbb8b0a6725
+04ab19cb-7986-4245-8d54-e57b7f108757,ENGR 516,College of Engineering,b7d00f6a-0e9e-4332-9fd2-43c27138c149
+e51dab60-8c01-4a36-a1fc-65a4beedde23,ENGR 128,College of Engineering,b7d00f6a-0e9e-4332-9fd2-43c27138c149
+08d55155-be41-426c-9333-ee4e4d1e88a7,HLTH 234,School of Public Health,656e1726-d59e-4b52-9d92-c0cfb913e308
+b6f89384-4e6b-4034-96d4-4b8fcaf249da,LAWX 359,School of Law,da41fcd1-e0b8-4d1e-854d-2add10a5dbda
+d0e45ef9-4adc-49b7-90bc-06b7f0e5aba2,ARTS 654,College of Arts and Sciences,549dea03-dad3-4d86-8668-62dcbf20e8b9
+3f6151d9-0ecb-4bca-9945-c32fb2ea3e13,ARTS 538,College of Arts and Sciences,549dea03-dad3-4d86-8668-62dcbf20e8b9
+91f3e4d9-0432-42b1-ab2e-4f307561772d,ARTS 412,College of Arts and Sciences,549dea03-dad3-4d86-8668-62dcbf20e8b9
+f85ce645-1cc3-40cf-b59a-edea7ede1b73,ARTS 313,College of Arts and Sciences,549dea03-dad3-4d86-8668-62dcbf20e8b9
+7adfac6a-8b2b-4ed2-bfbb-9a54b10ceaee,BUSN 314,Mays Business School,70e11d90-60b1-4404-a7be-a7863b062a27
+73343b4f-cfdf-4875-af07-ad0a89927bbe,BUSN 500,Mays Business School,70e11d90-60b1-4404-a7be-a7863b062a27
+07fd7ee9-cefa-49f1-9594-71663688c3b3,BUSN 222,Mays Business School,70e11d90-60b1-4404-a7be-a7863b062a27
+53423c5c-5133-421a-8920-797778404fef,AGSC 373,College of Agriculture and Life Sciences,6d0addf6-d7d5-40c9-b787-4127f88dfb6e
+cf3848c4-f8ed-4396-bdf6-a1a056e97b76,AGSC 578,College of Agriculture and Life Sciences,6d0addf6-d7d5-40c9-b787-4127f88dfb6e
+1a196538-9c48-4295-9294-be983ecb25ec,AGSC 611,College of Agriculture and Life Sciences,6d0addf6-d7d5-40c9-b787-4127f88dfb6e
+c413a848-a34e-4538-975d-80afc8a50158,HLTH 567,School of Public Health,d4a166e3-9846-4343-a30c-e1c31c90eeba
+963031bb-7cfe-4ad4-ba6c-dcf487f35e5d,HLTH 491,School of Public Health,d4a166e3-9846-4343-a30c-e1c31c90eeba
+58976933-09e7-4193-a78b-12a3925b09da,HLTH 442,School of Public Health,d4a166e3-9846-4343-a30c-e1c31c90eeba
+46a43d99-3133-4fe3-a708-c20fc854f5d2,HLTH 537,School of Public Health,d4a166e3-9846-4343-a30c-e1c31c90eeba
+8f6892be-36b1-4e81-b149-e83ec982b97d,AGSC 150,College of Agriculture and Life Sciences,d191ba21-7913-41c5-b615-02cc53ef36cb
+3a3b51b1-e184-46ac-ab23-0ddabae07757,AGSC 311,College of Agriculture and Life Sciences,d191ba21-7913-41c5-b615-02cc53ef36cb
+4abd4108-c241-46ba-a3ce-9e7f35498a0c,AGSC 561,College of Agriculture and Life Sciences,d191ba21-7913-41c5-b615-02cc53ef36cb
+a56899ba-8d2c-4ffe-80db-aade572cc4bc,ENGR 380,College of Engineering,e3a48c69-2df6-4951-b37a-e721c5116440
+f5f3ef4f-6272-4887-b28d-fe3476a4fe1e,ENGR 664,College of Engineering,e3a48c69-2df6-4951-b37a-e721c5116440
+339f200b-3130-48c6-af63-d833e5d9f419,AGSC 590,College of Agriculture and Life Sciences,605258aa-2ed6-4d65-b8e8-ec8cb0a97441
+3af8ebfe-17d5-4fe4-8c44-c5e481e49810,AGSC 164,College of Agriculture and Life Sciences,605258aa-2ed6-4d65-b8e8-ec8cb0a97441
+9f1c3be0-8cea-45a0-9fef-ebf932cc3ebb,AGSC 477,College of Agriculture and Life Sciences,605258aa-2ed6-4d65-b8e8-ec8cb0a97441
+b4f8da44-75c0-44ed-831c-a2ee93028d68,BMEN 386,School of Engineering Medicine,1f57bfc7-ec27-46d4-b159-539cbd3855fd
+717b1f74-f0f9-4f4d-9ccf-103a827a1188,BMEN 110,School of Engineering Medicine,1f57bfc7-ec27-46d4-b159-539cbd3855fd
+b79e7044-6d18-4fb9-9ba1-7e00e5fdfdb7,BMEN 436,School of Engineering Medicine,1f57bfc7-ec27-46d4-b159-539cbd3855fd
+3643f679-62eb-4e0c-aada-220328a56bc0,BUSN 556,Mays Business School,0c819778-8d13-4ce7-84c0-3ed8518a1847
+fb1f4512-c147-46d2-83f7-a73e41d7ccf8,ARCH 299,College of Architecture,acfa7bdb-a31b-43a6-9788-8bfc7c10fbb1
+7df0f883-6679-43b9-826f-edace9adff24,ARCH 622,College of Architecture,acfa7bdb-a31b-43a6-9788-8bfc7c10fbb1
+7fbc03b7-513a-42e0-834e-5ff99db2f275,ARCH 606,College of Architecture,acfa7bdb-a31b-43a6-9788-8bfc7c10fbb1
+c0def29a-5bec-42f1-8528-162dafb6e231,GOVT 445,Bush School of Government and Public Service,2571bb9e-43fd-4818-ab2e-46c1c0f6be75
+81597c02-05dd-47b1-94f8-de6fd90888dc,GOVT 698,Bush School of Government and Public Service,2571bb9e-43fd-4818-ab2e-46c1c0f6be75
+8fa174c0-a3ca-4834-af07-154ed71cc5b6,GOVT 634,Bush School of Government and Public Service,2571bb9e-43fd-4818-ab2e-46c1c0f6be75
+007f872e-8a77-4091-8f8c-4506af11c9cc,DENT 668,College of Dentistry,6040ee6f-59e3-4057-a853-c7404bdf3639
+835426ac-19b7-4e51-a7ae-747097ca5479,ENGR 510,College of Engineering,2c4dabe0-0965-46b7-a760-c4ea8e469f31
+cdf3e9d0-b10a-46dc-91af-3d87ccafa789,ENGR 155,College of Engineering,2c4dabe0-0965-46b7-a760-c4ea8e469f31
+5f47f66b-04c7-4cfc-9481-427453857726,PHAR 349,Irma Lerma Rangel College of Pharmacy,160210c6-27fe-4ae7-b104-c87fcd76b1cd
+e31922ab-d2c4-4f5b-9f02-f42cd624bdb1,ENGR 268,College of Engineering,aa987526-8842-44c0-a2d8-d794c44bec0c
+95076c1b-8d40-4c93-aa01-d4c74b5c9d75,ENGR 287,College of Engineering,aa987526-8842-44c0-a2d8-d794c44bec0c
+535a2d4b-3d73-4de1-850f-5d4bcefee691,ENGR 475,College of Engineering,aa987526-8842-44c0-a2d8-d794c44bec0c
+53ef9500-0c42-42a2-bbf0-f1f16a3d0a89,NURS 557,College of Nursing,1bb431a9-d791-4a7f-bd33-051381cca0bb
+5136f6ce-2d17-4c43-927c-ae609470eaf7,NURS 337,College of Nursing,1bb431a9-d791-4a7f-bd33-051381cca0bb
+d6ec0611-3857-46c8-aafa-a2918ab5780c,NURS 216,College of Nursing,1bb431a9-d791-4a7f-bd33-051381cca0bb
+e720cfb8-1b32-402b-a03e-6a9d075b62f1,NURS 225,College of Nursing,1bb431a9-d791-4a7f-bd33-051381cca0bb
+2cd1f166-b6ae-4700-ac26-2ed61bf66b13,ARTS 265,College of Arts and Sciences,087408bc-e9db-4151-954e-e2082b29b19c
+d861ca46-cc9b-493e-8764-fd056315fc34,LAWX 615,School of Law,b2759204-3a11-467f-8ce8-b875001c4de7
+5eedf353-ad39-4597-bfff-b00cd83eaf2a,LAWX 225,School of Law,b2759204-3a11-467f-8ce8-b875001c4de7
+d51131c6-e998-4800-a8a6-de6cdaa39820,LAWX 395,School of Law,b2759204-3a11-467f-8ce8-b875001c4de7
+17205c0b-96ad-4974-add3-1dde23a5afee,DENT 581,College of Dentistry,2bffd7d0-a9db-46ac-81ea-da66fa4799e4
+5ccd7136-7578-45f5-b15f-3b7db65332ad,DENT 615,College of Dentistry,2bffd7d0-a9db-46ac-81ea-da66fa4799e4
+ecb83d8e-bbc8-43d9-8a22-31986186b97a,DENT 413,College of Dentistry,2bffd7d0-a9db-46ac-81ea-da66fa4799e4
+c416210e-916f-4032-821c-8503e72c834a,DENT 674,College of Dentistry,2bffd7d0-a9db-46ac-81ea-da66fa4799e4
+2392fb1a-017a-4d31-9528-e2a8ef336150,BMEN 395,School of Engineering Medicine,47f1af32-e28c-4067-99ae-b8464cc4b41a
+346f4f29-1020-4e8d-999b-483213e03e84,BMEN 355,School of Engineering Medicine,47f1af32-e28c-4067-99ae-b8464cc4b41a
+3e4183f6-8d91-48f8-ac22-3385ff55ffe7,BMEN 467,School of Engineering Medicine,47f1af32-e28c-4067-99ae-b8464cc4b41a
+65f84659-1c77-418a-b639-3938904edff5,BMEN 116,School of Engineering Medicine,47f1af32-e28c-4067-99ae-b8464cc4b41a
+029660e4-ac22-4141-a64a-577f1599b19a,HLTH 337,School of Public Health,1bc1e116-9507-46ff-9f82-68936fc3d06d
+dd8164d5-3a7c-40f2-8811-66a6eaed8382,HLTH 271,School of Public Health,1bc1e116-9507-46ff-9f82-68936fc3d06d
+9d2d32e4-0e65-4bae-b879-a52776ab3326,HLTH 497,School of Public Health,1bc1e116-9507-46ff-9f82-68936fc3d06d
+55dfd497-4d54-4c50-83a7-ecaa30bdb4a0,LAWX 128,School of Law,a726190e-d6b8-4799-980c-5729a3b56080
+13dcdeab-8139-42bd-a457-0530d0d10959,LAWX 520,School of Law,a726190e-d6b8-4799-980c-5729a3b56080
+7c19aa7f-4ea3-43ca-9ffb-1ba3bd30d1b4,PHAR 562,Irma Lerma Rangel College of Pharmacy,4fd89877-e437-4532-8282-199845af125b
+e40e3239-a5a6-400d-8de3-9db110bf14a0,NURS 241,College of Nursing,b3f061dd-e86d-48c2-b48c-76ba1e136ead
+6a1c54ef-55c2-47ec-b7da-d0c86181cf03,NURS 175,College of Nursing,b3f061dd-e86d-48c2-b48c-76ba1e136ead
+6409e904-8157-4921-b91a-03e6c9fd6935,NURS 155,College of Nursing,b3f061dd-e86d-48c2-b48c-76ba1e136ead
+63378cbc-1708-4382-8f09-57462600462b,NURS 465,College of Nursing,b3f061dd-e86d-48c2-b48c-76ba1e136ead
+1bf25041-aa97-4b98-8263-84a139af9878,VETS 186,College of Veterinary Medicine and Biomedical Sciences,e255049a-6f30-41d5-b898-744f0cb0e629
+7cfe6c5f-f70f-4b46-a4ee-adcc7556915a,VETS 370,College of Veterinary Medicine and Biomedical Sciences,e255049a-6f30-41d5-b898-744f0cb0e629
+be48dda9-a61c-4aeb-aaf0-42f227521cc6,NURS 582,College of Nursing,ac00f7ac-a66d-44dd-94db-a1af29899bfb
+45c7e089-be56-41d8-903f-df1aab56eed0,NURS 544,College of Nursing,ac00f7ac-a66d-44dd-94db-a1af29899bfb
+7f621cfb-5290-4c19-9d5a-cc3f4535e962,NURS 343,College of Nursing,ac00f7ac-a66d-44dd-94db-a1af29899bfb
+b6a4f2a5-e050-441f-ac55-e40e6eb003ca,NURS 696,College of Nursing,08baf033-8e8d-47f5-9efb-753d2cf7d97a
+c748a975-8963-4762-be91-892e6621dc4f,BUSN 122,Mays Business School,e1246b29-1d41-4e1b-93ea-86f825ca7ae6
+37dd5e6e-fe5e-40c0-8ad7-e23747f8399e,BUSN 392,Mays Business School,e1246b29-1d41-4e1b-93ea-86f825ca7ae6
+67c1302e-7cf0-44e4-88c5-e74f515e1774,BUSN 682,Mays Business School,e1246b29-1d41-4e1b-93ea-86f825ca7ae6
+71e1d865-0fe1-4648-b550-4dc90b9b8c28,BUSN 255,Mays Business School,e1246b29-1d41-4e1b-93ea-86f825ca7ae6

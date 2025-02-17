@@ -1,0 +1,19 @@
+form_id,form_name,form_type,form_status,form_submitted_date,form_due_date
+f0720106-170f-469a-8d56-5127d321d1b6,Application for Disability Services,Registration & Eligibility,Approved,2024-09-05,2024-03-18
+1ec8ad43-874d-47ac-bc45-867f5bac5b08,Medical or Psychological Documentation Form,Registration & Eligibility,Submitted,2025-01-16,2024-11-17
+abe420b1-f700-4ded-a7cd-ff40d4418a60,Consent for Release of Information,Registration & Eligibility,Submitted,2024-12-01,2024-12-24
+f4e217ce-9cd2-4a5c-81a2-d2b752062d49,Accommodation Request Form,Academic & Classroom Accommodations,Pending,2026-01-01,2025-06-14
+849930cd-9282-490f-93de-27ebf271ddfd,Alternative Testing Request Form,Academic & Classroom Accommodations,Rejected,2024-11-30,2025-01-04
+e32eca3c-f734-4828-b785-e298df2b14c6,Note-Taker Agreement Form,Academic & Classroom Accommodations,Overdue,2026-01-01,2025-07-26
+7b4a4f7e-f0e9-4c54-ad44-d2677d26eaf7,Request for Course Substitution,Academic & Classroom Accommodations,Pending,2026-01-01,2025-02-27
+a553bafa-7233-4db9-9b12-313976272643,Priority Registration Request,Academic & Classroom Accommodations,Approved,2024-05-01,2024-01-08
+13537102-80c7-470e-9525-174c444a7a75,Reduced Course Load Request,Academic & Classroom Accommodations,Approved,2024-07-02,2024-03-13
+60fbfc12-d5cb-449a-98a2-20ae18a49003,Assistive Technology Request,Academic & Classroom Accommodations,Approved,2024-06-10,2024-10-25
+3c03fc2a-9149-485e-ae3e-f8fdc338e9ab,Interpreter or Captioning Request,Academic & Classroom Accommodations,Submitted,2024-05-15,2024-09-28
+97b4e5fe-1a0b-44a2-9097-cdda4f7d814f,Housing Accommodation Request,Campus Living & Mobility Accommodations,Submitted,2024-07-15,2024-12-25
+581f8c6c-f745-402d-82e1-70330113acd4,Emotional Support Animal (ESA) Request,Campus Living & Mobility Accommodations,Rejected,2024-06-07,2025-01-27
+57b49084-b8c8-4304-a809-17408ebcc45a,Service Animal Registration,Campus Living & Mobility Accommodations,Approved,2024-05-02,2024-12-21
+65966177-6c6e-4742-9498-91970c4d9fdf,Transportation Assistance Form,Campus Living & Mobility Accommodations,Overdue,2026-01-01,2025-08-18
+1424cd6b-f97c-42e7-8d55-b51163914826,Temporary Accommodations Request,"Appeals, Temporary & Workplace Accommodations",Pending,2026-01-01,2025-11-17
+961bbe6a-00aa-4ab8-8a9d-d4758f192d77,Internship/Workplace Accommodation Request,"Appeals, Temporary & Workplace Accommodations",Overdue,2026-01-01,2025-05-14
+4a162483-0f54-47a2-8b3b-07fec4e95bfd,Appeal or Grievance Form,"Appeals, Temporary & Workplace Accommodations",Overdue,2026-01-01,2025-11-04
