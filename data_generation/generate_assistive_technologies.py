@@ -23,7 +23,7 @@ def generate_assistive_technologies(students, advisors, file_directory):
             technology_in_use = fake.pybool(20)
             student_in_use = students[random.randint(0,len(students)-1)]
             device_type = type
-            assigned_by = advisors[random.randint(0,len(students)-1)]
+            assigned_by = advisors[random.randint(0,len(advisors)-1)]
         
             assistive_technologies.append([technology_id, technology_in_use, student_in_use, device_type, assigned_by])
 
