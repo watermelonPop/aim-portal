@@ -11,6 +11,9 @@ import generate_course_student
 import generate_accomodations
 import generate_accomodation_student
 import generate_exam_scheduling
+import generate_forms
+import generate_assistive_technologies
+import generate_testing_rooms
 
 """
 TODO: 
@@ -64,3 +67,6 @@ accomodations = generate_accomodations.generate_accomodations(num_accounts=3000,
 join_accomodation_student = generate_accomodation_student.generate_join_accomodations_students(accomodations=accomodations,students=students,file_directory=file_destination)
 
 generate_exam_scheduling.generate_exam_scheduling(courses=courses, advisors=advisors,file_directory=file_destination)
+generate_forms.generate_forms(file_directory=file_destination)
+generate_assistive_technologies.generate_assistive_technologies(students=students, advisors=advisors, file_directory=file_destination)
+generate_testing_rooms.generate_testing_rooms(file_directory=file_destination)
