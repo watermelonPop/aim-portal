@@ -63,4 +63,4 @@ join_course_student = generate_course_student.generate_join_courses_students(stu
 accomodations = generate_accomodations.generate_accomodations(num_accounts=3000,advisors=advisors,file_directory=file_destination)
 join_accomodation_student = generate_accomodation_student.generate_join_accomodations_students(accomodations=accomodations,students=students,file_directory=file_destination)
 
-generate_exam_scheduling.generate_exam_scheduling(courses=courses, advisors=advisors,file_directory=file_destination)
+exam_scheduling = generate_exam_scheduling.generate_exam_scheduling(courses=courses, advisors=advisors,file_directory=file_destination)
