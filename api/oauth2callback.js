@@ -32,7 +32,7 @@ module.exports = async (req, res) => {
       console.info('User info:', payload);
 
       // Redirect back to your app with the ID Token
-      res.redirect(`http://localhost:3000?token=${idToken}`);
+      res.redirect(`/?token=${idToken}`);
     } catch (error) {
       console.error('Error in OAuth callback:', error);
       res.status(500).send('Authentication failed');
