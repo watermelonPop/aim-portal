@@ -1,8 +1,8 @@
-import logo from './logo.png';
+
 import logo2 from './logo2.png';
 import './App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faUser, faMagnifyingGlass, faBars} from '@fortawesome/free-solid-svg-icons';
+import {faMagnifyingGlass, faBars} from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 import Dash from './dash';
 import Profile from './profile';
@@ -16,7 +16,7 @@ import Testing from './testing';
 import StudentCases from './studentCases';
 
 
-function App() {
+export function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [tabs, setTabs] = useState([]);
   const [userType, setUserType] = useState("User");
@@ -60,20 +60,20 @@ function App() {
     if(!loggedIn){
       return;
     }
-    if(userType == "User"){
+    if(userType === "User"){
       setTabs(userTabs);
       setCurrentTab(userTabs[0]);
-    }else if(userType == "Student"){
+    }else if(userType === "Student"){
       setTabs(studentTabs);
       setCurrentTab(studentTabs[0]);
-    }else if(userType == "Professor"){
+    }else if(userType === "Professor"){
       setTabs(professorTabs);
       setCurrentTab(professorTabs[0]);
-    }else if(userType == "Staff"){
+    }else if(userType === "Staff"){
       //check for staff access & set here
       let newStaffTabs = [...staffTabs];
       for(let i = 0; i < staffAccess.length; i++){
-        if(staffAccess[i].hasAccess == true){
+        if(staffAccess[i].hasAccess === true){
           newStaffTabs.push({name: staffAccess[i].access, elem: staffAccess[i].elem});
         }
       }
@@ -82,35 +82,41 @@ function App() {
     }
     return () => {
     };
-  }, [loggedIn, userType]);
+  }, [loggedIn, userType, staffAccess]);
 
   function setStaffRoles({ staffRole }) {
     let newStaffAccess = {...staffAccess}
-    if(staffRole == "Admin"){
+    if(staffRole === "Admin"){
       for(let i = 0; i < newStaffAccess.length; i++){
         newStaffAccess[i].hasAccess = true;
       }
-    }else if(staffRole == "Coordinator"){
+    }else if(staffRole === "Coordinator"){
       for(let i = 0; i < newStaffAccess.length; i++){
-        if(newStaffAccess[i].access != "Global Settings"){
+        if(newStaffAccess[i].access !== "Global Settings"){
           newStaffAccess[i].hasAccess = true;
         }
       }
-    }else if(staffRole == "Testing Staff"){
+    }else if(staffRole === "Testing Staff"){
       for(let i = 0; i < newStaffAccess.length; i++){
-        if(newStaffAccess[i].access == "Accessible Testing" || newStaffAccess[i].access == "Student Cases"){
+        if(newStaffAccess[i].access === "Accessible Testing" || newStaffAccess[i].access === "Student Cases"){
           newStaffAccess[i].hasAccess = true;
         }
       }
-    }else if(staffRole == "Assistive Technology"){
+    }else if(staffRole === "Assistive Technology"){
       for(let i = 0; i < newStaffAccess.length; i++){
-        if(newStaffAccess[i].access == "Assistive Technology" || newStaffAccess[i].access == "Student Cases"){
+        if(newStaffAccess[i].access === "Assistive Technology" || newStaffAccess[i].access === "Student Cases"){
           newStaffAccess[i].hasAccess = true;
         }
       }
     }
     setStaffAccess(newStaffAccess);
   }
+
+  App.setLoggedIn = setLoggedIn;
+  App.setUserType = setUserType;
+  App.setStaffRoles = setStaffRoles;
+  App.staffAccess = staffAccess;
+  App.setStaffAccess = setStaffAccess;
 
   return (
     <>
@@ -125,9 +131,9 @@ function App() {
 }
 
 
-function BasicView({ currentTab, setCurrentTab, userType, tabs }) {
+export function BasicView({ currentTab, setCurrentTab, userType, tabs }) {
   return (
-    <main className='basicScreen'>
+    <main className='basicScreen' data-testid="basicScreen">
       <BasicHeader />
       <BasicTabNav tabs={tabs} setCurrentTab={setCurrentTab} />
       <BasicSettingsBar />
@@ -141,10 +147,10 @@ function Display({ currentTab }) {
   return currentTab ? currentTab.elem : null;
 }
 
-function BasicTabNav({tabs, setCurrentTab}){
+export function BasicTabNav({tabs, setCurrentTab}){
   return (
     <>
-      <nav role="navigation" className='tabNav'>
+      <nav role="navigation" className='tabNav' data-testid="basicTabNav">
         <ul role="menubar">
           {Array.isArray(tabs) ? tabs.map((tab, index) => (
             <li key={index} role="menuitem" onClick={() => setCurrentTab(tab)}>
@@ -174,10 +180,10 @@ function BasicSettingsBar(){
   );
 }
 
-function BasicHeader(){
+export function BasicHeader(){
   return (
     <>
-        <header className='basicHeader'>
+        <header className='basicHeader' data-testid="basicHeader">
           <img src={logo2} alt="TAMU Logo" className='basicLogoImg' aria-label='TAMU'/>
           <h1 className='basicTitle'>AIM Portal</h1>
           <form role="search" className='searchForm'>
@@ -189,7 +195,7 @@ function BasicHeader(){
           <button className='profileBtn' aria-label="Profile">
             <FontAwesomeIcon icon={faBars} className='profileIcon' aria-hidden="true" onClick={
               () => {
-                if(document.getElementById('settings').style.display == "none" || document.getElementById('settings').style.display == ""){
+                if(document.getElementById('settings').style.display === "none" || document.getElementById('settings').style.display === ""){
                   document.getElementById('settings').style.display = "flex";
                 }
                 else{
