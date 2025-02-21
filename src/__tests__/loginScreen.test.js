@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { LoginScreen } from '../LoginScreen';
+import { LoginScreen } from '../loginScreen';
 
 // Mock the fetch function
 global.fetch = jest.fn();
