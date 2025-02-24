@@ -36,3 +36,275 @@
     transform: rotate(360deg);
   }
 }
+
+
+/* --- General Layout Styling --- */
+
+/* --- General Layout Styling --- */
+
+/* Ensures the entire app layout remains within the header and footer */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 150px); /* Adjusted to ensure header & footer remain fixed */
+  padding: 20px;
+  text-align: center;
+}
+
+/* --- Selection Menu --- */
+
+/* Center the menu layout */
+.selection-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  text-align: center;
+}
+
+/* Heading Text for Selection */
+.selection-container h2 {
+  font-size: 1.8rem;
+  /* font-weight: bold; */
+  color: black;
+  margin-bottom: 20px;
+  background-color: transparent;
+}
+
+/* Layout Buttons for Upload & Manage */
+.selection-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+}
+
+/* Style for Large Buttons */
+.selection-buttons button {
+  width: 300px;
+  padding: 18px;
+  font-size: 1.2rem;
+  background-color: #4F0000;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+.selection-buttons button:hover {
+  background-color: #6a0000;
+}
+
+/* --- Forms Page (No White Box) --- */
+
+/* Centers content naturally within available space */
+.forms-content {
+  width: 80%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Back Button - Always Visible */
+.back-btn {
+  top: 20px;
+  left: 20px;
+  background-color: #4F0000;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 14px;
+  z-index: 1000; /* Ensures it stays on top */
+}
+
+/* Disability Selection */
+.disability-selection {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Forms List: Display Forms in a Row */
+.forms-list {
+  display: flex;
+  flex-wrap: wrap; /* Allows wrapping to next line if needed */
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  padding: 15px;
+  background: #f8f8f8;
+  border-radius: 8px;
+}
+
+.form-header {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Individual Form Item: Display Side by Side */
+.form-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  padding: 12px;
+  border-radius: 5px;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+  min-width: 250px; /* Ensure forms are not too small */
+  max-width: 300px;
+  text-align: center;
+}
+
+
+/* Form Label */
+.form-item label {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+/* Align Download and Upload Buttons */
+.file-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Download Button */
+.download-btn {
+  background-color: #4F0000;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding:3px;
+  margin:10px;
+  cursor: pointer;
+}
+
+.download-btn:hover {
+  background-color: #1a0000;
+}
+
+/* Submit Button */
+.submit-btn {
+  width: 100%;
+  text-align: center;
+  background-color: #4F0000;
+  color: white;
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 15px;
+}
+
+/* --- Manage Forms Section --- */
+/* Scrollable Manage Forms Section */
+.manage-forms-list {
+  display: flex;
+  overflow-x: auto; /* Enable horizontal scrolling */
+  gap: 20px;
+  padding: 15px;
+  white-space: nowrap;
+  scroll-snap-type: x mandatory;
+  max-width: 90%; /* Ensure it fits within the container */
+  margin: auto;
+  border-radius: 8px;
+  background: white;
+}
+
+/* Individual Form Card */
+.manage-form-item {
+  flex: 0 0 auto;
+  width: 280px; /* Set a fixed width for each card */
+  background: #f8f8f8;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  scroll-snap-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Title of Form */
+.manage-form-item h3 {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* File Information */
+.form-file-info {
+  font-size: 0.9rem;
+  color: #333;
+  margin-bottom: 10px;
+  word-wrap: break-word; /* Prevents text from overflowing */
+  text-align: center;
+  max-width: 90%;
+}
+
+/* Scrollbar Styling */
+.manage-forms-list::-webkit-scrollbar {
+  height: 8px;
+}
+
+.manage-forms-list::-webkit-scrollbar-thumb {
+  background-color: #4F0000;
+  border-radius: 4px;
+}
+
+.manage-forms-list::-webkit-scrollbar-track {
+  background-color: #ddd;
+}
+
+/* Hide scrollbar for a cleaner look */
+.manage-forms-list {
+  scrollbar-width: thin;
+  scrollbar-color: #4F0000 #ddd;
+}
+
+/* Status Section */
+.status {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+/* Different Status Colors */
+.status.pending {
+  background-color: orange;
+  color: white;
+}
+
+.status.approved {
+  background-color: green;
+  color: white;
+}
+
+/* Settings & Remove Buttons */
+.settings-btn, .remove-btn {
+  background-color: #4F0000;
+  color: white;
+  padding: 5px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin: 5px;
+}
+
+.settings-btn:hover, .remove-btn:hover {
+  opacity: 0.8;
+}

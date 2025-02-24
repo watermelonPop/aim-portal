@@ -6,11 +6,17 @@ function Forms({ userType }) {
   const [selectedDisability, setSelectedDisability] = useState('');
   const [uploadedFiles, setUploadedFiles] = useState({});
   const [submittedForms, setSubmittedForms] = useState([
-    {
+    {   //just test stuff for now to see how it looks
       name: "Priority Registration Request",
       fileName: "priority_request.pdf",
       uploadDate: "2024-02-10",
       status: "Pending"
+    },
+    {
+      name: "Medical Documentation",
+      fileName: "medical_doc.pdf",
+      uploadDate: "2024-02-05",
+      status: "Approved"
     },
     {
       name: "Medical Documentation",
@@ -95,7 +101,7 @@ function Forms({ userType }) {
 
               <div className="disability-selection">
                 <label>
-                  Select a Disability:
+                  <h3>Select a Disability:</h3>
                   <select value={selectedDisability} onChange={handleDisabilityChange}>
                     <option value="">-- Select an Option --</option>
                     {disabilityOptions.map((disability, index) => (
@@ -105,7 +111,6 @@ function Forms({ userType }) {
                 </label>
               </div>
 
-             {/* Forms Listed in a Row at the Bottom */}
 {/* Forms Listed in a Row at the Bottom */}
 {selectedDisability && (
   <>
