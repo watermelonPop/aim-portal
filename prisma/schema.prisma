@@ -8,39 +8,84 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  phone     String?
+model Account {
+  id        Int         @id @default(autoincrement())
+  email     String      @unique
+  name      String      
   role      Role
-  createdAt DateTime @default(now())
-
+  createdAt DateTime    @default(now())
   student   Student?
   professor Professor?
   advisor   Advisor?
+  settings  Settings?
 }
 
 model Student {
   userId               Int                    @id @unique
-  user                 User                   @relation(fields: [userId], references: [id])
-  studentId            String                 @unique
-  major                String?
-  graduationYear       Int?
+  account              Account                @relation(fields: [userId], references: [id])
+  dob                  DateTime
+  UIN                  Int?
+  phone_number         String
 }
 
 model Professor {
-  userId         Int     @id @unique
-  user           User    @relation(fields: [userId], references: [id])
+  userId         Int        @id @unique
+  account        Account    @relation(fields: [userId], references: [id])
   department     String?
-  officeLocation String?
 }
 
 model Advisor {
   userId             Int     @id @unique
-  user               User    @relation(fields: [userId], references: [id])
-  advisingDepartment String?
-  advisorNotes       String?
+  account               Account    @relation(fields: [userId], references: [id])
+  role               AdvisorRoles @default(Coordinator)
+}
+
+model Settings {
+  userId                Int @id @unique
+  account               Account   @relation(fields: [userId], references: [id]) 
+  content_size          Int @default(100)
+  highlight_tiles       Boolean @default(false)
+  highlight_links       Boolean @default(false)
+  text_magnifier        Boolean @default(false)
+  align_text            Boolean @default(false)
+  font_size             Int @default(100)
+  line_height           Int @default(100)
+  letter_spacing        Int @default(100)
+  contrast              Contrast @default(Regular)
+  saturation            Saturation @default(Regular)
+  mute_sounds           Boolean @default(false)
+  hide_images           Boolean @default(false)
+  reading_mask          Boolean @default(false)
+  highlight_hover       Boolean @default(false)
+  cursor                Cursor @default(Regular)
+}
+
+enum Cursor {
+  BBC
+  BWC
+  Regular
+}
+
+enum Saturation {
+  Regular
+  Low
+  High
+  Monochrome
+}
+
+enum Contrast {
+  Regular
+  Dark
+  Light
+  Monochrome
+}
+
+
+enum AdvisorRoles {
+  Admin
+  Coordinator
+  Testing_Staff
+  Tech_Staff
 }
 
 enum Role {
