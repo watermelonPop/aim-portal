@@ -1,8 +1,14 @@
 import './App.css';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import logo from './logo.png';
 
-export function LoginScreen({ setLoggedIn, setUserType, setStaffRoles }) {
+export function LoginScreen({ setUserId, setSettings, loggedIn, setLoggedIn, setUserType, setStaffRoles }) {
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    if (loggedIn) {
+      setLoading(false);
+    }
+  }, [loggedIn]);
   const userExists = async (email) => {
     try {
       const response = await fetch('/api/checkAccount', {
@@ -17,26 +23,55 @@ export function LoginScreen({ setLoggedIn, setUserType, setStaffRoles }) {
       console.error('Error checking exists', error);
     }
   };
-  const verifyToken = async (token) => {
+
+  useEffect(() => {
+    console.log('useEffect running');
+    const urlParams = new URLSearchParams(window.location.search);
+    const idToken = urlParams.get('token');
+    
+    if (idToken) {
+      console.log('Calling verifyToken');
+      verifyToken(idToken, setUserId, setSettings, loggedIn, setLoggedIn, setUserType, setStaffRoles, setLoading);
+      // Remove the token from the URL for security
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, []);
+
+  const verifyToken = async (token, setUserId, setSettings, loggedIn, setLoggedIn, setUserType, setStaffRoles, setLoading) => {
+    console.log("VERIFY TOKEN CALLED");
     try {
       const response = await fetch('/api/verifyToken', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token }),
       });
+      console.log("BEFORE THAT");
   
       const data = await response.json();
+      console.log("DATA HERE: ");
+      console.log(data);
       if (data.valid) {
+        setLoading(true);
         console.log('User verified:', data);
         let exists = await userExists(data.email);
-        if(exists.exists == true){
+        if(exists.exists === true){
           setUserType(exists.user_info.user_role);
-          if(exists.user_info.user_role == "Staff"){
+          setUserId(exists.user_info.user_id);
+          if(exists.user_info.user_role === "Staff"){
             let staffRole = await getStaffRoles(exists.user_info.user_id);
             setStaffRoles(staffRole);
           }
+          getUserSettings(exists.user_info.user_id, setSettings);
+        }else{
+          console.log("DOES NOT EXIST");
+          if (localStorage.getItem("aim-settings") !== null) {
+              console.log("LOCAL STORAGE EXISTS:", localStorage.getItem("aim-settings")); // Logs as a string
+              const parsedSettings = JSON.parse(localStorage.getItem("aim-settings")); // Convert back to object
+              setSettings(parsedSettings); // Set state with the parsed object
+          }
         }
         setLoggedIn(true);
+        return data;
       } else {
         console.error('Invalid token:', data.error);
         window.location.href = "/";
@@ -46,19 +81,7 @@ export function LoginScreen({ setLoggedIn, setUserType, setStaffRoles }) {
       window.location.href = "/";
     }
   };
-
-  useEffect(() => {
-    console.log('useEffect running');
-    const urlParams = new URLSearchParams(window.location.search);
-    const idToken = urlParams.get('token');
-    
-    if (idToken) {
-      console.log('Calling verifyToken');
-      verifyToken(idToken);
-      // Remove the token from the URL for security
-      window.history.replaceState({}, document.title, window.location.pathname);
-    }
-  }, []);
+  
 
   const getStaffRoles = async (userId) => {
     try {
@@ -67,28 +90,47 @@ export function LoginScreen({ setLoggedIn, setUserType, setStaffRoles }) {
       console.log('Response:', text);
       if (response.ok) {
         const data = JSON.parse(text);
-        return data.role;
+        if(data.role){
+          return data.role;
+        }
       } else {
         console.error('Failed', response.status, response.statusText);
+        window.location.href = "/";
       }
     } catch (error) {
       console.error('Error while getting staff roles:', error);
+      window.location.href = "/";
     }
   };
 
   const startLogin = async () => {
+      try {
+          const response = await fetch("/api/auth");
+          console.log("@@@@@@@@@@");
+          if (!response.ok) {
+              console.error('Failed to start login process', response.status, response.statusText);
+              return;
+          }
+          const data = await response.json(); 
+          console.log('Response:', data);
+          window.location.href = data.authUrl;;
+      } catch (error) {
+          console.error('Error during login:', error);
+      }
+  };
+
+
+  const getUserSettings = async (userId, setSettings) => {
     try {
-      const response = await fetch("/api/auth");
-      const text = await response.text();
-      console.log('Response:', text);
-      if (response.ok) {
-        const data = JSON.parse(text);
-        window.location.href = data.authUrl;
+      const response = await fetch(`/api/getSettings?user_id=${userId}`);
+      const data = await response.json();
+      if (data) {
+        setSettings(data.settings_info);
       } else {
-        console.error('Failed to start login process', response.status, response.statusText);
+        console.error('Failed', response.status, response.statusText);
       }
     } catch (error) {
-      console.error('Error during login:', error);
+      console.error('Error while getting settings:', error);
     }
   };
 
@@ -96,16 +138,29 @@ export function LoginScreen({ setLoggedIn, setUserType, setStaffRoles }) {
   LoginScreen.verifyToken = verifyToken;
   LoginScreen.getStaffRoles = getStaffRoles;
   LoginScreen.startLogin = startLogin;
+  LoginScreen.loggedIn = loggedIn;
+  LoginScreen.setLoggedIn = setLoggedIn;
+  LoginScreen.getUserSettings = getUserSettings;
 
   return (
-    <main className='loginScreen' data-testid="login-screen" verifyToken={verifyToken}>
-      <header className='loginHeader' role="heading">
-        <img src={logo} alt="TAMU Logo" className='logoImg'/>
-        <h1 className='loginTitle'>AIM Portal</h1>
-      </header>
-      <button type="button" id="loginBtn" aria-label="log in" onClick={startLogin}>log in</button>
-    </main>
+    loading ? (
+      <div className="loadingScreen" aria-hidden="true" tabIndex="-1">
+        <div className="spinner" role="alert">
+          <div className="spinner-icon"></div>
+          <p className="spinner-text">Loading...</p>
+        </div>
+      </div>
+    ) : (
+      <main className='loginScreen' data-testid="login-screen">
+        <header className='loginHeader' role="heading" aria-level="1">
+          <img src={logo} alt="TAMU Logo" className='logoImg'/>
+          <h1 className='loginTitle'>AIM Portal</h1>
+        </header>
+        <button type="button" id="loginBtn" aria-label="log in" onClick={startLogin}>log in</button>
+      </main>
+    )
   );
+
 }
 
 export default LoginScreen;

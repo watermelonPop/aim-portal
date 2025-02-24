@@ -1,45 +1,66 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { App, BasicView, BasicTabNav, BasicHeader } from '../App.js';
+import { App } from '../App.js';
 
 global.fetch = jest.fn();
 
 describe('App', () => {
-
-        const mockStaff = {
-                
-        };
-        
         beforeEach(() => {
                 jest.clearAllMocks();
         });
         describe('loggedIn set to true', () => {
                 test('renders basic view', async () => {
+                        // Mock the fetch call for setSettingsDatabase
+                        global.fetch.mockResolvedValueOnce({
+                          ok: true,
+                          json: () => Promise.resolve({ success: true })
+                        });
+                    
                         act(() => {
-                                render(<App />);
+                          render(<App />);
                         });
-                        const result = await App.setLoggedIn(true);
+                    
+                        await act(async () => {
+                          await App.setLoggedIn(true);
+                        });
+                    
                         await waitFor(() => {
-                                expect(screen.queryByTestId('basicScreen')).toBeInTheDocument();
+                          expect(screen.queryByTestId('basicScreen')).toBeInTheDocument();
                         });
+                    
+                        // Optionally, you can assert that fetch was called with the correct arguments
+                        //expect(global.fetch).toHaveBeenCalledWith('/api/setSettings', expect.any(Object));
                 });
+                      
 
                 test('renders basicHeader', async () => {
+                        global.fetch.mockResolvedValueOnce({
+                                ok: true,
+                                json: () => Promise.resolve({ success: true })
+                        });
                         act(() => {
                                 render(<App />);
                         });
-                        const result = await App.setLoggedIn(true);
+                        await act(async () => {
+                                await App.setLoggedIn(true);
+                        });
                         await waitFor(() => {
                                 expect(screen.queryByTestId('basicHeader')).toBeInTheDocument();
                         });
                 });
 
                 test('by default, userType = User, renders basicTabNav, with the correct User tabs', async () => {
+                        global.fetch.mockResolvedValueOnce({
+                                ok: true,
+                                json: () => Promise.resolve({ success: true })
+                        });
                         act(() => {
                                 render(<App />);
                         });
-                        const result2 = await App.setLoggedIn(true);
+                        await act(async () => {
+                                await App.setLoggedIn(true);
+                        });
 
                         await waitFor(() => {
                                 const basicTN = screen.getByTestId('basicTabNav');
@@ -53,11 +74,18 @@ describe('App', () => {
                 });
 
                 test('Student View renders basicTabNav, with the correct Student tabs', async () => {
-                        await act(async () => {
+                        global.fetch.mockResolvedValueOnce({
+                                ok: true,
+                                json: () => Promise.resolve({ success: true })
+                        });
+                        
+                        act(() => {
                                 render(<App />);
                         });
-                        const result = await App.setUserType("Student");
-                        const result2 = await App.setLoggedIn(true);
+                        await act(async () => {
+                                await App.setLoggedIn(true);
+                                await App.setUserType("Student");
+                        });
 
                         await waitFor(() => {
                                 const basicTN = screen.getByTestId('basicTabNav');
@@ -73,11 +101,18 @@ describe('App', () => {
                 });
 
                 test('Professor View renders basicTabNav, with the correct Professor tabs', async () => {
-                        await act(async () => {
+                        global.fetch.mockResolvedValueOnce({
+                                ok: true,
+                                json: () => Promise.resolve({ success: true })
+                        });
+                        
+                        act(() => {
                                 render(<App />);
                         });
-                        const result = await App.setUserType("Professor");
-                        const result2 = await App.setLoggedIn(true);
+                        await act(async () => {
+                                await App.setLoggedIn(true);
+                                await App.setUserType("Professor");
+                        });
 
                         await waitFor(() => {
                                 const basicTN = screen.getByTestId('basicTabNav');
@@ -92,11 +127,18 @@ describe('App', () => {
                 });
 
                 test('Staff View renders basicTabNav, with the correct Staff tabs', async () => {
-                        await act(async () => {
+                        global.fetch.mockResolvedValueOnce({
+                                ok: true,
+                                json: () => Promise.resolve({ success: true })
+                        });
+                        
+                        act(() => {
                                 render(<App />);
                         });
-                        const result = await App.setUserType("Staff");
-                        const result2 = await App.setLoggedIn(true);
+                        await act(async () => {
+                                await App.setLoggedIn(true);
+                                await App.setUserType("Staff");
+                        });
 
                         await waitFor(() => {
                                 const basicTN = screen.getByTestId('basicTabNav');
