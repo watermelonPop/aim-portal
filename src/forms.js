@@ -81,6 +81,7 @@ function Forms({ userType }) {
       
 
       {/* Content Wrapper */}
+      {userType === "User" && ( ////////////////// USER VIEW FORMS 
       <div className="content-container">
         {/* Selection Menu */}
         {view === null && (
@@ -141,8 +142,6 @@ function Forms({ userType }) {
     <button type="submit" className="submit-btn" onClick={handleSubmit}>Submit Forms</button>
   </>
 )}
-
-
             </div>
           </div>
         )}
@@ -170,7 +169,22 @@ function Forms({ userType }) {
           </div>
         )}
       </div>
+      )}
 
+    {/* Placeholder for Staff and Professor Sections */}
+      {userType === "Staff" && (////////////////////STAFF VIEW FORMS
+        <div>
+          <h2 className='dashboardTitle'>STAFF FORMS</h2>
+          <p>Staff form management will go here.</p>
+        </div>
+      )}
+
+      {userType === "Professor" && (///////////////////PROFESSOR VIEW FORMS
+        <div>
+          <h2 className='dashboardTitle'>PROFESSOR FORMS</h2>
+          <p>Professor form management will go here.</p>
+        </div>
+      )}
     </main>
   );
 }
