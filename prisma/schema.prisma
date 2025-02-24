@@ -16,7 +16,10 @@ model User {
   role      Role
   createdAt DateTime @default(now())
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 
   student   Student?
   professor Professor?
@@ -29,6 +32,10 @@ model Student {
   studentId            String                 @unique
   major                String?
   graduationYear       Int?
+<<<<<<< Updated upstream
+=======
+  AccessibilityRequest AccessibilityRequest[]
+>>>>>>> Stashed changes
 }
 
 model Professor {
@@ -43,6 +50,19 @@ model Advisor {
   user               User    @relation(fields: [userId], references: [id])
   advisingDepartment String?
   advisorNotes       String?
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+}
+
+model AccessibilityRequest {
+  id          Int           @id @default(autoincrement())
+  student     Student       @relation(fields: [studentId], references: [userId])
+  studentId   Int
+  requestedBy RequesterRole
+  requestType String
+  status      RequestStatus @default(PENDING)
+  createdAt   DateTime      @default(now())
 >>>>>>> Stashed changes
 }
 
@@ -53,7 +73,10 @@ enum Role {
 }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 enum RequesterRole {
   STUDENT
   ADVISOR
@@ -65,5 +88,8 @@ enum RequestStatus {
   DENIED
 }
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
