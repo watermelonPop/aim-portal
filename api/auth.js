@@ -3,8 +3,7 @@ require('dotenv').config();
 const { OAuth2Client } = require('google-auth-library');
 const { neon } = require('@neondatabase/serverless');
 
-const REDIRECT_URI = "http://localhost:3000/api/oauth2callback";
-const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD, CLIENT_ID, CLIENT_SECRET } = process.env;
+const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD, CLIENT_ID, CLIENT_SECRET, REDIRECT_URI } = process.env;
 const sql = neon(`postgresql://${PGUSER}:${PGPASSWORD}@${PGHOST}/${PGDATABASE}?sslmode=require`);
 
 const oauth2Client = new OAuth2Client(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
