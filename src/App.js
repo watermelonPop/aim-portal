@@ -121,9 +121,9 @@ export function App() {
     }
     if(userId){
       setSettingsDatabase(userId, settings);
-      setTxtChangeSizeAmount(settings.font_size);
-      setLetterSpacingChangeSizeAmount(settings.letter_spacing);
     }
+    setTxtChangeSizeAmount(settings.font_size);
+    setLetterSpacingChangeSizeAmount(settings.letter_spacing);
   }, [settings, userId]);
 
   useEffect(() => {
