@@ -15,6 +15,35 @@ model User {
   phone     String?
   role      Role
   createdAt DateTime @default(now())
+<<<<<<< Updated upstream
+=======
+
+  student   Student?
+  professor Professor?
+  advisor   Advisor?
+}
+
+model Student {
+  userId               Int                    @id @unique
+  user                 User                   @relation(fields: [userId], references: [id])
+  studentId            String                 @unique
+  major                String?
+  graduationYear       Int?
+}
+
+model Professor {
+  userId         Int     @id @unique
+  user           User    @relation(fields: [userId], references: [id])
+  department     String?
+  officeLocation String?
+}
+
+model Advisor {
+  userId             Int     @id @unique
+  user               User    @relation(fields: [userId], references: [id])
+  advisingDepartment String?
+  advisorNotes       String?
+>>>>>>> Stashed changes
 }
 
 enum Role {
@@ -23,4 +52,18 @@ enum Role {
   ADVISOR
 }
 
+<<<<<<< Updated upstream
+=======
+enum RequesterRole {
+  STUDENT
+  ADVISOR
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  DENIED
+}
+
+>>>>>>> Stashed changes
 
