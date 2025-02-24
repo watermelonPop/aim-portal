@@ -51,13 +51,17 @@ export function LoginScreen({ setLoggedIn, setUserType, setStaffRoles }) {
     console.log('useEffect running');
     const urlParams = new URLSearchParams(window.location.search);
     const idToken = urlParams.get('token');
-    
-    if (idToken) {
+    const name = urlParams.get('name');
+    const email = urlParams.get('email');
+    const picture = urlParams.get('picture'); // Added to capture picture from payload
+    if (idToken && name && email && picture) {
+      console.log('Storing user data in localStorage');
+      localStorage.setItem('userData', JSON.stringify({ token: idToken, name, email, picture }));
       console.log('Calling verifyToken');
       verifyToken(idToken);
-      // Remove the token from the URL for security
-      window.history.replaceState({}, document.title, window.location.pathname);
     }
+    // Remove query parameters for security
+    window.history.replaceState({}, document.title, window.location.pathname);
   }, []);
 
   const getStaffRoles = async (userId) => {
