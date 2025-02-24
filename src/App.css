@@ -42,6 +42,7 @@
 
 /* --- General Layout Styling --- */
 
+/*USER FORMS////////////////////////////////////////////////////////////////////////////////////////////////////*/
 /* Ensures the entire app layout remains within the header and footer */
 .main-content {
   display: flex;
@@ -308,3 +309,102 @@
 .settings-btn:hover, .remove-btn:hover {
   opacity: 0.8;
 }
+
+/*STAFF DASHBOARD/////////////////////////////////////////////////////////////////*/
+/* STAFF DASHBOARD LAYOUT */
+.staff-dashboard-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  padding: 20px;
+}
+
+/* Centering the main content */
+.staff-main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;  /* Centers all content */
+  text-align: center;   /* Centers text */
+  padding: 20px;
+}
+
+/* Bigger and More Accessible Staff Menu Buttons */
+.staff-menu-buttons button {
+  width: 300px; /* Increase width */
+  height: 50px; /* Increase height */
+  font-size: 1rem; /* Bigger text */
+  padding: 15px; /* More padding for better clickability */
+  background-color: #5a0000; /* Same color as before */
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  margin-bottom:5vh;
+}
+
+/* Hover effect for better UI */
+.staff-menu-buttons button:hover {
+  background-color: #6a0000;
+  transform: scale(1.05); /* Slightly enlarges on hover */
+}
+
+
+/* Center the dashboard title */
+.staff-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Alerts Box */
+.staff-alerts {
+  width: 300px; /* Fixed width for alert section */
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Alerts Box */
+.staff-alerts {
+  width: 300px; /* Fixed width for alert section */
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.alert-box {
+  border-top: 2px solid #4F0000;
+  padding-top: 10px;
+}
+
+.alert-item {
+  background: #f8f8f8;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border-left: 4px solid #4F0000;
+}
+
+.alert-date {
+  font-size: 12px;
+  font-weight: bold;
+  color: #777;
+}
+
+.alert-message {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.alert-notes {
+  font-size: 12px;
+  color: #555;
+}
+/*//////////////////////////////////////////////////////////////////////////////////////////*/
+

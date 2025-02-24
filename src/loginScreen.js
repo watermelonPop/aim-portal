@@ -10,6 +10,8 @@ export function LoginScreen({ setUserId, setSettings, loggedIn, setLoggedIn, set
     }
   }, [loggedIn]);
   const userExists = async (email) => {
+    console.log("Checking account for email:", email); // Debug log
+  
     try {
       const response = await fetch('/api/checkAccount', {
         method: 'POST',
@@ -18,6 +20,7 @@ export function LoginScreen({ setUserId, setSettings, loggedIn, setLoggedIn, set
       });
   
       const data = await response.json();
+      console.log("Response from /api/checkAccount:", data); // Debug log
       return data;
     } catch (error) {
       console.error('Error checking exists', error);
