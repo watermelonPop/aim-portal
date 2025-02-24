@@ -43,17 +43,6 @@ model Advisor {
   advisorNotes       String?
 }
 
-model AccessibilityRequest {
-  id          Int           @id @default(autoincrement())
-  student     Student       @relation(fields: [studentId], references: [userId])
-  studentId   Int
-  requestedBy RequesterRole
-  requestType String
-  status      RequestStatus @default(PENDING)
-  createdAt   DateTime      @default(now())
-
-}
-
 enum Role {
   STUDENT
   PROFESSOR
@@ -65,10 +54,15 @@ enum RequesterRole {
   ADVISOR
 }
 
+
+
 enum RequestStatus {
   PENDING
   APPROVED
   DENIED
 }
+
+
+
 
 
