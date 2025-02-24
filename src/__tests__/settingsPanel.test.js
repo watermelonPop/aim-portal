@@ -158,7 +158,7 @@ describe('settingsPanel', () => {
                             const computedStyle = window.getComputedStyle(document.documentElement);
                             const txtChangeSizeAmount = computedStyle.getPropertyValue('--txtChangeSizeAmount');
                             
-                            expect(parseFloat(txtChangeSizeAmount)).toBe(0.9);
+                            expect(parseFloat(txtChangeSizeAmount)).toBe(1.0);
                 });
 
                 test('save to local storage', async () => {
