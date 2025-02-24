@@ -1,3 +1,12 @@
+:root {
+  --txtChangeSizeAmount: 1.0;
+  --txtSizeMax: 5rem;
+  --txtSizeMin: 0.2rem;
+  --letterSpacingChangeSizeAmount: 1.0;
+  --letterSpacingMin: 0.001rem;
+  --letterSpacingMax: 2rem;
+}
+
 html{
   overflow-x: hidden;
 }
@@ -50,7 +59,7 @@ main{
 h1{
   font-family: "Mitr", serif;
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: clamp(var(--letterSpacingMin), calc(0.15rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
   display: flex;
   justify-content: center;
   align-items: center;
@@ -63,7 +72,7 @@ h1{
 h2{
   font-family: "Mitr", serif;
   font-weight: 600;
-  letter-spacing: 2px;
+  letter-spacing: clamp(var(--letterSpacingMin), calc(0.15rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
   display: flex;
   justify-content: center;
   align-items: center;
@@ -71,13 +80,14 @@ h2{
   width: fit-content;
   height: 10rem;
   padding: 0;
-  background-color: aquamarine;
 }
 
-.loginTitle{
+.loginTitle {
   color: #4F0000;
-  font-size: 5rem;
+  font-size: clamp(var(--txtSizeMin), calc(5rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
 }
+
+
 
 button{
   font-family: "Mitr", serif;
@@ -94,8 +104,8 @@ button{
   background-color: #4F0000;
   color: #FFEDED;
   font-weight: 650;
-  letter-spacing: 2px;
-  font-size: 3rem;
+  letter-spacing: clamp(var(--letterSpacingMin), calc(0.15rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
+  font-size: clamp(var(--txtSizeMin), calc(3rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
   width: 50%;
   height: 7rem;
   max-width: 20rem;
@@ -104,8 +114,8 @@ button{
 .profileBtn{
   background-color: #FFEDED;
   font-weight: 650;
-  letter-spacing: 2px;
-  font-size: 3rem;
+  letter-spacing: clamp(var(--letterSpacingMin), calc(0.15rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
+  font-size: clamp(var(--txtSizeMin), calc(3rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
   height: 60%;
   max-width: 20rem;
   border-radius: 50rem;
@@ -114,8 +124,8 @@ button{
 .searchBtn{
   background-color: #FFEDED;
   font-weight: 650;
-  letter-spacing: 2px;
-  font-size: 3rem;
+  letter-spacing: clamp(var(--letterSpacingMin), calc(0.15rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
+  font-size: clamp(var(--txtSizeMin), calc(3rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
   height: 70%;
   width: 15%;
   max-width: 4rem;
@@ -125,7 +135,7 @@ button{
 
 .searchIcon{
   color: #4F0000;
-  font-size: 1rem;
+  font-size: clamp(var(--txtSizeMin), calc(1rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
   margin: 0;
   padding: 1rem;
   width: fit-content;
@@ -172,7 +182,7 @@ button{
 
 .basicTitle{
   color: #FFEDED;
-  font-size: 3rem;
+  font-size: clamp(var(--txtSizeMin), calc(3rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
   margin: 0;
   padding: 0;
   height: 100%;
@@ -182,7 +192,7 @@ button{
 
 .profileIcon{
   color: #4F0000;
-  font-size: 1rem;
+  font-size: clamp(var(--txtSizeMin), calc(1rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
   margin: 0;
   padding: 1rem;
   height: 40%;
@@ -218,24 +228,121 @@ button{
   background-color: #FFEDED;
   font-family: "Mitr", serif;
   font-weight: 400;
-  font-size: 1rem;
+  font-size: clamp(var(--txtSizeMin), calc(1rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
+  letter-spacing: clamp(var(--letterSpacingMin), calc(0.02rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
   padding: 1rem
 }
 
+.settingsNav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  width: 70%;
+  height: 60%;
+  background-color: #FFEDED;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  row-gap: 5%;
+  border-radius: 1rem;
+}
+
+.settingsNav ul > li {
+  float: left;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  font-family: "Mitr", serif;
+  font-weight: 400;
+  font-size: clamp(var(--txtSizeMin), calc(1.2rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
+  letter-spacing: clamp(var(--letterSpacingMin), calc(0.1rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  height: 25%;
+  padding: 0;
+  margin: 0;
+  background-color: #4F0000;
+  border: 2px solid black;
+  border-radius: 1rem;
+}
+
+.settingsNav ul > li > form {
+  display: flex;
+  width: 100%;
+  height: 60%;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  color:#FFEDED;
+}
+
+.settingsNav ul > li > h3 {
+  display: flex;
+  width: 100%;
+  height: 60%;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  color:#FFEDED;
+}
+
 .settingsNav {
-  display: none;
-  background-color: aqua;
+  visibility: hidden;
+  opacity: 0;
+  background-color: #4F0000;
   height: 100vh; /* Full viewport height */
   width: 50%;
   margin: 0;
   padding: 0;
-  position: fixed; /* Changed from sticky to fixed */
+  position: fixed;
   top: 0; /* Align to the top of the viewport */
   right: 0; /* Align to the right of the viewport */
   z-index: 1000; /* Ensure it's above other elements */
   justify-content: center;
   align-items: center;
   overflow-y: auto; /* Allow scrolling if content overflows */
+  display: flex;
+  flex-direction: column;
+  box-shadow: 5px 10px 15px black;
+  row-gap: 5%;
+}
+
+.settingsNav[aria-hidden="false"] {
+  visibility: visible;
+  opacity: 1;
+}
+
+@keyframes panelSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+.settingsHeading{
+  color: black;
+  font-family: "Mitr", serif;
+  font-weight: 700;
+  font-size: clamp(var(--txtSizeMin), calc(2rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
+  width: 70%;
+  height: 10%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  background-color: #FFEDED;
+  border-radius: 1rem;
 }
 
 .tabNav {
@@ -247,6 +354,7 @@ button{
   position: sticky;
   top: 15%;
   z-index: 100;
+  box-shadow: 5px 5px 15px black;
 }
 
 
@@ -255,6 +363,7 @@ button{
   margin: 0;
   padding: 0;
   overflow: hidden;
+  height: 100%;
 }
 
 .tabNav ul > li {
@@ -266,14 +375,24 @@ button{
   color:#FFEDED;
   font-family: "Mitr", serif;
   font-weight: 400;
-  font-size: 1.2rem;
+  font-size: clamp(var(--txtSizeMin), calc(1.2rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
+  letter-spacing: clamp(var(--letterSpacingMin), calc(0.06rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
+  cursor: pointer;
+  height: 80%;
+}
+
+#activeTab{
+  background-color: #FFEDED;
+  color: #4F0000;
+  border-radius: 1rem;
 }
 
 .footerTitle{
   color:#FFEDED;
   font-family: "Mitr", serif;
-  font-weight: 400;
-  font-size: 1.2rem;
+  font-weight: 500;
+  font-size: clamp(var(--txtSizeMin), calc(1.2rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
+  letter-spacing: clamp(var(--letterSpacingMin), calc(0.1rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
 }
 
 .basicFooter{
@@ -296,7 +415,8 @@ button{
   color:#FFEDED;
   font-family: "Mitr", serif;
   font-weight: 400;
-  font-size: 1rem;
+  font-size: clamp(var(--txtSizeMin), calc(1rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
+  letter-spacing: clamp(var(--letterSpacingMin), calc(0.05rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
   row-gap: 0;
   text-align: center;
 }
@@ -308,7 +428,7 @@ button{
 .dashboardOuter{
   width: 100%;
   height: fit-content;
-  min-height: 45%;
+  min-height: 65%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -316,7 +436,121 @@ button{
 
 .dashboardTitle{
   font-family: "Mitr", serif;
-  font-weight: 400;
-  font-size: 1.5rem;
+  font-weight: 600;
+  font-size: clamp(var(--txtSizeMin), calc(1.5rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
+  letter-spacing: clamp(var(--letterSpacingMin), calc(0.1rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
 }
 
+.closeBtnDiv {
+  width: 90%;
+  height: 10%;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+#closeSettingPanel {
+  background-color: #FFEDED;
+  color: #4F0000;
+  font-weight: 650;
+  letter-spacing: clamp(var(--letterSpacingMin), calc(0.15rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
+  font-size: clamp(var(--txtSizeMin), calc(2rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
+  width: 3rem;
+  height: 3rem; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  line-height: 1; 
+  border: none;
+}
+
+.settingsBtn{
+  background-color: #FFEDED;
+  color: #4F0000;
+  font-weight: 650;
+  letter-spacing: clamp(var(--letterSpacingMin), calc(0.15rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
+  font-size: clamp(var(--txtSizeMin), calc(2rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
+  width: 3rem;
+  height: 3rem; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  line-height: 1; 
+  border: none;
+}
+
+.loadingScreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.spinner-icon {
+  width: 5rem;
+  height: 5rem;
+  border: 1rem solid #ccc;
+  border-top: 1rem solid #4F0000;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+}
+
+.spinner-text {
+  font-family: "Mitr", serif;
+  font-weight: 600;
+  font-size: clamp(var(--txtSizeMin), calc(2rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
+  letter-spacing: clamp(var(--letterSpacingMin), calc(0.1rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
+  color: #4F0000;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.logOutBtn{
+  background-color: #FFEDED;
+  color: #4F0000;
+  font-weight: 650;
+  letter-spacing: clamp(var(--letterSpacingMin), calc(0.15rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
+  font-size: clamp(var(--txtSizeMin), calc(2rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
+  width: 100%;
+  height: 100%; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  line-height: 1; 
+  border: none;
+}
+
+.logOutBtn:hover{
+  background-color: #4F0000;
+  color: #FFEDED;
+}
