@@ -14,6 +14,7 @@ import generate_exam_scheduling
 import generate_forms
 import generate_assistive_technologies
 import generate_testing_rooms
+import generate_requests
 
 """
 TODO: 
@@ -47,13 +48,14 @@ file_destination = "/Users/unamazin/Documents/GitHub/aim-portal/data_generation/
 #user_ids = []
 
 important_dates = generate_important_dates.generate_important_dates(file_directory=file_destination)
-accounts = generate_accounts.generate_accounts(num_accounts=2000,file_directory=file_destination)
+accounts = generate_accounts.generate_accounts(num_accounts=3000,file_directory=file_destination)
 generate_settings.generate_settings(num_accounts=2000,file_directory=file_destination, user_ids=accounts)
 
 #filter and sort user ids by the role
 professor_accounts = [account for account in accounts if account[3] == "Professor"]
 student_accounts = [account for account in accounts if account[3] == "Student"]
 advisor_accounts = [account for account in accounts if account[3] == "Advisor"]
+user_accounts = [account for account in accounts if account[3] == "User"]
 
 
 advisors = generate_advisors.generate_advisors(advisor_accounts=advisor_accounts,file_directory=file_destination)
@@ -70,3 +72,5 @@ generate_exam_scheduling.generate_exam_scheduling(courses=courses, advisors=advi
 generate_forms.generate_forms(file_directory=file_destination)
 generate_assistive_technologies.generate_assistive_technologies(students=students, advisors=advisors, file_directory=file_destination)
 generate_testing_rooms.generate_testing_rooms(file_directory=file_destination)
+
+generate_requests.generate_requests(user_accounts,advisors,file_directory=file_destination)

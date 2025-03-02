@@ -1,210 +1,301 @@
 professor_id,name,email,department
-fd997237-f812-4a73-be4e-74c1a6ac7e1a,Stephen Guerrero PhD,sguerrero@tamu.edu,College of Arts and Sciences
-e1b4440b-c734-4692-a0e0-d4fe9c136b57,Hector Wagner,hwagner@tamu.edu,College of Marine Sciences and Maritime Studies
-58f6b011-59c5-4763-a1e2-64d53a79b29c,William Sanchez,wsanchez@tamu.edu,"College of Performance, Visualization and Fine Arts"
-8360a043-9c30-4ddf-94d4-27cd109e5b34,Frank Keller,fkeller@tamu.edu,College of Medicine
-5ca5e26b-5ac7-46e5-8d41-d52c449f29b0,Jordan Rogers,jrogers@tamu.edu,College of Dentistry
-78356684-8d14-4356-8774-ce5c4ebda380,Mr. Joshua Avila,mjoshua@tamu.edu,Bush School of Government and Public Service
-46ea1405-dd51-4556-811c-b5d5ae3cc47a,Lisa Evans,levans@tamu.edu,College of Marine Sciences and Maritime Studies
-02489131-9764-4332-a2c3-2c73d6fe4e9b,James Robbins,jrobbins@tamu.edu,College of Marine Sciences and Maritime Studies
-dd739135-69f1-46e5-9e6c-1f0436e6945e,Michael Pearson DDS,mpearson@tamu.edu,College of Agriculture and Life Sciences
-1477cb2d-efdd-434c-991d-20135c70f2a3,Jaclyn Moran,jmoran@tamu.edu,College of Marine Sciences and Maritime Studies
-d09308d3-9df3-4093-8ffd-ccc46fa178d2,Janet Hodge,jhodge@tamu.edu,College of Dentistry
-9a2380d1-4a03-48d6-adb8-80c27f8a8a1e,Patrick Brown,pbrown@tamu.edu,College of Medicine
-0ae7a959-5174-4418-a3c5-be29acbb420e,Sean Foley,sfoley@tamu.edu,Irma Lerma Rangel College of Pharmacy
-f2a7bef8-57a4-4be1-a59d-9538fa66286d,Shannon King,sking@tamu.edu,School of Law
-be059855-10cb-4fb4-8046-7b8c6b74ac46,Angela Nunez,anunez@tamu.edu,School of Public Health
-d81f4cc3-9033-47dc-afc1-8cb619fd376c,Michael Weaver,mweaver@tamu.edu,School of Public Health
-72e7d17a-dbd1-43fe-bde8-6068bc94184f,Matthew Zuniga,mzuniga@tamu.edu,School of Public Health
-fa9125a8-45cd-459c-9a1f-e41439a5f75a,Craig Thomas,cthomas@tamu.edu,College of Education and Human Development
-cab7c7f6-2429-4ddd-9ce9-8671a5e3d435,Donna Goodman,dgoodman@tamu.edu,College of Nursing
-e772986f-5f5f-40d0-ac29-04ed95a2a2ff,Patricia Turner,pturner@tamu.edu,Irma Lerma Rangel College of Pharmacy
-cb92b30d-6e23-45c8-8eeb-a18051a09d13,Stephanie Bradshaw,sbradshaw@tamu.edu,College of Education and Human Development
-7b7c0f2a-83a9-486b-a702-5f6f193b95da,Jennifer Glass,jglass@tamu.edu,School of Law
-2fd72f5f-920e-4d40-a169-3c1994a0137b,Denise Johnson,djohnson@tamu.edu,College of Engineering
-9ac8ad32-d248-4500-8a4f-5d59aadd9068,Nathaniel Johnson,njohnson@tamu.edu,School of Public Health
-ff6e9404-0db2-4de0-aeaf-d23f4c182de9,Eric Adams,eadams@tamu.edu,School of Engineering Medicine
-5815a5b8-4bf3-48e0-bc9a-c488adac25fe,Benjamin Ferguson,bferguson@tamu.edu,College of Architecture
-f5dd5ec9-526e-472e-924f-356233aac967,Brian Hayes,bhayes@tamu.edu,"College of Performance, Visualization and Fine Arts"
-2d074276-6064-47ae-89d0-60a333274af1,Austin Rhodes,arhodes@tamu.edu,College of Agriculture and Life Sciences
-a3d2275a-7114-423c-9867-804010ce8a97,Sydney Richardson,srichardson@tamu.edu,"College of Performance, Visualization and Fine Arts"
-56539707-d801-4f6c-8b63-913173675950,Sean Contreras,scontreras@tamu.edu,College of Arts and Sciences
-e0d2f2bf-eb61-4eef-8319-7b4ff02cc03b,Cheryl Martinez,cmartinez@tamu.edu,Irma Lerma Rangel College of Pharmacy
-e2ce662a-ab79-4d46-a0bb-2c697c80876b,Jonathan Oconnell,joconnell@tamu.edu,School of Public Health
-1aec2a36-c207-4fce-ac14-06e7e46288d9,Joshua Wright,jwright@tamu.edu,College of Architecture
-6d7809f2-9a08-4519-a0f6-4ff03eea88c4,Melissa Hughes,mhughes@tamu.edu,"College of Performance, Visualization and Fine Arts"
-4920ed44-1917-41a2-8d9d-88343577f328,Autumn Brooks,abrooks@tamu.edu,College of Architecture
-f6949ada-b106-4ff0-b83e-583bbfa4f65a,Kelly Carter,kcarter@tamu.edu,Mays Business School
-b1202933-e155-472e-a131-03a073a3a562,Theresa Wells,twells@tamu.edu,Irma Lerma Rangel College of Pharmacy
-965c3e0f-4c1c-4774-ba6f-f122b2295ed8,Michael Li,mli@tamu.edu,College of Arts and Sciences
-ccf52fe1-8d18-423c-85fb-3cbc33de26ab,Sean Moreno,smoreno@tamu.edu,College of Arts and Sciences
-836198f1-3685-4d93-a693-f288bda74f14,Anthony Hernandez,ahernandez@tamu.edu,Irma Lerma Rangel College of Pharmacy
-b56d8688-3e2a-4cd1-908b-5d164d7f341c,Adam Davis,adavis@tamu.edu,School of Engineering Medicine
-e67d9a4a-6424-4111-a4c7-9b3c9cb9e4ef,Alexander Kennedy,akennedy@tamu.edu,College of Engineering
-943960a1-67f4-4f2a-8aba-55939e8cfde4,Mary Hart,mhart@tamu.edu,College of Veterinary Medicine and Biomedical Sciences
-506648ea-2fbf-4961-a251-6ea102f7e18e,Tara Perez,tperez@tamu.edu,College of Nursing
-4cfeaeec-fe6e-440a-9639-8dd0d1da9dfb,Brenda Allen,ballen@tamu.edu,Bush School of Government and Public Service
-6b89a066-5bc7-4471-a445-b657e087e12a,Kendra Williams,kwilliams@tamu.edu,Bush School of Government and Public Service
-5ccf2fcd-969e-49b7-96d8-f28564d72963,Robert King,rking@tamu.edu,College of Architecture
-cb3ba93a-4421-47e6-a1fe-c929a53545d7,Ashlee Gonzalez,agonzalez@tamu.edu,College of Veterinary Medicine and Biomedical Sciences
-77c0179e-623e-49bb-8517-3a8bfcbb5340,Gregory Stevenson,gstevenson@tamu.edu,College of Education and Human Development
-5e75118a-c03f-40a1-a6b8-1e27492d3e9d,Robert Macdonald,rmacdonald@tamu.edu,College of Dentistry
-7c1421c8-1851-41a1-9e92-8a7f1e8c882c,Christopher Lawson,clawson@tamu.edu,College of Nursing
-001b6c98-57ba-40c4-ad11-fbeef6e0dddb,Stephanie Savage,ssavage@tamu.edu,Bush School of Government and Public Service
-88b3de7d-8939-4f9b-adba-02463b010900,Manuel Mooney,mmooney@tamu.edu,Mays Business School
-d29681cd-59fc-455a-91a6-436d3b17ba50,Susan Coleman,scoleman@tamu.edu,School of Public Health
-7112067b-771f-4712-a45c-8eaeb58abedc,Heather Chen,hchen@tamu.edu,Irma Lerma Rangel College of Pharmacy
-1c8c9213-c9fb-4199-9ba1-d98d0b23b5cf,Travis Robinson,trobinson@tamu.edu,College of Nursing
-debe6dd8-4235-44ac-83c6-c1ac8aa189e9,Mrs. Tammy Morgan,mtammy@tamu.edu,College of Agriculture and Life Sciences
-1d425c81-b49a-4301-a31d-776479d42e68,Terrance Bradley,tbradley@tamu.edu,School of Law
-a318cf9d-5dbc-411e-a2ad-90b7f216ba0a,Samuel Cochran,scochran@tamu.edu,College of Education and Human Development
-b2209976-8b30-4c25-8ce3-a9f25155da14,Breanna Brewer,bbrewer@tamu.edu,School of Law
-c6dfda2e-9437-4399-b314-623c5a7010f8,Christopher Garcia,cgarcia@tamu.edu,Mays Business School
-aeb3b96e-ffba-44b8-80f2-234a05870434,Carl James,cjames@tamu.edu,College of Education and Human Development
-80f19e6f-4727-4735-a83d-e430883de45c,David Wade,dwade@tamu.edu,College of Architecture
-28c91856-4881-499d-8ce4-bfa22f793155,Emily Herrera,eherrera@tamu.edu,"College of Performance, Visualization and Fine Arts"
-0562594b-8cd9-4da3-bb32-cedab7871aa1,Gerald Sandoval,gsandoval@tamu.edu,College of Veterinary Medicine and Biomedical Sciences
-1162248b-7bfb-434e-894e-11bf5962f6a0,Nicole Garza,ngarza@tamu.edu,College of Arts and Sciences
-495cacde-2f63-4a73-8f9c-2fb0fa00e1be,Krista Downs,kdowns@tamu.edu,College of Medicine
-0ec8db56-ed9d-43c2-b4f9-d4b4d587c899,Jason Jennings,jjennings@tamu.edu,"College of Performance, Visualization and Fine Arts"
-8aa8e589-97e7-4d91-a3fc-5bd30cd21a6d,Carol Johnson,cjohnson@tamu.edu,College of Agriculture and Life Sciences
-40445d64-5be6-4310-b790-7ac09e01764e,Dr. Joseph Hancock DDS,djoseph@tamu.edu,College of Arts and Sciences
-8066b67f-2c66-45d4-835b-b68951a1cde6,Lydia Acevedo,lacevedo@tamu.edu,College of Education and Human Development
-ddcf0b33-fb4f-41c6-9205-8bf1be3eccaa,Kelly Brown,kbrown@tamu.edu,College of Medicine
-fc2c6c65-89fe-433d-b757-b9cda373c280,Mrs. Jennifer Huerta MD,mjennifer@tamu.edu,"College of Performance, Visualization and Fine Arts"
-5c5e0b4c-9a74-4ea7-b7ea-687e86713ab1,Barbara Weaver,bweaver@tamu.edu,College of Education and Human Development
-188dfcac-1b77-4de5-996e-ac3606067f99,Wendy Martin,wmartin@tamu.edu,School of Law
-7d242612-5694-46f5-b6d8-b752f4fd7fa0,Ryan Lamb,rlamb@tamu.edu,School of Public Health
-136e1693-dd09-411d-a403-24b763bbc54a,Jason Le,jle@tamu.edu,Irma Lerma Rangel College of Pharmacy
-ec019d43-6f49-418b-82ad-19bc50a0e426,Michael Wagner PhD,mwagner@tamu.edu,College of Agriculture and Life Sciences
-dece61e5-0162-419c-b4d6-396fa31b746a,Jamie Brown,jbrown@tamu.edu,College of Veterinary Medicine and Biomedical Sciences
-56668c62-7ce7-4c52-b69e-5929cfd8f43f,Katherine Petty,kpetty@tamu.edu,School of Law
-cadec10d-53f1-483d-a3d6-f092333cde99,Ashley Barrera,abarrera@tamu.edu,College of Architecture
-9570517a-79d7-4e90-89ee-f71081967cc0,Lee Owens,lowens@tamu.edu,College of Dentistry
-9bb6b237-ec79-47b8-9f93-c02c8165a2e8,Kenneth Simpson,ksimpson@tamu.edu,School of Public Health
-0a295cd1-d713-4792-ba00-906ae68b5f61,Mallory Stafford,mstafford@tamu.edu,College of Arts and Sciences
-60612c9d-83d7-4596-ba1a-7a7d2344ae6d,Joshua Collins,jcollins@tamu.edu,College of Veterinary Medicine and Biomedical Sciences
-ebc6ff3a-e660-42ac-9567-adc8b37e441d,Vincent Johnson,vjohnson@tamu.edu,College of Architecture
-ef49b005-93f6-49e4-87f9-357bf9f5f9e7,Ronald Taylor,rtaylor@tamu.edu,College of Veterinary Medicine and Biomedical Sciences
-6e58d0e5-9183-4870-8f12-57be765ab52b,Timothy Robertson,trobertson@tamu.edu,School of Law
-10bcca77-997d-4541-837b-bebe654aec48,Summer Lewis,slewis@tamu.edu,College of Arts and Sciences
-82fd105f-7247-4b50-a836-a7fade0609e8,Stephanie Bryant,sbryant@tamu.edu,College of Medicine
-00b72e75-078a-453b-a180-6ab77cf1a1c5,Christopher Vazquez,cvazquez@tamu.edu,School of Law
-07ddb212-ff02-42bc-880d-0225260a294c,Hector Carson,hcarson@tamu.edu,College of Nursing
-da76acda-1fb2-4f30-9cf8-048299b45e91,Kathleen Davis,kdavis@tamu.edu,College of Arts and Sciences
-4548012a-e210-4dbb-b752-fcb2b8486177,Darren Bishop,dbishop@tamu.edu,College of Arts and Sciences
-a49538d5-0980-4201-be3e-2864e418caf7,Danielle Herrera,dherrera@tamu.edu,Bush School of Government and Public Service
-93750ad4-7c39-4975-b8a0-7ae52ecf373c,David Anderson,danderson@tamu.edu,"College of Performance, Visualization and Fine Arts"
-0637f361-a7a3-4f13-ba05-e3c930696a0f,Kyle Rogers,krogers@tamu.edu,College of Veterinary Medicine and Biomedical Sciences
-c2ee0690-a372-423e-8942-786e48867328,Alexandra Edwards,aedwards@tamu.edu,"College of Performance, Visualization and Fine Arts"
-c966685b-1f90-4bc8-817e-c22564432b9b,Jessica Chen,jchen@tamu.edu,College of Education and Human Development
-79ba70b4-05cd-4f06-babd-59917e7f2238,Anthony Reynolds,areynolds@tamu.edu,College of Veterinary Medicine and Biomedical Sciences
-b12504b8-f9db-4eb3-acb9-bf1ef96c6a00,Stacy Garcia,sgarcia@tamu.edu,"College of Performance, Visualization and Fine Arts"
-924fee76-84b9-45a9-bb2d-a5b74bc8c968,Amanda Weber,aweber@tamu.edu,College of Nursing
-5f8f18e4-8bd0-4507-ad2e-b5df678039a3,John Trujillo,jtrujillo@tamu.edu,Bush School of Government and Public Service
-0fb1c1e2-fe2d-46aa-a4ac-f8ebcf0fded0,Teresa Carlson,tcarlson@tamu.edu,College of Nursing
-95619487-c665-458f-a4fa-33f1726569ce,Sean Parker,sparker@tamu.edu,School of Engineering Medicine
-f255fdba-dcbc-435e-89cf-d214ff93b304,Anna Martin,amartin@tamu.edu,School of Public Health
-8d5ff628-c55c-4ee2-b566-207dd1cd7e0e,Christopher Peterson,cpeterson@tamu.edu,College of Dentistry
-b0d53aed-ff6d-4731-aa85-e6a4aa61dd12,Stephen Washington,swashington@tamu.edu,College of Engineering
-fef90e8d-3dee-455d-b8fd-ad38f9213aff,Lauren Graham,lgraham@tamu.edu,Irma Lerma Rangel College of Pharmacy
-dbbb2371-993e-4630-b05f-429dd4734915,Tanya Douglas,tdouglas@tamu.edu,College of Engineering
-64abfb7d-bf4b-4cf6-8ee7-127e3ffecf4c,Dawn Schmitt,dschmitt@tamu.edu,School of Engineering Medicine
-ddada587-90f9-4d98-8aea-7e765556154d,Kirsten Cross,kcross@tamu.edu,College of Dentistry
-b38f0f97-1995-46d9-baf4-467ab324d796,Haley Lozano,hlozano@tamu.edu,Irma Lerma Rangel College of Pharmacy
-6adbb687-446e-4785-ad81-4c4a0bc02908,Nicole Scott,nscott@tamu.edu,School of Public Health
-d498ee0b-47eb-4298-8eee-11d9625ea58b,Chelsea Lopez,clopez@tamu.edu,Mays Business School
-ff9bdc6b-7b02-4af6-9b84-9222be11fef0,Christopher Brown,cbrown@tamu.edu,Mays Business School
-e426ff70-f578-4a2f-940e-253ccee7233a,Kimberly Webb,kwebb@tamu.edu,College of Agriculture and Life Sciences
-2f288b50-4806-41b9-8f29-cc1e3626e98f,Nancy Brown,nbrown@tamu.edu,Mays Business School
-188eb69c-76e7-4a97-a464-2e3fcf40811d,Erik Jordan,ejordan@tamu.edu,College of Arts and Sciences
-171b547a-f5f5-4f49-adce-18dec6a85f62,Dr. Amanda Shaw,damanda@tamu.edu,College of Veterinary Medicine and Biomedical Sciences
-60377747-8dc1-47c0-b3a6-fe5f74eca143,Maria Harris,mharris@tamu.edu,College of Agriculture and Life Sciences
-a46a2b3a-72ca-4955-abab-b87725db2b6e,Stephanie Griffith,sgriffith@tamu.edu,School of Public Health
-750d849f-691d-4b09-8ce4-166f01ab5fe6,Kelly Bryant,kbryant@tamu.edu,Bush School of Government and Public Service
-60e22c49-1f10-410c-90b6-cc47a2421620,Teresa Berger,tberger@tamu.edu,College of Veterinary Medicine and Biomedical Sciences
-99ce6aac-4813-4b0e-b642-e01eb1a7627e,Stephanie Martinez,smartinez@tamu.edu,College of Dentistry
-2c6bf9fd-e472-40ab-bf2a-1813f7749fe6,Thomas Rios,trios@tamu.edu,Mays Business School
-6b75d0ef-a594-41b0-866e-95a7b64ec51c,Jennifer Parker,jparker@tamu.edu,Irma Lerma Rangel College of Pharmacy
-08f6d63c-a792-4099-9d5d-b81df07ebc04,Alexander Perry,aperry@tamu.edu,School of Law
-dae3b5d4-003c-40d8-9e25-ed6fe2765ddb,Gregory Brown,gbrown@tamu.edu,College of Engineering
-0a37a266-0db5-4a9e-b951-59ccb7cf1e9b,Paul Williams,pwilliams@tamu.edu,College of Agriculture and Life Sciences
-ce108e19-4996-4f82-ae93-dad7a7b30365,Jennifer Moon,jmoon@tamu.edu,College of Agriculture and Life Sciences
-03374fa9-e157-47b9-9c41-b9c7a3f721af,Lisa Stanley,lstanley@tamu.edu,"College of Performance, Visualization and Fine Arts"
-527a69db-4b4e-4bcb-8487-b72206e32b42,Juan Kerr,jkerr@tamu.edu,College of Agriculture and Life Sciences
-ec078e27-c398-4548-8060-9730668a8dab,Mrs. Jessica Porter,mjessica@tamu.edu,College of Medicine
-ea97f194-35a5-46b0-8ba9-e3a882dfd58e,Anna Owen,aowen@tamu.edu,College of Marine Sciences and Maritime Studies
-b2f59847-19e0-42d8-b1f4-4527cb2ba6ba,Nicole Dixon,ndixon@tamu.edu,College of Education and Human Development
-66ab1061-0c10-498f-9f97-0fecb426d828,Tony Martin MD,tmartin@tamu.edu,College of Architecture
-7b51c8f2-2ecb-4162-9263-208207c1446d,Brent Wiley MD,bwiley@tamu.edu,College of Nursing
-1511d765-b169-4232-b608-16d655049109,Amy Jackson,ajackson@tamu.edu,College of Nursing
-2dce09e3-58f8-4b00-a01a-c7dd1dfbd161,Gregory Fuller,gfuller@tamu.edu,College of Agriculture and Life Sciences
-6c6ccb7f-0b3b-45ca-919a-801fd8c75ede,Elijah Travis,etravis@tamu.edu,College of Dentistry
-9738c4c8-1069-486d-b169-d9fef8f6a01e,Omar Griffin,ogriffin@tamu.edu,College of Marine Sciences and Maritime Studies
-e5fde22a-abfb-4534-897e-473726a5a1c8,Joseph Johnson,jjohnson@tamu.edu,College of Arts and Sciences
-8c194447-54bb-45ea-bc64-cd9ccb9fbb43,Barbara Hardy,bhardy@tamu.edu,Bush School of Government and Public Service
-89e6db5e-2de6-4c29-9c46-b5dacc704a0e,Angela Rodriguez,arodriguez@tamu.edu,College of Nursing
-1a814dea-465b-4c71-a9c9-c45490ea2120,Diana Reynolds,dreynolds@tamu.edu,Irma Lerma Rangel College of Pharmacy
-06a38dd7-bfb1-4ff8-8bc7-0fef8c7f365c,Michele Taylor,mtaylor@tamu.edu,Mays Business School
-a878ef83-e479-42d4-a616-93715bcb7fac,James Harris,jharris@tamu.edu,College of Marine Sciences and Maritime Studies
-23e66125-bd21-4a9c-8118-9490f71d0dce,Jason Martin,jmartin@tamu.edu,College of Veterinary Medicine and Biomedical Sciences
-2a5a3fc8-5126-4141-bb7e-7919f884514e,Christopher Stewart,cstewart@tamu.edu,College of Education and Human Development
-f08f20da-d981-4a07-9ced-dd21f603e591,Cynthia Reynolds,creynolds@tamu.edu,School of Engineering Medicine
-f000d95f-53b9-4ae8-aa78-0c49ee1abe8a,Sydney Herring,sherring@tamu.edu,College of Marine Sciences and Maritime Studies
-5d668f09-819a-4f3c-a9cb-fe72f5ce5b39,Charlene Boyer,cboyer@tamu.edu,College of Nursing
-6b77aeb9-1897-421a-aabe-27aba1b1ea0e,Gregory Moran,gmoran@tamu.edu,College of Arts and Sciences
-c6c8886a-004e-4b14-9603-8cf644a9ba72,Karen Ward,kward@tamu.edu,Mays Business School
-e805dc3d-79de-43cc-a302-5e0b8d5606eb,Roger Larsen,rlarsen@tamu.edu,College of Nursing
-40e19fa8-1b81-42f7-9317-3990e135afba,Veronica Thomas,vthomas@tamu.edu,College of Architecture
-66ce85ef-9d73-4396-b81f-9bcd942c3a7c,Jennifer Young,jyoung@tamu.edu,College of Marine Sciences and Maritime Studies
-e419a519-dcea-4d6f-b0f4-8a8ca471e77a,Bruce Rodriguez,brodriguez@tamu.edu,School of Public Health
-fc1a8beb-8468-4e2c-8fed-105d47336af0,Austin Fuentes,afuentes@tamu.edu,College of Engineering
-bc416156-8e24-4399-b9d5-565484dc940c,Mary Foster,mfoster@tamu.edu,School of Engineering Medicine
-3c7db0b0-4177-48f5-9262-0e8c071e2baf,Gary Williams,gwilliams@tamu.edu,College of Architecture
-cc18ad2a-61e8-4345-8be5-40a05aef966d,Richard Mitchell,rmitchell@tamu.edu,College of Architecture
-75a64871-4479-4c2f-aa85-cee2d778d7ab,Karen Gomez,kgomez@tamu.edu,College of Marine Sciences and Maritime Studies
-b3b528cc-849a-4754-877b-dc104ce163cd,Jeffrey Liu,jliu@tamu.edu,School of Public Health
-ff49c596-fcc2-4fe3-bb5e-e971df85eaaa,Erika Kennedy,ekennedy@tamu.edu,College of Arts and Sciences
-2cd47da3-98a0-44f8-9709-3316120283c4,Lynn Briggs,lbriggs@tamu.edu,College of Arts and Sciences
-cd8f0a57-2538-4797-a5f0-ac1c912851e4,Shawn Martin,smartin@tamu.edu,College of Nursing
-3dd3f6c6-35bb-4517-9f0e-b071b3bc428c,Jermaine Martinez,jmartinez@tamu.edu,College of Agriculture and Life Sciences
-42cc7aa6-7eb9-4a48-83f5-241a16937773,Amy Riley,ariley@tamu.edu,College of Education and Human Development
-b7ed1113-c675-4a5b-b7b2-aec8c9a66d23,Monica Green,mgreen@tamu.edu,College of Education and Human Development
-2166eec6-b559-4234-8567-6a1935c70ee8,Kimberly Johnson,kjohnson@tamu.edu,School of Law
-692a9623-3c67-41ac-ab1b-438a74dae59d,Elizabeth Garcia,egarcia@tamu.edu,Mays Business School
-ae2b830d-ec89-49c3-b73c-a514b700116c,Tracy Mullins,tmullins@tamu.edu,School of Engineering Medicine
-b2acc663-2e10-416e-a789-85831228f658,Barry Smith,bsmith@tamu.edu,College of Dentistry
-80ce2c74-033d-49e0-842e-dd364005e34e,Beth Mcguire,bmcguire@tamu.edu,College of Nursing
-f07fed70-a7d9-4300-9129-e4dafbf34176,Jaime Ballard,jballard@tamu.edu,College of Medicine
-e4ee7a2e-0408-407e-b29a-ddbb8b0a6725,Gabriella Smith,gsmith@tamu.edu,Irma Lerma Rangel College of Pharmacy
-b7d00f6a-0e9e-4332-9fd2-43c27138c149,Kevin Reynolds,kreynolds@tamu.edu,College of Engineering
-656e1726-d59e-4b52-9d92-c0cfb913e308,Sergio Merritt,smerritt@tamu.edu,School of Public Health
-da41fcd1-e0b8-4d1e-854d-2add10a5dbda,Travis Ruiz,truiz@tamu.edu,School of Law
-549dea03-dad3-4d86-8668-62dcbf20e8b9,Richard Higgins,rhiggins@tamu.edu,College of Arts and Sciences
-70e11d90-60b1-4404-a7be-a7863b062a27,Charles Pittman,cpittman@tamu.edu,Mays Business School
-6d0addf6-d7d5-40c9-b787-4127f88dfb6e,Mallory Copeland,mcopeland@tamu.edu,College of Agriculture and Life Sciences
-d4a166e3-9846-4343-a30c-e1c31c90eeba,Cynthia Medina,cmedina@tamu.edu,School of Public Health
-d191ba21-7913-41c5-b615-02cc53ef36cb,Douglas Sanchez,dsanchez@tamu.edu,College of Agriculture and Life Sciences
-e3a48c69-2df6-4951-b37a-e721c5116440,Stephanie Howe,showe@tamu.edu,College of Engineering
-605258aa-2ed6-4d65-b8e8-ec8cb0a97441,Yvonne Owens,yowens@tamu.edu,College of Agriculture and Life Sciences
-1f57bfc7-ec27-46d4-b159-539cbd3855fd,Andrew Schultz,aschultz@tamu.edu,School of Engineering Medicine
-0c819778-8d13-4ce7-84c0-3ed8518a1847,Eric Taylor,etaylor@tamu.edu,Mays Business School
-acfa7bdb-a31b-43a6-9788-8bfc7c10fbb1,Derrick Obrien,dobrien@tamu.edu,College of Architecture
-2571bb9e-43fd-4818-ab2e-46c1c0f6be75,Jeffery Allen,jallen@tamu.edu,Bush School of Government and Public Service
-6040ee6f-59e3-4057-a853-c7404bdf3639,Thomas Gutierrez,tgutierrez@tamu.edu,College of Dentistry
-2c4dabe0-0965-46b7-a760-c4ea8e469f31,Christopher Love,clove@tamu.edu,College of Engineering
-160210c6-27fe-4ae7-b104-c87fcd76b1cd,John Reid,jreid@tamu.edu,Irma Lerma Rangel College of Pharmacy
-aa987526-8842-44c0-a2d8-d794c44bec0c,Kimberly Hudson,khudson@tamu.edu,College of Engineering
-1bb431a9-d791-4a7f-bd33-051381cca0bb,Christopher Peterson,cpeterson@tamu.edu,College of Nursing
-087408bc-e9db-4151-954e-e2082b29b19c,Bradley Wilson,bwilson@tamu.edu,College of Arts and Sciences
-b2759204-3a11-467f-8ce8-b875001c4de7,Joseph Davis,jdavis@tamu.edu,School of Law
-2bffd7d0-a9db-46ac-81ea-da66fa4799e4,Jose Crawford,jcrawford@tamu.edu,College of Dentistry
-47f1af32-e28c-4067-99ae-b8464cc4b41a,Caleb Cooper,ccooper@tamu.edu,School of Engineering Medicine
-1bc1e116-9507-46ff-9f82-68936fc3d06d,Melissa Wells,mwells@tamu.edu,School of Public Health
-a726190e-d6b8-4799-980c-5729a3b56080,Richard Brock,rbrock@tamu.edu,School of Law
-4fd89877-e437-4532-8282-199845af125b,Lynn Clark,lclark@tamu.edu,Irma Lerma Rangel College of Pharmacy
-b3f061dd-e86d-48c2-b48c-76ba1e136ead,Heather Barnett,hbarnett@tamu.edu,College of Nursing
-e255049a-6f30-41d5-b898-744f0cb0e629,Angel White,awhite@tamu.edu,College of Veterinary Medicine and Biomedical Sciences
-ac00f7ac-a66d-44dd-94db-a1af29899bfb,Gregory Vega,gvega@tamu.edu,College of Nursing
-08baf033-8e8d-47f5-9efb-753d2cf7d97a,Joseph Pope,jpope@tamu.edu,College of Nursing
-e1246b29-1d41-4e1b-93ea-86f825ca7ae6,James Duncan,jduncan@tamu.edu,Mays Business School
+d499e3a9-0364-4403-a99a-7eba94e9b33c,Russell Maldonado,rmaldonado@tamu.edu,Mays Business School
+eb43aef7-ddb9-45d9-81c5-75e7fd1aefb6,Ethan Myers,emyers@tamu.edu,College of Dentistry
+f83e7aaa-6c47-4b59-b0d9-aee4e970dcfd,Kara Martin,kmartin@tamu.edu,College of Architecture
+26d6fce0-c218-464e-9b33-c73528c36059,Andrea Johnson,ajohnson@tamu.edu,College of Nursing
+99b2a913-3db5-4b40-a69a-19ff52ae578f,Brandon Lindsey,blindsey@tamu.edu,College of Medicine
+853bff47-dfea-489d-8b8f-99d9e8abdcae,Tracy Davila,tdavila@tamu.edu,Mays Business School
+c8b02d5b-c182-49ce-93f2-987e30c04350,Mrs. Teresa Parker PhD,mteresa@tamu.edu,College of Medicine
+f197c5cb-0f21-4a41-912f-65684d9f060a,Shannon Perez,sperez@tamu.edu,School of Law
+894d1104-a357-4538-9def-0ddd3691c12c,Michael Baker,mbaker@tamu.edu,College of Agriculture and Life Sciences
+9cdef358-77eb-4071-b658-6396df1de5cb,Marilyn Walter,mwalter@tamu.edu,College of Nursing
+6bc0383d-9feb-4932-bae6-613470dd3c62,Rachael Thomas,rthomas@tamu.edu,"College of Performance, Visualization and Fine Arts"
+5ef7837d-8232-4821-b8db-b282fb251bac,Ray Jackson,rjackson@tamu.edu,College of Veterinary Medicine and Biomedical Sciences
+ad2bdc31-c210-48ab-bb47-53a8f0744e42,Erika Powell,epowell@tamu.edu,Bush School of Government and Public Service
+bd7f1f5b-86de-4424-b61d-417656d7e726,Robert Hayes,rhayes@tamu.edu,College of Dentistry
+b8175361-9345-4957-8b2a-c1e28e5fba2f,Ana Mccarthy,amccarthy@tamu.edu,College of Veterinary Medicine and Biomedical Sciences
+273ac1ed-0a15-43c4-84b1-7ddcc4d7d945,Andrea Pearson,apearson@tamu.edu,School of Public Health
+871195ea-1b6d-4d4e-8bb0-58904e4c9adc,Eric Brown,ebrown@tamu.edu,Irma Lerma Rangel College of Pharmacy
+aa84f6ac-5bad-4e16-bd56-4492f7c1d63f,David Reyes,dreyes@tamu.edu,"College of Performance, Visualization and Fine Arts"
+81b95d1e-44bc-439d-b64e-04d2bf34f380,Tina Hernandez,thernandez@tamu.edu,College of Engineering
+34d95875-dff4-41a4-9a69-13c8e072f34e,Sarah Avery,savery@tamu.edu,College of Arts and Sciences
+62df8f80-3a50-4471-9cda-19e90432237b,Larry Henderson,lhenderson@tamu.edu,School of Engineering Medicine
+e846e866-77dd-4acc-9eae-1b3b7095fd82,Lisa Irwin,lirwin@tamu.edu,College of Dentistry
+7921e17d-2b76-4335-8d3b-1eaaf1401c82,Hayley Ortiz,hortiz@tamu.edu,College of Marine Sciences and Maritime Studies
+14f077ff-4ff9-4fc6-9925-bad862e05dca,Charles Zavala,czavala@tamu.edu,College of Medicine
+a5b3934a-8005-4c2b-9357-7de7f89263a8,Frederick Guerrero,fguerrero@tamu.edu,College of Nursing
+ac2ce566-69cb-4ba8-b320-c4008b7a3680,Larry Wells,lwells@tamu.edu,School of Engineering Medicine
+2356dd26-33a0-4a2b-b9e2-819f06a09d59,Jonathan Baldwin,jbaldwin@tamu.edu,"College of Performance, Visualization and Fine Arts"
+ad04be85-3c77-4cda-ba00-17bc99cffc67,Harold Fitzpatrick,hfitzpatrick@tamu.edu,College of Nursing
+5e8439ed-056c-4a01-9cc0-d77ee289c5c9,Megan Robinson,mrobinson@tamu.edu,College of Nursing
+9c037327-6c4e-45c9-8dac-66c74878067b,Sabrina Pena,spena@tamu.edu,College of Arts and Sciences
+ce0818f2-3099-4a69-a6d9-84ec7caed984,Erin Davis,edavis@tamu.edu,College of Dentistry
+3bc186be-e99e-45cf-801b-71af9a1a7050,Matthew Carter,mcarter@tamu.edu,College of Dentistry
+5571334e-e057-4133-8c92-cac14faea45a,Cristina Coleman,ccoleman@tamu.edu,College of Agriculture and Life Sciences
+1d83ee4c-4329-453f-ae3b-d198f48c2601,Paul Woodward,pwoodward@tamu.edu,College of Engineering
+5e9ad5ed-477c-4bb3-8d2b-eb64b3b317db,Alexandra Cabrera,acabrera@tamu.edu,College of Dentistry
+bd89d584-053b-41c2-baa2-96f685a2353c,Tracey Sanchez,tsanchez@tamu.edu,College of Architecture
+11e50175-bee6-4e73-8a47-7c37e3e976c5,Ryan Jones,rjones@tamu.edu,School of Engineering Medicine
+c69ba2a2-20ae-4bed-b0fc-6860e0aaf33a,Joseph Nichols,jnichols@tamu.edu,College of Agriculture and Life Sciences
+2944f514-a09c-4d5e-9b7e-ad5b46ca22df,Ashley Campbell,acampbell@tamu.edu,"College of Performance, Visualization and Fine Arts"
+c3923519-9e64-42db-ae8a-1adffa921248,Timothy Lowe,tlowe@tamu.edu,College of Nursing
+72e6a7c4-72d0-41cd-9bcc-982c784c6132,Katie Anderson,kanderson@tamu.edu,College of Agriculture and Life Sciences
+1183c6b7-7409-45e9-9b4c-340b93918897,Carrie Williams,cwilliams@tamu.edu,College of Engineering
+31429e68-41f5-4f3e-a303-e4228e8ddd71,Brenda Campbell,bcampbell@tamu.edu,College of Medicine
+3fa278a1-076a-4224-bb62-de10a5205760,Dana Mcdonald,dmcdonald@tamu.edu,College of Engineering
+da1afc26-fdfb-4a6c-abc1-24e9e87f8ac6,Douglas Snyder,dsnyder@tamu.edu,College of Engineering
+58575413-2ac8-4d84-be40-f03d7906f8cc,Fernando West,fwest@tamu.edu,"College of Performance, Visualization and Fine Arts"
+d731a60c-7ce3-4e41-b7ff-6e7f80264adb,Sherri Snyder,ssnyder@tamu.edu,Irma Lerma Rangel College of Pharmacy
+63f5b617-1166-4d5e-bd9a-87e1add5104d,Kimberly Daniels,kdaniels@tamu.edu,"College of Performance, Visualization and Fine Arts"
+5e088e59-b302-46ca-8f12-3d5f80039ab6,Deanna Wallace,dwallace@tamu.edu,Bush School of Government and Public Service
+3a34ba35-c4ab-4fdf-b0fa-d29a24d387ff,Rachel Jacobson,rjacobson@tamu.edu,College of Marine Sciences and Maritime Studies
+7bf22bfe-b085-4b21-bd1e-f509bfeda343,Patrick Gonzalez,pgonzalez@tamu.edu,College of Veterinary Medicine and Biomedical Sciences
+1914315b-18c7-45fc-9ca3-07c5d4929b98,Valerie Smith,vsmith@tamu.edu,College of Agriculture and Life Sciences
+e40de0ad-57e9-4f42-9a1a-eb75e9ec43a2,Tracy Rogers,trogers@tamu.edu,College of Arts and Sciences
+efb8001d-b048-4c64-981f-ecc570df9eeb,Tyler Gonzalez,tgonzalez@tamu.edu,School of Law
+aad75067-ca9f-4e6e-b306-edb0bd7b092b,Mary Miller,mmiller@tamu.edu,College of Arts and Sciences
+b98b9f44-b0e8-4be5-83a1-423ac9aaab08,Kathryn Benitez,kbenitez@tamu.edu,College of Education and Human Development
+c0299cb2-8174-4c09-89f6-bda261eaeb31,Tammy Bradley,tbradley@tamu.edu,Mays Business School
+d98f7174-6a72-417f-b563-6eaed69847b4,Lori Anderson,landerson@tamu.edu,School of Public Health
+52b0a77a-7d06-49c6-b0e6-2b4bf5dbc541,Matthew Cameron,mcameron@tamu.edu,Irma Lerma Rangel College of Pharmacy
+7596ea7d-9d4a-47cf-9252-3a91add23140,Julia West,jwest@tamu.edu,College of Dentistry
+934d2a1f-a8d4-4c1c-a50c-27dd509f4fb7,Jonathan Young,jyoung@tamu.edu,Mays Business School
+085875c3-ca61-4b9a-8f56-8282fc3743b0,Susan Golden,sgolden@tamu.edu,College of Agriculture and Life Sciences
+9551032a-585c-45e2-b1ab-ef50cefa64a7,Lisa Walker,lwalker@tamu.edu,College of Dentistry
+25392395-029f-46a7-b2ba-06f8dd953223,Jean Ortega,jortega@tamu.edu,College of Medicine
+ca17cffc-8883-4422-a3ce-36bd63df7b15,Kelsey Young,kyoung@tamu.edu,School of Law
+41d9184a-6ffc-4200-bd37-2998ef679a41,Eric Harmon,eharmon@tamu.edu,College of Agriculture and Life Sciences
+0d146ca8-4c87-4c09-8e94-ee938d48aedc,Willie Palmer,wpalmer@tamu.edu,Mays Business School
+85eebe52-782b-4698-8f42-9ab5b46a9755,Brittany Bullock,bbullock@tamu.edu,Bush School of Government and Public Service
+ac392f1f-2df6-4bc3-bbb5-a3eec6a4dcac,Justin Berg,jberg@tamu.edu,Bush School of Government and Public Service
+f81f12f5-4c38-46b0-ba4b-92a84f23cdcf,Tanya Cole,tcole@tamu.edu,College of Dentistry
+6ac89f61-7952-4a67-b741-176c8068c318,Jonathan James,jjames@tamu.edu,College of Engineering
+15269f1f-3796-4b47-96d1-8757dd01909a,Justin Lopez,jlopez@tamu.edu,College of Architecture
+25a01876-ef97-49ee-8185-d37ea43a7249,Jesse Leon,jleon@tamu.edu,"College of Performance, Visualization and Fine Arts"
+14a7803d-e9a4-423b-8380-195aec357999,Patrick Allen,pallen@tamu.edu,College of Engineering
+9260902c-f51a-4538-a973-53459aacfad8,Joseph Reynolds,jreynolds@tamu.edu,College of Marine Sciences and Maritime Studies
+ddaee83d-1a40-489d-a206-8c3ddf71bb83,Lisa Park,lpark@tamu.edu,College of Architecture
+acfc5e8e-8d1c-4474-9b23-ed69eac2faa3,Patricia Hampton,phampton@tamu.edu,College of Arts and Sciences
+5e63a31a-2584-4c44-8627-09d35297d9a7,Kathryn Gonzalez,kgonzalez@tamu.edu,School of Law
+ef728c11-d9b7-4524-af81-e4f892d38843,Miguel Miles,mmiles@tamu.edu,College of Veterinary Medicine and Biomedical Sciences
+3ca7e3ab-22fa-4c6e-9184-6247b1133481,Alexis Thompson,athompson@tamu.edu,College of Nursing
+2106cb99-6ea7-457e-ba03-0528ba62f796,Jennifer Gonzalez,jgonzalez@tamu.edu,Irma Lerma Rangel College of Pharmacy
+a7b7e912-b48c-4bf8-9ffa-d277566b8bb6,Karen Hogan,khogan@tamu.edu,College of Medicine
+ccb78ad4-8967-4188-a86b-687ac48574cd,Jonathan Koch,jkoch@tamu.edu,Bush School of Government and Public Service
+edf0377b-e71f-448b-823e-1b5d47c273b8,James Bullock,jbullock@tamu.edu,College of Nursing
+a17ea704-7d72-4eec-bace-219589bab748,John Singh,jsingh@tamu.edu,College of Education and Human Development
+0b9fb201-7719-4082-a320-50e4094c9ef6,John Taylor,jtaylor@tamu.edu,College of Marine Sciences and Maritime Studies
+efbbe168-8d77-4ca5-8fe5-597f62be0142,Karen Brennan,kbrennan@tamu.edu,College of Architecture
+0f88e0a8-a805-4ccc-9476-a751e28f3714,Beverly Adams,badams@tamu.edu,College of Marine Sciences and Maritime Studies
+e59eb6a4-c4e5-40e9-a18d-7f95bba68583,Jennifer Mcintyre,jmcintyre@tamu.edu,College of Engineering
+f929ce48-b9a6-48ac-b52a-60dcc16035bf,Charles Castro MD,ccastro@tamu.edu,Mays Business School
+3c6c6eab-6c07-48b4-ac8d-42ea72c9015e,Carlos Mueller,cmueller@tamu.edu,Mays Business School
+c5f22640-db67-4789-b850-d60c4e97a9ec,Alexander Underwood,aunderwood@tamu.edu,"College of Performance, Visualization and Fine Arts"
+866318e3-f808-4b17-b262-1ef03b864de6,Cynthia Bryan,cbryan@tamu.edu,Bush School of Government and Public Service
+5b3c21d2-5e88-4c61-ab0b-4d01db87cb6a,Tracey Martin,tmartin@tamu.edu,Mays Business School
+5e0e3905-a884-4aba-b44f-7fb2d3b6abc8,Kristina Fitzgerald,kfitzgerald@tamu.edu,College of Veterinary Medicine and Biomedical Sciences
+ae83f3f1-0bc1-4d3d-8e0e-dc28f25f78ef,Whitney Adkins,wadkins@tamu.edu,Mays Business School
+7e911ce6-c936-4c63-9333-130bdf3fb705,Joseph Pena,jpena@tamu.edu,"College of Performance, Visualization and Fine Arts"
+565a3355-e5ac-4970-aa02-69457367988d,Karen Alvarado,kalvarado@tamu.edu,College of Medicine
+6b8a59ec-522e-49a8-a194-5befe1feb2c0,Alyssa Flores,aflores@tamu.edu,School of Engineering Medicine
+97f335c1-50db-40eb-b9b7-64a9f35ef9c1,Amanda Watson,awatson@tamu.edu,School of Law
+de99af06-04f9-45d0-ac32-b3db758211ed,Daniel Fleming,dfleming@tamu.edu,College of Architecture
+b464176b-2cd6-442e-b1c0-f7ec85d4b577,Carl Peterson,cpeterson@tamu.edu,Mays Business School
+ef310c5d-396e-468b-9cc2-d3486a8405e7,Heather Carter,hcarter@tamu.edu,College of Architecture
+f028730b-2d29-4434-adf3-f4fb366653c5,Stephen Brown,sbrown@tamu.edu,College of Education and Human Development
+8ca8b28e-6e4c-4360-955b-48b2454db9ec,Pamela Underwood,punderwood@tamu.edu,College of Education and Human Development
+1068d576-f44f-44a1-9eec-a09c74a26e61,Jessica Phelps,jphelps@tamu.edu,Bush School of Government and Public Service
+c6008e81-efd9-49ed-9995-6466e5ff49a0,Leah Colon,lcolon@tamu.edu,College of Architecture
+18d7674b-31db-47ea-b97b-9a95a7e13206,Melissa Dixon,mdixon@tamu.edu,College of Architecture
+4471c05c-6c6c-46bc-8e39-ad178a98b898,Mike Walton,mwalton@tamu.edu,College of Agriculture and Life Sciences
+c6508d3c-4666-4686-bb94-30a10a7a2189,Karen Sharp,ksharp@tamu.edu,College of Veterinary Medicine and Biomedical Sciences
+5603e115-bd5a-4f37-8fca-e033e4e0637d,Dr. Gary Benitez DVM,dgary@tamu.edu,College of Dentistry
+44fbbd65-0f74-4e5b-b028-f8a8a22aa264,Linda Wang,lwang@tamu.edu,"College of Performance, Visualization and Fine Arts"
+46d1f136-4b1e-4cd4-91ec-d02e2d0da60f,Emma Austin,eaustin@tamu.edu,School of Law
+9c9b0d88-c65d-4b1e-88b9-708590291159,Bob Cooke,bcooke@tamu.edu,"College of Performance, Visualization and Fine Arts"
+d5e51eb8-e6a1-4dc4-8b6d-a3bd4638c76e,Michele Delgado,mdelgado@tamu.edu,School of Engineering Medicine
+81b4b8a1-5583-4008-86b6-8af168ecb678,Samuel Jensen,sjensen@tamu.edu,College of Architecture
+d2fb4401-73fb-4d80-b03c-351ec10ebb77,Elizabeth Clark,eclark@tamu.edu,School of Engineering Medicine
+cfc7f39f-cbd3-41f5-9d09-739fe9e9467b,Jessica Ballard,jballard@tamu.edu,College of Medicine
+e644ef3e-4a5d-4870-b728-42e02dd36cbb,Matthew Perez,mperez@tamu.edu,Bush School of Government and Public Service
+700738cc-e04e-4e37-9efe-f968a2862b12,Michelle Schultz,mschultz@tamu.edu,College of Marine Sciences and Maritime Studies
+c4a5459f-5c19-4223-b85a-b6c791da2624,Nicole Butler,nbutler@tamu.edu,College of Agriculture and Life Sciences
+d0fa2321-c105-4188-9c51-82fa5f0b742d,David Gonzalez,dgonzalez@tamu.edu,College of Arts and Sciences
+d40f6776-2e82-4ed6-a6cf-cef436073bc3,Andrew Dunn,adunn@tamu.edu,School of Public Health
+40463af5-0239-4749-873b-2e1c6f192861,Michael Jackson,mjackson@tamu.edu,College of Dentistry
+741812fe-0f00-4562-ab12-029989c67066,Donna Smith,dsmith@tamu.edu,"College of Performance, Visualization and Fine Arts"
+0064cc2e-10e3-47ec-b48f-a918e514d1a5,Stacy Ford,sford@tamu.edu,College of Architecture
+fac2ec5e-5800-477d-bacc-271b542dc5f4,Dr. William Higgins MD,dwilliam@tamu.edu,College of Marine Sciences and Maritime Studies
+648cbf64-0fd3-49e4-8390-e27136f3c250,Juan Lynn,jlynn@tamu.edu,Bush School of Government and Public Service
+687c8911-f604-4986-9c5c-845b6326d57e,Brittney Clark,bclark@tamu.edu,College of Architecture
+d0a8b751-fd58-48c2-8884-73c92c4dee1f,David Park,dpark@tamu.edu,College of Education and Human Development
+383aaba7-488e-4adc-aba2-e4039dd40ebe,Douglas Ferguson,dferguson@tamu.edu,College of Medicine
+60127341-4491-40d7-9d63-a9cd2332b851,Sara Bond,sbond@tamu.edu,School of Public Health
+3b17f21d-7849-4fe0-aacc-76db9c5fb2b0,John Beck,jbeck@tamu.edu,Mays Business School
+616226b3-51cf-4f1f-b741-af0deefb449a,Larry Fowler,lfowler@tamu.edu,College of Veterinary Medicine and Biomedical Sciences
+cc3a7f4a-5abf-4014-982f-a0d2baff9271,Alexandra Zimmerman,azimmerman@tamu.edu,School of Engineering Medicine
+9f3d792d-d6d4-4d71-80a4-f1a54dd8f6ba,Brenda Rivas,brivas@tamu.edu,Irma Lerma Rangel College of Pharmacy
+bacf4181-9877-4040-8594-0c02209f4014,Angela Coleman,acoleman@tamu.edu,College of Agriculture and Life Sciences
+a28b0be2-b1af-4d51-a970-70d192f3942c,Melody Ramirez,mramirez@tamu.edu,College of Education and Human Development
+c8f2ae12-2b4f-4da1-a3fd-e258d34a7d87,Kenneth Price,kprice@tamu.edu,College of Engineering
+72a20edd-1232-4e54-a704-0b026678aeec,Jon Salazar,jsalazar@tamu.edu,College of Arts and Sciences
+b7656f8a-71ad-4fb9-844d-5b1fd72f9e11,Cynthia Williams,cwilliams@tamu.edu,College of Nursing
+100d0ff7-36c2-4aac-b687-2e0b40eed02d,Mark Maxwell,mmaxwell@tamu.edu,College of Education and Human Development
+54b0dc09-5de8-4a5f-9ea0-23d700834b85,Elizabeth Williams,ewilliams@tamu.edu,College of Dentistry
+5ae8bade-de89-4ac7-a7db-fe72810580be,Allison Scott,ascott@tamu.edu,College of Medicine
+b55469d9-48d8-49f2-be0c-023fac951d31,Meghan Wolf,mwolf@tamu.edu,College of Nursing
+a45bf73a-85ed-4b88-a5bc-37dbda55b7d9,Ryan Baker,rbaker@tamu.edu,College of Arts and Sciences
+9ab0b1ee-e887-4443-aa5f-2e50972ee3e1,Diana Gross,dgross@tamu.edu,"College of Performance, Visualization and Fine Arts"
+380029d0-791a-484d-8c39-da95284b3f27,John Garcia,jgarcia@tamu.edu,School of Public Health
+d43596db-67e5-4c36-86a3-5598752a738c,Emily Nguyen,enguyen@tamu.edu,College of Engineering
+0cd8a526-7dcc-470a-8181-a37f1d2a0b94,Michael Sheppard,msheppard@tamu.edu,College of Architecture
+96c57f14-f09c-49ce-8238-5c086cf72b33,David Garza,dgarza@tamu.edu,College of Nursing
+a1477467-c396-431f-a257-de2cf394069f,Kelly Williams,kwilliams@tamu.edu,College of Nursing
+ed121446-b04e-4704-a75b-1cd4a394ac39,Laura Green,lgreen@tamu.edu,College of Veterinary Medicine and Biomedical Sciences
+e244a538-0a36-422b-8b25-e1c4690524bd,Christopher Perry,cperry@tamu.edu,College of Medicine
+5407e815-3f3e-4933-b593-6866b27e00ca,Thomas Wheeler,twheeler@tamu.edu,College of Arts and Sciences
+119ee538-4339-449a-adef-469a29542577,Heather Hampton,hhampton@tamu.edu,College of Dentistry
+cacebbe4-8979-40a4-b9cf-335a30e1877d,Thomas Stevenson,tstevenson@tamu.edu,School of Law
+ab915c90-21a9-45da-9ae5-b359b69be41f,Teresa Rodriguez,trodriguez@tamu.edu,Irma Lerma Rangel College of Pharmacy
+41ab859f-4ad0-4c78-b757-ab4c203f8911,Adrienne Solis,asolis@tamu.edu,Mays Business School
+6d43f6a7-710d-450f-a2f6-3d01dfa23db8,Lauren Johnson,ljohnson@tamu.edu,College of Architecture
+c7fddefb-b515-4e2e-b6bc-a673aabc35ac,Christopher Washington,cwashington@tamu.edu,Irma Lerma Rangel College of Pharmacy
+6084f5e0-bab5-437b-ad39-d2478a96faaf,Shawn Allen,sallen@tamu.edu,School of Law
+88962568-e2c0-4f52-abc2-f869c21e2d68,Amber Williams,awilliams@tamu.edu,College of Architecture
+13807788-c4ae-43c8-a750-3e15cf644aaf,Julie Diaz,jdiaz@tamu.edu,College of Medicine
+c491be65-3753-4b74-972c-669007619411,Daniel Weiss,dweiss@tamu.edu,College of Engineering
+0cc34bc1-8e3c-42d5-a648-20ff8ebb6dbd,Leon Sandoval,lsandoval@tamu.edu,School of Engineering Medicine
+1e584041-9ab5-4875-9c29-0b8c2712c65d,Blake Brown,bbrown@tamu.edu,College of Nursing
+5bd76e09-6e3d-4e47-81a6-857c17cf7956,Daniel Gibbs,dgibbs@tamu.edu,Bush School of Government and Public Service
+aa4ceda6-612f-4afc-8f82-80002eab4589,Jessica Cruz,jcruz@tamu.edu,Mays Business School
+276eb7ea-1881-4653-b737-b6f1fb82c2a0,Richard Smith,rsmith@tamu.edu,School of Public Health
+2bd190b1-dd69-41e8-bb70-c45571afe601,William Wright,wwright@tamu.edu,College of Veterinary Medicine and Biomedical Sciences
+0b8bb1cc-2d72-411d-aff7-bcf60279942e,Daniel Walker,dwalker@tamu.edu,College of Education and Human Development
+d43f11eb-d4b6-4b79-94f0-925495179e3f,Robert Benjamin,rbenjamin@tamu.edu,Bush School of Government and Public Service
+ab2fb386-f74c-40d4-b827-d2fc54e5460a,Amanda Horne,ahorne@tamu.edu,School of Law
+8ee735ca-1fe5-4670-92f9-7c43e8f8853b,Brandy Cook,bcook@tamu.edu,College of Education and Human Development
+dbd41173-c9c6-4eb6-8d1f-81ead050b473,Thomas Carroll,tcarroll@tamu.edu,School of Law
+a4541f09-e4b0-4475-85b3-c3427c408345,Jennifer Rose,jrose@tamu.edu,College of Marine Sciences and Maritime Studies
+ec821a07-f751-4fde-8f5f-90f78ef6bc1e,Stanley Patterson,spatterson@tamu.edu,School of Public Health
+9b0ed7da-6333-4ea4-b0d8-8d5e75a66d7d,Madison Johnson,mjohnson@tamu.edu,College of Agriculture and Life Sciences
+22372283-7c00-4f24-8ae4-7f7a18664eb8,Michelle Robertson,mrobertson@tamu.edu,College of Education and Human Development
+1a51de5f-7dee-49b1-808e-f244dce928e9,Mr. Duane Tucker,mduane@tamu.edu,College of Veterinary Medicine and Biomedical Sciences
+c003711e-e563-4ea4-bdaf-376eb68dce81,Tristan Miller,tmiller@tamu.edu,College of Marine Sciences and Maritime Studies
+f18391e9-dbf4-4939-9fea-bf6a3d22cc4a,Paula Zuniga,pzuniga@tamu.edu,College of Agriculture and Life Sciences
+8552f008-dafc-403b-9b67-8d57aec402b4,Christopher Moran,cmoran@tamu.edu,College of Dentistry
+dc2297f5-af9f-420d-89f5-fad492ed5517,Stephen Thomas,sthomas@tamu.edu,Irma Lerma Rangel College of Pharmacy
+3c6fdfd3-e626-45a1-8134-9a6a6570b00f,Kenneth Thomas,kthomas@tamu.edu,College of Education and Human Development
+f4c0af66-86d9-4802-8a9f-6e463a65803d,Kristina Jones,kjones@tamu.edu,College of Education and Human Development
+ed48c4c0-e27a-400c-9dbc-8ecc6a708068,Gina Johnson,gjohnson@tamu.edu,Irma Lerma Rangel College of Pharmacy
+e6a74f27-cc62-480b-8f18-04481db542e2,Timothy Smith,tsmith@tamu.edu,College of Marine Sciences and Maritime Studies
+5a361c79-9321-40c1-9d29-91f78712e87c,Patrick Hernandez,phernandez@tamu.edu,Irma Lerma Rangel College of Pharmacy
+6bd85208-79e2-49ca-8ce0-4073582428e7,Alison Smith,asmith@tamu.edu,College of Veterinary Medicine and Biomedical Sciences
+13001a2c-296d-414a-bbac-eec1b623a6e3,Tina Snow,tsnow@tamu.edu,College of Agriculture and Life Sciences
+b1785084-8fff-4b9b-b995-1fe56d7d7e02,Kathy Sanchez,ksanchez@tamu.edu,College of Medicine
+74d57058-de04-47b4-b2c7-f74afc3fb21b,Beverly Hamilton,bhamilton@tamu.edu,College of Engineering
+dcc0d33b-9846-481e-9ffb-a6e6e5ef9317,Ashley Dorsey,adorsey@tamu.edu,College of Education and Human Development
+0e6e85e0-1bf3-40ce-a849-4f6ad1a152e3,Brandon Sanchez,bsanchez@tamu.edu,"College of Performance, Visualization and Fine Arts"
+3421a410-2969-4c8c-8e2d-95fda5a5ac1a,Dawn Singh,dsingh@tamu.edu,Bush School of Government and Public Service
+5dacccaf-e689-4680-82e3-81d8b9e464cd,Marie Jones,mjones@tamu.edu,"College of Performance, Visualization and Fine Arts"
+51db158e-27c7-410b-9705-c3c37f5b1abd,Jennifer Clark DVM,jclark@tamu.edu,School of Public Health
+4a44d4d6-a235-48bd-a5fb-ac2d17c04642,Wendy Young,wyoung@tamu.edu,School of Public Health
+40403b58-ed44-4fc0-bfda-1eceb0cd0547,Brandon Moreno,bmoreno@tamu.edu,Mays Business School
+1c9ea274-0e5d-4c8b-8131-f9e288dbcecc,Valerie Cunningham,vcunningham@tamu.edu,College of Marine Sciences and Maritime Studies
+6976bde8-b2a5-490a-999a-a4c6e89ebce7,Alexandra Bentley,abentley@tamu.edu,College of Medicine
+0d9af913-f39a-4b91-879b-d19f4bbb228d,Helen Ponce,hponce@tamu.edu,School of Law
+1bc4c2d1-ae14-4a2d-807d-2788572b0f93,Michael Velazquez,mvelazquez@tamu.edu,College of Arts and Sciences
+09f442e1-b08f-404b-a65f-13f74b69c4b0,William Alexander,walexander@tamu.edu,College of Marine Sciences and Maritime Studies
+e5a65fa3-7f6b-436b-ab24-bff263def6d9,Miranda Moore,mmoore@tamu.edu,"College of Performance, Visualization and Fine Arts"
+c973df2d-c01a-44ec-88ab-8213372c5d5f,Dustin Simmons,dsimmons@tamu.edu,School of Engineering Medicine
+8c4680ac-15c9-4e3a-80c8-f857f588a1bd,Lindsey Keller,lkeller@tamu.edu,Irma Lerma Rangel College of Pharmacy
+2113718d-9e6b-49f4-860d-fa9a708f687c,John Vaughn,jvaughn@tamu.edu,Bush School of Government and Public Service
+5b68a38d-b46f-4ab4-a651-89ce95be5549,Bradley Mckenzie,bmckenzie@tamu.edu,College of Arts and Sciences
+f22ff810-a220-4f60-9208-22c459dc8be6,John Cunningham,jcunningham@tamu.edu,College of Architecture
+d2dfe5a5-8d94-42a9-bd5b-2461c5d262aa,Michael Glover,mglover@tamu.edu,Mays Business School
+f41b1a15-d198-4782-9697-510a14e0356f,Shane Dominguez,sdominguez@tamu.edu,Mays Business School
+c4b3978f-fe46-4708-b19a-b27e9738e245,Tom Hunter,thunter@tamu.edu,College of Dentistry
+4aa30c1b-b882-46a2-be5c-def1e68c5568,Tyler Sullivan,tsullivan@tamu.edu,School of Engineering Medicine
+754aaa56-a3fe-411f-b482-899495c4e696,Amanda Stevens,astevens@tamu.edu,College of Dentistry
+0efa9515-5aeb-4143-8d98-c372363ee457,Dylan Young,dyoung@tamu.edu,School of Law
+9781d181-f5fc-41b0-8fc3-f70a5f1bc6de,Jessica Ruiz,jruiz@tamu.edu,"College of Performance, Visualization and Fine Arts"
+124d2f90-c7a1-4478-ab5b-25998e8dbe18,Laura Medina,lmedina@tamu.edu,College of Arts and Sciences
+41202ec6-1cc2-4259-94eb-b8e33fb087a5,Melissa Valencia,mvalencia@tamu.edu,College of Engineering
+2ac55381-f51a-4056-867c-e8470abbe30a,Timothy Kent,tkent@tamu.edu,College of Education and Human Development
+4677210c-cae8-4aea-87e0-e74e7df65930,Mitchell Love,mlove@tamu.edu,College of Medicine
+a5966dcb-b7a1-4a68-8092-1edc99366c67,James Gaines,jgaines@tamu.edu,College of Nursing
+9a88129a-44b3-4a3a-9a06-7f7b72266dbd,Mrs. Jennifer Ramirez,mjennifer@tamu.edu,School of Engineering Medicine
+6b5ade7f-7af1-4a70-99a8-58b836c738db,Frederick Garcia,fgarcia@tamu.edu,College of Arts and Sciences
+99be8428-a1e2-40e6-89fb-e444a782c991,Joseph Byrd,jbyrd@tamu.edu,College of Architecture
+ebd5819d-02ab-4829-95ac-c483d873c99a,Ray Ramirez,rramirez@tamu.edu,College of Marine Sciences and Maritime Studies
+2946a02f-c9ed-4a6e-8a37-9aa6207cf7c5,Kirsten Stuart,kstuart@tamu.edu,College of Architecture
+b8828d83-500d-44f8-8d38-95b19a029960,Jay Alvarez,jalvarez@tamu.edu,School of Engineering Medicine
+3944a3eb-44b0-4c56-a1d9-eea89741447b,Stephanie Fry,sfry@tamu.edu,Irma Lerma Rangel College of Pharmacy
+ad0b0905-b0c2-4781-8b65-c9b11ee02b35,William Murray,wmurray@tamu.edu,Mays Business School
+984c46e3-fb6c-44b6-b1ee-2371b47ac8a6,Mary Flynn,mflynn@tamu.edu,College of Education and Human Development
+f1d7c3fb-dce6-4c33-aff7-bffdb57445d2,Cassandra Velasquez,cvelasquez@tamu.edu,College of Nursing
+4e2f05a5-c30b-459d-9d4d-a1e4a9a9e1bd,Edward Schroeder,eschroeder@tamu.edu,College of Marine Sciences and Maritime Studies
+8f4f2780-89ac-447b-8112-2989b20d6c6c,Ashley Arroyo,aarroyo@tamu.edu,School of Public Health
+f297bb01-19e4-49a8-aab5-74df2efa7046,Clarence Wilson,cwilson@tamu.edu,College of Education and Human Development
+9f0dbabe-1085-4b74-a2d0-af0fe909f7a8,Julie Taylor,jtaylor@tamu.edu,"College of Performance, Visualization and Fine Arts"
+c6512f57-e142-4656-8a46-f7d676c98bd6,April Smith,asmith@tamu.edu,College of Education and Human Development
+c1ff3640-9521-468b-9008-0fee3c07ef03,Jacob Lloyd,jlloyd@tamu.edu,"College of Performance, Visualization and Fine Arts"
+77689773-99ad-43b7-8241-537becdc1781,Donna Cummings,dcummings@tamu.edu,College of Engineering
+c36df5f1-b16f-426c-90ac-0d3b7f5091d9,Jack Mejia,jmejia@tamu.edu,College of Engineering
+b8ab50a6-4f78-4502-8790-1605058dc35e,Christine Elliott,celliott@tamu.edu,College of Nursing
+b748c825-c013-4a21-8cfb-a51c58cf5d87,Megan Garcia,mgarcia@tamu.edu,College of Marine Sciences and Maritime Studies
+ae741b81-c9fc-4f8e-8127-f762b2924112,Anthony Jenkins,ajenkins@tamu.edu,"College of Performance, Visualization and Fine Arts"
+131b32d3-66ab-491d-8c2b-31948aa333e3,Scott Odom MD,sodom@tamu.edu,"College of Performance, Visualization and Fine Arts"
+9948304b-5e7e-4d89-9457-81d6995fb5af,Jo Garcia,jgarcia@tamu.edu,Mays Business School
+943e9091-bba9-4fd5-90d2-dc6487b5f169,Ashley Manning,amanning@tamu.edu,College of Architecture
+68d8469d-96c9-4d78-a942-ac25250149b1,Jennifer Malone MD,jmalone@tamu.edu,School of Law
+cf52c5be-94af-4f31-b388-0e951da7db80,Tammie Dudley,tdudley@tamu.edu,College of Agriculture and Life Sciences
+c46420ae-4942-4158-ae25-2df43581c17a,Heidi Nguyen,hnguyen@tamu.edu,College of Marine Sciences and Maritime Studies
+6090abbc-88c2-4518-b082-233d2cb16060,John Edwards,jedwards@tamu.edu,College of Agriculture and Life Sciences
+5cc2f1f0-cc6b-406c-ba38-156dbfd5c6df,Michelle Shaw,mshaw@tamu.edu,College of Agriculture and Life Sciences
+d6f36bd6-d141-44a6-8cdc-738fd995bc69,Casey Castillo,ccastillo@tamu.edu,Bush School of Government and Public Service
+9a98e911-6557-4bea-a64d-b273d16f8323,Dale Murphy,dmurphy@tamu.edu,College of Veterinary Medicine and Biomedical Sciences
+bb11b303-2825-4d6f-87c8-da0f51984388,Angela Jackson,ajackson@tamu.edu,College of Agriculture and Life Sciences
+e00bce01-ced6-4405-a1d1-bbc9f2984632,Daniel Cruz,dcruz@tamu.edu,Irma Lerma Rangel College of Pharmacy
+73d6b15a-5122-46c7-8ca3-fbfcdb37844e,William Owens,wowens@tamu.edu,College of Engineering
+7ab11be0-48af-4300-8eba-2140bda3c298,Christopher Hall,chall@tamu.edu,College of Veterinary Medicine and Biomedical Sciences
+2de81744-6920-4117-8656-939b6b2ce8dc,Jacob Lopez,jlopez@tamu.edu,College of Nursing
+defa675a-c0ca-45ed-935f-3acfff0794e3,Dr. Kathryn Chapman,dkathryn@tamu.edu,School of Law
+eba107e9-403a-4833-9927-a8201f363c78,Elizabeth Smith,esmith@tamu.edu,Mays Business School
+2e5b66fe-a413-4f14-8573-3a7cebbda0d0,Lauren Sloan,lsloan@tamu.edu,College of Marine Sciences and Maritime Studies
+579ab425-c7e7-4155-9f32-283d975e5193,Joseph Wood,jwood@tamu.edu,Bush School of Government and Public Service
+f850a60a-4866-4c57-84c8-d2cb0bf562ea,Debra Norman,dnorman@tamu.edu,School of Engineering Medicine
+96b7fc13-1af0-4b50-80b8-6a91c9169580,Danielle Hernandez,dhernandez@tamu.edu,College of Arts and Sciences
+c38ebddd-07ba-4f87-9282-5ddb2e6749e1,Karla Perkins,kperkins@tamu.edu,College of Arts and Sciences
+0ae0c4ae-a18b-4867-b522-c7b8a6f794d6,Donald Combs,dcombs@tamu.edu,College of Agriculture and Life Sciences
+4313491c-8e63-4cd5-97ac-6f61164696af,Debbie Golden,dgolden@tamu.edu,College of Nursing
+4d2adff3-7369-4cc0-a245-64a02bca344b,Nicholas Leon,nleon@tamu.edu,College of Engineering
+20f355df-2044-41ef-b65c-6417202199e2,Caitlin Vaughn,cvaughn@tamu.edu,Mays Business School
+d0662ed9-1d6e-4617-b57f-ed66be376b5b,Christopher Skinner,cskinner@tamu.edu,College of Education and Human Development
+ead05346-7a06-4dfe-b726-25f7134552cd,Dr. Diane Smith MD,ddiane@tamu.edu,College of Arts and Sciences
+d6807dcc-9392-4655-92e6-34e9c57304fb,Howard Garner,hgarner@tamu.edu,"College of Performance, Visualization and Fine Arts"
+f06de0fd-f8d0-482e-832e-9a6bfc6649e5,Anne Bruce,abruce@tamu.edu,College of Architecture
+f8823720-c8e4-4f41-8b2c-6defde7d8685,Jacqueline Kelly,jkelly@tamu.edu,Bush School of Government and Public Service
+099dcbfc-9d99-497b-8fa1-c0ec6547a7cc,Erin Smith,esmith@tamu.edu,Mays Business School
+81fa4c9d-8d4a-48e4-a923-8bd4098d84b2,Julia Lucas,jlucas@tamu.edu,College of Medicine
+9825b242-f872-4c56-8067-5b26a65bbc53,Bailey Ortiz,bortiz@tamu.edu,School of Law
+fb3e9304-0765-4cfc-8166-7cb890dc9753,Mr. Ryan Morse PhD,mryan@tamu.edu,School of Law
+a4daad86-d8a7-4051-80a4-a805af7c109f,Jeremy Cooper,jcooper@tamu.edu,"College of Performance, Visualization and Fine Arts"
+d072512b-701c-4fd0-8f32-65d162a0db8c,Margaret Allen,mallen@tamu.edu,College of Agriculture and Life Sciences
+e86fde5f-0a5d-4b1b-9546-754968046796,James Gaines,jgaines@tamu.edu,College of Marine Sciences and Maritime Studies
+ab0d4eaf-8a69-4922-a11d-99d73a1f452a,Karen Wheeler,kwheeler@tamu.edu,College of Education and Human Development
+792e0241-9ddf-4929-8869-23278dfbfd14,Joshua Fuentes,jfuentes@tamu.edu,School of Law
+a5afff4a-1fbe-428b-b441-dd0b00e9d25e,Mrs. Beverly Hernandez,mbeverly@tamu.edu,College of Engineering
+6d9be692-2590-4f83-8ab9-22b908374956,Timothy Morales,tmorales@tamu.edu,School of Engineering Medicine
+284520f0-0307-4284-b50d-152079d30386,Shannon Perez,sperez@tamu.edu,College of Architecture
+31807d4b-6bb6-446a-a2a4-1499d21296ea,Tracy Vincent,tvincent@tamu.edu,School of Law
+b3e7dd78-4be3-445b-ace3-9bdb18569ab9,Levi Bradley,lbradley@tamu.edu,College of Veterinary Medicine and Biomedical Sciences
+36569578-123b-430c-8b34-61996c990a9a,Scott Faulkner,sfaulkner@tamu.edu,College of Medicine
+2f1e4706-867f-4a1a-b147-300c3807163e,Steven Chavez,schavez@tamu.edu,College of Nursing
+dfbc336c-256d-4433-875b-e3970d398133,Cassandra Jones,cjones@tamu.edu,School of Public Health
+10bb76c9-c8df-4a1b-92ca-25818737a6e5,Phyllis Bryant,pbryant@tamu.edu,School of Law
+50e79e9f-d95e-4c35-8e77-c3e7dcf9c212,Laura Bates,lbates@tamu.edu,College of Medicine
+8dacad49-8abc-4808-90cf-461d7e57b98f,Donald Rodriguez,drodriguez@tamu.edu,College of Architecture
+f1d81bc5-08f5-4fdd-ae69-f5ea459f2fbe,Mr. Matthew Perry MD,mmatthew@tamu.edu,Bush School of Government and Public Service
+825d317c-94b0-44f1-9278-a7545a2df0e3,April Sawyer,asawyer@tamu.edu,School of Engineering Medicine
+74cd3799-6457-492f-bb71-7217635b1422,Raymond Anderson,randerson@tamu.edu,College of Dentistry
+78123787-28e1-4920-be57-6ce503040641,David Quinn,dquinn@tamu.edu,School of Engineering Medicine
