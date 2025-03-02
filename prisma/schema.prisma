@@ -18,6 +18,7 @@ model Account {
   professor Professor?
   advisor   Advisor?
   settings  Settings?
+  forms     Form[]
 }
 
 model Student {
@@ -29,15 +30,15 @@ model Student {
 }
 
 model Professor {
-  userId         Int        @id @unique
-  account        Account    @relation(fields: [userId], references: [id])
-  department     String?
+  userId                Int        @id @unique
+  account               Account    @relation(fields: [userId], references: [id])
+  department            String?
 }
 
 model Advisor {
-  userId             Int     @id @unique
+  userId                Int     @id @unique
   account               Account    @relation(fields: [userId], references: [id])
-  role               AdvisorRoles @default(Coordinator)
+  role                  AdvisorRoles @default(Coordinator)
 }
 
 model Settings {
@@ -58,6 +59,33 @@ model Settings {
   reading_mask          Boolean @default(false)
   highlight_hover       Boolean @default(false)
   cursor                Cursor @default(Regular)
+}
+
+model Form {
+  id              String   @id @unique
+  name            String
+  type            FormType
+  status          FormStatus @default(PENDING)
+  submittedDate   DateTime? // Can be null if not submitted
+  dueDate         DateTime
+  createdAt       DateTime @default(now())
+  userId          Int
+  user            Account  @relation(fields: [userId], references: [id])
+}
+
+enum FormStatus {
+  OVERDUE
+  PENDING
+  SUBMITTED
+  APPROVED
+  REJECTED
+}
+
+enum FormType {
+  REGISTRATION_ELIGIBILITY
+  ACADEMIC_CLASSROOM
+  CAMPUS_LIVING_MOBILITY
+  APPEALS_TEMP_WORKPLACE
 }
 
 enum Cursor {
