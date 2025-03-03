@@ -43,13 +43,18 @@ function UserForms() {
     alert("Form submission will be implemented later.");
   }
 
+  function handleExitUploadView() {
+    setView(null);
+    setSelectedDisability(''); // Reset disability selection when exiting Upload Forms
+  }
+
   return (
     <div className="content-container">
       {view === null && (
         <div className="selection-container">
           <h2>Select an option below to proceed:</h2>
           <div className="selection-buttons">
-            <button onClick={() => setView('upload')}>Upload Forms</button>
+            <button onClick={() => { setView('upload'); setSelectedDisability(''); }}>Upload Forms</button>
             <button onClick={() => setView('manage')}>Manage Forms</button>
           </div>
         </div>
@@ -57,7 +62,7 @@ function UserForms() {
 
       {view === 'upload' && (
         <div className="form-wrapper">
-          <button className="back-btn" onClick={() => setView(null)}>← Back</button>
+          <button className="back-btn" onClick={handleExitUploadView}>← Back</button>
           <div className="disability-selection">
             <label>
               <h3>Select a Disability:</h3>
