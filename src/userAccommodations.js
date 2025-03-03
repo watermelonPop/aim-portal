@@ -184,10 +184,10 @@ function UserAccommodations({name, email, setAlertMessage, setShowAlert}) {
         return (
                 <>
                 <div role="presentation" className="newStudentDiv">
-                        <p className='dashboardTitle'>New Student Application</p>
+                        <h2 className='dashboardTitle'>New Student Application</h2>
                         {existingRequest === null ? (
                                 <>
-                                <p className='subTitle'>Need Accommodations? Start Here!</p>
+                                <h3 className='subTitle'>Need Accommodations? Start Here!</h3>
                                 <form className="newStudentApp" onSubmit={handleSubmit}>
                                         <label htmlFor="name">Name</label>
                                         <input name="name" value={formData.name} type="text" onChange={handleChange} />
@@ -218,7 +218,14 @@ function UserAccommodations({name, email, setAlertMessage, setShowAlert}) {
                                 </>
                         ) : (
                                 <>
-                                <p className='subTitle'>You already have an existing request: </p>
+                                <h3 className='subTitle'>You already have an existing request: </h3>
+                                {
+                                        existingRequest.has_documentation ? (
+                                        <p className='subTitle'>You have submitted your documentation, and your request is under review!</p>
+                                        ) : (
+                                        <p className='subTitle'>You have not submitted your documentation yet. Please submit it in Forms before we can review your request.</p>
+                                        )
+                                }
                                 <form className="newStudentApp" onSubmit={handleCancel}>
                                         <label htmlFor="name">Name</label>
                                         <input name="name" type="text" value={existingRequest.user_name}/>

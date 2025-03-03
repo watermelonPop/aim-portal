@@ -574,8 +574,8 @@ button{
   font-size: clamp(var(--txtSizeMin), calc(1rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
   letter-spacing: clamp(var(--letterSpacingMin), calc(0.1rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
   padding: 20px;
-  
 }
+
 
 .newStudentApp label {
   font-weight: 600;
