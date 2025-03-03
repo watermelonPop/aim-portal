@@ -14,16 +14,20 @@ import NoteTaking from './noteTaking';
 import AssistiveTech from './assistiveTech';
 import Testing from './testing';
 import StudentCases from './studentCases';
+import Alert from './alert';
 
 
 export function App() {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("ERROR");
   const [tabs, setTabs] = useState([]);
   const [userType, setUserType] = useState("User");
   const [userId, setUserId] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
   const [userTabs, setUserTabs] = useState([
     {name: 'Dashboard', elem: <Dash userType={"User"}/>},
-    {name: 'Accommodations', elem: <Accomodations userType={"User"}/>},
+    {name: 'Accommodations', elem: <Accomodations userType={"User"} setAlertMessage={setAlertMessage} setShowAlert={setShowAlert}/>},
     {name: 'Forms', elem: <Forms userType={"User"}/>},
     {name: 'Profile', elem: <Profile userType={"User"}/>},
   ]);
@@ -81,11 +85,30 @@ export function App() {
   });
 
   useEffect(() => {
+    if (showAlert) {
+      const timer = setTimeout(() => {
+        setShowAlert(false);
+      }, 15000);
+      return () => clearTimeout(timer);
+    }
+  }, [showAlert]);
+
+  useEffect(() => {
     if(!loggedIn){
       return;
     }
+    let updatedUserTabs = {...userTabs};
+    if(userInfo !== null){
+      updatedUserTabs = [
+        {name: 'Dashboard', elem: <Dash userType={"User"}/>},
+        {name: 'Accommodations', elem: <Accomodations userType={"User"} name={userInfo.name} email={userInfo.email} setAlertMessage={setAlertMessage} setShowAlert={setShowAlert}/>},
+        {name: 'Forms', elem: <Forms userType={"User"}/>},
+        {name: 'Profile', elem: <Profile userType={"User"}/>},
+      ];
+    }
+
     if(userType === "User"){
-      setTabs(userTabs);
+      setTabs(updatedUserTabs);
       setCurrentTab(userTabs[0]);
       if(localStorage.getItem("aim-settings") === null){
         console.log("SETTING LOCAL STORAGE");
@@ -375,15 +398,17 @@ export function App() {
   App.setStaffAccess = setStaffAccess;
   App.setSettings = setSettings;
   App.setUserId = setUserId;
+  App.setUserInfo = setUserInfo;
 
   return (
     <>
+      {showAlert && <Alert message={alertMessage} />}
       {loggedIn ? <BasicView 
           currentTab={currentTab} 
           setCurrentTab={setCurrentTab}
           userType={userType}
           tabs={tabs}
-        /> : <LoginScreen setUserId={setUserId} setSettings={setSettings} loggedIn={loggedIn} setLoggedIn={setLoggedIn} setUserType={setUserType} setStaffRoles={setStaffRoles}/>}
+        /> : <LoginScreen setUserId={setUserId} setSettings={setSettings} loggedIn={loggedIn} setLoggedIn={setLoggedIn} setUserType={setUserType} setStaffRoles={setStaffRoles} setUserInfo={setUserInfo}/>}
     </>
   );
 }
