@@ -22,23 +22,31 @@ model Account {
 }
 
 model Student {
-  userId               Int                    @id @unique
-  account              Account                @relation(fields: [userId], references: [id])
-  dob                  DateTime
-  UIN                  Int?
-  phone_number         String
+  userId                  Int                    @id @unique
+  account                 Account                @relation(fields: [userId], references: [id])
+  dob                     DateTime
+  UIN                     Int?                   @unique
+  phone_number            String
+  assistive_technologies  Assistive_Technology[]
+  RequestStatus           Request[]
+  
 }
 
 model Professor {
   userId                Int        @id @unique
   account               Account    @relation(fields: [userId], references: [id])
   department            String?
+  courses               Course[]
 }
 
 model Advisor {
-  userId                Int     @id @unique
-  account               Account    @relation(fields: [userId], references: [id])
-  role                  AdvisorRoles @default(Coordinator)
+  userId                  Int                       @id @unique
+  account                 Account                   @relation(fields: [userId], references: [id])
+  role                    AdvisorRoles              @default(Coordinator)
+  Accommodations          Accommodations[]
+  assistive_technologies  Assistive_Technology[]
+  requests                Request[]
+  exams                   Exam[]
 }
 
 model Settings {
@@ -62,15 +70,77 @@ model Settings {
 }
 
 model Form {
-  id              String   @id @unique
+  id              Int   @id @default(autoincrement())
   name            String
   type            FormType
   status          FormStatus @default(PENDING)
   submittedDate   DateTime? // Can be null if not submitted
-  dueDate         DateTime
+  dueDate         DateTime?
   createdAt       DateTime @default(now())
   userId          Int
   user            Account  @relation(fields: [userId], references: [id])
+}
+
+model Important_Dates {
+  id              Int     @id @default(autoincrement())
+  type            String
+  name            String
+  date            DateTime
+}
+
+model Testing_Room {
+  id              Int     @id @default(autoincrement())
+  location        String  @default("Student Services Building")
+  available       Boolean @default(true)
+}
+
+model Assistive_Technology {
+  id              Int       @id @default(autoincrement())
+  available       Boolean   @default(false)
+  studentId       Int
+  student         Student   @relation(fields: [studentId], references: [userId])
+  type            String
+  advisorId       Int
+  advisor         Advisor   @relation(fields: [advisorId], references: [userId])
+
+}
+
+model Accommodations {
+  id              Int       @id @default(autoincrement())
+  type            String?
+  status          String
+  date_requested  DateTime  @default(now())
+  advisorId       Int
+  advisor         Advisor   @relation(fields: [advisorId], references: [userId])
+  notes           String
+}
+
+model Request {
+  id              Int         @id @unique
+  student         Student     @relation(fields: [id], references: [userId])
+  advisorId       Int         @unique
+  advisor         Advisor     @relation(fields: [advisorId], references: [userId])
+  notes           String?
+  documentation   Boolean
+}
+
+model Course {
+  id              Int         @id @default(autoincrement())
+  name            String
+  department      String
+  professorId     Int
+  professor       Professor   @relation(fields: [professorId], references: [userId])
+  exams           Exam[]
+}
+
+model Exam {
+  id              Int         @id @default(autoincrement())
+  courseId        Int
+  course          Course      @relation(fields: [courseId], references: [id])
+  date            DateTime?
+  location        String
+  advisorId       Int
+  advisor         Advisor     @relation(fields: [advisorId], references: [userId])
 }
 
 enum FormStatus {
@@ -108,7 +178,6 @@ enum Contrast {
   Monochrome
 }
 
-
 enum AdvisorRoles {
   Admin
   Coordinator
@@ -126,8 +195,6 @@ enum RequesterRole {
   STUDENT
   ADVISOR
 }
-
-
 
 enum RequestStatus {
   PENDING
