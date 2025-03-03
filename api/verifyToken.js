@@ -21,7 +21,7 @@ module.exports = async (req, res) => {
             const userId = payload['sub'];
       
             // Respond with user info if valid
-            res.status(200).json({ valid: true, userId: userId, email: payload.email });
+            res.status(200).json({ valid: true, userId: userId, email: payload.email, payload: payload });
           } catch (error) {
             console.error('Error verifying token:', error.message);
             res.status(401).json({ valid: false, error: 'Invalid or expired token' });

@@ -60,6 +60,7 @@ describe('App', () => {
                         });
                         await act(async () => {
                                 await App.setLoggedIn(true);
+                                await App.setUserInfo({name: "example", email: "example@example.com"});
                         });
 
                         await waitFor(() => {
