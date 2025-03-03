@@ -2,7 +2,7 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import logo from './logo.png';
 
-export function LoginScreen({ setUserId, setSettings, loggedIn, setLoggedIn, setUserType, setStaffRoles }) {
+export function LoginScreen({ setUserId, setSettings, loggedIn, setLoggedIn, setUserType, setStaffRoles, setUserInfo }) {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     if (loggedIn) {
@@ -31,13 +31,13 @@ export function LoginScreen({ setUserId, setSettings, loggedIn, setLoggedIn, set
     
     if (idToken) {
       console.log('Calling verifyToken');
-      verifyToken(idToken, setUserId, setSettings, loggedIn, setLoggedIn, setUserType, setStaffRoles, setLoading);
+      verifyToken(idToken, setUserId, setSettings, loggedIn, setLoggedIn, setUserType, setStaffRoles, setLoading, setUserInfo);
       // Remove the token from the URL for security
       window.history.replaceState({}, document.title, window.location.pathname);
     }
   }, []);
 
-  const verifyToken = async (token, setUserId, setSettings, loggedIn, setLoggedIn, setUserType, setStaffRoles, setLoading) => {
+  const verifyToken = async (token, setUserId, setSettings, loggedIn, setLoggedIn, setUserType, setStaffRoles, setLoading, setUserInfo) => {
     console.log("VERIFY TOKEN CALLED");
     try {
       const response = await fetch('/api/verifyToken', {
@@ -53,6 +53,7 @@ export function LoginScreen({ setUserId, setSettings, loggedIn, setLoggedIn, set
       if (data.valid) {
         setLoading(true);
         console.log('User verified:', data);
+        setUserInfo(data.payload);
         let exists = await userExists(data.email);
         if(exists.exists === true){
           setUserType(exists.user_info.user_role);
