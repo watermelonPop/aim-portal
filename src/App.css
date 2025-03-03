@@ -190,8 +190,15 @@
   margin-top: 10px;
   text-align: center;
   opacity: 1;
-  transition: opacity 0.5s ease-in-out;
+  transition: opacity 1s ease-in-out;
 }
+
+/* Add fade-out effect */
+.success-message.fade-out {
+  opacity: 50%;
+}
+
+
 
 
 
