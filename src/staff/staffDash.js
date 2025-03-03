@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react';
 
 function StaffDash() {
-  const [view, setView] = useState(null); // 'students', 'accommodations', 'forms', 'studentDetails'
+  const [view, setView] = useState(null); // 'students', 'requests', 'forms', 'studentDetails'
   const [studentsData, setStudentsData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredStudents, setFilteredStudents] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editedStudent, setEditedStudent] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [infoMessage, setInfoMessage] = useState(''); 
+
 
   // Sample alerts (Replace with real-time data)
   const alerts = [
@@ -55,54 +59,46 @@ function StaffDash() {
     setEditedStudent((prev) => ({ ...prev, [name]: value }));
   };
 
+  const hasChanges = () => {
+    return JSON.stringify(editedStudent) !== JSON.stringify(selectedStudent);
+  };
+
   // Submit edited student data to the database
-  const [loading, setLoading] = useState(false); // New state for loading
-  const [successMessage, setSuccessMessage] = useState('');
-
-
   const handleSaveChanges = () => {
+    if (!hasChanges()) {
+      setInfoMessage("⚠️ No changes to save.");
+      setTimeout(() => setInfoMessage("fade-out"), 4000);
+      setTimeout(() => setInfoMessage(""), 3000);
+      return;
+    }
+
     setLoading(true);
-    setSuccessMessage(""); // Reset message before saving
-  
+    setSuccessMessage("");
+
     fetch('/api/updateStudent', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(editedStudent),
     })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`Server responded with status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
+      .then(response => response.json())
+      .then(() => {
         setSuccessMessage("✅ Changes saved successfully!");
-  
-        // Keep the edit form open
-        setSelectedStudent(editedStudent);
-  
-        // Add "fade-out" class after 4 seconds
-        setTimeout(() => {
-          setSuccessMessage((prev) => prev ? "fade-out" : "");
-        }, 4000);
-  
-        // Fully remove message after 5 seconds
-        setTimeout(() => {
-          setSuccessMessage("");
-        }, 5000);
+        setTimeout(() => setSuccessMessage("fade-out"), 4000);
+        setTimeout(() => setSuccessMessage(""), 5000);
       })
-      .catch(error => {
-        console.error('Error updating student:', error);
-        alert('❌ Failed to update student. Please try again.');
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      .catch(error => alert('❌ Failed to update student.'))
+      .finally(() => setLoading(false));
   };
-  
-  
-  
 
+  // Function to reset everything when going back
+  const resetToMainMenu = () => {
+    setView(null);
+    setSearchTerm('');
+    setFilteredStudents([]);
+    setSelectedStudent(null);
+    setIsEditing(false);
+    setEditedStudent(null);
+  };
 
   return (
     <div className="staff-dashboard-container">
@@ -111,7 +107,7 @@ function StaffDash() {
         
         {/* Dashboard Title & Back Button */}
         <div className="staff-header">
-          {view !== null && <button className="back-btn" onClick={() => setView(null)}>← Back</button>}
+          {view !== null && <button className="back-btn" onClick={resetToMainMenu}>← Back</button>}
         </div>
 
         {/* Default Staff Menu */}
@@ -119,32 +115,40 @@ function StaffDash() {
           <div className="staff-menu">
             <h2>Select an action:</h2>
             <div className="staff-menu-buttons">
-              <button onClick={() => setView('students')}>🔍 Search for Students</button>
-              <button onClick={() => setView('accommodations')}>📌 Manage Accommodations</button>
+              <button onClick={() => setView('students')}>🔍 Student Search</button>
+              <button onClick={() => setView('requests')}>📌 Manage Requests</button>
               <button onClick={() => setView('forms')}>📄 Review Submitted Forms</button>
             </div>
           </div>
         )}
 
+        {/* Requests Module View */}
+        {view === 'requests' && (
+          <div className="staff-dashboard-section">
+            <h3>Requests Module</h3>
+            <p>This module will handle student requests.</p>
+          </div>
+        )}
+
         {/* Search for Students */}
         {view === 'students' && (
-          <div className="dashboard-section">
+          <div className="staff-dashboard-section">
             <h3>Search for Students</h3>
             <input
               type="text"
               placeholder="Enter student name or UIN..."
               value={searchTerm}
               onChange={handleSearchChange}
-              className="search-bar"
+              className="staff-search-bar"
             />
 
             {/* Display search results (ONLY name and UIN) */}
             {filteredStudents.length > 0 ? (
-              <div className="search-results">
+              <div className="staff-search-results">
                 {filteredStudents.map(student => (
                   <div 
                     key={student.student_id} 
-                    className="search-item" 
+                    className="staff-search-item" 
                     onClick={() => handleStudentClick(student)}
                   >
                     <p><strong>{student.name}</strong> (UIN: {student.uin})</p>
@@ -159,31 +163,55 @@ function StaffDash() {
 
         {/* Student Details View (With Editing Feature) */}
         {view === 'studentDetails' && selectedStudent && (
-          <div className="student-details-container">
+          <div className="staff-student-details-container">
             <h3>Student Profile</h3>
-            <div className="student-info">
+            <div className="staff-student-info">
               {isEditing ? (
-                <>
-                  <input type="text" name="name" value={editedStudent.name} onChange={handleEditChange} />
-                  <input type="text" name="uin" value={editedStudent.uin} onChange={handleEditChange} />
-                  <input type="date" name="dob" value={editedStudent.dob} onChange={handleEditChange} />
-                  <input type="email" name="email" value={editedStudent.email} onChange={handleEditChange} />
-                  <input type="tel" name="phone_number" value={editedStudent.phone_number} onChange={handleEditChange} />
+                <div className="edit-student-form">
+                  <div className="staff-form-group">
+                    <label htmlFor="name">Full Name:</label>
+                    <input id="name" type="text" name="name" value={editedStudent.name} onChange={handleEditChange} />
+                  </div>
+
+                  <div className="staff-form-group">
+                    <label htmlFor="uin">UIN:</label>
+                    <input id="uin" type="text" name="uin" value={editedStudent.uin} onChange={handleEditChange} />
+                  </div>
+
+                  <div className="staff-form-group">
+                    <label htmlFor="dob">Date of Birth:</label>
+                    <input id="dob" type="date" name="dob" value={editedStudent.dob} onChange={handleEditChange} />
+                  </div>
+
+                  <div className="staff-form-group">
+                    <label htmlFor="email">Email:</label>
+                    <input id="email" type="email" name="email" value={editedStudent.email} onChange={handleEditChange} />
+                  </div>
+
+                  <div className="staff-form-group">
+                    <label htmlFor="phone">Phone Number:</label>
+                    <input id="phone" type="tel" name="phone_number" value={editedStudent.phone_number} onChange={handleEditChange} />
+                  </div>
+
                   <button onClick={handleSaveChanges} disabled={loading}>
                     {loading ? "Saving..." : "Save Changes"}
-                    {loading && <div className="loading-spinner"></div>}
+                    {loading && <div className="staff-loading-spinner"></div>}
                   </button>
+
                   {successMessage && (
-                    <p className={`success-message ${successMessage === "fade-out" ? "fade-out" : ""}`}>
+                    <p className={`staff-success-message ${successMessage === "fade-out" ? "fade-out" : ""}`}>
                       {successMessage !== "fade-out" ? successMessage : ""}
                     </p>
                   )}
 
+                  {infoMessage && (
+                    <p className={`staff-info-message ${infoMessage === "fade-out" ? "fade-out" : ""}`}>
+                     {infoMessage !== "fade-out" ? infoMessage : ""}
+                    </p>
+                    )}
 
-
-
-                  <button className="cancel-btn" onClick={() => setIsEditing(false)}>Cancel</button>
-                </>
+                  <button className="staff-cancel-btn" onClick={() => setIsEditing(false)}>Back to Profile</button>
+                </div>
               ) : (
                 <>
                   <p><strong>Name:</strong> {selectedStudent.name}</p>
@@ -191,26 +219,10 @@ function StaffDash() {
                   <p><strong>Date of Birth:</strong> {selectedStudent.dob}</p>
                   <p><strong>Email:</strong> {selectedStudent.email}</p>
                   <p><strong>Phone Number:</strong> {selectedStudent.phone_number}</p>
-                  <button className="edit-btn" onClick={() => setIsEditing(true)}>Edit</button>
+                  <button className="staff-edit-btn" onClick={() => setIsEditing(true)}>Edit</button>
                 </>
               )}
             </div>
-          </div>
-        )}
-
-        {/* Manage Accommodations */}
-        {view === 'accommodations' && (
-          <div className="dashboard-section">
-            <h3>Manage Accommodations</h3>
-            <p>List of student accommodations to approve or deny.</p>
-          </div>
-        )}
-
-        {/* Review Submitted Forms */}
-        {view === 'forms' && (
-          <div className="dashboard-section">
-            <h3>Review Submitted Forms</h3>
-            <p>View and process student form submissions.</p>
           </div>
         )}
       </div>

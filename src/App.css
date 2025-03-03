@@ -1,3 +1,6 @@
+/* ========================= */
+/* GENERAL STYLES */
+/* ========================= */
 .App {
   text-align: center;
 }
@@ -13,6 +16,18 @@
   }
 }
 
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ========================= */
+/* HEADER & LINK STYLES */
+/* ========================= */
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -28,16 +43,9 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* STAFF DASHBOARD LAYOUT */
+/* ========================= */
+/* STAFF DASHBOARD STYLES */
+/* ========================= */
 .staff-dashboard-container {
   display: flex;
   justify-content: space-between;
@@ -46,57 +54,63 @@
   padding: 20px;
 }
 
-/* Centering the main content */
+/* Main content area */
 .staff-main-content {
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;  /* Centers all content */
-  text-align: center;   /* Centers text */
+  align-items: center;
+  text-align: center;
   padding: 20px;
 }
 
-/* Bigger and More Accessible Staff Menu Buttons */
+/* ========================= */
+/* STAFF MENU BUTTONS */
+/* ========================= */
 .staff-menu-buttons button {
-  width: 300px; /* Increase width */
-  height: 50px; /* Increase height */
-  font-size: 1.1rem; /* Bigger text */
-  padding: 15px; /* More padding for better clickability */
-  background-color: #4F0000; /* Same color as before */
+  width: 300px;
+  height: 50px;
+  font-size: 1.1rem;
+  padding: 15px;
+  background-color: #4F0000;
   color: white;
-  margin-bottom:10px;
+  margin-bottom: 10px;
   border: none;
   border-radius: 10px;
   cursor: pointer;
   transition: background 0.3s, transform 0.2s;
 }
 
-/* Hover effect for better UI */
 .staff-menu-buttons button:hover {
   background-color: #6a0000;
-  transform: scale(1.05); /* Slightly enlarges on hover */
+  transform: scale(1.05);
 }
 
-
-/* Center the dashboard title */
+/* ========================= */
+/* STAFF HEADER */
+/* ========================= */
 .staff-header {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* Alerts Box */
+/* ========================= */
+/* STAFF ALERTS */
+/* ========================= */
 .staff-alerts {
-  width: 300px; /* Fixed width for alert section */
+  width: 300px;
   background: white;
   padding: 15px;
   border-radius: 8px;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Search Bar */
-.search-bar {
-  width: 80%;
+/* ========================= */
+/* STAFF SEARCH BAR & RESULTS */
+/* ========================= */
+.staff-search-bar {
+  width: 100%;
   padding: 10px;
   font-size: 16px;
   border: 1px solid #ccc;
@@ -104,8 +118,7 @@
   margin-top: 10px;
 }
 
-/* Search Results */
-.search-results {
+.staff-search-results {
   margin-top: 10px;
   background: white;
   border: 1px solid #ddd;
@@ -114,18 +127,20 @@
   overflow-y: auto;
 }
 
-.search-item {
+.staff-search-item {
   padding: 10px;
   cursor: pointer;
   border-bottom: 1px solid #ddd;
 }
 
-.search-item:hover {
+.staff-search-item:hover {
   background-color: #f5f5f5;
 }
 
-/* Student Profile View */
-.student-profile {
+/* ========================= */
+/* STAFF PROFILE VIEW */
+/* ========================= */
+.staff-profile {
   background: white;
   padding: 20px;
   border-radius: 8px;
@@ -134,71 +149,95 @@
   text-align: left;
 }
 
-.student-profile p {
+.staff-profile p {
   margin: 5px 0;
 }
-.search-bar {
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
+
+/* ========================= */
+/* STAFF STUDENT EDIT FORM */
+/* ========================= */
+.staff-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Labels and Inputs */
+.staff-form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin:5px;
+}
+
+.staff-form-group label {
+  font-weight: bold;
   margin-bottom: 10px;
+  margin-top:5px;
+  color: #333;
 }
 
-.search-results {
-  background: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  max-height: 200px;
-  overflow-y: auto;
-}
-
-.search-item {
-  padding: 10px;
-  cursor: pointer;
-  border-bottom: 1px solid #ddd;
-}
-
-.search-item:hover {
-  background-color: #e8e8e8;
-}
-
-.student-info input {
+.staff-form-group input {
   width: 100%;
   padding: 8px;
-  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
-.loading-spinner {
+/* ========================= */
+/* STAFF BUTTON STYLES */
+/* ========================= */
+.staff-button {
+  margin-top: 10px;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.staff-cancel-btn {
+  margin-top: 20px;
+}
+
+/* ========================= */
+/* STAFF LOADING SPINNER */
+/* ========================= */
+.staff-loading-spinner {
   width: 20px;
   height: 20px;
   border: 3px solid #ddd;
-  border-top: 3px solid #4F0000; /* Change color as needed */
+  border-top: 3px solid #4F0000;
   border-radius: 50%;
-  animation: spin 1s linear infinite;
+  animation: staff-spin 1s linear infinite;
   display: inline-block;
   margin-left: 10px;
 }
 
-@keyframes spin {
+@keyframes staff-spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
-.success-message {
-  color: green;
-  font-weight: bold;
-  margin-top: 10px;
+/* ========================= */
+/* STAFF SUCCESS & INFO MESSAGES */
+/* ========================= */
+.staff-success-message,
+.staff-info-message {
+  font-size: 14px;
   text-align: center;
-  opacity: 1;
   transition: opacity 1s ease-in-out;
 }
 
-/* Add fade-out effect */
-.success-message.fade-out {
-  opacity: 50%;
+.staff-success-message {
+  color: green;
+  font-weight: bold;
 }
 
+.staff-info-message {
+  color: orange;
+}
 
-
-
-
+/* Fade-out effect */
+.staff-success-message.fade-out,
+.staff-info-message.fade-out {
+  opacity: 0;
+}
