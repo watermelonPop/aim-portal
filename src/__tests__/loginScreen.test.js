@@ -14,6 +14,7 @@ describe('LoginScreen', () => {
         const mockSetUserId = jest.fn();
         const mockSetSettings = jest.fn();
         const mockSetLoading = jest.fn();
+        const mockSetUserInfo = jest.fn();
 
 
         beforeEach(() => {
@@ -131,15 +132,43 @@ describe('LoginScreen', () => {
                     console.error = originalConsoleError;
                 });
 
+                test('when token is verified, setLoading', async () => {
+                    // Mock fetch for verifyToken
+                    global.fetch = jest.fn(() =>
+                        Promise.resolve({
+                          ok: true,
+                          json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com', payload: "testPayload" }),
+                        })
+                    );
+                    const result = await LoginScreen.verifyToken('mockToken', mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
+                    await waitFor(() => {
+                        expect(mockSetLoading).toHaveBeenCalledWith(true);
+                    });
+                }); 
+
+                test('when token is verified, set userInfo', async () => {
+                    // Mock fetch for verifyToken
+                    global.fetch = jest.fn(() =>
+                        Promise.resolve({
+                          ok: true,
+                          json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com', payload: "testPayload" }),
+                        })
+                    );
+                    const result = await LoginScreen.verifyToken('mockToken', mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
+                    await waitFor(() => {
+                        expect(mockSetUserInfo).toHaveBeenCalledWith("testPayload");
+                    });
+                }); 
+
                 test('when token is verified, should call the /api/checkAccount api route', async () => {
                     // Mock fetch for verifyToken
                     global.fetch = jest.fn(() =>
                         Promise.resolve({
                           ok: true,
-                          json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com' }),
+                          json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com', payload: "testPayload" }),
                         })
                     );
-                    const result = await LoginScreen.verifyToken('mockToken', mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading);
+                    const result = await LoginScreen.verifyToken('mockToken', mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
                     await waitFor(() => {
                         expect(global.fetch).toHaveBeenCalledWith('/api/checkAccount', {
                             method: 'POST',
@@ -153,7 +182,7 @@ describe('LoginScreen', () => {
                     global.fetch = jest.fn().mockImplementationOnce(() =>
                         Promise.resolve({
                             ok: true,
-                            json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com' })
+                            json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com', payload: "testPayload" })
                         })
                     ).mockImplementationOnce(() => // Mock for userExists
                         Promise.resolve({
@@ -162,10 +191,10 @@ describe('LoginScreen', () => {
                     ).mockImplementationOnce(() => // Mock for getUserSettings
                         Promise.resolve({
                             ok: true,
-                            json: () => Promise.resolve({ exists: true, settings_info: { /* mock settings data */ } })
+                            json: () => Promise.resolve({ exists: true, settings_info: { } })
                         })
                     );
-                    const result = await LoginScreen.verifyToken('mockToken', mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading);
+                    const result = await LoginScreen.verifyToken('mockToken', mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
                     await waitFor(() => {
                         expect(global.fetch).toHaveBeenCalledWith('/api/getSettings?user_id=mockUserId');
                     });
@@ -175,7 +204,7 @@ describe('LoginScreen', () => {
                     const token = 'mockToken';
                     global.fetch = jest.fn().mockImplementationOnce(() =>
                         Promise.resolve({
-                          json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com' })
+                          json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com', payload: "testPayload" })
                         })
                     ).mockImplementationOnce(() => // Mock for userExists
                         Promise.resolve({
@@ -196,7 +225,7 @@ describe('LoginScreen', () => {
                     });
                     
                     
-                    const result = await LoginScreen.verifyToken(token, mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading);
+                    const result = await LoginScreen.verifyToken(token, mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
                     
                     await waitFor(() => {
                         expect(mockSetLoggedIn).toHaveBeenCalledWith(true);
@@ -207,7 +236,7 @@ describe('LoginScreen', () => {
                 test('successful response to /api/checkAccount api route should set the user type', async () => {
                     global.fetch = jest.fn().mockImplementationOnce(() =>
                         Promise.resolve({
-                            json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com' })
+                            json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com', payload: "testPayload" })
                         })
                     ).mockImplementationOnce(() =>
                         Promise.resolve({
@@ -218,7 +247,7 @@ describe('LoginScreen', () => {
                             json: () => Promise.resolve({ exists: true, settings_info: { font_size: 1, letter_spacing: 1 } })
                         })
                     );
-                    const result = await LoginScreen.verifyToken('mockToken', mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading);
+                    const result = await LoginScreen.verifyToken('mockToken', mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
                     //expect userExists to be called
                     await waitFor(() => {
                         expect(mockSetUserType).toHaveBeenCalledWith("Student");
@@ -228,7 +257,7 @@ describe('LoginScreen', () => {
                 test('if user type is not Staff, getStaffRoles is NOT called', async () => {
                     global.fetch = jest.fn().mockImplementationOnce(() =>
                         Promise.resolve({
-                            json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com' })
+                            json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com', payload: "testPayload" })
                         })
                     ).mockImplementationOnce(() =>
                         Promise.resolve({
@@ -239,7 +268,7 @@ describe('LoginScreen', () => {
                             json: () => Promise.resolve({ exists: true, settings_info: { font_size: 1, letter_spacing: 1 } })
                         })
                     );
-                    const result = await LoginScreen.verifyToken('mockToken', mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading);
+                    const result = await LoginScreen.verifyToken('mockToken', mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
                     //expect userExists to be called
 
                     await waitFor(() => {
@@ -250,7 +279,7 @@ describe('LoginScreen', () => {
                 test('if user type is Staff, getStaffRoles is called', async () => {
                     global.fetch = jest.fn()
                         .mockImplementationOnce(() => Promise.resolve({
-                            json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com' })
+                            json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com', payload: "testPayload" })
                         }))
                         .mockImplementationOnce(() => Promise.resolve({
                             json: () => Promise.resolve({ exists: true, user_info: { user_id: 'mockUserId', email: 'test@example.com', user_role: "Staff" } })
@@ -272,7 +301,7 @@ describe('LoginScreen', () => {
                 
                     console.log("Running test for Staff user role...");
                 
-                    const result = await LoginScreen.verifyToken('mockToken', mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading);
+                    const result = await LoginScreen.verifyToken('mockToken', mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
                     
                 
                     await waitFor(() => {
@@ -289,7 +318,7 @@ describe('LoginScreen', () => {
 
                     global.fetch = jest.fn()
                         .mockImplementationOnce(() => Promise.resolve({
-                            json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com' })
+                            json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com', payload: "testPayload" })
                         }))
                         .mockImplementationOnce(() => Promise.resolve({
                             json: () => Promise.resolve({ exists: true, user_info: { user_id: 'mockUserId', email: 'test@example.com', user_role: "Staff" } })
@@ -308,7 +337,7 @@ describe('LoginScreen', () => {
                                 json: () => Promise.resolve({ exists: true, settings_info: { font_size: 1, letter_spacing: 1 } })
                             })
                         );
-                    const result = await LoginScreen.verifyToken('mockToken', mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading);
+                    const result = await LoginScreen.verifyToken('mockToken', mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
 
                     await waitFor(() => {
                         expect(mockSetStaffRoles).toHaveBeenCalledWith("Admin");
