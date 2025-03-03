@@ -12,7 +12,7 @@ html{
 }
 
 body {
-  background-color: gray;
+  background-color: #FFEDED;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -428,7 +428,6 @@ button{
 .dashboardOuter{
   width: 100%;
   height: fit-content;
-  min-height: 65%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -553,4 +552,96 @@ button{
 .logOutBtn:hover{
   background-color: #4F0000;
   color: #FFEDED;
+}
+
+
+.newStudentDiv {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100%; /* Changed from height to min-height */
+  width: 100%;
+  padding: 20px 0; /* Add some vertical padding */
+}
+
+.newStudentApp {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  font-family: "Mitr", serif;
+  font-weight: 400;
+  font-size: clamp(var(--txtSizeMin), calc(1rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
+  letter-spacing: clamp(var(--letterSpacingMin), calc(0.1rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
+  padding: 20px;
+  
+}
+
+.newStudentApp label {
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.subTitle{
+  font-family: "Mitr", serif;
+  font-weight: 500;
+  font-size: clamp(var(--txtSizeMin), calc(1rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
+  letter-spacing: clamp(var(--letterSpacingMin), calc(0.1rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
+}
+
+.alertTxt{
+  font-family: "Mitr", serif;
+  font-weight: 500;
+  font-size: clamp(var(--txtSizeMin), calc(1rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
+  letter-spacing: clamp(var(--letterSpacingMin), calc(0.1rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
+}
+
+.newStudentApp input,
+.newStudentApp textarea {
+  margin-bottom: 15px;
+  border-radius: 1rem;
+  min-height: 2rem;
+  padding: 1%;
+  font-family: "Mitr", serif;
+  font-weight: 400;
+  font-size: clamp(var(--txtSizeMin), calc(0.8rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
+  letter-spacing: clamp(var(--letterSpacingMin), calc(0.1rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
+}
+
+.newStudentApp button {
+  background-color: #4F0000;
+  color: #FFEDED;
+  border-radius: 1rem;
+  padding: 1%;
+  font-family: "Mitr", serif;
+  font-weight: 600;
+  font-size: clamp(var(--txtSizeMin), calc(1rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
+  letter-spacing: clamp(var(--letterSpacingMin), calc(0.1rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
+}
+
+.alertDiv {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 4px;
+  padding: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  animation: fadeInOut 45s ease-in-out;
+  height: fit-content;
+}
+
+.alertTxt {
+  margin: 0;
+  color: #721c24;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; }
+  5% { opacity: 1; }
+  95% { opacity: 1; }
+  100% { opacity: 0; }
 }
