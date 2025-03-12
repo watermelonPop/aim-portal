@@ -50,6 +50,7 @@ export function App() {
     {name: 'Dashboard', elem: <Dash userType={"Staff"}/>},
     {name: 'Forms', elem: <Forms userType={"Staff"}/>},
     {name: 'Profile', elem: <Profile userType={"Staff"}/>},
+    {name: 'Global Settings', elem: <GlobalSettings userType={"Staff"}/> }
   ]);
   const [currentTab, setCurrentTab] = useState(null);
   const [staffAccess, setStaffAccess] = useState([
