@@ -22,7 +22,7 @@ export function App() {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("ERROR");
   const [tabs, setTabs] = useState([]);
-  const [userType, setUserType] = useState("User");
+  const [userType, setUserType] = useState("Staff");
   const [userId, setUserId] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
   const [userTabs, setUserTabs] = useState([
@@ -65,23 +65,26 @@ export function App() {
   const [letterSpacingChangeSizeAmount, setLetterSpacingChangeSizeAmount] = useState(1);
   const [settings, setSettings] = useState(() => {
     const savedSettings = localStorage.getItem("aim-settings");
-    return savedSettings ? JSON.parse(savedSettings) : {
-      content_size: 100,
-      highlight_tiles: false,
-      highlight_links: false,
-      text_magnifier: false,
-      align_text: "Middle",
-      font_size: 1,
-      line_height: 5000,
-      letter_spacing: 1,
-      contrast: "Regular",
-      saturation: "Regular",
-      mute_sounds: false,
-      hide_images: false,
-      reading_mask: false,
-      highlight_hover: false,
-      cursor: "Regular"
-    };
+    if (!savedSettings || savedSettings === "undefined") {
+      return {
+        content_size: 100,
+        highlight_tiles: false,
+        highlight_links: false,
+        text_magnifier: false,
+        align_text: "Middle",
+        font_size: 1,
+        line_height: 5000,
+        letter_spacing: 1,
+        contrast: "Regular",
+        saturation: "Regular",
+        mute_sounds: false,
+        hide_images: false,
+        reading_mask: false,
+        highlight_hover: false,
+        cursor: "Regular"
+      };
+    }
+    return JSON.parse(savedSettings);
   });
 
   useEffect(() => {
@@ -137,12 +140,16 @@ export function App() {
   }, [loggedIn, userType, staffAccess]);
 
   useEffect(() => {
+
+    //BREAKING HERE ====================
+
     const savedSettings = localStorage.getItem("aim-settings");
     if (!savedSettings || savedSettings !== JSON.stringify(settings)) {
       console.log("Updating local storage with new settings:", settings);
       localStorage.setItem("aim-settings", JSON.stringify(settings));
     }
     if(userId){
+      console.log("REACHING LINE 149: IF(USERID)");
       setSettingsDatabase(userId, settings);
     }
     setTxtChangeSizeAmount(settings.font_size);
