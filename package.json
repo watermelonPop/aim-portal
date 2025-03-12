@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@faker-js/faker": "^9.6.0",
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-brands-svg-icons": "^6.7.2",
     "@fortawesome/free-regular-svg-icons": "^6.7.2",
@@ -13,6 +14,7 @@
     "@prisma/client": "^6.4.1",
     "cra-template": "1.2.0",
     "express": "^4.21.2",
+    "faker": "^6.6.6",
     "google-auth-library": "^9.15.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",

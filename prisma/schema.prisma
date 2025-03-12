@@ -17,8 +17,17 @@ model Account {
   student   Student?
   professor Professor?
   advisor   Advisor?
+  user    User?
   settings  Settings?
   forms     Form[]
+}
+
+model User {
+  userId                  Int                    @id @unique
+  account                 Account                @relation(fields: [userId], references: [id])
+  dob                     DateTime
+  UIN                     Int?                   @unique
+  phone_number            String
 }
 
 model Student {
@@ -29,7 +38,7 @@ model Student {
   phone_number            String
   assistive_technologies  Assistive_Technology[]
   RequestStatus           Request[]
-  
+  accommodations          Accommodations[]
 }
 
 model Professor {
@@ -106,13 +115,15 @@ model Assistive_Technology {
 }
 
 model Accommodations {
-  id              Int       @id @default(autoincrement())
-  type            String?
-  status          String
-  date_requested  DateTime  @default(now())
-  advisorId       Int
-  advisor         Advisor   @relation(fields: [advisorId], references: [userId])
-  notes           String
+  id             Int       @id @default(autoincrement())
+  type           String?
+  status         String
+  date_requested DateTime  @default(now())
+  advisorId      Int
+  advisor        Advisor   @relation(fields: [advisorId], references: [userId])
+  studentId      Int
+  student        Student   @relation(fields: [studentId], references: [userId])
+  notes          String
 }
 
 model Request {
@@ -189,6 +200,7 @@ enum Role {
   STUDENT
   PROFESSOR
   ADVISOR
+  USER
 }
 
 enum RequesterRole {
