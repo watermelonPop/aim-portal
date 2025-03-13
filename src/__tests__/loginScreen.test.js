@@ -30,7 +30,8 @@ describe('LoginScreen', () => {
         test('starts login process when button is clicked', async () => {
                 global.fetch = jest.fn().mockResolvedValue({
                     ok: true,
-                    json: jest.fn().mockResolvedValueOnce({ authUrl: 'https://google.com/auth' }), // ✅ Use `.mockResolvedValueOnce`
+                    text: () => Promise.resolve(JSON.stringify({ authUrl: 'https://google.com/auth' })),
+        headers: new Headers({ 'Content-Type': 'application/json' })
                 });
 
                 const { window } = global;
@@ -48,6 +49,128 @@ describe('LoginScreen', () => {
 
                 global.window.location = window.location;
         });
+
+        test('invalid server response throws error', async () => {
+            const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+            global.fetch = jest.fn().mockResolvedValue({
+                ok: true,
+                json: () => Promise.resolve({ authUrl: 'https://google.com/auth' }),
+    headers: new Headers({ 'Content-Type': 'application/json'})
+            });
+
+            const { window } = global;
+            delete global.window.location;
+            global.window.location = { href: jest.fn() };
+
+            render(<LoginScreen setLoggedIn={mockSetLoggedIn} setUserType={mockSetUserType} setStaffRoles={mockSetStaffRoles} />);
+            const loginButton = screen.getByRole('button', { name: /log in/i });
+            fireEvent.click(loginButton);
+
+            await waitFor(() => {
+                expect(consoleErrorSpy).toHaveBeenCalledWith('Error during login:', expect.any(Error));
+            });
+
+            global.window.location = window.location;
+        });
+
+        test('error when auth api response is NOT ok', async () => {
+            const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+            global.fetch = jest.fn().mockResolvedValue({
+                ok: false,
+                status: 401,
+                statusText: 'Unauthorized',
+                text: () => Promise.resolve(JSON.stringify({ authUrl: 'https://google.com/auth' })),
+                headers: new Headers({ 'Content-Type': 'application/json' })
+            });
+
+            const { window } = global;
+            delete global.window.location;
+            global.window.location = { href: jest.fn() };
+
+            render(<LoginScreen setLoggedIn={mockSetLoggedIn} setUserType={mockSetUserType} setStaffRoles={mockSetStaffRoles} />);
+            const loginButton = screen.getByRole('button', { name: /log in/i });
+            fireEvent.click(loginButton);
+
+            await waitFor(() => {
+                expect(consoleErrorSpy).toHaveBeenCalledWith(
+                    'Failed to start login process',
+                    401,  // status
+                    'Unauthorized'  // statusText
+                );
+                expect(window.location.href).toBe('/error');
+            });
+
+            global.window.location = window.location;
+        });
+
+        test('error when auth api fails', async () => {
+            const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
+            
+            // Mock fetch to throw an error
+            global.fetch = jest.fn().mockRejectedValue(new Error('Network error'));
+        
+            // Mock window.location
+            delete window.location;
+            window.location = { href: '' };
+        
+            render(<LoginScreen setLoggedIn={mockSetLoggedIn} setUserType={mockSetUserType} setStaffRoles={mockSetStaffRoles} />);
+            const loginButton = screen.getByRole('button', { name: /log in/i });
+            fireEvent.click(loginButton);
+        
+            await waitFor(() => {
+                expect(consoleSpy).toHaveBeenCalledWith('Error during login:', expect.any(Error));
+                expect(window.location.href).toBe('/');
+            });
+        
+            consoleSpy.mockRestore();
+        });
+        
+        test('error when json parse doesnt work', async () => {
+            const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+            global.fetch = jest.fn().mockResolvedValue({
+                ok: true,
+                text: () => Promise.resolve({ authUrl: 'https://google.com/auth' }),
+    headers: new Headers({ 'Content-Type': 'application/json' })
+            });
+
+            const { window } = global;
+            delete global.window.location;
+            global.window.location = { href: jest.fn() };
+
+            render(<LoginScreen setLoggedIn={mockSetLoggedIn} setUserType={mockSetUserType} setStaffRoles={mockSetStaffRoles} />);
+            const loginButton = screen.getByRole('button', { name: /log in/i });
+            fireEvent.click(loginButton);
+
+            await waitFor(() => {
+                expect(consoleErrorSpy).toHaveBeenCalledWith('Failed to parse JSON response:', expect.any(Error));
+            });
+
+            global.window.location = window.location;
+        });
+
+        test('error when no auth url in response', async () => {
+            const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+            global.fetch = jest.fn().mockResolvedValue({
+                ok: true,
+                text: () => Promise.resolve(JSON.stringify({ otherParam: 'https://google.com/auth' })),
+    headers: new Headers({ 'Content-Type': 'application/json' })
+            });
+
+            const { window } = global;
+            delete global.window.location;
+            global.window.location = { href: jest.fn() };
+
+            render(<LoginScreen setLoggedIn={mockSetLoggedIn} setUserType={mockSetUserType} setStaffRoles={mockSetStaffRoles} />);
+            const loginButton = screen.getByRole('button', { name: /log in/i });
+            fireEvent.click(loginButton);
+
+            await waitFor(() => {
+                expect(consoleErrorSpy).toHaveBeenCalledWith('Auth URL not found in response');
+            });
+
+            global.window.location = window.location;
+        });
+
         describe('oauthCallback useEffect', () => {
             test('when oauth redirects with token & mounts loginScreen, calls verifyToken & removes token from url', async () => {
                 // Mock the global fetch function
@@ -96,7 +219,7 @@ describe('LoginScreen', () => {
                           json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com' }),
                         })
                     );
-                    const result = await LoginScreen.verifyToken('mockToken', mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading);
+                    const result = await LoginScreen.verifyToken('mockToken', mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
                     await waitFor(() => {
                         expect(global.fetch).toHaveBeenCalledWith('/api/verifyToken', {
                             method: 'POST',
@@ -126,6 +249,28 @@ describe('LoginScreen', () => {
         
                     await waitFor(() => {
                         expect(console.error).toHaveBeenCalledWith('Invalid token:', 'Invalid or expired token');
+                        expect(window.location.href).toEqual('/');
+                    });
+
+                    console.error = originalConsoleError;
+                });
+
+                test('network issues throw error', async () => {
+                    const originalConsoleError = console.error;
+                    console.error = jest.fn();
+
+                    // Mock window.location.href
+                    const mockHref = jest.fn();
+                    Object.defineProperty(window, 'location', {
+                        value: { href: mockHref },
+                        writable: true
+                    });
+                    global.fetch = jest.fn().mockImplementationOnce(() => Promise.reject(new Error('Network error')));
+                    const result = await LoginScreen.verifyToken('mockToken', mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading);
+                    //expect userExists to be called
+        
+                    await waitFor(() => {
+                        expect(console.error).toHaveBeenCalledWith('Error verifying token:', expect.any(Error));
                         expect(window.location.href).toEqual('/');
                     });
 
@@ -197,6 +342,56 @@ describe('LoginScreen', () => {
                     const result = await LoginScreen.verifyToken('mockToken', mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
                     await waitFor(() => {
                         expect(global.fetch).toHaveBeenCalledWith('/api/getSettings?user_id=mockUserId');
+                    });
+                });
+
+                test('when token is verified & user does NOT exist, grab settings from local storage', async () => {
+                    const mockLocalStorage = {
+                        getItem: jest.fn(),
+                        setItem: jest.fn(),
+                        clear: jest.fn()
+                    };
+                    Object.defineProperty(window, 'localStorage', { value: mockLocalStorage });
+                    const mockSettings = { theme: 'dark', fontSize: 16 };
+                    mockLocalStorage.getItem.mockReturnValue(JSON.stringify(mockSettings));
+                    global.fetch = jest.fn().mockImplementationOnce(() =>
+                        Promise.resolve({
+                            ok: true,
+                            json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com', payload: "testPayload" })
+                        })
+                    ).mockImplementationOnce(() => // Mock for userExists
+                        Promise.resolve({
+                            json: () => Promise.resolve({ exists: false })
+                        })
+                    );
+                    const result = await LoginScreen.verifyToken('mockToken', mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
+                    await waitFor(() => {
+                        expect(localStorage.getItem).toHaveBeenCalledWith("aim-settings");
+                        expect(mockSetSettings).toHaveBeenCalledWith(mockSettings);
+                    });
+                });
+
+                test('when token is verified & user does NOT exist & local storage empty, DO NOT set settings', async () => {
+                    const mockLocalStorage = {
+                        getItem: jest.fn(),
+                        setItem: jest.fn(),
+                        clear: jest.fn()
+                    };
+
+                    mockLocalStorage.getItem.mockReturnValue(null);
+                    global.fetch = jest.fn().mockImplementationOnce(() =>
+                        Promise.resolve({
+                            ok: true,
+                            json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com', payload: "testPayload" })
+                        })
+                    ).mockImplementationOnce(() => // Mock for userExists
+                        Promise.resolve({
+                            json: () => Promise.resolve({ exists: false })
+                        })
+                    );
+                    const result = await LoginScreen.verifyToken('mockToken', mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
+                    await waitFor(() => {
+                        expect(mockSetSettings).not.toHaveBeenCalled();
                     });
                 });
 
@@ -343,6 +538,37 @@ describe('LoginScreen', () => {
                         expect(mockSetStaffRoles).toHaveBeenCalledWith("Admin");
                     });
                 });
+
+                test('if user type is Staff & NOT correct response from getStaffRoles, set window to /', async () => {
+                    //call verifyToken() function
+                    //mock correct response from /api/verifyToken with { valid: true, userId: userId, email: payload.email }
+                    const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
+                    global.fetch = jest.fn()
+                        .mockImplementationOnce(() => Promise.resolve({
+                            json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com', payload: "testPayload" })
+                        }))
+                        .mockImplementationOnce(() => Promise.resolve({
+                            json: () => Promise.resolve({ exists: true, user_info: { user_id: 'mockUserId', email: 'test@example.com', user_role: "Staff" } })
+                        })).mockImplementationOnce(() => // /api/getStaffRole
+                        Promise.resolve({
+                                text: () => Promise.resolve(JSON.stringify({
+                                    error: "ERROR"
+                                })),
+                                ok: false,
+                                status: 500
+                            })
+                        ).mockImplementationOnce(() => // Mock for getUserSettings
+                            Promise.resolve({
+                                json: () => Promise.resolve({ exists: true, settings_info: { font_size: 1, letter_spacing: 1 } })
+                            })
+                        );
+                    const result = await LoginScreen.verifyToken('mockToken', mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
+
+                    await waitFor(() => {
+                        expect(consoleSpy).toHaveBeenCalledWith('API request failed:', 500, undefined);
+                        expect(window.location.href).toBe('/');
+                    });
+                });
         });
         
             
@@ -443,7 +669,7 @@ describe('LoginScreen', () => {
             
                 await waitFor(() => {
                     expect(global.fetch).toHaveBeenCalledWith(`/api/getStaffRole?user_id=${mockUserId}`);
-                    expect(console.error).toHaveBeenCalledWith('Failed', 404, 'Not Found');
+                    expect(console.error).toHaveBeenCalledWith('API request failed:', 404, 'Not Found');
                     expect(window.location.href).toBe('/');
                 });
             });
@@ -469,7 +695,7 @@ describe('LoginScreen', () => {
                 });
             });
 
-            test('if call to api/getStaffRole is NOT ok, redirects to login', async () => {
+            test('if call to api/getStaffRole is NOT ok, redirects to login & returns null', async () => {
                 const mockUserId = "MockUserId";
                 global.fetch = jest.fn().mockImplementationOnce(() => // /api/getStaffRole
                 Promise.resolve({
@@ -482,9 +708,69 @@ describe('LoginScreen', () => {
                 const result = await LoginScreen.getStaffRoles(mockUserId);
                 await waitFor(() => {
                     expect(window.location.href).toEqual('/');
-                    expect(result).toEqual()
+                    expect(result).toEqual(null);
                 });
             });
+
+            test('if return value cannot be parsed, returns null', async () => {
+                const mockUserId = "MockUserId";
+                const mockStaffRole = "Admin";
+                global.fetch = jest.fn().mockImplementationOnce(() => // /api/getStaffRole
+                Promise.resolve({
+                        text: () => Promise.resolve(
+                            'user_id: mockUserId email: "test@example.com" name: "Mock User" role: mockStaffRole'
+                        ),
+                        ok: true
+                    })
+                );
+                const result = await LoginScreen.getStaffRoles(mockUserId);
+                await waitFor(() => {
+                    expect(result).toEqual(null);
+                });
+            });
+
+            test('if call to api/getStaffRole returns empty role, returns null', async () => {
+                const mockUserId = "MockUserId";
+                const mockStaffRole = "";
+                global.fetch = jest.fn().mockImplementationOnce(() => // /api/getStaffRole
+                Promise.resolve({
+                        text: () => Promise.resolve(JSON.stringify({
+                            user_id: mockUserId,
+                            email: "test@example.com",
+                            name: 'Mock User',
+                            role: mockStaffRole
+                        })),
+                        ok: true
+                    })
+                );
+                const result = await LoginScreen.getStaffRoles(mockUserId);
+                await waitFor(() => {
+                    expect(result).toEqual(null);
+                });
+            });
+
+            test('if there is a network error, logs the error and returns null', async () => {
+                const mockUserId = "MockUserId";
+                const mockNetworkError = new Error("Network Error");
+            
+                // Mock fetch to simulate a network error
+                global.fetch = jest.fn().mockImplementationOnce(() => Promise.reject(mockNetworkError));
+            
+                // Spy on console.error to verify that the error is logged
+                const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+            
+                const result = await LoginScreen.getStaffRoles(mockUserId);
+            
+                // Verify that the network error was logged
+                expect(consoleErrorSpy).toHaveBeenCalledWith('Network error:', mockNetworkError);
+            
+                // Verify that the function returned null
+                expect(result).toEqual(null);
+            
+                // Restore the original console.error implementation
+                consoleErrorSpy.mockRestore();
+            });
+            
         });
 
         describe('getUserSettings', () => {
@@ -501,7 +787,80 @@ describe('LoginScreen', () => {
         
                 await waitFor(() => {
                     expect(global.fetch).toHaveBeenCalledWith(`/api/getSettings?user_id=${mockUserId}`);
-                    expect(mockSetSettings).toHaveBeenCalledWith({font_size: 1, letter_spacing: 1});
+                });
+            });
+
+            test('throws error if no userId', async () => {
+                const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+                global.fetch = jest.fn().mockImplementationOnce(() =>
+                    Promise.resolve({
+                        json: () => Promise.resolve({exists: true, settings_info: {font_size: 1, letter_spacing: 1} })
+                    })
+                );
+        
+                const mockUserId = "MockUserId";
+        
+                await LoginScreen.getUserSettings(null, mockSetSettings);
+        
+                await waitFor(() => {
+                    expect(consoleErrorSpy).toHaveBeenCalledWith('Invalid user ID provided');
+                });
+            });
+
+            test('throws error if response is NOT ok', async () => {
+                const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+                global.fetch = jest.fn().mockImplementationOnce(() =>
+                    Promise.resolve({
+                        ok: false,
+                        status: 401,
+                        statusText: 'Unauthorized',
+                        json: () => Promise.resolve({exists: true, settings_info: {font_size: 1, letter_spacing: 1} })
+                    })
+                );
+        
+                const mockUserId = "MockUserId";
+        
+                await LoginScreen.getUserSettings(mockUserId, mockSetSettings);
+        
+                await waitFor(() => {
+                    expect(consoleErrorSpy).toHaveBeenCalledWith('Failed to fetch settings:', 401, "Unauthorized");
+                });
+            });
+
+
+            test('throws error if response is NOT json', async () => {
+                const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+                global.fetch = jest.fn().mockImplementationOnce(() =>
+                    Promise.resolve({
+                        ok: true,
+                        text: () => Promise.resolve(JSON.stringify({exists: true, settings_info: {font_size: 1, letter_spacing: 1} }))
+                    })
+                );
+        
+                const mockUserId = "MockUserId";
+        
+                await LoginScreen.getUserSettings(mockUserId, mockSetSettings);
+        
+                await waitFor(() => {
+                    expect(consoleErrorSpy).toHaveBeenCalledWith('Error while getting settings:', expect.any(Error));
+                });
+            });
+
+            test('warns error if response has no settings_info', async () => {
+                const consoleErrorSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+                global.fetch = jest.fn().mockImplementationOnce(() =>
+                    Promise.resolve({
+                        ok: true,
+                        json: () => Promise.resolve({exists: true, otherParam: false })
+                    })
+                );
+        
+                const mockUserId = "MockUserId";
+        
+                await LoginScreen.getUserSettings(mockUserId, mockSetSettings);
+        
+                await waitFor(() => {
+                    expect(consoleErrorSpy).toHaveBeenCalledWith('No settings found or invalid settings data structure');
                 });
             });
         });

@@ -2,7 +2,7 @@ import './App.css';
 import { useEffect, useState } from 'react';
 
 
-function UserAccommodations({name, email, setAlertMessage, setShowAlert}) {
+export function UserAccommodations({name, email, setAlertMessage, setShowAlert}) {
         const [formData, setFormData] = useState({
                 name: name,
                 email: email,
@@ -72,18 +72,19 @@ function UserAccommodations({name, email, setAlertMessage, setShowAlert}) {
                                         user_email: formData.email,
                                         dob: formData.dob,
                                         uin: formData.uin,
-                                        phone_number: formData.phoneNumber, // Note: changed from phoneNumber to phone_number to match API
+                                        phone_number: formData.phoneNumber,
                                         notes: formData.disability + "\n" + formData.testing + "\n" + formData.inClass + "\n" + formData.housing + "\n" + formData.sideEffect + "\n" + formData.accommodations + "\n" + formData.pastAcc
                                 }),
                                 });
                 
                                 if (!response.ok) {
-                                throw new Error(`HTTP error! status: ${response.status}`);
+                                        throw new Error(`HTTP error! status: ${response.status}`);
                                 }
                 
                                 const result = await response.json();
+
                 
-                                if (result.message === 'Request created successfully') {
+                                if (result && result.message === 'Request created successfully') {
                                         // You might want to clear the form or redirect the user here
                                         setAlertMessage("Request submitted successfully");
                                         setShowAlert(true);
@@ -133,8 +134,10 @@ function UserAccommodations({name, email, setAlertMessage, setShowAlert}) {
                         }
             
                         const result = await response.json();
+
+                        console.log("RESULT HERE: " + result);
             
-                        if (result.message === 'Request deleted successfully') {
+                        if (result && result.message === 'Request deleted successfully') {
                             //alert("Request cancelled successfully!");
                             // You might want to clear the form or redirect the user here
                             setAlertMessage("Request cancelled successfully!");
@@ -181,58 +184,73 @@ function UserAccommodations({name, email, setAlertMessage, setShowAlert}) {
                 fetchRequest();
         }, [email]);
 
+        UserAccommodations.setExistingRequest = setExistingRequest;
+        UserAccommodations.existingRequest = existingRequest;
+        UserAccommodations.handleChange = handleChange;
+        UserAccommodations.formData = formData;
+        UserAccommodations.setFormData = setFormData;
+        UserAccommodations.errors = errors;
+        UserAccommodations.validateForm = validateForm;
+
         return (
                 <>
                 <div role="presentation" className="newStudentDiv">
-                        <p className='dashboardTitle'>New Student Application</p>
+                        <h2 className='dashboardTitle'>New Student Application</h2>
                         {existingRequest === null ? (
                                 <>
-                                <p className='subTitle'>Need Accommodations? Start Here!</p>
-                                <form className="newStudentApp" onSubmit={handleSubmit}>
+                                <h3 className='subTitle'>Need Accommodations? Start Here!</h3>
+                                <form className="newStudentApp" onSubmit={handleSubmit} data-testid="newStudentApp">
                                         <label htmlFor="name">Name</label>
-                                        <input name="name" value={formData.name} type="text" onChange={handleChange} />
+                                        <input data-testid="name" id="name" name="name" value={formData.name} type="text" onChange={handleChange}/>
                                         <label htmlFor="email">Email</label>
-                                        <input name="email" value={formData.email} type="email" onChange={handleChange} />
+                                        <input data-testid="email" id="email" name="email" value={formData.email} type="email" onChange={handleChange} />
                                         <label htmlFor="dob">Date of Birth</label>
-                                        <input type="date" name="dob" value={formData.dob} onChange={handleChange} />
+                                        <input data-testid="dob" id="dob" type="date" name="dob" value={formData.dob} onChange={handleChange} />
                                         <label htmlFor="uin">UIN</label>
-                                        <input type="number" name="uin" value={formData.uin} onChange={handleChange} />
+                                        <input data-testid="uin" id="uin" type="number" name="uin" value={formData.uin} onChange={handleChange} />
                                         <label htmlFor="phoneNumber">Phone Number</label>
-                                        <input type="tel" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} />
+                                        <input data-testid="phoneNumber" id="phoneNumber" type="tel" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} />
                                         <label htmlFor="disability">What is your disability or disabilities?</label>
-                                        <textarea name="disability" rows="5" value={formData.disability} onChange={handleChange}></textarea>
+                                        <textarea data-testid="disability" id="disability" name="disability" rows="5" value={formData.disability} onChange={handleChange}></textarea>
                                         <label htmlFor="testing">What challenges do you experience related to taking tests/exams, if any?</label>
-                                        <textarea name="testing" rows="5" value={formData.testing} onChange={handleChange}></textarea>
+                                        <textarea data-testid="testing" id="testing" name="testing" rows="5" value={formData.testing} onChange={handleChange}></textarea>
                                         <label htmlFor="inClass">What challenges do you experience in the classroom or learning environment, if any?</label>
-                                        <textarea name="inClass" rows="5" value={formData.inClass} onChange={handleChange}></textarea>
+                                        <textarea data-testid="inClass" id="inClass" name="inClass" rows="5" value={formData.inClass} onChange={handleChange}></textarea>
                                         <label htmlFor="housing">If you are living on-campus, do you require any disability accommodations in the housing environment?</label>
-                                        <textarea name="housing" rows="5" value={formData.housing} onChange={handleChange}></textarea>
+                                        <textarea data-testid="housing" id="housing" name="housing" rows="5" value={formData.housing} onChange={handleChange}></textarea>
                                         <label htmlFor="sideEffect">Do you experience any side effects related to treatment or medications that may be relevant to identifying accommodations?</label>
-                                        <textarea name="sideEffect" rows="5" value={formData.sideEffect} onChange={handleChange}></textarea>
+                                        <textarea data-testid="sideEffect" id="sideEffect" name="sideEffect" rows="5" value={formData.sideEffect} onChange={handleChange}></textarea>
                                         <label htmlFor="accommodations">What specific accommodations are you requesting?</label>
-                                        <textarea name="accommodations" rows="5" value={formData.accommodations} onChange={handleChange}></textarea>
+                                        <textarea data-testid="accommodations" id="accommodations" name="accommodations" rows="5" value={formData.accommodations} onChange={handleChange}></textarea>
                                         <label htmlFor="pastAcc">What accommodations have you used in the past?</label>
-                                        <textarea name="pastAcc" rows="5" value={formData.pastAcc} onChange={handleChange}></textarea>
+                                        <textarea data-testid="pastAcc" id="pastAcc" name="pastAcc" rows="5" value={formData.pastAcc} onChange={handleChange}></textarea>
                                         <button type="submit" aria-label="submit">Submit</button>
                                 </form>
                                 </>
                         ) : (
                                 <>
-                                <p className='subTitle'>You already have an existing request: </p>
-                                <form className="newStudentApp" onSubmit={handleCancel}>
+                                <h3 className='subTitle'>You already have an existing request: </h3>
+                                {
+                                        existingRequest.has_documentation ? (
+                                        <p className='subTitle'>You have submitted your documentation, and your request is under review!</p>
+                                        ) : (
+                                        <p className='subTitle'>You have not submitted your documentation yet. Please submit it in Forms before we can review your request.</p>
+                                        )
+                                }
+                                <form className="newStudentApp" onSubmit={handleCancel} data-testid="existingRequest">
                                         <label htmlFor="name">Name</label>
-                                        <input name="name" type="text" value={existingRequest.user_name}/>
+                                        <input data-testid="name" id="name" name="name" type="text" value={existingRequest.user_name} readOnly/>
                                         <label htmlFor="email">Email</label>
-                                        <input name="email" type="email" value={existingRequest.user_email}/>
+                                        <input data-testid="email" id="email" name="email" type="email" value={existingRequest.user_email} readOnly/>
                                         <label htmlFor="dob">Date of Birth</label>
-                                        <input type="date" name="dob" value={existingRequest.dob}/>
+                                        <input data-testid="dob" id="dob" type="date" name="dob" value={existingRequest.dob} readOnly/>
                                         <label htmlFor="uin">UIN</label>
-                                        <input type="number" name="uin" value={existingRequest.uin}/>
+                                        <input data-testid="uin" id="uin" type="number" name="uin" value={existingRequest.uin} readOnly/>
                                         <label htmlFor="phoneNumber">Phone Number</label>
-                                        <input type="tel" name="phoneNumber" value={existingRequest.phone_number}/>
+                                        <input data-testid="phoneNumber" id="phoneNumber" type="tel" name="phoneNumber" value={existingRequest.phone_number} readOnly/>
                                         <label htmlFor="notes">Notes</label>
-                                        <textarea name="notes" value={existingRequest.notes}></textarea>
-                                        <button type="submit" aria-label="cancel request">Cancel Request</button>
+                                        <textarea data-testid="notes" id="notes" name="notes" value={existingRequest.notes} readOnly></textarea>
+                                        <button type="submit" aria-label="cancel request" data-testid="cancelBtn">Cancel Request</button>
                                 </form>
                                 </>
                         )}
