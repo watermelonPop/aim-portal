@@ -9,7 +9,7 @@ import Profile from './profile';
 import LoginScreen from './loginScreen';
 import Forms from './forms';
 import GlobalSettings from './globalSettings';
-import Accomodations from './accommodations';
+import Accommodations from './accommodations';
 import NoteTaking from './noteTaking';
 import AssistiveTech from './assistiveTech';
 import Testing from './testing';
@@ -27,13 +27,13 @@ export function App() {
   const [userInfo, setUserInfo] = useState(null);
   const [userTabs, setUserTabs] = useState([
     {name: 'Dashboard', elem: <Dash userType={"User"}/>},
-    {name: 'Accommodations', elem: <Accomodations userType={"User"} setAlertMessage={setAlertMessage} setShowAlert={setShowAlert}/>},
+    {name: 'Accommodations', elem: <Accommodations userType={"User"} setAlertMessage={setAlertMessage} setShowAlert={setShowAlert}/>},
     {name: 'Forms', elem: <Forms userType={"User"}/>},
     {name: 'Profile', elem: <Profile userType={"User"}/>},
   ]);
   const [studentTabs, setStudentTabs] = useState([
     {name: 'Dashboard', elem: <Dash userType={"Student"}/>},
-    {name: 'Accommodations', elem: <Accomodations userType={"Student"}/>},
+    {name: 'Accommodations', elem: <Accommodations userType={"Student"}/>},
     {name: 'Testing', elem: <Testing userType={"Student"}/>},
     {name: 'Note Taking',elem: <NoteTaking userType={"Student"}/>},
     {name: 'Forms', elem: <Forms userType={"Student"}/>},
@@ -41,7 +41,7 @@ export function App() {
   ]);
   const [professorTabs, setProfessorTabs] = useState([
     {name: 'Dashboard', elem: <Dash userType={"Professor"}/>},
-    {name: 'Accommodations', elem: <Accomodations userType={"Professor"}/>},
+    {name: 'Accommodations', elem: <Accommodations userType={"Professor"}/>},
     {name: 'Testing', elem: <Testing userType={"Professor"}/>},
     {name: 'Note Taking',elem: <NoteTaking userType={"Professor"}/>},
     {name: 'Profile', elem: <Profile userType={"Professor"}/>},
@@ -54,7 +54,7 @@ export function App() {
   const [currentTab, setCurrentTab] = useState(null);
   const [staffAccess, setStaffAccess] = useState([
     {access: 'Global Settings', hasAccess: false, elem: <GlobalSettings/>},
-    {access: 'Accommodations', hasAccess: false, elem: <Accomodations userType={"Staff"}/>},
+    {access: 'Accommodations', hasAccess: false, elem: <Accommodations userType={"Staff"}/>},
     {access: 'Note Taking', hasAccess: false, elem: <NoteTaking userType={"Staff"}/>},
     {access: 'Assistive Technology', hasAccess: false, elem: <AssistiveTech/>},
     {access: 'Accessible Testing', hasAccess: false, elem: <Testing userType={"Staff"}/>},
@@ -101,7 +101,7 @@ export function App() {
     if(userInfo !== null){
       updatedUserTabs = [
         {name: 'Dashboard', elem: <Dash userType={"User"}/>},
-        {name: 'Accommodations', elem: <Accomodations userType={"User"} name={userInfo.name} email={userInfo.email} setAlertMessage={setAlertMessage} setShowAlert={setShowAlert}/>},
+        {name: 'Accommodations', elem: <Accommodations userType={"User"} name={userInfo.name} email={userInfo.email} setAlertMessage={setAlertMessage} setShowAlert={setShowAlert}/>},
         {name: 'Forms', elem: <Forms userType={"User"}/>},
         {name: 'Profile', elem: <Profile userType={"User"}/>},
       ];
@@ -399,6 +399,8 @@ export function App() {
   App.setSettings = setSettings;
   App.setUserId = setUserId;
   App.setUserInfo = setUserInfo;
+  App.setShowAlert = setShowAlert;
+  App.setAlertMessage = setAlertMessage;
 
   return (
     <>

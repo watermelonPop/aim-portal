@@ -18,7 +18,7 @@ module.exports = async (req, res) => {
                   DELETE FROM requests WHERE user_email = ${email}
                 `;
           
-                res.status(201).json({ message: 'Request deleted successfully' });
+                res.status(200).json({ message: 'Request deleted successfully' });
               } catch (error) {
                 console.error('Error in POST request:', error);
                 res.status(500).json({ error: error.message });

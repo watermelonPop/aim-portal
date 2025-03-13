@@ -40,7 +40,17 @@ export function LoginScreen({ setUserId, setSettings, loggedIn, setLoggedIn, set
     }
   }, []);
 
-  const verifyToken = async (token, setUserId, setSettings, loggedIn, setLoggedIn, setUserType, setStaffRoles, setLoading, setUserInfo) => {
+  const verifyToken = async (
+    token,
+    setUserId = () => {},
+    setSettings = () => {},
+    loggedIn,
+    setLoggedIn = () => {},
+    setUserType = () => {},
+    setStaffRoles = () => {},
+    setLoading = () => {},
+    setUserInfo = () => {}  // Add default parameter
+  ) => {
     console.log("VERIFY TOKEN CALLED");
     try {
       const response = await fetch('/api/verifyToken', {
@@ -88,55 +98,104 @@ export function LoginScreen({ setUserId, setSettings, loggedIn, setLoggedIn, set
   
 
   const getStaffRoles = async (userId) => {
-    try {
-      const response = await fetch(`/api/getStaffRole?user_id=${userId}`);
-      const text = await response.text();
-      console.log('Response:', text);
-      if (response.ok) {
-        const data = JSON.parse(text);
-        if(data.role){
-          return data.role;
+      try {
+        const response = await fetch(`/api/getStaffRole?user_id=${userId}`);
+        const text = await response.text();
+        console.log('Response:', text);
+    
+        if (response.ok) {
+          try {
+            const data = JSON.parse(text);
+            if (data.role && data.role.trim() !== '') {
+              return data.role;
+            } else {
+              console.warn('Role is empty or undefined');
+              return null;
+            }
+          } catch (parseError) {
+            console.error('Failed to parse JSON:', parseError);
+            return null;
+          }
+        } else {
+          console.error('API request failed:', response.status, response.statusText);
+          window.location.href = "/";
+          return null;
         }
-      } else {
-        console.error('Failed', response.status, response.statusText);
-        window.location.href = "/";
-      }
-    } catch (error) {
-      console.error('Error while getting staff roles:', error);
-      window.location.href = "/";
-    }
+      } catch (networkError) {
+        console.error('Network error:', networkError);
+        return null;
+      }   
   };
 
   const startLogin = async () => {
-      try {
-          const response = await fetch("/api/auth");
-          console.log("@@@@@@@@@@");
-          if (!response.ok) {
-              console.error('Failed to start login process', response.status, response.statusText);
-              return;
-          }
-          const data = await response.json(); 
-          console.log('Response:', data);
-          window.location.href = data.authUrl;;
-      } catch (error) {
-          console.error('Error during login:', error);
+    try {
+      const response = await fetch("/api/auth");
+        
+      // First check if response exists and has .text()
+      if (!response || typeof response.text !== 'function') {
+          throw new Error('Invalid response from server');
       }
+
+      const responseText = await response.text();
+
+        if (!response.ok) {
+            console.error('Failed to start login process', response.status, response.statusText);
+            window.location.href = "/error"; // Redirect to an error page
+            return;
+        }
+
+        let data;
+        try {
+            data = JSON.parse(responseText);
+        } catch (parseError) {
+            console.error('Failed to parse JSON response:', parseError);
+            window.location.href = "/error";
+            return;
+        }
+
+        if (!data.authUrl) {
+            console.error('Auth URL not found in response');
+            window.location.href = "/error";
+            return;
+        }
+
+        window.location.href = data.authUrl;
+    } catch (error) {
+        console.error('Error during login:', error);
+        window.location.href = "/";
+    }
   };
+
 
 
   const getUserSettings = async (userId, setSettings) => {
+    if (!userId) {
+        console.error('Invalid user ID provided');
+        return;
+    }
+
     try {
-      const response = await fetch(`/api/getSettings?user_id=${userId}`);
-      const data = await response.json();
-      if (data) {
-        setSettings(data.settings_info);
-      } else {
-        console.error('Failed', response.status, response.statusText);
-      }
+        const response = await fetch(`/api/getSettings?user_id=${userId}`);
+        
+        if (!response.ok) {
+            console.error('Failed to fetch settings:', response.status, response.statusText);
+            return;
+        }
+
+        const data = await response.json();
+
+        if (data && data.settings_info) {
+            setSettings(data.settings_info);
+        } else {
+            console.warn('No settings found or invalid settings data structure');
+            setSettings({}); // Set to empty object or default settings
+        }
     } catch (error) {
-      console.error('Error while getting settings:', error);
+        console.error('Error while getting settings:', error);
     }
   };
+
+
 
   LoginScreen.userExists = userExists;
   LoginScreen.verifyToken = verifyToken;
