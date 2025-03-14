@@ -14,6 +14,8 @@ from tqdm import tqdm
 #TODO: DO NOT UPLOAD CONNECTION STRING ONTO GITHUB
 DB_CONNECTION_STRING = "DO NOT UPLOAD CONNECTION STRING ONTO GITHUB"
 
+
+
 engine = create_engine(DB_CONNECTION_STRING)
 
 CSV_FOLDER = "/Users/unamazin/Documents/GitHub/aim-portal/data_generation/data/"  

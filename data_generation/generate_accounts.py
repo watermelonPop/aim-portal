@@ -25,6 +25,11 @@ def generate_accounts(num_accounts, file_directory: str):
         user_role = random.choices(roles, weights=weights, k=1)[0]
 
         accounts.append([ user_id, user_email, user_password, user_role, user_name])
+        
+    
+    # #FAKE ADVISOR
+    # user_id = fake.uuid4()
+    
 
     csv_file_path = file_directory+"accounts.csv"
     with open(csv_file_path, mode='w', newline='') as file:

@@ -35,7 +35,7 @@ def generate_settings(num_accounts, file_directory, user_ids: list):
     with open(csv_file_path, mode='w', newline='') as file:
         writer = csv.writer(file)
         # Writing header
-        writer.writerow(["settings_id", "user_id", "content_size", "highlight_tiles", "highlight_links", "text_magnifier", "align_text", "font_size",
+        writer.writerow(["user_id", "content_size", "highlight_tiles", "highlight_links", "text_magnifier", "align_text", "font_size",
         "line_height", "letter_spacing", "contrast", "saturation", "mute_sounds", "hide_images", "reading_mask", "highlight_hover", "cursor"])
         # Writing data rows
         writer.writerows(settings)
