@@ -13,7 +13,7 @@ export function LoginScreen({ setUserId, setSettings, loggedIn, setLoggedIn, set
     console.log("Checking account for email:", email); // Debug log
   
     try {
-      const response = await fetch('/api/checkAccount', {
+      const response = await fetch('/api/checkAccount/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
@@ -58,8 +58,6 @@ export function LoginScreen({ setUserId, setSettings, loggedIn, setLoggedIn, set
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token }),
       });
-      console.log("BEFORE THAT");
-  
       const data = await response.json();
       console.log("DATA HERE: ");
       console.log(data);
@@ -68,14 +66,20 @@ export function LoginScreen({ setUserId, setSettings, loggedIn, setLoggedIn, set
         console.log('User verified:', data);
         setUserInfo(data.payload);
         let exists = await userExists(data.email);
+
         if(exists.exists === true){
-          setUserType(exists.user_info.user_role);
-          setUserId(exists.user_info.user_id);
-          if(exists.user_info.user_role === "Staff"){
-            let staffRole = await getStaffRoles(exists.user_info.user_id);
+          console.log('exists.exists == true');
+          console.log('exists.user_info[0].user_role: ', exists.user_info[0].user_role);
+          setUserType(exists.user_info[0].user_role);
+          console.log('exists.user_info[0].user_id: ', exists.user_info[0].user_id);
+          setUserId(exists.user_info[0].user_id);
+
+          if(exists.user_info[0].user_role === "Advisor"){
+            let staffRole = await getStaffRoles(exists.user_info[0].user_id);
             setStaffRoles(staffRole);
           }
-          getUserSettings(exists.user_info.user_id, setSettings);
+
+          getUserSettings(exists.user_info[0].user_id, setSettings);
         }else{
           console.log("DOES NOT EXIST");
           if (localStorage.getItem("aim-settings") !== null) {

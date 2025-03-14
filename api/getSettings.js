@@ -12,7 +12,7 @@ module.exports = async (req, res) => {
 
     try {
       const result = await sql`
-        SELECT * FROM settings WHERE settings_id = ${userId}
+        SELECT * FROM settings WHERE user_id = ${userId}
       `;
       if (result && result.length > 0) { 
         res.status(200).json({ exists: true, settings_info: result[0] });
