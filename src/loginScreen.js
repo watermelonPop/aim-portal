@@ -48,8 +48,6 @@ export function LoginScreen({ setUserId, setSettings, loggedIn, setLoggedIn, set
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token }),
       });
-      console.log("BEFORE THAT");
-  
       const data = await response.json();
       console.log("DATA HERE: ");
       console.log(data);
@@ -61,7 +59,7 @@ export function LoginScreen({ setUserId, setSettings, loggedIn, setLoggedIn, set
         if(exists.exists === true){
           setUserType(exists.user_info.user_role);
           setUserId(exists.user_info.user_id);
-          if(exists.user_info.user_role === "Staff"){
+          if(exists.user_info.user_role === "Advisor"){   //CHANGE TO ADVISOR
             let staffRole = await getStaffRoles(exists.user_info.user_id);
             setStaffRoles(staffRole);
           }
