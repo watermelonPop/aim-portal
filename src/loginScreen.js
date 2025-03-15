@@ -57,13 +57,13 @@ export function LoginScreen({ setUserId, setSettings, loggedIn, setLoggedIn, set
         setUserInfo(data.payload);
         let exists = await userExists(data.email);
         if(exists.exists === true){
-          setUserType(exists.user_info.user_role);
-          setUserId(exists.user_info.user_id);
-          if(exists.user_info.user_role === "Advisor"){   //CHANGE TO ADVISOR
-            let staffRole = await getStaffRoles(exists.user_info.user_id);
+          setUserType(exists.user_info[0].user_role);
+          setUserId(exists.user_info[0].user_id);
+          if(exists.user_info[0].user_role === "Staff"){   //CHANGE TO ADVISOR
+            let staffRole = await getStaffRoles(exists.user_info[0].user_id);
             setStaffRoles(staffRole);
           }
-          getUserSettings(exists.user_info.user_id, setSettings);
+          getUserSettings(exists.user_info[0].user_id, setSettings);
         }else{
           console.log("DOES NOT EXIST");
           if (localStorage.getItem("aim-settings") !== null) {

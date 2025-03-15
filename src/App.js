@@ -22,7 +22,7 @@ export function App() {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("ERROR");
   const [tabs, setTabs] = useState([]);
-  const [userType, setUserType] = useState("User");
+  const [userType, setUserType] = useState("Staff");
   const [userId, setUserId] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
   const [userTabs, setUserTabs] = useState([
@@ -150,7 +150,6 @@ export function App() {
       localStorage.setItem("aim-settings", JSON.stringify(settings));
     }
     if(userId){
-      console.log("REACHING LINE 149: IF(USERID)");
       setSettingsDatabase(userId, settings);
     }
     setTxtChangeSizeAmount(settings.font_size);
