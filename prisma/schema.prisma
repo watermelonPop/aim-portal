@@ -37,7 +37,7 @@ model Student {
   UIN                     Int?                   @unique
   phone_number            String
   assistive_technologies  Assistive_Technology[]
-  RequestStatus           Request[]
+  requests                Request[]
   accommodations          Accommodations[]
 }
 
@@ -127,10 +127,11 @@ model Accommodations {
 }
 
 model Request {
-  id              Int         @id @unique
-  student         Student     @relation(fields: [id], references: [userId])
-  advisorId       Int         @unique
-  advisor         Advisor     @relation(fields: [advisorId], references: [userId])
+  id              Int       @id @default(autoincrement())
+  studentId       Int
+  advisorId       Int
+  student         Student   @relation(fields: [studentId], references: [userId])
+  advisor         Advisor   @relation(fields: [advisorId], references: [userId])
   notes           String?
   documentation   Boolean
 }
@@ -213,6 +214,8 @@ enum RequestStatus {
   APPROVED
   DENIED
 }
+
+
 
 
 
