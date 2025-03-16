@@ -5,10 +5,10 @@ import { useEffect, useState } from 'react';
 function Dash({userType}) {
         return (
             <main className='dashboardOuter'>
-                {userType === "User" && <p className='dashboardTitle'>USER DASHBOARD</p>}
-                {userType === "Student" && <p className='dashboardTitle'>STUDENT DASHBOARD</p>}
-                {userType === "Professor" && <p className='dashboardTitle'>PROFESSOR DASHBOARD</p>}
-                {userType === "Staff" && <p className='dashboardTitle'>STAFF DASHBOARD</p>}
+                {userType === "User" && <h2 className='dashboardTitle'>USER DASHBOARD</h2>}
+                {userType === "Student" && <h2 className='dashboardTitle'>STUDENT DASHBOARD</h2>}
+                {userType === "Professor" && <h2 className='dashboardTitle'>PROFESSOR DASHBOARD</h2>}
+                {userType === "Staff" && <h2 className='dashboardTitle'>STAFF DASHBOARD</h2>}
             </main>
         );
 }
