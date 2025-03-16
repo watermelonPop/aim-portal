@@ -62,7 +62,26 @@ export function App() {
     {access: 'Student Cases', hasAccess: false, elem: <StudentCases/>},
   ]);
   const [settingsTabOpen, setSettingsTabOpen] = useState(false);
-  const [settings, setSettings] = useState(null);
+  const [settings, setSettings] = useState(() => {
+    const savedSettings = localStorage.getItem("aim-settings");
+    return savedSettings ? JSON.parse(savedSettings) : {
+      content_size: 100,
+      highlight_tiles: false,
+      highlight_links: false,
+      text_magnifier: false,
+      align_text: "Middle",
+      font_size: 1,
+      line_height: 5000,
+      letter_spacing: 1,
+      contrast: "Regular",
+      saturation: "Regular",
+      mute_sounds: false,
+      hide_images: false,
+      reading_mask: false,
+      highlight_hover: false,
+      cursor: "Regular"
+    };
+  });
 
   useEffect(() => {
     if (showAlert) {
