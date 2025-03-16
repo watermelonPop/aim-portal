@@ -305,23 +305,41 @@ describe('LoginScreen', () => {
                     });
                 }); 
 
-                test('when token is verified, should call the /api/checkAccount api route', async () => {
-                    // Mock fetch for verifyToken
-                    global.fetch = jest.fn(() =>
-                        Promise.resolve({
-                          ok: true,
-                          json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com', payload: "testPayload" }),
-                        })
-                    );
-                    const result = await LoginScreen.verifyToken('mockToken', mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
+                test('when token is verified, should call both /api/verifyToken and /api/checkAccount api routes', async () => {
+                    // Mock fetch for both API calls
+                    global.fetch = jest.fn((url) => {
+                        if (url === '/api/verifyToken') {
+                            return Promise.resolve({
+                                ok: true,
+                                json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com', payload: "testPayload" }),
+                            });
+                        } else if (url === '/api/checkAccount/') {
+                            return Promise.resolve({
+                                ok: true,
+                                json: () => Promise.resolve({ exists: true, user_info: [{ user_role: 'User', user_id: 'mockUserId' }] }),
+                            });
+                        }
+                    });
+                
+                    await LoginScreen.verifyToken('mockToken', mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
+                
                     await waitFor(() => {
-                        expect(global.fetch).toHaveBeenCalledWith('/api/checkAccount', {
+                        // Check first API call
+                        expect(global.fetch).toHaveBeenCalledWith('/api/verifyToken', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ token: 'mockToken' })
+                        });
+                
+                        // Check second API call
+                        expect(global.fetch).toHaveBeenCalledWith('/api/checkAccount/', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ email: 'test@example.com' })
                         });
                     });
-                });    
+                });
+                 
 
                 test('when token is verified & user exists, /api/getSettings', async () => {
                     global.fetch = jest.fn().mockImplementationOnce(() =>
@@ -331,7 +349,7 @@ describe('LoginScreen', () => {
                         })
                     ).mockImplementationOnce(() => // Mock for userExists
                         Promise.resolve({
-                            json: () => Promise.resolve({ exists: true, user_info: {user_id: 'mockUserId', user_role: 'User', user_email: 'test@example.com'} })
+                            json: () => Promise.resolve({ exists: true, user_info: [{user_id: 'mockUserId', user_role: 'User', user_email: 'test@example.com'}] })
                         })
                     ).mockImplementationOnce(() => // Mock for getUserSettings
                         Promise.resolve({
@@ -403,7 +421,7 @@ describe('LoginScreen', () => {
                         })
                     ).mockImplementationOnce(() => // Mock for userExists
                         Promise.resolve({
-                          json: () => Promise.resolve({ exists: true, user_info: {user_id: 'mockUserId', user_role: 'User', user_email: 'test@example.com'} })
+                          json: () => Promise.resolve({ exists: true, user_info: [{user_id: 'mockUserId', user_role: 'User', user_email: 'test@example.com'}] })
                         })
                     ).mockImplementationOnce(() => // Mock for getUserSettings
                         Promise.resolve({
@@ -435,7 +453,7 @@ describe('LoginScreen', () => {
                         })
                     ).mockImplementationOnce(() =>
                         Promise.resolve({
-                            json: () => Promise.resolve({ exists: true, user_info: {userId: 'mockUserId', email: 'test@example.com', user_role: "Student"} })
+                            json: () => Promise.resolve({ exists: true, user_info: [{userId: 'mockUserId', email: 'test@example.com', user_role: "Student"}] })
                         })
                     ).mockImplementationOnce(() => // Mock for getUserSettings
                         Promise.resolve({
@@ -477,7 +495,7 @@ describe('LoginScreen', () => {
                             json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com', payload: "testPayload" })
                         }))
                         .mockImplementationOnce(() => Promise.resolve({
-                            json: () => Promise.resolve({ exists: true, user_info: { user_id: 'mockUserId', email: 'test@example.com', user_role: "Staff" } })
+                            json: () => Promise.resolve({ exists: true, user_info: [{ user_id: 'mockUserId', email: 'test@example.com', user_role: "Staff" }] })
                         })).mockImplementationOnce(() => // /api/getStaffRole
                         Promise.resolve({
                                 text: () => Promise.resolve(JSON.stringify({
@@ -516,7 +534,7 @@ describe('LoginScreen', () => {
                             json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com', payload: "testPayload" })
                         }))
                         .mockImplementationOnce(() => Promise.resolve({
-                            json: () => Promise.resolve({ exists: true, user_info: { user_id: 'mockUserId', email: 'test@example.com', user_role: "Staff" } })
+                            json: () => Promise.resolve({ exists: true, user_info: [{ user_id: 'mockUserId', email: 'test@example.com', user_role: "Staff" }] })
                         })).mockImplementationOnce(() => // /api/getStaffRole
                         Promise.resolve({
                                 text: () => Promise.resolve(JSON.stringify({
@@ -548,7 +566,7 @@ describe('LoginScreen', () => {
                             json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com', payload: "testPayload" })
                         }))
                         .mockImplementationOnce(() => Promise.resolve({
-                            json: () => Promise.resolve({ exists: true, user_info: { user_id: 'mockUserId', email: 'test@example.com', user_role: "Staff" } })
+                            json: () => Promise.resolve({ exists: true, user_info: [{ user_id: 'mockUserId', email: 'test@example.com', user_role: "Staff" }] })
                         })).mockImplementationOnce(() => // /api/getStaffRole
                         Promise.resolve({
                                 text: () => Promise.resolve(JSON.stringify({
@@ -575,7 +593,7 @@ describe('LoginScreen', () => {
         describe('userExists', () => {
                 test('calls api/checkAccount', async () => {
                         const mockEmail = 'test@example.com';
-                        const mockUserData = { exists: true, user_info: { user_role: 'Staff', user_id: '123' } };
+                        const mockUserData = { exists: true, user_info: [{ user_role: 'Staff', user_id: '123' }] };
                     
                         // Mock fetch before calling userExists
                         const fetchMock = jest.fn().mockResolvedValueOnce({
@@ -588,7 +606,7 @@ describe('LoginScreen', () => {
                         const result = await LoginScreen.userExists(mockEmail);
                     
                         // Assert that fetch was called with the correct arguments
-                        expect(fetchMock).toHaveBeenCalledWith('/api/checkAccount', {
+                        expect(fetchMock).toHaveBeenCalledWith('/api/checkAccount/', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ email: mockEmail }),

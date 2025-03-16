@@ -15,6 +15,7 @@ import AssistiveTech from './assistiveTech';
 import Testing from './testing';
 import StudentCases from './studentCases';
 import Alert from './alert';
+import BasicSettingsBar from './basicSettingsBar';
 
 
 export function App() {
@@ -61,28 +62,7 @@ export function App() {
     {access: 'Student Cases', hasAccess: false, elem: <StudentCases/>},
   ]);
   const [settingsTabOpen, setSettingsTabOpen] = useState(false);
-  const [txtChangeSizeAmount, setTxtChangeSizeAmount] = useState(1);
-  const [letterSpacingChangeSizeAmount, setLetterSpacingChangeSizeAmount] = useState(1);
-  const [settings, setSettings] = useState(() => {
-    const savedSettings = localStorage.getItem("aim-settings");
-    return savedSettings ? JSON.parse(savedSettings) : {
-      content_size: 100,
-      highlight_tiles: false,
-      highlight_links: false,
-      text_magnifier: false,
-      align_text: "Middle",
-      font_size: 1,
-      line_height: 5000,
-      letter_spacing: 1,
-      contrast: "Regular",
-      saturation: "Regular",
-      mute_sounds: false,
-      hide_images: false,
-      reading_mask: false,
-      highlight_hover: false,
-      cursor: "Regular"
-    };
-  });
+  const [settings, setSettings] = useState(null);
 
   useEffect(() => {
     if (showAlert) {
@@ -92,6 +72,14 @@ export function App() {
       return () => clearTimeout(timer);
     }
   }, [showAlert]);
+
+  useEffect(() => {
+    if(settingsTabOpen === true){
+      document.body.classList.add('modal-open');
+    }else{
+      document.body.classList.remove('modal-open');
+    }
+  }, [settingsTabOpen]);
 
   useEffect(() => {
     if(!loggedIn){
@@ -110,26 +98,24 @@ export function App() {
     if(userType === "User"){
       setTabs(updatedUserTabs);
       setCurrentTab(userTabs[0]);
-      if(localStorage.getItem("aim-settings") === null){
-        console.log("SETTING LOCAL STORAGE");
-        localStorage.setItem("aim-settings", JSON.stringify(settings));
-      }
-    }else if(userType === "Student"){
-      setTabs(studentTabs);
-      setCurrentTab(studentTabs[0]);
-    }else if(userType === "Professor"){
-      setTabs(professorTabs);
-      setCurrentTab(professorTabs[0]);
-    }else if(userType === "Staff"){
-      //check for staff access & set here
-      let newStaffTabs = [...staffTabs];
-      for(let i = 0; i < staffAccess.length; i++){
-        if(staffAccess[i].hasAccess === true){
-          newStaffTabs.push({name: staffAccess[i].access, elem: staffAccess[i].elem});
+    }else{
+      if(userType === "Student"){
+        setTabs(studentTabs);
+        setCurrentTab(studentTabs[0]);
+      }else if(userType === "Professor"){
+        setTabs(professorTabs);
+        setCurrentTab(professorTabs[0]);
+      }else if(userType === "Staff"){
+        //check for staff access & set here
+        let newStaffTabs = [...staffTabs];
+        for(let i = 0; i < staffAccess.length; i++){
+          if(staffAccess[i].hasAccess === true){
+            newStaffTabs.push({name: staffAccess[i].access, elem: staffAccess[i].elem});
+          }
         }
+        setTabs(newStaffTabs);
+        setCurrentTab(newStaffTabs[0]);
       }
-      setTabs(newStaffTabs);
-      setCurrentTab(newStaffTabs[0]);
     }
     //get settings here
     return () => {
@@ -137,93 +123,46 @@ export function App() {
   }, [loggedIn, userType, staffAccess]);
 
   useEffect(() => {
-    const savedSettings = localStorage.getItem("aim-settings");
-    if (!savedSettings || savedSettings !== JSON.stringify(settings)) {
-      console.log("Updating local storage with new settings:", settings);
-      localStorage.setItem("aim-settings", JSON.stringify(settings));
-    }
-    if(userId){
-      setSettingsDatabase(userId, settings);
-    }
-    setTxtChangeSizeAmount(settings.font_size);
-    setLetterSpacingChangeSizeAmount(settings.letter_spacing);
-  }, [settings, userId]);
+    const updateSettings = async () => {
+      if(settings){
+        document.documentElement.style.setProperty("--txtSize", `${settings.font_size}`);
+        document.documentElement.style.setProperty("--letterSpacing", `${settings.letter_spacing}`);
+        document.documentElement.style.setProperty("--contrast", `${settings.contrast}`);
+        
+        if(userType === "User") {
+            localStorage.setItem("aim-settings", JSON.stringify(settings));
+        } else {
+            await setSettingsDatabase(userId, settings); 
+        }
+      }
+    };
+    
+    updateSettings().catch(console.error);
+  }, [settings, userType, userId]);
 
-  useEffect(() => {
-    document.documentElement.style.setProperty("--txtChangeSizeAmount", `${txtChangeSizeAmount}`);
-    console.log("setting txtChangeSizeAmount to " + txtChangeSizeAmount);
-  }, [txtChangeSizeAmount]);
-
-  useEffect(() => {
-    document.documentElement.style.setProperty("--letterSpacingChangeSizeAmount", `${letterSpacingChangeSizeAmount}`);
-    console.log("setting letterSpacingChangeSizeAmount to " + letterSpacingChangeSizeAmount);
-  }, [letterSpacingChangeSizeAmount]);
 
   const setSettingsDatabase = async (userId, setts) => {
+    console.log("USER ID HERE: " + userId);
     try {
+      let deformattedSettings = {...setts};
+      deformattedSettings.font_size = deformattedSettings.font_size.replace("px", "");
+      deformattedSettings.letter_spacing = deformattedSettings.letter_spacing.replace("px", "");
       const response = await fetch('/api/setSettings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           user_id: userId,
-          settings: setts 
+          settings: deformattedSettings 
         }),
       });
   
       const data = await response.json();
+      console.log(data);
       return data;
     } catch (error) {
       console.error('Error checking exists', error);
     }
   };
-
-  const remFactor = 0.1; 
-
-  function incTxtChangeSizeAmount(amt) {
-    let newAmt = (amt * remFactor) + txtChangeSizeAmount;
-    if (newAmt < 2 && newAmt > 0.2) {
-      setTxtChangeSizeAmount(parseFloat(newAmt.toFixed(2)));
-      document.documentElement.style.setProperty("--txtChangeSizeAmount", `${parseFloat(newAmt.toFixed(2))}`);
-      let newSetts = {...settings};
-      newSetts.font_size = parseFloat(newAmt.toFixed(2));
-      setSettings(newSetts);
-    }
-  }
-
-
-  function decTxtChangeSizeAmount(amt) {
-    let newAmt = txtChangeSizeAmount - (amt * remFactor);
-    if(newAmt <= 2 && newAmt > 0.2){
-      setTxtChangeSizeAmount(parseFloat(newAmt.toFixed(2)));
-      document.documentElement.style.setProperty("--txtChangeSizeAmount", `${parseFloat(newAmt.toFixed(2))}`);
-      let newSetts = {...settings};
-      newSetts.font_size = parseFloat(newAmt.toFixed(2));
-      setSettings(newSetts);
-    }
-  }
-
-  const letterSpacingRem = 1;
-
-  function incLetterSpacingChangeSizeAmount(amt) {
-    let newAmt = (amt * letterSpacingRem) + letterSpacingChangeSizeAmount;
-    if (newAmt < 12 && newAmt > 0.001) {
-      setLetterSpacingChangeSizeAmount(parseFloat(newAmt.toFixed(2)));
-      let newSetts = {...settings};
-      newSetts.letter_spacing = parseFloat(newAmt.toFixed(2));
-      setSettings(newSetts);
-    }
-  }
-
-  function decLetterSpacingChangeSizeAmount(amt) {
-    let newAmt = letterSpacingChangeSizeAmount - (amt * (letterSpacingRem));
-    console.log(newAmt);
-    if (newAmt < 12 && newAmt > 0.001) {
-      setLetterSpacingChangeSizeAmount(parseFloat(newAmt.toFixed(2)));
-      let newSetts = {...settings};
-      newSetts.letter_spacing = parseFloat(newAmt.toFixed(2));
-      setSettings(newSetts);
-    }
-  }
 
   function setStaffRoles({ staffRole }) {
     let newStaffAccess = {...staffAccess}
@@ -255,13 +194,13 @@ export function App() {
 
   function BasicView({ currentTab, setCurrentTab, userType, tabs }) {
     return (
-      <main className='basicScreen' data-testid="basicScreen">
-        <BasicSettingsBar isOpen={settingsTabOpen} onClose={() => setSettingsTabOpen(false)}/>
-        <BasicHeader />
-        <BasicTabNav tabs={tabs} setCurrentTab={setCurrentTab} />
-        <Display currentTab={currentTab} />
-        <BasicFooter/>
-      </main>
+        <main className='basicScreen' data-testid="basicScreen">
+          <BasicSettingsBar isOpen={settingsTabOpen} onClose={() => setSettingsTabOpen(false)} settings={settings} setSettings={setSettings} logout={logout} setLoggedIn={setLoggedIn}/>
+          <BasicHeader />
+          <BasicTabNav tabs={tabs} setCurrentTab={setCurrentTab} />
+          <Display currentTab={currentTab} />
+          <BasicFooter/>
+        </main>
     );
   }
 
@@ -289,58 +228,6 @@ export function App() {
           )) : <li>No tabs available</li>}
         </ul>
       </nav>
-    );
-  }
-
-
-
-  function BasicSettingsBar({ isOpen, onClose }) {
-    return (
-      <>
-        <nav role="dialog" aria-label='Settings' className='settingsNav' id='settings' aria-hidden={!isOpen} onClick={(e) => {
-                      e.stopPropagation();
-                    }} data-testid="settings">
-          <div role="presentation" className='closeBtnDiv'>
-            <button id="closeSettingPanel" onClick={onClose} aria-label='close'>x</button>
-          </div>
-          <h2 className="settingsHeading">Settings</h2>
-          <ul>
-              <li>
-                <h3>Text Size</h3>
-                <form onSubmit={(e) => e.preventDefault()}>
-                  <button onClick={(e) => {
-                      e.stopPropagation();  // Prevent closing the panel
-                      decTxtChangeSizeAmount(1);
-                    }}  className='settingsBtn' aria-label='Decrease Text Size' data-testid="txtSizeDec">-</button>
-                  <label data-testid="txtSizeLabel">{parseFloat((txtChangeSizeAmount*100).toFixed(2))}%</label>
-                  <button onClick={(e) => {
-                      e.stopPropagation();  // Prevent closing the panel
-                      incTxtChangeSizeAmount(1);
-                    }}  className='settingsBtn' aria-label='Increase Text Size' data-testid="txtSizeInc">+</button>
-                                </form>
-              </li>
-              <li>
-                <h3>Letter Spacing</h3>
-                <form onSubmit={(e) => e.preventDefault()}>
-                  <button onClick={(e) => {
-                      e.stopPropagation();  // Prevent closing the panel
-                      decLetterSpacingChangeSizeAmount(1);
-                    }}  className='settingsBtn' aria-label='Decrease Letter Spacing' data-testid="letterSpacingDec">-</button>
-                  <label data-testid="letterSpacingLabel">{parseFloat((letterSpacingChangeSizeAmount*100).toFixed(2))}%</label>
-                  <button onClick={(e) => {
-                      e.stopPropagation();  // Prevent closing the panel
-                      incLetterSpacingChangeSizeAmount(1);
-                    }} className='settingsBtn' aria-label='Increase Letter Spacing' data-testid="letterSpacingInc">+</button>
-                </form>
-              </li>
-              <li>
-                <button onClick={() => {
-                      logout(setLoggedIn);
-                    }} className='logOutBtn'>log out</button>
-              </li>
-          </ul>
-        </nav>
-      </>
     );
   }
 
@@ -372,7 +259,7 @@ export function App() {
     return (
       <>
           <footer className='basicFooter'>
-            <p className='footerTitle'>Disability Resources & Contact</p>
+            <h4 className='footerTitle'>Disability Resources & Contact</h4>
             <div>
               <div aria-label='Address'>
                 <p>Address</p>

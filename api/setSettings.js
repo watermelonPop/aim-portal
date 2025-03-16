@@ -32,9 +32,10 @@ module.exports = async (req, res) => {
                         highlight_hover = ${settings.highlight_hover},
                         cursor = ${settings.cursor}
                 WHERE user_id = ${user_id}
+                RETURNING *
             `;
             if (result.length > 0) { 
-              res.status(200).json({ success: false, updated_settings: result});
+              res.status(200).json({ success: true, updated_settings: result});
             }else{
               res.status(404).json({ success: false, message: 'No user settings found to update'});
             }
