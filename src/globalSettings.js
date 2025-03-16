@@ -1,119 +1,199 @@
+// globalSettings.js
 import './App.css';
-import { useEffect, useState } from 'react';
-
-// List of all possible responsibilities
-const responsibilitiesList = [
-  "Global settings",
-  "Accommodation modules",
-  "Note Taking modules",
-  "Assistive tech modules",
-  "Accessible testing modules",
-  "Student case information"
-];
+import { useState, useEffect } from 'react';
 
 function GlobalSettings() {
-  // Sample advisors – in a real app you might fetch these from an API.
-  const [advisors, setAdvisors] = useState([
-    { id: 1, name: "Alice Johnson", role: "Coordinator", responsibilities: ["Accommodation modules", "Note Taking modules"] },
-    { id: 2, name: "Bob Smith", role: "Technology Advisor", responsibilities: ["Assistive tech modules"] },
-    { id: 3, name: "Charlie Davis", role: "Testing Proctor", responsibilities: ["Accessible testing modules", "Student case information"] }
-  ]);
-  
-  // New state to hold the search query.
+  const [advisors, setAdvisors] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 10;
 
-  // Handler to update an advisor’s role.
-  const updateAdvisorRole = (id, newRole) => {
-    const updatedAdvisors = advisors.map(advisor => 
-      advisor.id === id ? { ...advisor, role: newRole } : advisor
-    );
-    setAdvisors(updatedAdvisors);
-    // TODO: Optionally, make an API call to persist this change.
-  };
+  // Debounce the search input to reduce API calls.
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if (searchQuery !== "") {
+        setLoading(true);
+        fetch(`/api/findAdvisor?query=${encodeURIComponent(searchQuery)}`)
+          .then(res => res.json())
+          .then(data => {
+            setAdvisors(data.advisors || []);
+            setCurrentPage(0); // Reset to the first page on a new search.
+            setLoading(false);
+          })
+          .catch(error => {
+            console.error("Error fetching advisors:", error);
+            setAdvisors([]);
+            setLoading(false);
+          });
+      } else {
+        setAdvisors([]);
+      }
+    }, 300);
 
-  // Handler to toggle a specific responsibility for an advisor.
-  const updateAdvisorResponsibilities = (id, responsibility) => {
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchQuery]);
+
+  // Handler to update a checkbox field both locally and in the database.
+  const handleCheckboxChange = (advisorId, fieldName, newValue) => {
+    // Update local state optimistically.
     const updatedAdvisors = advisors.map(advisor => {
-      if (advisor.id === id) {
-        const hasResp = advisor.responsibilities.includes(responsibility);
-        return {
-          ...advisor,
-          responsibilities: hasResp 
-            ? advisor.responsibilities.filter(r => r !== responsibility)
-            : [...advisor.responsibilities, responsibility]
-        };
+      if (advisor.user_id === advisorId) {
+        return { ...advisor, [fieldName]: newValue };
       }
       return advisor;
     });
     setAdvisors(updatedAdvisors);
-    // TODO: Optionally, send updated data to your backend.
+
+    // Update the database via an API call.
+    fetch('/api/updateAdvisors', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        advisor_id: advisorId,
+        field: fieldName,
+        value: newValue
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log('Update successful:', data);
+      })
+      .catch(error => {
+        console.error('Error updating advisor:', error);
+      });
   };
 
-  // Filter the advisors based on the search query.
-  const filteredAdvisors = advisors.filter(advisor => {
-    if (!searchQuery) return false; // Do not show any results if there is no query.
-    const query = searchQuery.toLowerCase();
-    return (
-      advisor.name.toLowerCase().includes(query) ||
-      advisor.role.toLowerCase().includes(query) ||
-      advisor.responsibilities.some(resp => resp.toLowerCase().includes(query))
-    );
-  });
+  // Render an interactive checkbox.
+  const renderCheckbox = (value, advisorId, fieldName) => (
+    <input
+      type="checkbox"
+      checked={value}
+      onChange={(e) => handleCheckboxChange(advisorId, fieldName, e.target.checked)}
+      style={{ display: 'block', margin: '0 auto' }}
+    />
+  );
+
+  // Pagination calculations.
+  const startIndex = currentPage * itemsPerPage;
+  const currentAdvisors = advisors.slice(startIndex, startIndex + itemsPerPage);
+  const totalPages = Math.ceil(advisors.length / itemsPerPage);
+
+  const handlePrevPage = () => {
+    if (currentPage > 0) setCurrentPage(currentPage - 1);
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages - 1) setCurrentPage(currentPage + 1);
+  };
 
   return (
     <div className="global-settings">
-      <h2>Manage Advisor Responsibilities</h2>
-      <input
-        type="text"
-        placeholder="Search advisors..."
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        style={{ marginBottom: '1rem', padding: '0.5rem', width: '100%' }}
-      />
-      {searchQuery === "" ? (
-        <p>Please enter a search query to find advisors.</p>
-      ) : filteredAdvisors.length === 0 ? (
-        <p>No matching advisors found.</p>
-      ) : (
-        <table className="global-settings-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Role</th>
-              {responsibilitiesList.map((resp, idx) => (
-                <th key={idx}>{resp}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {filteredAdvisors.map(advisor => (
-              <tr key={advisor.id}>
-                <td>{advisor.name}</td>
-                <td>
-                  <select
-                    value={advisor.role}
-                    onChange={(e) => updateAdvisorRole(advisor.id, e.target.value)}
+      <h2 style={{ textAlign: 'center' }}>Advisor Search</h2>
+      <div className="search-container" style={{ marginBottom: '1rem', textAlign: 'center' }}>
+        <input
+          type="text"
+          placeholder="Search advisors..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          style={{ padding: '0.5em', width: '80%', maxWidth: '30em' }}
+        />
+      </div>
+      <div className="results-container" style={{ minHeight: '300px' }}>
+        {searchQuery === "" ? (
+          <p>Please enter a search query to find advisors.</p>
+        ) : loading ? (
+          <p>Loading...</p>
+        ) : advisors.length === 0 ? (
+          <p>No matching advisors found.</p>
+        ) : (
+          <>
+            <table
+              className="global-settings-table"
+              style={{
+                width: '90%',
+                margin: '0 auto',
+                borderCollapse: 'collapse',
+                tableLayout: 'fixed'
+              }}
+            >
+              <colgroup>
+                <col style={{ width: '15%' }} />
+                <col style={{ width: '20%' }} />
+                <col style={{ width: '15%' }} />
+                <col style={{ width: '8.33%' }} />
+                <col style={{ width: '8.33%' }} />
+                <col style={{ width: '8.33%' }} />
+                <col style={{ width: '8.33%' }} />
+                <col style={{ width: '8.33%' }} />
+                <col style={{ width: '8.33%' }} />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th style={{ borderBottom: '1px solid #ddd', padding: '0.5em' }}>Name</th>
+                  <th style={{ borderBottom: '1px solid #ddd', padding: '0.5em' }}>Email</th>
+                  <th style={{ borderBottom: '1px solid #ddd', padding: '0.5em' }}>Role</th>
+                  <th style={{ borderBottom: '1px solid #ddd', padding: '0.5em' }}>Global Settings</th>
+                  <th style={{ borderBottom: '1px solid #ddd', padding: '0.5em' }}>Accommodation Modules</th>
+                  <th style={{ borderBottom: '1px solid #ddd', padding: '0.5em' }}>Note Taking Modules</th>
+                  <th style={{ borderBottom: '1px solid #ddd', padding: '0.5em' }}>Assistive Tech Modules</th>
+                  <th style={{ borderBottom: '1px solid #ddd', padding: '0.5em' }}>Accessible Testing Modules</th>
+                  <th style={{ borderBottom: '1px solid #ddd', padding: '0.5em' }}>Student Case Info</th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentAdvisors.map((advisor, index) => (
+                  <tr
+                    key={advisor.user_id}
+                    style={{
+                      backgroundColor: (startIndex + index) % 2 === 0 ? '#f2f2f2' : '#ffffff',
+                    }}
                   >
-                    <option value="Coordinator">Coordinator</option>
-                    <option value="Technology Advisor">Technology Advisor</option>
-                    <option value="Testing Proctor">Testing Proctor</option>
-                    <option value="Admin">Admin</option>
-                  </select>
-                </td>
-                {responsibilitiesList.map((resp, idx) => (
-                  <td key={idx} style={{ textAlign: 'center' }}>
-                    <input
-                      type="checkbox"
-                      checked={advisor.responsibilities.includes(resp)}
-                      onChange={() => updateAdvisorResponsibilities(advisor.id, resp)}
-                    />
-                  </td>
+                    <td style={{ border: '1px solid #ddd', padding: '0.5em', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      {advisor.name}
+                    </td>
+                    <td style={{ border: '1px solid #ddd', padding: '0.5em', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      {advisor.email}
+                    </td>
+                    <td style={{ border: '1px solid #ddd', padding: '0.5em', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      {advisor.role}
+                    </td>
+                    <td style={{ border: '1px solid #ddd', padding: '0.5em', textAlign: 'center' }}>
+                      {renderCheckbox(advisor.global_settings, advisor.user_id, "global_settings")}
+                    </td>
+                    <td style={{ border: '1px solid #ddd', padding: '0.5em', textAlign: 'center' }}>
+                      {renderCheckbox(advisor.accommodation_modules, advisor.user_id, "accommodation_modules")}
+                    </td>
+                    <td style={{ border: '1px solid #ddd', padding: '0.5em', textAlign: 'center' }}>
+                      {renderCheckbox(advisor.note_taking_modules, advisor.user_id, "note_taking_modules")}
+                    </td>
+                    <td style={{ border: '1px solid #ddd', padding: '0.5em', textAlign: 'center' }}>
+                      {renderCheckbox(advisor.assistive_tech_modules, advisor.user_id, "assistive_tech_modules")}
+                    </td>
+                    <td style={{ border: '1px solid #ddd', padding: '0.5em', textAlign: 'center' }}>
+                      {renderCheckbox(advisor.accessible_testing_modules, advisor.user_id, "accessible_testing_modules")}
+                    </td>
+                    <td style={{ border: '1px solid #ddd', padding: '0.5em', textAlign: 'center' }}>
+                      {renderCheckbox(advisor.student_case_information, advisor.user_id, "student_case_information")}
+                    </td>
+                  </tr>
                 ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+              </tbody>
+            </table>
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
+              <button onClick={handlePrevPage} disabled={currentPage === 0} style={{ marginRight: '1em' }}>
+                Previous 10
+              </button>
+              <span>
+                Page {currentPage + 1} of {totalPages}
+              </span>
+              <button onClick={handleNextPage} disabled={currentPage >= totalPages - 1} style={{ marginLeft: '1em' }}>
+                Next 10
+              </button>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 }
