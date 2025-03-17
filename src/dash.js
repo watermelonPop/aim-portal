@@ -8,7 +8,7 @@ function Dash({ userType }) {
       {/* {userType === "User" && <UserDash />} */}
       {/* {userType === "Student" && <StudentDash />} */}
       {/* {userType === "Professor" && <ProfessorDash />} */}
-      {userType === "User" && <StaffDash />}
+      {userType === "Staff" && <StaffDash />}
     </main>
   );
 }

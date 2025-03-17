@@ -30,6 +30,21 @@ const totalPages = Math.ceil(filteredRequests.length / 10);
     { id: 3, date: '2024-03-02', message: 'System maintenance scheduled for Friday', notes: 'Potential downtime from 12 AM - 3 AM' }
   ];
 
+  // ADDED FOR REQUESTS: Fetch requests when view is 'requests'
+useEffect(() => {
+  if (view === 'requests') {
+    setLoading(true); // Show loading indicator
+    fetch('/api/getRequests')
+      .then(res => res.json())
+      .then(data => {
+        setRequestsData(data.requests);
+      })
+      .catch(err => console.error('Error fetching requests:', err))
+      .finally(() => setLoading(false)); // Hide loading indicator
+  }
+}, [view]);
+
+
   // Fetch students from API when component mounts
   useEffect(() => {
     fetch('/api/getStudents') // API endpoint to get students
@@ -55,7 +70,7 @@ const totalPages = Math.ceil(filteredRequests.length / 10);
     const filtered = requestsData.filter((request) => {
       const query = searchTerm.toLowerCase();
       return (
-        request.user_name.toLowerCase().includes(query) ||
+        request.user_email.toLowerCase().includes(query) ||
         request.uin.toString().includes(query)
       );
     });
@@ -148,7 +163,7 @@ const totalPages = Math.ceil(filteredRequests.length / 10);
         <div className="staff-header">
           {view !== null && (
             <button className="back-btn" onClick={resetToMainMenu}>
-              ← Back
+              ← Back to Dashboard
             </button>
           )}
         </div>
@@ -167,15 +182,14 @@ const totalPages = Math.ceil(filteredRequests.length / 10);
 
 {view === 'requests' && (
   <div className="staff-dashboard-section">
-    {/* Back Button (Always Visible) */}
-    <button className="back-btn" onClick={() => {
-      setSelectedStudent(null);
-      setSearchTerm('');
-    }}>
-      ← Back to Search
-    </button>
+    {/* Show "Back to Search" ONLY when a request is selected */}
+{selectedStudent && (
+  <button className="back-btn" onClick={() => setSelectedStudent(null)}>
+    ← Back to Search
+  </button>
+)}
 
-    {/* Show Search Bar ONLY When No Request is Selected */}
+
     {!selectedStudent && (
       <input
         type="text"
@@ -186,80 +200,88 @@ const totalPages = Math.ceil(filteredRequests.length / 10);
       />
     )}
 
-    {/* If a Student is Selected, Show Full Details */}
-    {selectedStudent ? (
-      <div className="staff-student-details-container">
-        <h3>Student Request Details</h3>
-        <div className="staff-student-info">
-          <p><strong>Name:</strong> {selectedStudent.user_name}</p>
-          <p><strong>Email:</strong> {selectedStudent.user_email}</p>
-          <p><strong>Advisor ID:</strong> {selectedStudent.advisor_id}</p>
-          <p><strong>Date of Birth:</strong> {selectedStudent.dob}</p>
-          <p><strong>UIN:</strong> {selectedStudent.uin}</p>
-          <p><strong>Phone Number:</strong> {selectedStudent.phone_number}</p>
-          <p><strong>Full Notes:</strong></p>
-          <div className="full-notes-box">
-            {selectedStudent.notes}
-          </div>
-        </div>
+    {loading ? (
+      // Show loading spinner when data is loading
+      <div className="loading-container">
+        <div className="loading-spinner"></div>
+        <p>Loading...</p>
       </div>
     ) : (
       <>
-        {/* Requests Container (Only Shown When No Student is Selected) */}
-        <div className="requests-container">
-          {filteredRequests
-            .slice((currentPage - 1) * 10, currentPage * 10) // Only show 10 per page
-            .map((request) => {
-              const previewLength = 100;
-              const notesPreview = request.notes?.length > previewLength
-                ? request.notes.substring(0, previewLength) + '...'
-                : request.notes;
+        {!selectedStudent ? (
+          <>
+            <div className="requests-container">
+              {filteredRequests
+                .slice((currentPage - 1) * 10, currentPage * 10) // Only show 10 per page
+                .map((request) => {
+                  const previewLength = 100;
+                  const notesPreview = request.notes?.length > previewLength
+                    ? request.notes.substring(0, previewLength) + '...'
+                    : request.notes;
 
-              return (
-                <div 
-                  className="request-tile"
-                  key={request.user_id}
-                  onClick={() => setSelectedStudent(request)}
-                  tabIndex="0"
-                  role="button"
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      setSelectedStudent(request);
-                    }
-                  }}
-                >
-                  <h4>{request.user_email}</h4>
-                  <p className="subheading">
-                    <em>UIN:</em> {request.uin}
-                  </p>
-                  <p className="notes-preview">{notesPreview}</p>
-                </div>
-              );
-            })}
-        </div>
+                  return (
+                    <div 
+                      className="request-tile"
+                      key={request.user_id}
+                      onClick={() => setSelectedStudent(request)}
+                      tabIndex="0"
+                      role="button"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          setSelectedStudent(request);
+                        }
+                      }}
+                    >
+                      <h4>{request.user_email}</h4>
+                      <p className="subheading">
+                        <em>UIN:</em> {request.uin}
+                      </p>
+                      <p className="notes-preview">{notesPreview}</p>
+                    </div>
+                  );
+                })}
+            </div>
 
-        {/* Pagination Controls (Only Shown When No Student is Selected) */}
-        <div className="pagination-controls">
-          <button 
-            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-            disabled={currentPage === 1}
-            className="pagination-btn"
-          >
-            ← Previous
-          </button>
-          <span>Page {currentPage} of {totalPages}</span>
-          <button 
-            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-            disabled={currentPage === totalPages}
-            className="pagination-btn"
-          >
-            Next →
-          </button>
-        </div>
+            <div className="pagination-controls">
+              <button 
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className="pagination-btn"
+              >
+                ← Previous
+              </button>
+              <span>Page {currentPage} of {totalPages}</span>
+              <button 
+                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
+                className="pagination-btn"
+              >
+                Next →
+              </button>
+            </div>
+          </>
+        ) : (
+          <div className="staff-student-details-container">
+            <h3>Student Request Details</h3>
+            <div className="staff-student-info">
+              <p><strong>Name:</strong> {selectedStudent.user_name}</p>
+              <p><strong>Email:</strong> {selectedStudent.user_email}</p>
+              <p><strong>Advisor ID:</strong> {selectedStudent.advisor_id}</p>
+              <p><strong>Date of Birth:</strong> {selectedStudent.dob}</p>
+              <p><strong>UIN:</strong> {selectedStudent.uin}</p>
+              <p><strong>Phone Number:</strong> {selectedStudent.phone_number}</p>
+              <p><strong>Full Notes:</strong></p>
+              <div className="full-notes-box">
+                {selectedStudent.notes}
+              </div>
+            </div>
+          </div>
+        )}
       </>
     )}
   </div>
 )}
+
 
 
         {/* Search for Students */}
