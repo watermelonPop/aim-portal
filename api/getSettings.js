@@ -12,7 +12,7 @@ module.exports = async (req, res) => {
 
     try {
       const result = await sql`
-        SELECT * FROM settings WHERE settings_id = ${userId}
+        SELECT * FROM settings WHERE user_id = ${userId}
       `;
       console.log("USER SETTINGS FOUND:", result);
 
