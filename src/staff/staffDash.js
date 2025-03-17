@@ -415,7 +415,7 @@ useEffect(() => {
                     className="staff-cancel-btn"
                     onClick={() => setIsEditing(false)}
                   >
-                    Back to Profile
+                    Back to Profile View
                   </button>
                 </div>
               ) : (

@@ -23,7 +23,7 @@ export function App() {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("ERROR");
   const [tabs, setTabs] = useState([]);
-  const [userType, setUserType] = useState("User");
+  const [userType, setUserType] = useState("Staff");
   const [userId, setUserId] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
   const [userTabs, setUserTabs] = useState([
