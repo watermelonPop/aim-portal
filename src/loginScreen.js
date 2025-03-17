@@ -68,6 +68,7 @@ export function LoginScreen({ setUserId, setSettings, loggedIn, setLoggedIn, set
         let exists = await userExists(data.email);
 
         if(exists.exists === true){
+
           localStorage.clear();
           console.log('exists.exists == true');
           console.log('exists.user_info[0].user_role: ', exists.user_info[0].user_role);

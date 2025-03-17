@@ -14,6 +14,8 @@ module.exports = async (req, res) => {
       const result = await sql`
         SELECT * FROM settings WHERE user_id = ${userId}
       `;
+      console.log("USER SETTINGS FOUND:", result);
+
       if (result && result.length > 0) { 
         res.status(200).json({ exists: true, settings_info: result[0] });
       } else {
