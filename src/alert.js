@@ -8,7 +8,7 @@ function Alert({ message }) {
   ));
 
   return (
-    <div role="alert" className='alertDiv'>
+    <div role="alert" className='alertDiv' data-testid='alert'>
       {messageLines}
     </div>
   );

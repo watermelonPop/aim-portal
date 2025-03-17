@@ -25,6 +25,8 @@ module.exports = async (req, res) => {
                 }
                 const advisorData = await advisorResponse.json();
                 const advisor_id = advisorData.advisor_id;
+
+                console.log("ADVID: " + advisor_id);
           
                 // Insert the new request
                 await sql`
@@ -32,7 +34,7 @@ module.exports = async (req, res) => {
                   VALUES (${user_name}, ${user_email}, ${advisor_id}, ${dob}, ${uin}, ${phone_number}, ${notes})
                 `;
           
-                res.status(201).json({ message: 'Request created successfully' });
+                res.status(200).json({ message: 'Request created successfully' });
               } catch (error) {
                 console.error('Error in POST request:', error);
                 res.status(500).json({ error: error.message });
