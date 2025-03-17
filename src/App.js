@@ -23,7 +23,7 @@ export function App() {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("ERROR");
   const [tabs, setTabs] = useState([]);
-  const [userType, setUserType] = useState("User");
+  const [userType, setUserType] = useState("Staff");
   const [userId, setUserId] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
   const [userTabs, setUserTabs] = useState([
@@ -51,6 +51,7 @@ export function App() {
     {name: 'Dashboard', elem: <Dash userType={"Staff"}/>},
     {name: 'Forms', elem: <Forms userType={"Staff"}/>},
     {name: 'Profile', elem: <Profile userType={"Staff"}/>},
+    {name: 'Global Settings', elem: <GlobalSettings userType={"Staff"}/> }
   ]);
   const [currentTab, setCurrentTab] = useState(null);
   const [staffAccess, setStaffAccess] = useState([
@@ -64,6 +65,7 @@ export function App() {
   const [settingsTabOpen, setSettingsTabOpen] = useState(false);
   const [settings, setSettings] = useState(() => {
     const savedSettings = localStorage.getItem("aim-settings");
+
     return savedSettings ? JSON.parse(savedSettings) : {
       content_size: 100,
       highlight_tiles: false,
@@ -81,6 +83,7 @@ export function App() {
       highlight_hover: false,
       cursor: "Regular"
     };
+
   });
 
   useEffect(() => {
@@ -142,6 +145,7 @@ export function App() {
   }, [loggedIn, userType, staffAccess]);
 
   useEffect(() => {
+
     const updateSettings = async () => {
       if(settings){
         document.documentElement.style.setProperty("--txtSize", `${settings.font_size}`);
@@ -158,6 +162,7 @@ export function App() {
     
     updateSettings().catch(console.error);
   }, [settings, userType, userId]);
+
 
 
   const setSettingsDatabase = async (userId, setts) => {
