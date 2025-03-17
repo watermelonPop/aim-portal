@@ -15,6 +15,8 @@ import AssistiveTech from './assistiveTech';
 import Testing from './testing';
 import StudentCases from './studentCases';
 
+import BlobTest from './blobtest';
+
 
 export function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -26,6 +28,7 @@ export function App() {
     {name: 'Accommodations', elem: <Accomodations userType={"User"}/>},
     {name: 'Forms', elem: <Forms userType={"User"}/>},
     {name: 'Profile', elem: <Profile userType={"User"}/>},
+    {name: 'BlobTest', elem: <BlobTest />},
   ]);
   const [studentTabs, setStudentTabs] = useState([
     {name: 'Dashboard', elem: <Dash userType={"Student"}/>},

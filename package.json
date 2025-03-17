@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@azure/storage-blob": "^12.26.0",
     "@faker-js/faker": "^9.6.0",
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-brands-svg-icons": "^6.7.2",
@@ -15,7 +16,9 @@
     "cra-template": "1.2.0",
     "express": "^4.21.2",
     "faker": "^6.6.6",
+    "formidable": "^3.5.2",
     "google-auth-library": "^9.15.1",
+    "multer": "^1.4.5-lts.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "web-vitals": "^4.2.4",
@@ -55,6 +58,7 @@
     "babel-jest": "^29.7.0",
     "jest": "^27.5.1",
     "prisma": "^6.4.1",
-    "react-scripts": "^5.0.1"
+    "react-scripts": "^5.0.1",
+    "typescript": "^5.8.2"
   }
 }
