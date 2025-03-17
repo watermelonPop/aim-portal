@@ -614,3 +614,124 @@
 }
 /*//////////////////////////////////////////////////////////////////////////////////////////*/
 
+/* Ensure the requests container does not overflow */
+.requests-container {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;     /* Enable horizontal scrolling */
+  max-width: 90vw;      /* Keeps it inside the dashboard area */
+  margin: 0 auto;       /* Centers it horizontally */
+  padding: 1rem 0;
+  border: 1px solid #ddd; /* Light border for visual clarity */
+  border-radius: 8px;
+  background: white;
+}
+
+/* Request tile styles */
+.request-tile {
+  flex: 0 0 auto;
+  min-width: 280px;       /* Minimum width for consistent tiles */
+  max-width: 320px;       /* Avoid oversized tiles */
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+/* Subheading formatting */
+.request-tile .subheading {
+  font-style: italic;
+  margin-bottom: 0.5rem;
+}
+
+/* Notes preview formatting */
+.request-tile .notes-preview {
+  color: #555;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* Search bar styles */
+.staff-search-bar {
+  width: 90%;          /* Matches the container width */
+  max-width: 500px;    /* Limits the search bar width */
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Ensure request tiles are clickable */
+.request-tile {
+  flex: 0 0 auto;
+  min-width: 280px;
+  max-width: 320px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  cursor: pointer; /* Make it clear they are clickable */
+  transition: transform 0.2s ease-in-out;
+}
+
+.request-tile:hover,
+.request-tile:focus {
+  transform: scale(1.05);
+}
+
+/* Full student details page */
+.staff-student-details-container {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  max-width: 600px;
+  margin: 2rem auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.full-notes-box {
+  background: #f9f9f9;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-style: italic;
+}
+
+/* Pagination Controls */
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+  gap: 1rem;
+}
+
+.pagination-btn {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background-color: #f1f1f1;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
