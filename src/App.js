@@ -118,10 +118,10 @@ export function App() {
   }, [loggedIn, userInfo]);
 
   useEffect(() => {
-    if (userInfo && userInfo.role === "USER" && userInfo.id) {
+    if (userInfo && userInfo.role === "USER" && userInfo.id && userConnected) {
       getUser(userInfo.id);
     }
-  }, [userInfo?.id, userInfo?.role]);
+  }, [userInfo?.id, userInfo?.role, setUserConnected]);
 
   useEffect(() => {
     if(!loggedIn || !userConnected || !userInfo){
@@ -224,8 +224,7 @@ export function App() {
         }
 
         const data = await response.json();
-
-        if (data && data.exists) {
+        if (data && data.exists !== null) {
           setUserConnected(data.exists);
           setLoading(false);
           return data.exists;
@@ -411,6 +410,7 @@ export function App() {
             setAlertMessage={setAlertMessage} 
             setShowAlert={setShowAlert} 
             setUserConnected={setUserConnected} 
+            setLoading={setLoading}
           />
         ) : (
           <BasicView 

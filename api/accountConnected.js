@@ -31,6 +31,7 @@ module.exports = async (req, res) => {
         ]);
             
         const foundUser = user || student || advisor || professor;
+        console.log("FOUND", foundUser);
         if (foundUser) {
                 res.status(200).json({ exists: true});
         } else {
