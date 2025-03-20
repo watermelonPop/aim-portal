@@ -84,7 +84,7 @@ model Form {
   id            Int        @id @default(autoincrement())
   name          String
   type          FormType
-  status        FormStatus @default(PENDING)
+  status        FormStatus @defagit ult(PENDING)
   submittedDate DateTime?
   dueDate       DateTime?
   createdAt     DateTime   @default(now())
