@@ -22,28 +22,7 @@ module.exports = async (req, res) => {
                 },
         });
 
-        const settings = await prisma.settings.create({
-          data: {
-            userId: Number(userId),
-            content_size: 100,
-            highlight_tiles: false,
-            highlight_links: false,
-            text_magnifier: false,
-            align_text: "Middle",
-            font_size: 14,
-            line_height: 5000,
-            letter_spacing: 0,
-            contrast: "100%",
-            saturation: "Regular",
-            mute_sounds: false,
-            hide_images: false,
-            reading_mask: false,
-            highlight_hover: false,
-            cursor: "Regular"
-          }
-        });
-
-      if (user && settings) {
+      if (user) {
         res.status(200).json({ success: true, user: user });
       } else {
         res.status(200).json({ success: false });
