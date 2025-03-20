@@ -195,6 +195,7 @@ export function App() {
   }, [loggedIn, userConnected, userInfo, staffAccess]);
 
   useEffect(() => {
+
     const updateSettings = async () => {
       if(settings && userInfo.id !== null){
         document.documentElement.style.setProperty("--txtSize", `${settings.font_size}`);
@@ -260,6 +261,7 @@ export function App() {
         console.error('Error while getting user:', error);
     }
   };
+
 
   const setSettingsDatabase = async (userId, setts) => {
     console.log("SETTINGS HERE: ", setts);
