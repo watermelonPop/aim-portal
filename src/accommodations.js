@@ -2,13 +2,13 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import UserAccommodations from './userAccommodations';
 
-export function Accommodations({userType, name, email, setAlertMessage, setShowAlert}) {
+export function Accommodations({userInfo, setAlertMessage, setShowAlert}) {
         return (
             <main className='dashboardOuter' data-testid='basicAccommodations'>
-                {userType === "User" && <UserAccommodations name={name} email={email} setAlertMessage={setAlertMessage} setShowAlert={setShowAlert}/>}
-                {userType === "Student" && <p className='dashboardTitle'>STUDENT ACCOMMODATIONS</p>}
-                {userType === "Professor" && <p className='dashboardTitle'>PROFESSOR ACCOMMODATIONS</p>}
-                {userType === "Staff" && <p className='dashboardTitle'>STAFF ACCOMMODATIONS</p>}
+                {userInfo.role === "USER" && <UserAccommodations userInfo={userInfo} setAlertMessage={setAlertMessage} setShowAlert={setShowAlert}/>}
+                {userInfo.role === "STUDENT" && <p className='dashboardTitle'>STUDENT ACCOMMODATIONS</p>}
+                {userInfo.role === "PROFESSOR" && <p className='dashboardTitle'>PROFESSOR ACCOMMODATIONS</p>}
+                {userInfo.role === "ADVISOR" && <p className='dashboardTitle'>STAFF ACCOMMODATIONS</p>}
             </main>
         );
 }

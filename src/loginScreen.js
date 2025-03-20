@@ -2,18 +2,13 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import logo from './logo.png';
 
-export function LoginScreen({ setUserId, setSettings, loggedIn, setLoggedIn, setUserType, setStaffRoles, setUserInfo }) {
-  const [loading, setLoading] = useState(false);
-  useEffect(() => {
-    if (loggedIn) {
-      setLoading(false);
-    }
-  }, [loggedIn]);
-  const userExists = async (email) => {
+export function LoginScreen({ setSettings, loggedIn, setLoggedIn, staffAccess, setStaffAccess, userInfo, setUserInfo, setLoading }) {
+
+  const accountExists = async (email) => {
     console.log("Checking account for email:", email); // Debug log
   
     try {
-      const response = await fetch('/api/checkAccount/', {
+      const response = await fetch('/api/checkAccount', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
@@ -27,6 +22,27 @@ export function LoginScreen({ setUserId, setSettings, loggedIn, setLoggedIn, set
     }
   };
 
+  const createAccount = async (userInfo, setUserInfo) => {
+    console.log("USER INFO HERE", userInfo);
+    let holderRole = userInfo.role !== null ? userInfo.role : "USER";
+    try {
+      const response = await fetch('/api/createAccount', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name:  userInfo.name, email: userInfo.email, role: holderRole}),
+      });
+  
+      const data = await response.json();
+      console.log("Response from /api/createAccount:", data); // Debug log
+      if(data.success === true){
+        setUserInfo({...userInfo, id: data.account.id, name: data.account.name, email: data.account.email, role: data.account.role});
+      }
+      return data.account;
+    } catch (error) {
+      console.error('Error checking exists', error);
+    }
+  };
+
   useEffect(() => {
     console.log('useEffect running');
     const urlParams = new URLSearchParams(window.location.search);
@@ -34,7 +50,7 @@ export function LoginScreen({ setUserId, setSettings, loggedIn, setLoggedIn, set
     
     if (idToken) {
       console.log('Calling verifyToken');
-      verifyToken(idToken, setUserId, setSettings, loggedIn, setLoggedIn, setUserType, setStaffRoles, setLoading, setUserInfo);
+      verifyToken(idToken, userInfo, setSettings, loggedIn, setLoggedIn, setStaffRoles, setLoading, setUserInfo);
       // Remove the token from the URL for security
       window.history.replaceState({}, document.title, window.location.pathname);
     }
@@ -42,11 +58,10 @@ export function LoginScreen({ setUserId, setSettings, loggedIn, setLoggedIn, set
 
   const verifyToken = async (
     token,
-    setUserId = () => {},
+    userInfo,
     setSettings = () => {},
     loggedIn,
     setLoggedIn = () => {},
-    setUserType = () => {},
     setStaffRoles = () => {},
     setLoading = () => {},
     setUserInfo = () => {}  // Add default parameter
@@ -59,31 +74,29 @@ export function LoginScreen({ setUserId, setSettings, loggedIn, setLoggedIn, set
         body: JSON.stringify({ token }),
       });
       const data = await response.json();
-      console.log("DATA HERE: ");
-      console.log(data);
+      console.log("DATA HERE: ", data);
+
       if (data.valid) {
         setLoading(true);
-        console.log('User verified:', data);
-        setUserInfo(data.payload);
-        let exists = await userExists(data.email);
+        let updatedUserInfo = {...userInfo, email: data.payload.email, name: data.payload.name};
+        setUserInfo(updatedUserInfo);
 
+        let exists = await accountExists(data.payload.email);
+        console.log(userInfo);
         if(exists.exists === true){
 
           localStorage.clear();
-          console.log('exists.exists == true');
-          console.log('exists.user_info[0].user_role: ', exists.user_info[0].user_role);
-          setUserType(exists.user_info[0].user_role);
-          console.log('exists.user_info[0].user_id: ', exists.user_info[0].user_id);
-          setUserId(exists.user_info[0].user_id);
-          if(exists.user_info[0].user_role === "Staff"){
-            let staffRole = await getStaffRoles(exists.user_info[0].user_id);
+          console.log('exists.exists == true', exists.user_info);
+          setUserInfo({...exists.user_info });
+          if(exists.user_info.role === "ADVISOR"){
+            let staffRole = await getStaffRoles(exists.user_info.id);
+            console.log(staffRole);
             setStaffRoles(staffRole);
           }
-
-          getUserSettings(exists.user_info[0].user_id, setSettings);
+          await getUserSettings(exists.user_info.id, setSettings);
         }else{
-          console.log("DOES NOT EXIST");
-          if (localStorage.getItem("aim-settings") !== null) {
+          console.log("DOES NOT EXIST: ", userInfo);
+          /*if (localStorage.getItem("aim-settings") !== null) {
               console.log("LOCAL STORAGE EXISTS:", localStorage.getItem("aim-settings")); // Logs as a string
               const parsedSettings = JSON.parse(localStorage.getItem("aim-settings")); // Convert back to object
               setSettings(parsedSettings); // Set state with the parsed object
@@ -105,9 +118,11 @@ export function LoginScreen({ setUserId, setSettings, loggedIn, setLoggedIn, set
               highlight_hover: false,
               cursor: "Regular"
             }));
-          }
+          }*/
+          await createAccount(updatedUserInfo, setUserInfo);
         }
         setLoggedIn(true);
+        console.log("ENDED", data);
         return data;
       } else {
         console.error('Invalid token:', data.error);
@@ -123,20 +138,12 @@ export function LoginScreen({ setUserId, setSettings, loggedIn, setLoggedIn, set
   const getStaffRoles = async (userId) => {
       try {
         const response = await fetch(`/api/getStaffRole?user_id=${userId}`);
-        const text = await response.text();
-        console.log('Response:', text);
-    
+        const data = await response.json();
         if (response.ok) {
-          try {
-            const data = JSON.parse(text);
-            if (data.role && data.role.trim() !== '') {
-              return data.role;
-            } else {
-              console.warn('Role is empty or undefined');
-              return null;
-            }
-          } catch (parseError) {
-            console.error('Failed to parse JSON:', parseError);
+          if (data.res.role && data.res.role.trim() !== '' && data !== null) {
+            return data.res.role;
+          } else {
+            console.warn('Role is empty or undefined');
             return null;
           }
         } else {
@@ -149,6 +156,37 @@ export function LoginScreen({ setUserId, setSettings, loggedIn, setLoggedIn, set
         return null;
       }   
   };
+
+  const setStaffRoles = (staffRole) => {
+    console.log("STAFF ROLE: ", staffRole);
+    let newStaffAccess = [...staffAccess];
+    console.log("NEW STAFF ACCESS: ", newStaffAccess);
+    if(staffRole === "Admin"){
+      for(let i = 0; i < newStaffAccess.length; i++){
+        newStaffAccess[i].hasAccess = true;
+      }
+      console.log(newStaffAccess.length);
+    }else if(staffRole === "Coordinator"){
+      for(let i = 0; i < newStaffAccess.length; i++){
+        if(newStaffAccess[i].access !== "Global Settings"){
+          newStaffAccess[i].hasAccess = true;
+        }
+      }
+    }else if(staffRole === "Testing Staff"){
+      for(let i = 0; i < newStaffAccess.length; i++){
+        if(newStaffAccess[i].access === "Accessible Testing" || newStaffAccess[i].access === "Student Cases"){
+          newStaffAccess[i].hasAccess = true;
+        }
+      }
+    }else if(staffRole === "Assistive Technology"){
+      for(let i = 0; i < newStaffAccess.length; i++){
+        if(newStaffAccess[i].access === "Assistive Technology" || newStaffAccess[i].access === "Student Cases"){
+          newStaffAccess[i].hasAccess = true;
+        }
+      }
+    }
+    setStaffAccess(newStaffAccess);
+  }
 
   const startLogin = async () => {
     try {
@@ -223,7 +261,7 @@ export function LoginScreen({ setUserId, setSettings, loggedIn, setLoggedIn, set
 
 
 
-  LoginScreen.userExists = userExists;
+  LoginScreen.accountExists = accountExists;
   LoginScreen.verifyToken = verifyToken;
   LoginScreen.getStaffRoles = getStaffRoles;
   LoginScreen.startLogin = startLogin;
@@ -232,14 +270,6 @@ export function LoginScreen({ setUserId, setSettings, loggedIn, setLoggedIn, set
   LoginScreen.getUserSettings = getUserSettings;
 
   return (
-    loading ? (
-      <div className="loadingScreen" aria-hidden="true" tabIndex="-1">
-        <div className="spinner" role="alert">
-          <div className="spinner-icon"></div>
-          <h1 className="spinner-text">Loading...</h1>
-        </div>
-      </div>
-    ) : (
       <main className='loginScreen' data-testid="login-screen">
         <header className='loginHeader' role="heading" aria-level="1">
           <img src={logo} alt="TAMU Logo" className='logoImg'/>
@@ -247,7 +277,6 @@ export function LoginScreen({ setUserId, setSettings, loggedIn, setLoggedIn, set
         </header>
         <button type="button" id="loginBtn" aria-label="log in" onClick={startLogin}>log in</button>
       </main>
-    )
   );
 
 }

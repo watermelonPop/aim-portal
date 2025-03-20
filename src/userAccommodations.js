@@ -2,13 +2,13 @@ import './App.css';
 import { useEffect, useState } from 'react';
 
 
-export function UserAccommodations({name, email, setAlertMessage, setShowAlert}) {
+export function UserAccommodations({userInfo, setAlertMessage, setShowAlert}) {
         const [formData, setFormData] = useState({
-                name: name,
-                email: email,
-                dob: '',
-                uin: '',
-                phoneNumber: '',
+                name: userInfo.name,
+                email: userInfo.email,
+                dob: userInfo.dob,
+                uin: userInfo.uin,
+                phone_number: userInfo.phone_number,
                 disability: '',
                 testing: '',
                 inClass: '',
@@ -43,7 +43,7 @@ export function UserAccommodations({name, email, setAlertMessage, setShowAlert})
                 if (!formData.uin || !/^\d{9}$/.test(formData.uin)) newErrors.uin = "UIN must be 9 digits";
                 
                 // Validate Phone Number (simple check for 10 digits)
-                if (!formData.phoneNumber || !/^\d{10}$/.test(formData.phoneNumber)) newErrors.phoneNumber = "Please enter a valid 10-digit phone number";
+                if (!formData.phone_number || !/^\d{10}$/.test(formData.phone_number)) newErrors.phone_number = "Please enter a valid 10-digit phone number";
                 
                                 // Validate text areas (checking if they're not empty)
                 ['disability', 'testing', 'inClass', 'housing', 'sideEffect', 'accommodations', 'pastAcc'].forEach(field => {
@@ -68,11 +68,8 @@ export function UserAccommodations({name, email, setAlertMessage, setShowAlert})
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({ 
-                                        user_name: formData.name,
-                                        user_email: formData.email,
-                                        dob: formData.dob,
-                                        uin: formData.uin,
-                                        phone_number: formData.phoneNumber,
+                                        userId: userInfo.id,
+                                        documentation: false,
                                         notes: formData.disability + "\n" + formData.testing + "\n" + formData.inClass + "\n" + formData.housing + "\n" + formData.sideEffect + "\n" + formData.accommodations + "\n" + formData.pastAcc
                                 }),
                                 });
@@ -82,15 +79,15 @@ export function UserAccommodations({name, email, setAlertMessage, setShowAlert})
                                 }
                 
                                 const result = await response.json();
-
+                                console.log("SUBMIT: ", result);
                 
-                                if (result && result.message === 'Request created successfully') {
+                                if (result && result.success === true) {
                                         // You might want to clear the form or redirect the user here
                                         setAlertMessage("Request submitted successfully");
                                         setShowAlert(true);
 
                                         const fetchRequest = async () => {
-                                                const request = await checkRequests(email);
+                                                const request = await checkRequests(userInfo.id);
                                                 setExistingRequest(request);
                                         };
                                         fetchRequest();
@@ -125,7 +122,7 @@ export function UserAccommodations({name, email, setAlertMessage, setShowAlert})
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ 
-                                email: existingRequest.user_email
+                                userId: userInfo.id
                             }),
                         });
             
@@ -154,13 +151,14 @@ export function UserAccommodations({name, email, setAlertMessage, setShowAlert})
                 }
         };
 
-        const checkRequests = async (email) => {
+        const checkRequests = async (userId) => {
                 try {
-                        const response = await fetch(`/api/checkRequests?email=${email}`);
+                        const response = await fetch(`/api/checkRequests?userId=${userId}`);
                         if (!response.ok) {
                                 throw new Error(`HTTP error! status: ${response.status}`);
                         }
                         const data = await response.json();
+                        console.log("DATA: ", data);
                         if (data.exists) {
                                 return data.request;
                         } else {
@@ -177,12 +175,13 @@ export function UserAccommodations({name, email, setAlertMessage, setShowAlert})
         
 
         useEffect(() => {
+                console.log("USER INFO: ", userInfo);
                 const fetchRequest = async () => {
-                    const request = await checkRequests(email);
+                    const request = await checkRequests(userInfo.id);
                     setExistingRequest(request);
                 };
                 fetchRequest();
-        }, [email]);
+        }, [userInfo]);
 
         UserAccommodations.setExistingRequest = setExistingRequest;
         UserAccommodations.existingRequest = existingRequest;
@@ -205,11 +204,11 @@ export function UserAccommodations({name, email, setAlertMessage, setShowAlert})
                                         <label htmlFor="email">Email</label>
                                         <input data-testid="email" id="email" name="email" value={formData.email} type="email" onChange={handleChange} />
                                         <label htmlFor="dob">Date of Birth</label>
-                                        <input data-testid="dob" id="dob" type="date" name="dob" value={formData.dob} onChange={handleChange} />
+                                        <input data-testid="dob" id="dob" type="date" name="dob" value={(new Date(formData.dob)).toISOString().split('T')[0]} onChange={handleChange} />
                                         <label htmlFor="uin">UIN</label>
                                         <input data-testid="uin" id="uin" type="number" name="uin" value={formData.uin} onChange={handleChange} />
                                         <label htmlFor="phoneNumber">Phone Number</label>
-                                        <input data-testid="phoneNumber" id="phoneNumber" type="tel" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} />
+                                        <input data-testid="phoneNumber" id="phoneNumber" type="tel" name="phoneNumber" value={formData.phone_number} onChange={handleChange} />
                                         <label htmlFor="disability">What is your disability or disabilities?</label>
                                         <textarea data-testid="disability" id="disability" name="disability" rows="5" value={formData.disability} onChange={handleChange}></textarea>
                                         <label htmlFor="testing">What challenges do you experience related to taking tests/exams, if any?</label>
@@ -231,7 +230,7 @@ export function UserAccommodations({name, email, setAlertMessage, setShowAlert})
                                 <>
                                 <h3 className='subTitle'>You already have an existing request: </h3>
                                 {
-                                        existingRequest.has_documentation ? (
+                                        existingRequest.documentation ? (
                                         <p className='subTitle'>You have submitted your documentation, and your request is under review!</p>
                                         ) : (
                                         <p className='subTitle'>You have not submitted your documentation yet. Please submit it in Forms before we can review your request.</p>
@@ -239,15 +238,15 @@ export function UserAccommodations({name, email, setAlertMessage, setShowAlert})
                                 }
                                 <form className="newStudentApp" onSubmit={handleCancel} data-testid="existingRequest">
                                         <label htmlFor="name">Name</label>
-                                        <input data-testid="name" id="name" name="name" type="text" value={existingRequest.user_name} readOnly/>
+                                        <input data-testid="name" id="name" name="name" type="text" value={userInfo.name} readOnly/>
                                         <label htmlFor="email">Email</label>
-                                        <input data-testid="email" id="email" name="email" type="email" value={existingRequest.user_email} readOnly/>
+                                        <input data-testid="email" id="email" name="email" type="email" value={userInfo.email} readOnly/>
                                         <label htmlFor="dob">Date of Birth</label>
-                                        <input data-testid="dob" id="dob" type="date" name="dob" value={existingRequest.dob} readOnly/>
+                                        <input data-testid="dob" id="dob" type="date" name="dob" value={(new Date(userInfo.dob)).toISOString().split('T')[0]} readOnly/>
                                         <label htmlFor="uin">UIN</label>
-                                        <input data-testid="uin" id="uin" type="number" name="uin" value={existingRequest.uin} readOnly/>
+                                        <input data-testid="uin" id="uin" type="number" name="uin" value={userInfo.uin} readOnly/>
                                         <label htmlFor="phoneNumber">Phone Number</label>
-                                        <input data-testid="phoneNumber" id="phoneNumber" type="tel" name="phoneNumber" value={existingRequest.phone_number} readOnly/>
+                                        <input data-testid="phoneNumber" id="phoneNumber" type="tel" name="phoneNumber" value={userInfo.phone_number} readOnly/>
                                         <label htmlFor="notes">Notes</label>
                                         <textarea data-testid="notes" id="notes" name="notes" value={existingRequest.notes} readOnly></textarea>
                                         <button type="submit" aria-label="cancel request" data-testid="cancelBtn">Cancel Request</button>
