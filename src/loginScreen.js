@@ -84,6 +84,7 @@ export function LoginScreen({ setSettings, loggedIn, setLoggedIn, staffAccess, s
         let exists = await accountExists(data.payload.email);
         console.log(userInfo);
         if(exists.exists === true){
+
           localStorage.clear();
           console.log('exists.exists == true', exists.user_info);
           setUserInfo({...exists.user_info });
