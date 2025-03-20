@@ -1,10 +1,9 @@
-
 require('dotenv').config();
 const { OAuth2Client } = require('google-auth-library');
-const { neon } = require('@neondatabase/serverless');
+const { PrismaClient } = require('@prisma/client');
 
-const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD, CLIENT_ID, CLIENT_SECRET, REDIRECT_URI } = process.env;
-const sql = neon(`postgresql://${PGUSER}:${PGPASSWORD}@${PGHOST}/${PGDATABASE}?sslmode=require`);
+const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI } = process.env;
+const prisma = new PrismaClient();
 
 const oauth2Client = new OAuth2Client(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
 
@@ -13,8 +12,12 @@ module.exports = async (req, res) => {
     try {
       const url = oauth2Client.generateAuthUrl({
         access_type: 'offline',
-        scope: ['https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email']
+        scope: [
+          'https://www.googleapis.com/auth/userinfo.profile',
+          'https://www.googleapis.com/auth/userinfo.email'
+        ],
       });
+
       res.status(200).json({ authUrl: url });
     } catch (error) {
       res.status(500).json({ error: error.message });

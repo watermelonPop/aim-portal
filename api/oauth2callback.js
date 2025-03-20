@@ -1,10 +1,9 @@
 require('dotenv').config();
 const { OAuth2Client } = require('google-auth-library');
-const { neon } = require('@neondatabase/serverless');
+const { PrismaClient } = require('@prisma/client');
 
-const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD, CLIENT_ID, CLIENT_SECRET, REDIRECT_URI } = process.env;
-const sql = neon(`postgresql://${PGUSER}:${PGPASSWORD}@${PGHOST}/${PGDATABASE}?sslmode=require`);
-
+const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI } = process.env;
+const prisma = new PrismaClient();
 const oauth2Client = new OAuth2Client(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
 
 module.exports = async (req, res) => {
@@ -15,16 +14,13 @@ module.exports = async (req, res) => {
       const r = await oauth2Client.getToken(code);
       const tokens = r.tokens;
 
-      // Use the ID Token for verification
-      const idToken = tokens.id_token;
-
-      if (!idToken) {
+      if (!tokens.id_token) {
         throw new Error('No ID Token returned from Google');
       }
 
-      // Optionally verify the ID Token here (optional)
+      // Verify the ID Token
       const ticket = await oauth2Client.verifyIdToken({
-        idToken: idToken,
+        idToken: tokens.id_token,
         audience: CLIENT_ID,
       });
 
@@ -32,7 +28,7 @@ module.exports = async (req, res) => {
       console.info('User info:', payload);
 
       // Redirect back to your app with the ID Token
-      res.redirect(`/?token=${idToken}`);
+      res.redirect(`/?token=${tokens.id_token}`);
     } catch (error) {
       console.error('Error in OAuth callback:', error);
       res.status(500).send('Authentication failed');

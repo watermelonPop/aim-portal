@@ -1,25 +1,29 @@
 require('dotenv').config();
-const { neon } = require('@neondatabase/serverless');
-const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD } = process.env;
-const sql = neon(`postgresql://${PGUSER}:${PGPASSWORD}@${PGHOST}/${PGDATABASE}?sslmode=require`);
+const { PrismaClient } = require('@prisma/client');
+
+const prisma = new PrismaClient();
+
 module.exports = async (req, res) => {
   if (req.method === 'GET') {
     const userId = req.query.user_id;
-    
+
     if (!userId) {
-      return res.status(400).json({ error: 'User Id is required' });
+      return res.status(400).json({ error: 'User ID is required' });
     }
 
     try {
-      const result = await sql`
-        SELECT * FROM settings WHERE user_id = ${userId}
-      `;
-      if (result && result.length > 0) { 
-        res.status(200).json({ exists: true, settings_info: result[0] });
+      // Fetch user settings from Prisma
+      const settings = await prisma.settings.findFirst({
+        where: { userId: parseInt(userId, 10) },
+      });
+
+      if (settings) {
+        res.status(200).json({ exists: true, settings_info: settings });
       } else {
         res.status(200).json({ exists: false });
       }
     } catch (error) {
+      console.error('Error fetching settings:', error.message);
       res.status(500).json({ error: error.message });
     }
   } else {

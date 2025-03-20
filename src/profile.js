@@ -1,13 +1,13 @@
 import './App.css';
 import { useEffect, useState } from 'react';
 
-function Profile({userType}) {
+function Profile({userInfo}) {
         return (
             <main className='dashboardOuter'>
-                {userType === "User" && <p className='dashboardTitle'>USER PROFILE</p>}
-                {userType === "Student" && <p className='dashboardTitle'>STUDENT PROFILE</p>}
-                {userType === "Professor" && <p className='dashboardTitle'>PROFESSOR PROFILE</p>}
-                {userType === "Staff" && <p className='dashboardTitle'>STAFF PROFILE</p>}
+                {userInfo.role === "USER" && <p className='dashboardTitle'>USER PROFILE</p>}
+                {userInfo.role === "STUDENT" && <p className='dashboardTitle'>STUDENT PROFILE</p>}
+                {userInfo.role === "PROFESSOR" && <p className='dashboardTitle'>PROFESSOR PROFILE</p>}
+                {userInfo.role === "ADVISOR" && <p className='dashboardTitle'>STAFF PROFILE</p>}
             </main>
         );
 }
