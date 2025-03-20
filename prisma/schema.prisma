@@ -86,6 +86,7 @@ model Form {
   submittedDate   DateTime? // Can be null if not submitted
   dueDate         DateTime?
   createdAt       DateTime @default(now())
+  formUrl         String?
   userId          Int
   user            Account  @relation(fields: [userId], references: [id])
 }
