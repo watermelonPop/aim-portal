@@ -9,150 +9,152 @@ datasource db {
 }
 
 model Account {
-  id        Int         @id @default(autoincrement())
-  email     String      @unique
-  name      String      
+  id        Int        @id @default(autoincrement())
+  email     String     @unique
+  name      String
   role      Role
-  createdAt DateTime    @default(now())
-  student   Student?
-  professor Professor?
+  createdAt DateTime   @default(now())
   advisor   Advisor?
-  user    User?
-  settings  Settings?
   forms     Form[]
+  professor Professor?
+  settings  Settings?
+  student   Student?
+  user      User?
 }
 
 model User {
-  userId                  Int                    @id @unique
-  account                 Account                @relation(fields: [userId], references: [id])
-  dob                     DateTime
-  UIN                     Int?                   @unique
-  phone_number            String
+  userId       Int      @id @unique
+  dob          DateTime
+  UIN          Int?     @unique
+  phone_number String
+  account      Account  @relation(fields: [userId], references: [id])
 }
 
 model Student {
-  userId                  Int                    @id @unique
-  account                 Account                @relation(fields: [userId], references: [id])
-  dob                     DateTime
-  UIN                     Int?                   @unique
-  phone_number            String
-  assistive_technologies  Assistive_Technology[]
-  requests                Request[]
-  accommodations          Accommodations[]
+  userId                 Int                    @id @unique
+  UIN                    Int?                   @unique
+  dob                    DateTime
+  phone_number           String
+  accommodations         Accommodations[]
+  assistive_technologies Assistive_Technology[]
+  requests               Request[]
+  account                Account                @relation(fields: [userId], references: [id])
+  advisors                Advisor[]
 }
 
 model Professor {
-  userId                Int        @id @unique
-  account               Account    @relation(fields: [userId], references: [id])
-  department            String?
-  courses               Course[]
+  userId     Int      @id @unique
+  department String?
+  courses    Course[]
+  account    Account  @relation(fields: [userId], references: [id])
 }
 
 model Advisor {
-  userId                  Int                       @id @unique
-  account                 Account                   @relation(fields: [userId], references: [id])
-  role                    AdvisorRoles              @default(Coordinator)
-  Accommodations          Accommodations[]
-  assistive_technologies  Assistive_Technology[]
-  requests                Request[]
-  exams                   Exam[]
+  userId                 Int                    @id @unique
+  role                   AdvisorRoles           @default(Coordinator)
+  Accommodations         Accommodations[]
+  account                Account                @relation(fields: [userId], references: [id])
+  assistive_technologies Assistive_Technology[]
+  exams                  Exam[]
+  students                Student[]
+  requests               Request[]
 }
 
 model Settings {
-  userId                Int @id @unique
-  account               Account   @relation(fields: [userId], references: [id]) 
-  content_size          Int @default(100)
-  highlight_tiles       Boolean @default(false)
-  highlight_links       Boolean @default(false)
-  text_magnifier        Boolean @default(false)
-  align_text            Boolean @default(false)
-  font_size             Int @default(100)
-  line_height           Int @default(100)
-  letter_spacing        Int @default(100)
-  contrast              Contrast @default(Regular)
-  saturation            Saturation @default(Regular)
-  mute_sounds           Boolean @default(false)
-  hide_images           Boolean @default(false)
-  reading_mask          Boolean @default(false)
-  highlight_hover       Boolean @default(false)
-  cursor                Cursor @default(Regular)
+  userId          Int        @id @unique
+  content_size    Int        @default(100)
+  highlight_tiles Boolean    @default(false)
+  highlight_links Boolean    @default(false)
+  text_magnifier  Boolean    @default(false)
+  align_text      String    @default("Middle")
+  font_size       Int        @default(100)
+  line_height     Int        @default(100)
+  letter_spacing  Int        @default(100)
+  contrast        String    @default("100%")
+  saturation      Saturation @default(Regular)
+  mute_sounds     Boolean    @default(false)
+  hide_images     Boolean    @default(false)
+  reading_mask    Boolean    @default(false)
+  highlight_hover Boolean    @default(false)
+  cursor          Cursor     @default(Regular)
+  account         Account    @relation(fields: [userId], references: [id])
 }
 
 model Form {
-  id              Int   @id @default(autoincrement())
-  name            String
-  type            FormType
-  status          FormStatus @default(PENDING)
-  submittedDate   DateTime? // Can be null if not submitted
-  dueDate         DateTime?
-  createdAt       DateTime @default(now())
-  userId          Int
-  user            Account  @relation(fields: [userId], references: [id])
+  id            Int        @id @default(autoincrement())
+  name          String
+  type          FormType
+  status        FormStatus @default(PENDING)
+  submittedDate DateTime?
+  dueDate       DateTime?
+  createdAt     DateTime   @default(now())
+  formUrl       String?
+  userId        Int
+  user          Account    @relation(fields: [userId], references: [id])
 }
 
 model Important_Dates {
-  id              Int     @id @default(autoincrement())
-  type            String
-  name            String
-  date            DateTime
+  id   Int      @id @default(autoincrement())
+  type String
+  name String
+  date DateTime
 }
 
 model Testing_Room {
-  id              Int     @id @default(autoincrement())
-  location        String  @default("Student Services Building")
-  available       Boolean @default(true)
+  id        Int     @id @default(autoincrement())
+  location  String  @default("Student Services Building")
+  available Boolean @default(true)
 }
 
 model Assistive_Technology {
-  id              Int       @id @default(autoincrement())
-  available       Boolean   @default(false)
-  studentId       Int
-  student         Student   @relation(fields: [studentId], references: [userId])
-  type            String
-  advisorId       Int
-  advisor         Advisor   @relation(fields: [advisorId], references: [userId])
-
+  id        Int     @id @default(autoincrement())
+  available Boolean @default(false)
+  studentId Int
+  type      String
+  advisorId Int
+  advisor   Advisor @relation(fields: [advisorId], references: [userId])
+  student   Student @relation(fields: [studentId], references: [userId])
 }
 
 model Accommodations {
-  id             Int       @id @default(autoincrement())
+  id             Int      @id @default(autoincrement())
   type           String?
   status         String
-  date_requested DateTime  @default(now())
+  date_requested DateTime @default(now())
   advisorId      Int
-  advisor        Advisor   @relation(fields: [advisorId], references: [userId])
-  studentId      Int
-  student        Student   @relation(fields: [studentId], references: [userId])
   notes          String
+  studentId      Int
+  advisor        Advisor  @relation(fields: [advisorId], references: [userId])
+  student        Student  @relation(fields: [studentId], references: [userId])
 }
 
 model Request {
-  id              Int       @id @default(autoincrement())
-  studentId       Int
-  advisorId       Int
-  student         Student   @relation(fields: [studentId], references: [userId])
-  advisor         Advisor   @relation(fields: [advisorId], references: [userId])
-  notes           String?
-  documentation   Boolean
+  id            Int     @id @default(autoincrement())
+  advisorId     Int
+  notes         String?
+  documentation Boolean
+  studentId     Int
+  advisor       Advisor @relation(fields: [advisorId], references: [userId])
+  student       Student @relation(fields: [studentId], references: [userId])
 }
 
 model Course {
-  id              Int         @id @default(autoincrement())
-  name            String
-  department      String
-  professorId     Int
-  professor       Professor   @relation(fields: [professorId], references: [userId])
-  exams           Exam[]
+  id          Int       @id @default(autoincrement())
+  name        String
+  department  String
+  professorId Int
+  professor   Professor @relation(fields: [professorId], references: [userId])
+  exams       Exam[]
 }
 
 model Exam {
-  id              Int         @id @default(autoincrement())
-  courseId        Int
-  course          Course      @relation(fields: [courseId], references: [id])
-  date            DateTime?
-  location        String
-  advisorId       Int
-  advisor         Advisor     @relation(fields: [advisorId], references: [userId])
+  id        Int       @id @default(autoincrement())
+  courseId  Int
+  date      DateTime?
+  location  String
+  advisorId Int
+  advisor   Advisor   @relation(fields: [advisorId], references: [userId])
+  course    Course    @relation(fields: [courseId], references: [id])
 }
 
 enum FormStatus {
@@ -183,12 +185,6 @@ enum Saturation {
   Monochrome
 }
 
-enum Contrast {
-  Regular
-  Dark
-  Light
-  Monochrome
-}
 
 enum AdvisorRoles {
   Admin
@@ -214,10 +210,3 @@ enum RequestStatus {
   APPROVED
   DENIED
 }
-
-
-
-
-
-
-

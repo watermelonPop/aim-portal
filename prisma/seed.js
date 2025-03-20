@@ -202,6 +202,7 @@ async function main() {
         dob: faker.date.past(20, new Date('2003-01-01')),
         UIN: generateUniqueUIN(),
         phone_number: faker.phone.number('##########'),
+
       },
     });
     students.push(student);
@@ -267,6 +268,7 @@ async function main() {
       data: {
         userId: account.id,
         role: faker.helpers.arrayElement(['Admin','Coordinator','Testing_Staff','Tech_Staff']),
+
       },
     });
     advisors.push(advisor);

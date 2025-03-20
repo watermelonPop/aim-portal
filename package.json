@@ -57,7 +57,7 @@
     "@types/ws": "^8.5.14",
     "babel-jest": "^29.7.0",
     "jest": "^27.5.1",
-    "prisma": "^6.4.1",
+    "prisma": "^6.5.0",
     "react-scripts": "^5.0.1",
     "typescript": "^5.8.2"
   }
