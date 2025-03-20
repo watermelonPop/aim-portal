@@ -28,6 +28,7 @@ model User {
   UIN          Int?     @unique
   phone_number String
   account      Account  @relation(fields: [userId], references: [id])
+  request       Request[]
 }
 
 model Student {
@@ -37,9 +38,8 @@ model Student {
   phone_number           String
   accommodations         Accommodations[]
   assistive_technologies Assistive_Technology[]
-  requests               Request[]
   account                Account                @relation(fields: [userId], references: [id])
-  advisors                Advisor[]
+  advisors               Advisor[]              @relation("AdvisorToStudent")
 }
 
 model Professor {
@@ -56,8 +56,8 @@ model Advisor {
   account                Account                @relation(fields: [userId], references: [id])
   assistive_technologies Assistive_Technology[]
   exams                  Exam[]
-  students                Student[]
   requests               Request[]
+  students               Student[]              @relation("AdvisorToStudent")
 }
 
 model Settings {
@@ -66,17 +66,17 @@ model Settings {
   highlight_tiles Boolean    @default(false)
   highlight_links Boolean    @default(false)
   text_magnifier  Boolean    @default(false)
-  align_text      String    @default("Middle")
+  align_text      String     @default("Middle")
   font_size       Int        @default(100)
   line_height     Int        @default(100)
   letter_spacing  Int        @default(100)
-  contrast        String    @default("100%")
   saturation      Saturation @default(Regular)
   mute_sounds     Boolean    @default(false)
   hide_images     Boolean    @default(false)
   reading_mask    Boolean    @default(false)
   highlight_hover Boolean    @default(false)
   cursor          Cursor     @default(Regular)
+  contrast        String     @default("100%")
   account         Account    @relation(fields: [userId], references: [id])
 }
 
@@ -84,13 +84,14 @@ model Form {
   id            Int        @id @default(autoincrement())
   name          String
   type          FormType
-  status        FormStatus @defagit ult(PENDING)
+  status        FormStatus @default(PENDING)
   submittedDate DateTime?
   dueDate       DateTime?
   createdAt     DateTime   @default(now())
-  formUrl       String?
   userId        Int
+  
   user          Account    @relation(fields: [userId], references: [id])
+  formUrl       String?
 }
 
 model Important_Dates {
@@ -133,9 +134,9 @@ model Request {
   advisorId     Int
   notes         String?
   documentation Boolean
-  studentId     Int
+  non_registered_userId Int
+  user          User  @relation(fields: [non_registered_userId], references: [userId])
   advisor       Advisor @relation(fields: [advisorId], references: [userId])
-  student       Student @relation(fields: [studentId], references: [userId])
 }
 
 model Course {
@@ -184,7 +185,6 @@ enum Saturation {
   High
   Monochrome
 }
-
 
 enum AdvisorRoles {
   Admin

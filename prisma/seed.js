@@ -466,11 +466,11 @@ async function main() {
   console.log('START Creating Requests\n');
   // Create 5 Request records (each connects a student and an advisor)
   for (let i = 0; i < num_students; i++) {
-    const student = students[i % students.length];
+    const user = users[i % users.length];
     const advisor = advisors[i % advisors.length];
     await prisma.request.create({
       data: {
-        studentId: student.userId,
+        non_registered_userId: user.userId,
         advisorId: advisor.userId,
         notes: faker.lorem.paragraph(),
         documentation: faker.datatype.boolean(),
