@@ -2,7 +2,7 @@ import './App.css';
 import { useState, useEffect } from 'react';
 import logo2 from './logo2.png';
 
-function SignUp({ userInfo, setUserInfo, setAlertMessage, setShowAlert, setUserConnected, setSettings }) {
+function SignUp({ userInfo, setUserInfo, setAlertMessage, setShowAlert, setUserConnected, setSettings, setLoading }) {
         const [chosenRole, setChosenRole] = useState("USER");
         const [formData, setFormData] = useState({
                 id: userInfo.id,
@@ -12,6 +12,11 @@ function SignUp({ userInfo, setUserInfo, setAlertMessage, setShowAlert, setUserC
                 phone_number: userInfo.phone_number || ""
         });
         const [errors, setErrors] = useState(null);
+
+        useEffect(() => {
+                console.log("USEE EFFECT");
+                setLoading(false);
+        }, []);
 
         const handleRoleChange = (role) => {
                 setChosenRole(role);
@@ -53,6 +58,7 @@ function SignUp({ userInfo, setUserInfo, setAlertMessage, setShowAlert, setUserC
 
                                         if(data && data.success){
                                                 if(data.success === true){
+                                                        setLoading(true);
                                                         setUserConnected(true);
                                                         console.log("SETS USER INFO: ", formData);
                                                         setUserInfo({...userInfo, dob: formData.dob, uin: formData.uin, phone_number: formData.phone_number});
