@@ -113,38 +113,6 @@ function SignUp({ userInfo, setUserInfo, setAlertMessage, setShowAlert, setUserC
                 return { isValid: Object.keys(newErrors).length === 0, newErrors };
         };
 
-
-
-        const getUserSettings = async (userId, setSettings) => {
-                if (!userId) {
-                    console.error('Invalid user ID provided');
-                    return;
-                }
-            
-                try {
-                    const response = await fetch(`/api/getSettings?user_id=${userId}`);
-                    
-                    if (!response.ok) {
-                        console.error('Failed to fetch settings:', response.status, response.statusText);
-                        return;
-                    }
-            
-                    const data = await response.json();
-            
-                    if (data && data.settings_info) {
-                      let formattedSettings = {...data.settings_info};
-                      formattedSettings.font_size = formattedSettings.font_size + "px";
-                      formattedSettings.letter_spacing = formattedSettings.letter_spacing + "px";
-                      setSettings(formattedSettings);
-                    } else {
-                        console.warn('No settings found or invalid settings data structure');
-                        setSettings({}); // Set to empty object or default settings
-                    }
-                } catch (error) {
-                    console.error('Error while getting settings:', error);
-                }
-        };
-
         return (
                 <main className='basicScreen'>
                         <div className='stickyContainer'>

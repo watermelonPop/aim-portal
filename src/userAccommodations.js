@@ -172,6 +172,12 @@ export function UserAccommodations({userInfo, setAlertMessage, setShowAlert}) {
                         return null;
                 }
         };
+
+        function formatDate(dateString) {
+                if (!dateString) return '';
+                const date = new Date(dateString);
+                return isNaN(date.getTime()) ? '' : date.toISOString().split('T')[0];
+        }
         
 
         useEffect(() => {
@@ -204,7 +210,7 @@ export function UserAccommodations({userInfo, setAlertMessage, setShowAlert}) {
                                         <label htmlFor="email">Email</label>
                                         <input data-testid="email" id="email" name="email" value={formData.email} type="email" onChange={handleChange} />
                                         <label htmlFor="dob">Date of Birth</label>
-                                        <input data-testid="dob" id="dob" type="date" name="dob" value={(new Date(formData.dob)).toISOString().split('T')[0]} onChange={handleChange} />
+                                        <input data-testid="dob" id="dob" type="date" name="dob" value={formatDate(formData.dob)} onChange={handleChange} />
                                         <label htmlFor="uin">UIN</label>
                                         <input data-testid="uin" id="uin" type="number" name="uin" value={formData.uin} onChange={handleChange} />
                                         <label htmlFor="phoneNumber">Phone Number</label>
@@ -242,7 +248,7 @@ export function UserAccommodations({userInfo, setAlertMessage, setShowAlert}) {
                                         <label htmlFor="email">Email</label>
                                         <input data-testid="email" id="email" name="email" type="email" value={userInfo.email} readOnly/>
                                         <label htmlFor="dob">Date of Birth</label>
-                                        <input data-testid="dob" id="dob" type="date" name="dob" value={(new Date(userInfo.dob)).toISOString().split('T')[0]} readOnly/>
+                                        <input data-testid="dob" id="dob" type="date" name="dob" value={formatDate(userInfo.dob)} readOnly/>
                                         <label htmlFor="uin">UIN</label>
                                         <input data-testid="uin" id="uin" type="number" name="uin" value={userInfo.uin} readOnly/>
                                         <label htmlFor="phoneNumber">Phone Number</label>

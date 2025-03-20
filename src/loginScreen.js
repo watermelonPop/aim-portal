@@ -244,6 +244,7 @@ export function LoginScreen({ setSettings, loggedIn, setLoggedIn, staffAccess, s
         }
 
         const data = await response.json();
+        console.log("DATA: ", data);
 
         if (data && data.settings_info) {
           let formattedSettings = {...data.settings_info};
