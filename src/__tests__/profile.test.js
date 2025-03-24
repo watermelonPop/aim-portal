@@ -29,10 +29,10 @@ describe('Profile component', () => {
     render(<Profile userInfo={mockUserInfo} />);
 
     expect(await screen.findByText(/STUDENT PROFILE/)).toBeInTheDocument();
-    expect(screen.getByText(/179008299/)).toBeInTheDocument();
-    expect(screen.getByText(/12\/23\/2024/)).toBeInTheDocument();
-    expect(screen.getByText(/1-935-865-0245 x848/)).toBeInTheDocument();
-    expect(screen.getByText(/student1.aim@gmail.com/)).toBeInTheDocument();
+    expect(await screen.findByText(/179008299/)).toBeInTheDocument();
+    expect(await screen.findByText(/12\/23\/2024/)).toBeInTheDocument();
+    expect(await screen.findByText(/1-935-865-0245 x848/)).toBeInTheDocument();
+    expect(await screen.findByText(/student1.aim@gmail.com/)).toBeInTheDocument();
   });
 
   test('renders correct role title for ADVISOR', () => {
