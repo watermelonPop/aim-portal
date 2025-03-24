@@ -12,8 +12,18 @@ describe('accommodations', () => {
 
 
         test('renders user UserAccommodations if userType is user', async () => {
+                let mockUserInfo = {
+                        id: 123,
+                        name: "Mock User",
+                        email: "test@gmail.com",
+                        role: "USER",
+                        picture: null,
+                        dob: "2000-01-01",
+                        uin: 123456789,
+                        phone_number: 1001001001,
+                };
                 act(() => {
-                        render(<Accommodations userType={"User"} name={"test name"} email={"test@email.com"} setAlertMessage={mockSetAlertMessage} setShowAlert={mockSetShowAlert}/>);
+                        render(<Accommodations userInfo={mockUserInfo} setAlertMessage={mockSetAlertMessage} setShowAlert={mockSetShowAlert}/>);
                 });
 
                 expect(screen.queryByTestId('basicAccommodations')).toBeInTheDocument();

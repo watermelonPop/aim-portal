@@ -647,6 +647,12 @@ button{
 }
 
 .subTitle{
+  font-family: "Mitr", serif;
+  font-weight: 500;
+  font-size: calc(var(--txtSize) + 5px);
+  letter-spacing: var(--letterSpacing);
+  width: 80%;
+  text-align: center;
 }
 
 .alertTxt{

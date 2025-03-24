@@ -121,7 +121,7 @@ export function App() {
     if (userInfo && userInfo.role === "USER" && userInfo.id && userConnected) {
       getUser(userInfo.id);
     }
-  }, [userInfo?.id, userInfo?.role, setUserConnected]);
+  }, [userInfo?.id, userInfo?.role, userConnected]);
 
   useEffect(() => {
     if(!loggedIn || !userConnected || !userInfo){
@@ -380,6 +380,8 @@ export function App() {
   App.setUserInfo = setUserInfo;
   App.setShowAlert = setShowAlert;
   App.setAlertMessage = setAlertMessage;
+  App.setUserConnected = setUserConnected;
+  App.setTabs = setTabs;
 
   return (
     <>

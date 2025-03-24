@@ -114,7 +114,7 @@ function SignUp({ userInfo, setUserInfo, setAlertMessage, setShowAlert, setUserC
         };
 
         return (
-                <main className='basicScreen'>
+                <main className='basicScreen' data-testid="sign-up-screen">
                         <div className='stickyContainer'>
                                 <header className='signUpHeader' role="heading" aria-level="1">
                                         <img src={logo2} alt="TAMU Logo" className='basicLogoImg' />
