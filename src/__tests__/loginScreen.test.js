@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { LoginScreen } from '../loginScreen';
@@ -15,6 +15,7 @@ describe('LoginScreen', () => {
         const mockSetSettings = jest.fn();
         const mockSetLoading = jest.fn();
         const mockSetUserInfo = jest.fn();
+        const mockSetStaffAccess = jest.fn();
 
 
         beforeEach(() => {
@@ -285,7 +286,16 @@ describe('LoginScreen', () => {
                           json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com', payload: "testPayload" }),
                         })
                     );
-                    const result = await LoginScreen.verifyToken('mockToken', mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
+                    const result = await LoginScreen.verifyToken('mockToken', {
+                        id: null,
+                        name: null,
+                        email: null,
+                        role: null,
+                        picture: null,
+                        dob: null,
+                        uin: null,
+                        phone_number: null,
+                      }, mockSetSettings, false, mockSetLoggedIn, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
                     await waitFor(() => {
                         expect(mockSetLoading).toHaveBeenCalledWith(true);
                     });
@@ -296,12 +306,22 @@ describe('LoginScreen', () => {
                     global.fetch = jest.fn(() =>
                         Promise.resolve({
                           ok: true,
-                          json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com', payload: "testPayload" }),
+                          json: () => Promise.resolve({ valid: true, payload: {email: "test@example.com", name: "Mock User"} }),
                         })
                     );
-                    const result = await LoginScreen.verifyToken('mockToken', mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
+                    const userInfo = {
+                        id: null,
+                        name: null,
+                        email: null,
+                        role: null,
+                        picture: null,
+                        dob: null,
+                        uin: null,
+                        phone_number: null,
+                      };
+                    const result = await LoginScreen.verifyToken('mockToken', userInfo, mockSetSettings, false, mockSetLoggedIn, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
                     await waitFor(() => {
-                        expect(mockSetUserInfo).toHaveBeenCalledWith("testPayload");
+                        expect(mockSetUserInfo).toHaveBeenCalledWith({...userInfo, email: result.payload.email, name: result.payload.name});
                     });
                 }); 
 
@@ -311,17 +331,27 @@ describe('LoginScreen', () => {
                         if (url === '/api/verifyToken') {
                             return Promise.resolve({
                                 ok: true,
-                                json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com', payload: "testPayload" }),
+                                json: () => Promise.resolve({ valid: true, payload: {email: "test@example.com", name: "Mock User"} }),
                             });
                         } else if (url === '/api/checkAccount/') {
                             return Promise.resolve({
                                 ok: true,
-                                json: () => Promise.resolve({ exists: true, user_info: [{ user_role: 'User', user_id: 'mockUserId' }] }),
+                                json: () => Promise.resolve({ exists: true, user_info: { user_role: 'User', user_id: 'mockUserId' } }),
                             });
                         }
                     });
                 
-                    await LoginScreen.verifyToken('mockToken', mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
+                    const userInfo = {
+                        id: null,
+                        name: null,
+                        email: null,
+                        role: null,
+                        picture: null,
+                        dob: null,
+                        uin: null,
+                        phone_number: null,
+                      };
+                    const result = await LoginScreen.verifyToken('mockToken', userInfo, mockSetSettings, false, mockSetLoggedIn, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
                 
                     await waitFor(() => {
                         // Check first API call
@@ -332,7 +362,7 @@ describe('LoginScreen', () => {
                         });
                 
                         // Check second API call
-                        expect(global.fetch).toHaveBeenCalledWith('/api/checkAccount/', {
+                        expect(global.fetch).toHaveBeenCalledWith('/api/checkAccount', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ email: 'test@example.com' })
@@ -345,11 +375,11 @@ describe('LoginScreen', () => {
                     global.fetch = jest.fn().mockImplementationOnce(() =>
                         Promise.resolve({
                             ok: true,
-                            json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com', payload: "testPayload" })
+                            json: () => Promise.resolve({ valid: true, payload: {email: "test@example.com", name: "Mock User"} })
                         })
                     ).mockImplementationOnce(() => // Mock for userExists
                         Promise.resolve({
-                            json: () => Promise.resolve({ exists: true, user_info: [{user_id: 'mockUserId', user_role: 'User', user_email: 'test@example.com'}] })
+                            json: () => Promise.resolve({ exists: true, user_info: {id: 'mockUserId', role: 'USER', email: 'test@example.com'} })
                         })
                     ).mockImplementationOnce(() => // Mock for getUserSettings
                         Promise.resolve({
@@ -357,59 +387,20 @@ describe('LoginScreen', () => {
                             json: () => Promise.resolve({ exists: true, settings_info: { } })
                         })
                     );
-                    const result = await LoginScreen.verifyToken('mockToken', mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
+                    const userInfo = {
+                        id: null,
+                        name: null,
+                        email: null,
+                        role: null,
+                        picture: null,
+                        dob: null,
+                        uin: null,
+                        phone_number: null,
+                      };
+                    const result = await LoginScreen.verifyToken('mockToken', userInfo, mockSetSettings, false, mockSetLoggedIn, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
+                
                     await waitFor(() => {
                         expect(global.fetch).toHaveBeenCalledWith('/api/getSettings?user_id=mockUserId');
-                    });
-                });
-
-                test('when token is verified & user does NOT exist, grab settings from local storage', async () => {
-                    const mockLocalStorage = {
-                        getItem: jest.fn(),
-                        setItem: jest.fn(),
-                        clear: jest.fn()
-                    };
-                    Object.defineProperty(window, 'localStorage', { value: mockLocalStorage });
-                    const mockSettings = { theme: 'dark', fontSize: 16 };
-                    mockLocalStorage.getItem.mockReturnValue(JSON.stringify(mockSettings));
-                    global.fetch = jest.fn().mockImplementationOnce(() =>
-                        Promise.resolve({
-                            ok: true,
-                            json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com', payload: "testPayload" })
-                        })
-                    ).mockImplementationOnce(() => // Mock for userExists
-                        Promise.resolve({
-                            json: () => Promise.resolve({ exists: false })
-                        })
-                    );
-                    const result = await LoginScreen.verifyToken('mockToken', mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
-                    await waitFor(() => {
-                        expect(localStorage.getItem).toHaveBeenCalledWith("aim-settings");
-                        expect(mockSetSettings).toHaveBeenCalledWith(mockSettings);
-                    });
-                });
-
-                test('when token is verified & user does NOT exist & local storage empty, DO NOT set settings', async () => {
-                    const mockLocalStorage = {
-                        getItem: jest.fn(),
-                        setItem: jest.fn(),
-                        clear: jest.fn()
-                    };
-
-                    mockLocalStorage.getItem.mockReturnValue(null);
-                    global.fetch = jest.fn().mockImplementationOnce(() =>
-                        Promise.resolve({
-                            ok: true,
-                            json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com', payload: "testPayload" })
-                        })
-                    ).mockImplementationOnce(() => // Mock for userExists
-                        Promise.resolve({
-                            json: () => Promise.resolve({ exists: false })
-                        })
-                    );
-                    const result = await LoginScreen.verifyToken('mockToken', mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
-                    await waitFor(() => {
-                        expect(mockSetSettings).not.toHaveBeenCalled();
                     });
                 });
 
@@ -421,68 +412,57 @@ describe('LoginScreen', () => {
                         })
                     ).mockImplementationOnce(() => // Mock for userExists
                         Promise.resolve({
-                          json: () => Promise.resolve({ exists: true, user_info: [{user_id: 'mockUserId', user_role: 'User', user_email: 'test@example.com'}] })
+                          json: () => Promise.resolve({ exists: true, user_info: {id: 'mockUserId', role: 'USER', email: 'test@example.com'} })
                         })
                     ).mockImplementationOnce(() => // Mock for getUserSettings
                         Promise.resolve({
                             json: () => Promise.resolve({ exists: true, settings_info: { font_size: 1, letter_spacing: 1 } })
                         })
                     );
-
-                    Object.defineProperty(window, 'localStorage', {
-                        value: {
-                            getItem: jest.fn(() => null),
-                            setItem: jest.fn(),
-                        },
-                        writable: true
-                    });
                     
-                    
-                    const result = await LoginScreen.verifyToken(token, mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
+                    const userInfo = {
+                        id: null,
+                        name: null,
+                        email: null,
+                        role: null,
+                        picture: null,
+                        dob: null,
+                        uin: null,
+                        phone_number: null,
+                      };
+                    const result = await LoginScreen.verifyToken('mockToken', userInfo, mockSetSettings, false, mockSetLoggedIn, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
                     
                     await waitFor(() => {
                         expect(mockSetLoggedIn).toHaveBeenCalledWith(true);
                     });
                 });
-                  
-
-                test('successful response to /api/checkAccount api route should set the user type', async () => {
-                    global.fetch = jest.fn().mockImplementationOnce(() =>
-                        Promise.resolve({
-                            json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com', payload: "testPayload" })
-                        })
-                    ).mockImplementationOnce(() =>
-                        Promise.resolve({
-                            json: () => Promise.resolve({ exists: true, user_info: [{userId: 'mockUserId', email: 'test@example.com', user_role: "Student"}] })
-                        })
-                    ).mockImplementationOnce(() => // Mock for getUserSettings
-                        Promise.resolve({
-                            json: () => Promise.resolve({ exists: true, settings_info: { font_size: 1, letter_spacing: 1 } })
-                        })
-                    );
-                    const result = await LoginScreen.verifyToken('mockToken', mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
-                    //expect userExists to be called
-                    await waitFor(() => {
-                        expect(mockSetUserType).toHaveBeenCalledWith("Student");
-                    });
-                });
+                
 
                 test('if user type is not Staff, getStaffRoles is NOT called', async () => {
                     global.fetch = jest.fn().mockImplementationOnce(() =>
                         Promise.resolve({
-                            json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com', payload: "testPayload" })
+                            json: () => Promise.resolve({ valid: true, payload: {email: "test@example.com", name: "Mock User"} })
                         })
                     ).mockImplementationOnce(() =>
                         Promise.resolve({
-                            json: () => Promise.resolve({ exists: true, user_info: {userId: 'mockUserId', email: 'test@example.com', user_role: "Student"} })
+                            json: () => Promise.resolve({ exists: true, user_info: {id: 'mockUserId', email: 'test@example.com', role: "STUDENT"} })
                         })
                     ).mockImplementationOnce(() => // Mock for getUserSettings
                         Promise.resolve({
                             json: () => Promise.resolve({ exists: true, settings_info: { font_size: 1, letter_spacing: 1 } })
                         })
                     );
-                    const result = await LoginScreen.verifyToken('mockToken', mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
-                    //expect userExists to be called
+                    const userInfo = {
+                        id: null,
+                        name: null,
+                        email: null,
+                        role: null,
+                        picture: null,
+                        dob: null,
+                        uin: null,
+                        phone_number: null,
+                      };
+                    const result = await LoginScreen.verifyToken('mockToken', userInfo, mockSetSettings, false, mockSetLoggedIn, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
 
                     await waitFor(() => {
                         expect(mockSetStaffRoles).not.toHaveBeenCalled();
@@ -490,32 +470,30 @@ describe('LoginScreen', () => {
                 });
                 
                 test('if user type is Staff, getStaffRoles is called', async () => {
-                    global.fetch = jest.fn()
-                        .mockImplementationOnce(() => Promise.resolve({
-                            json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com', payload: "testPayload" })
-                        }))
-                        .mockImplementationOnce(() => Promise.resolve({
-                            json: () => Promise.resolve({ exists: true, user_info: [{ user_id: 'mockUserId', email: 'test@example.com', user_role: "Staff" }] })
-                        })).mockImplementationOnce(() => // /api/getStaffRole
+                    global.fetch = jest.fn().mockImplementationOnce(() =>
                         Promise.resolve({
-                                text: () => Promise.resolve(JSON.stringify({
-                                    user_id: "mockUserId",
-                                    email: "test@example.com",
-                                    name: 'Mock User',
-                                    role: "Admin"
-                                })),
-                                ok: true
-                            })
-                        ).mockImplementationOnce(() => // Mock for getUserSettings
-                            Promise.resolve({
-                                json: () => Promise.resolve({ exists: true, settings_info: { font_size: 1, letter_spacing: 1 } })
-                            })
-                        );
-                
-                    console.log("Running test for Staff user role...");
-                
-                    const result = await LoginScreen.verifyToken('mockToken', mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
-                    
+                            json: () => Promise.resolve({ valid: true, payload: {email: "test@example.com", name: "Mock User"} })
+                        })
+                    ).mockImplementationOnce(() =>
+                        Promise.resolve({
+                            json: () => Promise.resolve({ exists: true, user_info: {id: 'mockUserId', email: 'test@example.com', role: "ADVISOR"} })
+                        })
+                    ).mockImplementationOnce(() => // Mock for getUserSettings
+                        Promise.resolve({
+                            json: () => Promise.resolve({ exists: true, settings_info: { font_size: 14, letter_spacing: 0, contrast: "100%" } })
+                        })
+                    );
+                    const userInfo = {
+                        id: null,
+                        name: null,
+                        email: null,
+                        role: null,
+                        picture: null,
+                        dob: null,
+                        uin: null,
+                        phone_number: null,
+                      };
+                    const result = await LoginScreen.verifyToken('mockToken', userInfo, mockSetSettings, false, mockSetLoggedIn, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
                 
                     await waitFor(() => {
                         expect(global.fetch).toHaveBeenCalledWith('/api/getStaffRole?user_id=mockUserId');
@@ -528,32 +506,142 @@ describe('LoginScreen', () => {
                 test('if user type is Staff & correct response from getStaffRoles calls setStaffRoles', async () => {
                     //call verifyToken() function
                     //mock correct response from /api/verifyToken with { valid: true, userId: userId, email: payload.email }
-
+                    let mockStaffAccess = [
+                        {access: 'Global Settings', hasAccess: false, elem: null},
+                        {access: 'Accommodations', hasAccess: false, elem: null},
+                        {access: 'Note Taking', hasAccess: false, elem: null},
+                        {access: 'Assistive Technology', hasAccess: false, elem: null},
+                        {access: 'Accessible Testing', hasAccess: false, elem: null},
+                        {access: 'Student Cases', hasAccess: false, elem: null},
+                    ];
                     global.fetch = jest.fn()
-                        .mockImplementationOnce(() => Promise.resolve({
-                            json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com', payload: "testPayload" })
-                        }))
-                        .mockImplementationOnce(() => Promise.resolve({
-                            json: () => Promise.resolve({ exists: true, user_info: [{ user_id: 'mockUserId', email: 'test@example.com', user_role: "Staff" }] })
-                        })).mockImplementationOnce(() => // /api/getStaffRole
+                    .mockImplementationOnce(() =>
                         Promise.resolve({
-                                text: () => Promise.resolve(JSON.stringify({
-                                    user_id: "mockUserId",
-                                    email: "test@example.com",
-                                    name: 'Mock User',
-                                    role: "Admin"
-                                })),
+                            json: () => Promise.resolve({ valid: true, payload: {email: "test@example.com", name: "Mock User"} })
+                        })
+                    ).mockImplementationOnce(() =>
+                        Promise.resolve({
+                            json: () => Promise.resolve({ exists: true, user_info: {id: 'mockUserId', email: 'test@example.com', role: "ADVISOR"} })
+                        })
+                    ).mockImplementationOnce(() => // /api/getStaffRole
+                        Promise.resolve({
+                                json: () => Promise.resolve({ res: {role: "Admin"}}),
                                 ok: true
-                            })
+                        })
                         ).mockImplementationOnce(() => // Mock for getUserSettings
                             Promise.resolve({
                                 json: () => Promise.resolve({ exists: true, settings_info: { font_size: 1, letter_spacing: 1 } })
                             })
                         );
-                    const result = await LoginScreen.verifyToken('mockToken', mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
-
+                    const userInfo = {
+                        id: null,
+                        name: null,
+                        email: null,
+                        role: null,
+                        picture: null,
+                        dob: null,
+                        uin: null,
+                        phone_number: null,
+                    };
+                    const result = await LoginScreen.verifyToken('mockToken', userInfo, mockSetSettings, false, mockSetLoggedIn, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
                     await waitFor(() => {
-                        expect(mockSetStaffRoles).toHaveBeenCalledWith("Admin");
+                        expect(mockSetStaffRoles).toHaveBeenCalledWith("Admin", undefined, undefined);
+                    });
+                });
+
+                test('correctly sets staff roles for admin', async () => {
+                    let mockStaffAccess = [
+                        {access: 'Global Settings', hasAccess: false, elem: null},
+                        {access: 'Accommodations', hasAccess: false, elem: null},
+                        {access: 'Note Taking', hasAccess: false, elem: null},
+                        {access: 'Assistive Technology', hasAccess: false, elem: null},
+                        {access: 'Accessible Testing', hasAccess: false, elem: null},
+                        {access: 'Student Cases', hasAccess: false, elem: null},
+                    ];
+                    await act(async () => {
+                        await LoginScreen.setStaffRoles("Admin", mockSetStaffAccess, mockStaffAccess);
+                    });
+                    await waitFor(() => {
+                        expect(mockSetStaffAccess).toHaveBeenCalledWith([
+                            {access: 'Global Settings', hasAccess: true, elem: null},
+                            {access: 'Accommodations', hasAccess: true, elem: null},
+                            {access: 'Note Taking', hasAccess: true, elem: null},
+                            {access: 'Assistive Technology', hasAccess: true, elem: null},
+                            {access: 'Accessible Testing', hasAccess: true, elem: null},
+                            {access: 'Student Cases', hasAccess: true, elem: null},
+                        ]);
+                    });
+                });
+
+                test('correctly sets staff roles for coordinators', async () => {
+                    let mockStaffAccess = [
+                        {access: 'Global Settings', hasAccess: false, elem: null},
+                        {access: 'Accommodations', hasAccess: false, elem: null},
+                        {access: 'Note Taking', hasAccess: false, elem: null},
+                        {access: 'Assistive Technology', hasAccess: false, elem: null},
+                        {access: 'Accessible Testing', hasAccess: false, elem: null},
+                        {access: 'Student Cases', hasAccess: false, elem: null},
+                    ];
+                    await act(async () => {
+                        await LoginScreen.setStaffRoles("Coordinator", mockSetStaffAccess, mockStaffAccess);
+                    });
+                    await waitFor(() => {
+                        expect(mockSetStaffAccess).toHaveBeenCalledWith([
+                            {access: 'Global Settings', hasAccess: false, elem: null},
+                            {access: 'Accommodations', hasAccess: true, elem: null},
+                            {access: 'Note Taking', hasAccess: true, elem: null},
+                            {access: 'Assistive Technology', hasAccess: true, elem: null},
+                            {access: 'Accessible Testing', hasAccess: true, elem: null},
+                            {access: 'Student Cases', hasAccess: true, elem: null},
+                        ]);
+                    });
+                });
+
+                test('correctly sets staff roles for testing staff', async () => {
+                    let mockStaffAccess = [
+                        {access: 'Global Settings', hasAccess: false, elem: null},
+                        {access: 'Accommodations', hasAccess: false, elem: null},
+                        {access: 'Note Taking', hasAccess: false, elem: null},
+                        {access: 'Assistive Technology', hasAccess: false, elem: null},
+                        {access: 'Accessible Testing', hasAccess: false, elem: null},
+                        {access: 'Student Cases', hasAccess: false, elem: null},
+                    ];
+                    await act(async () => {
+                        await LoginScreen.setStaffRoles("Testing_Staff", mockSetStaffAccess, mockStaffAccess);
+                    });
+                    await waitFor(() => {
+                        expect(mockSetStaffAccess).toHaveBeenCalledWith([
+                            {access: 'Global Settings', hasAccess: false, elem: null},
+                            {access: 'Accommodations', hasAccess: false, elem: null},
+                            {access: 'Note Taking', hasAccess: false, elem: null},
+                            {access: 'Assistive Technology', hasAccess: false, elem: null},
+                            {access: 'Accessible Testing', hasAccess: true, elem: null},
+                            {access: 'Student Cases', hasAccess: true, elem: null},
+                        ]);
+                    });
+                });
+
+                test('correctly sets staff roles for Assitive Tech staff', async () => {
+                    let mockStaffAccess = [
+                        {access: 'Global Settings', hasAccess: false, elem: null},
+                        {access: 'Accommodations', hasAccess: false, elem: null},
+                        {access: 'Note Taking', hasAccess: false, elem: null},
+                        {access: 'Assistive Technology', hasAccess: false, elem: null},
+                        {access: 'Accessible Testing', hasAccess: false, elem: null},
+                        {access: 'Student Cases', hasAccess: false, elem: null},
+                    ];
+                    await act(async () => {
+                        await LoginScreen.setStaffRoles("Tech_Staff", mockSetStaffAccess, mockStaffAccess);
+                    });
+                    await waitFor(() => {
+                        expect(mockSetStaffAccess).toHaveBeenCalledWith([
+                            {access: 'Global Settings', hasAccess: false, elem: null},
+                            {access: 'Accommodations', hasAccess: false, elem: null},
+                            {access: 'Note Taking', hasAccess: false, elem: null},
+                            {access: 'Assistive Technology', hasAccess: true, elem: null},
+                            {access: 'Accessible Testing', hasAccess: false, elem: null},
+                            {access: 'Student Cases', hasAccess: true, elem: null},
+                        ]);
                     });
                 });
 
@@ -562,16 +650,19 @@ describe('LoginScreen', () => {
                     //mock correct response from /api/verifyToken with { valid: true, userId: userId, email: payload.email }
                     const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
                     global.fetch = jest.fn()
-                        .mockImplementationOnce(() => Promise.resolve({
-                            json: () => Promise.resolve({ valid: true, userId: 'mockUserId', email: 'test@example.com', payload: "testPayload" })
-                        }))
-                        .mockImplementationOnce(() => Promise.resolve({
-                            json: () => Promise.resolve({ exists: true, user_info: [{ user_id: 'mockUserId', email: 'test@example.com', user_role: "Staff" }] })
-                        })).mockImplementationOnce(() => // /api/getStaffRole
+                    .mockImplementationOnce(() =>
                         Promise.resolve({
-                                text: () => Promise.resolve(JSON.stringify({
+                            json: () => Promise.resolve({ valid: true, payload: {email: "test@example.com", name: "Mock User"} })
+                        })
+                    ).mockImplementationOnce(() =>
+                        Promise.resolve({
+                            json: () => Promise.resolve({ exists: true, user_info: {id: 'mockUserId', email: 'test@example.com', role: "ADVISOR"} })
+                        })
+                    ).mockImplementationOnce(() => // /api/getStaffRole
+                        Promise.resolve({
+                                json: () => Promise.resolve({
                                     error: "ERROR"
-                                })),
+                                }),
                                 ok: false,
                                 status: 500
                             })
@@ -580,7 +671,17 @@ describe('LoginScreen', () => {
                                 json: () => Promise.resolve({ exists: true, settings_info: { font_size: 1, letter_spacing: 1 } })
                             })
                         );
-                    const result = await LoginScreen.verifyToken('mockToken', mockSetUserId, mockSetSettings, false, mockSetLoggedIn, mockSetUserType, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
+                        const userInfo = {
+                            id: null,
+                            name: null,
+                            email: null,
+                            role: null,
+                            picture: null,
+                            dob: null,
+                            uin: null,
+                            phone_number: null,
+                        };
+                        const result = await LoginScreen.verifyToken('mockToken', userInfo, mockSetSettings, false, mockSetLoggedIn, mockSetStaffRoles, mockSetLoading, mockSetUserInfo);
 
                     await waitFor(() => {
                         expect(consoleSpy).toHaveBeenCalledWith('API request failed:', 500, undefined);
@@ -603,10 +704,10 @@ describe('LoginScreen', () => {
                         global.fetch = fetchMock;
                     
                         // Call userExists
-                        const result = await LoginScreen.userExists(mockEmail);
+                        const result = await LoginScreen.accountExists(mockEmail);
                     
                         // Assert that fetch was called with the correct arguments
-                        expect(fetchMock).toHaveBeenCalledWith('/api/checkAccount/', {
+                        expect(fetchMock).toHaveBeenCalledWith('/api/checkAccount', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ email: mockEmail }),
@@ -625,7 +726,7 @@ describe('LoginScreen', () => {
                         global.fetch = fetchMock;
                     
                         // Call userExists
-                        const result = await LoginScreen.userExists(mockEmail);
+                        const result = await LoginScreen.accountExists(mockEmail);
                     
                         // Assert that the result matches the mock data
                         expect(result).toEqual(mockUserData);
@@ -643,7 +744,7 @@ describe('LoginScreen', () => {
                         global.fetch = fetchMock;
                     
                         // Call userExists
-                        const result = await LoginScreen.userExists(mockEmail);
+                        const result = await LoginScreen.accountExists(mockEmail);
                     
                         // Assert that the result matches the mock data
                         expect(result).toEqual(mockUserData);
@@ -655,7 +756,7 @@ describe('LoginScreen', () => {
 
                         global.fetch = jest.fn().mockRejectedValueOnce(new Error('Network error'));
 
-                        await LoginScreen.userExists(mockEmail);
+                        await LoginScreen.accountExists(mockEmail);
 
                         expect(consoleSpy).toHaveBeenCalledWith('Error checking exists', expect.any(Error));
                         consoleSpy.mockRestore();
@@ -666,9 +767,9 @@ describe('LoginScreen', () => {
             test('calls api/getStaffRole', async () => {
                 global.fetch = jest.fn().mockImplementationOnce(() =>
                     Promise.resolve({
-                        text: () => Promise.resolve(JSON.stringify({
+                        json: () => Promise.resolve({
                             error: "No Staff Role Found"
-                        })),
+                        }),
                         ok: false,
                         status: 404,
                         statusText: 'Not Found'
@@ -698,12 +799,12 @@ describe('LoginScreen', () => {
                 const mockStaffRole = "Admin";
                 global.fetch = jest.fn().mockImplementationOnce(() => // /api/getStaffRole
                 Promise.resolve({
-                        text: () => Promise.resolve(JSON.stringify({
-                            user_id: mockUserId,
+                        json: () => Promise.resolve({
+                            res: {id: mockUserId,
                             email: "test@example.com",
                             name: 'Mock User',
-                            role: mockStaffRole
-                        })),
+                            role: mockStaffRole}
+                        }),
                         ok: true
                     })
                 );
