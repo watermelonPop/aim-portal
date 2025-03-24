@@ -2,12 +2,12 @@ import './App.css';
 import { useEffect, useState } from 'react';
 
 
-function Testing({userType}) {
+function Testing({userInfo}) {
         return (
             <main className='dashboardOuter'>
-                {userType === "Student" && <p className='dashboardTitle'>STUDENT TESTING</p>}
-                {userType === "Professor" && <p className='dashboardTitle'>PROFESSOR TESTING</p>}
-                {userType === "Staff" && <p className='dashboardTitle'>STAFF TESTING</p>}
+                {userInfo.role === "STUDENT" && <p className='dashboardTitle'>STUDENT TESTING</p>}
+                {userInfo.role === "PROFESSOR" && <p className='dashboardTitle'>PROFESSOR TESTING</p>}
+                {userInfo.role === "ADVISOR" && <p className='dashboardTitle'>STAFF TESTING</p>}
             </main>
         );
 }

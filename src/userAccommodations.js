@@ -2,28 +2,40 @@ import './App.css';
 import { useEffect, useState } from 'react';
 
 
-export function UserAccommodations({name, email, setAlertMessage, setShowAlert}) {
+export function UserAccommodations({userInfo, setAlertMessage, setShowAlert}) {
         const [formData, setFormData] = useState({
-                name: name,
-                email: email,
-                dob: '',
-                uin: '',
-                phoneNumber: '',
+                name: userInfo.name,
+                email: userInfo.email,
+                dob: userInfo.dob,
+                uin: userInfo.uin,
+                phone_number: userInfo.phone_number,
                 disability: '',
                 testing: '',
                 inClass: '',
                 housing: '',
                 sideEffect: '',
                 accommodations: '',
-                pastAcc: ''
+                pastAcc: '',
+                file: null,
         });
 
         const [errors, setErrors] = useState(null);
 
         const [existingRequest, setExistingRequest] = useState(null);
 
+        const handleFileChange = (event) => {
+                setFormData(prevState => ({
+                        ...prevState,
+                        ["file"]: event.target.files[0]
+                }));
+        };
+
         const handleChange = (e) => {
                 const { name, value } = e.target;
+                if (!name || !value) {
+                        console.log('Missing name or value in handleChange', e.target);
+                        return;
+                }
                 setFormData(prevState => ({
                         ...prevState,
                         [name]: value
@@ -33,7 +45,7 @@ export function UserAccommodations({name, email, setAlertMessage, setShowAlert})
         const validateForm = () => {
                 let newErrors = {};
 
-                if (!formData.name) newErrors.name = "Name is required";
+                if (!formData.name || formData.name === '') newErrors.name = "Name is required";
                 if (!formData.email) newErrors.email = "Email is required";
                 
                 // Validate Date of Birth
@@ -43,7 +55,7 @@ export function UserAccommodations({name, email, setAlertMessage, setShowAlert})
                 if (!formData.uin || !/^\d{9}$/.test(formData.uin)) newErrors.uin = "UIN must be 9 digits";
                 
                 // Validate Phone Number (simple check for 10 digits)
-                if (!formData.phoneNumber || !/^\d{10}$/.test(formData.phoneNumber)) newErrors.phoneNumber = "Please enter a valid 10-digit phone number";
+                if (!formData.phone_number || !/^\d{10}$/.test(formData.phone_number)) newErrors.phone_number = "Please enter a valid 10-digit phone number";
                 
                                 // Validate text areas (checking if they're not empty)
                 ['disability', 'testing', 'inClass', 'housing', 'sideEffect', 'accommodations', 'pastAcc'].forEach(field => {
@@ -58,22 +70,59 @@ export function UserAccommodations({name, email, setAlertMessage, setShowAlert})
                 return { isValid: Object.keys(newErrors).length === 0, newErrors };
         };
 
+        const handleFileUpload = async (file) => {
+                console.log("TRYING FILE UPLOAD");
+                if (!file) return null;
+                const formDataToSend = new FormData();
+                formDataToSend.append("file", file);
+                try {
+                        const response = await fetch("/api/submitDocumentation", {
+                            method: "POST",
+                            body: formDataToSend,
+                        });
+                
+                        const result = await response.json();
+                        console.log("URL: ", result);
+                        return result.url || null;
+                } catch (error) {
+                        console.error("Error uploading file:", error);
+                        return null;
+                }
+                return null;
+        };
+
         const handleSubmit = async (e) => {
                 e.preventDefault();
                 const { isValid, newErrors } = validateForm();
                 if (isValid) {
                         console.log("before Form submitted:", formData);
+                        let formDataToSend = null;
+                        let has_doc = false;
+                        let fileUrl = null;
+
+                        // Append file if it exists
+                        if (formData.file) {
+                                try{
+                                        fileUrl = await handleFileUpload(formData.file);
+                                        if(fileUrl !== null){
+                                                has_doc = true;
+                                        }
+                                }catch (error) {
+                                        console.error('Error submitting documentation:', error);
+                                        setAlertMessage("Documentation Submission failed. Please try again.");
+                                        setShowAlert(true);
+                                        has_doc = false;
+                                }
+                        }
                         try {
                                 const response = await fetch('/api/createRequest', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({ 
-                                        user_name: formData.name,
-                                        user_email: formData.email,
-                                        dob: formData.dob,
-                                        uin: formData.uin,
-                                        phone_number: formData.phoneNumber,
-                                        notes: formData.disability + "\n" + formData.testing + "\n" + formData.inClass + "\n" + formData.housing + "\n" + formData.sideEffect + "\n" + formData.accommodations + "\n" + formData.pastAcc
+                                        userId: userInfo.id,
+                                        documentation: has_doc,
+                                        notes: formData.disability + "\n" + formData.testing + "\n" + formData.inClass + "\n" + formData.housing + "\n" + formData.sideEffect + "\n" + formData.accommodations + "\n" + formData.pastAcc,
+                                        doc_url: fileUrl
                                 }),
                                 });
                 
@@ -82,18 +131,20 @@ export function UserAccommodations({name, email, setAlertMessage, setShowAlert})
                                 }
                 
                                 const result = await response.json();
-
+                                console.log("SUBMIT: ", result);
                 
-                                if (result && result.message === 'Request created successfully') {
+                                if (result && result.success === true) {
                                         // You might want to clear the form or redirect the user here
+
                                         setAlertMessage("Request submitted successfully");
                                         setShowAlert(true);
 
                                         const fetchRequest = async () => {
-                                                const request = await checkRequests(email);
+                                                const request = await checkRequests(userInfo.id);
                                                 setExistingRequest(request);
                                         };
                                         fetchRequest();
+
                                 } else {
                                         setAlertMessage("Request submission failed. Please try again.");
                                         setShowAlert(true);
@@ -119,13 +170,56 @@ export function UserAccommodations({name, email, setAlertMessage, setShowAlert})
 
         const handleCancel = async (e) => {
                 e.preventDefault();
-                //handleCancel HERE
+                let deletedForm = await deleteDocumentation(userInfo.id);
+                if(deletedForm === true){
+                        await cancelRequest(userInfo.id);
+                }
+        };
+
+        const deleteDocumentation = async (userId) => {
+                try {
+                        const response = await fetch('/api/deleteForm', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ 
+                                userId: userId,
+                                type: "REGISTRATION_ELIGIBILITY"
+                            }),
+                        });
+            
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+            
+                        const result = await response.json();
+
+                        console.log("RESULT HERE: " + result);
+            
+                        if (result && result.message === 'Form deleted successfully') {
+                            setAlertMessage("Documentation deleted successfully!");
+                            setShowAlert(true);
+                            return true;
+                        } else {
+                            setAlertMessage("Form deletion failed.");
+                            setShowAlert(true);
+                            return false;
+                        }
+                } catch (error) {
+                        console.error('Error deleting form:', error);
+                        setAlertMessage("Form deletion failed.");
+                        setShowAlert(true);
+                        return false;
+                }
+                return false;
+        };
+
+        const cancelRequest = async (userId) => {
                 try {
                         const response = await fetch('/api/cancelRequest', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ 
-                                email: existingRequest.user_email
+                                userId: userId
                             }),
                         });
             
@@ -154,13 +248,14 @@ export function UserAccommodations({name, email, setAlertMessage, setShowAlert})
                 }
         };
 
-        const checkRequests = async (email) => {
+        const checkRequests = async (userId) => {
                 try {
-                        const response = await fetch(`/api/checkRequests?email=${email}`);
+                        const response = await fetch(`/api/checkRequests?userId=${userId}`);
                         if (!response.ok) {
                                 throw new Error(`HTTP error! status: ${response.status}`);
                         }
                         const data = await response.json();
+                        console.log("CHECK REQUESTS DATA: ", data);
                         if (data.exists) {
                                 return data.request;
                         } else {
@@ -174,15 +269,64 @@ export function UserAccommodations({name, email, setAlertMessage, setShowAlert})
                         return null;
                 }
         };
+
+        const getUserDocumentation = async (userId) => {
+                console.log("USER DOC URL: ", `/api/getUserDocumentation?user_id=${userId}`);
+                try {
+                        const response = await fetch(`/api/getUserDocumentation?user_id=${userId}`);
+                        if (!response.ok) {
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        console.log("RESPONSE HERE: ", response);
+                        const data = await response.json();
+                        console.log("USER DOC DATA: ", data);
+                        if (data?.exists) {
+                                return data.form;
+                        } else {
+                                console.log('No form found for this user');
+                                return null;
+                        }
+                } catch (error) {
+                        console.error('Error while getting user Documentation:', error);
+                        return null;
+                }
+        };
+
+        function formatDate(dateString) {
+                console.log("FORMAT: ", dateString);
+                if (!dateString) return '';
+                const date = new Date(dateString);
+                return isNaN(date.getTime()) ? '' : date.toISOString().split('T')[0];
+        }
         
 
         useEffect(() => {
+                console.log("USER INFO: ", userInfo);
                 const fetchRequest = async () => {
-                    const request = await checkRequests(email);
+                    const request = await checkRequests(userInfo.id);
                     setExistingRequest(request);
+                    console.log("in use effect: ", request);
                 };
                 fetchRequest();
-        }, [email]);
+        }, [userInfo]);
+
+        useEffect(() => {
+                setFormData({...formData, name: userInfo.name,
+                        email: userInfo.email,
+                        dob: userInfo.dob,
+                        uin: userInfo.uin,
+                        phone_number: userInfo.phone_number});
+        }, [userInfo]);
+
+        useEffect(() => {
+                if(!existingRequest || !userInfo) return;
+
+                const fetchForm = async () => {
+                        const form = await getUserDocumentation(userInfo.id);
+                        setExistingRequest({...existingRequest, form: form});
+                };
+                fetchForm();
+        }, [userInfo, existingRequest]);
 
         UserAccommodations.setExistingRequest = setExistingRequest;
         UserAccommodations.existingRequest = existingRequest;
@@ -205,11 +349,11 @@ export function UserAccommodations({name, email, setAlertMessage, setShowAlert})
                                         <label htmlFor="email">Email</label>
                                         <input data-testid="email" id="email" name="email" value={formData.email} type="email" onChange={handleChange} />
                                         <label htmlFor="dob">Date of Birth</label>
-                                        <input data-testid="dob" id="dob" type="date" name="dob" value={formData.dob} onChange={handleChange} />
+                                        <input data-testid="dob" id="dob" type="date" name="dob" value={formatDate(formData.dob)} onChange={handleChange} />
                                         <label htmlFor="uin">UIN</label>
                                         <input data-testid="uin" id="uin" type="number" name="uin" value={formData.uin} onChange={handleChange} />
-                                        <label htmlFor="phoneNumber">Phone Number</label>
-                                        <input data-testid="phoneNumber" id="phoneNumber" type="tel" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} />
+                                        <label htmlFor="phone_number">Phone Number</label>
+                                        <input data-testid="phone_number" id="phone_number" type="tel" name="phone_number" value={formData.phone_number} onChange={handleChange} />
                                         <label htmlFor="disability">What is your disability or disabilities?</label>
                                         <textarea data-testid="disability" id="disability" name="disability" rows="5" value={formData.disability} onChange={handleChange}></textarea>
                                         <label htmlFor="testing">What challenges do you experience related to taking tests/exams, if any?</label>
@@ -224,6 +368,8 @@ export function UserAccommodations({name, email, setAlertMessage, setShowAlert})
                                         <textarea data-testid="accommodations" id="accommodations" name="accommodations" rows="5" value={formData.accommodations} onChange={handleChange}></textarea>
                                         <label htmlFor="pastAcc">What accommodations have you used in the past?</label>
                                         <textarea data-testid="pastAcc" id="pastAcc" name="pastAcc" rows="5" value={formData.pastAcc} onChange={handleChange}></textarea>
+                                        <label htmlFor="uploadFile">Already have documentation? Upload Here!</label>
+                                        <input type="file" onChange={handleFileChange} data-testid="uploadFile" id="uploadFile" name="uploadFile"/>
                                         <button type="submit" aria-label="submit">Submit</button>
                                 </form>
                                 </>
@@ -231,23 +377,23 @@ export function UserAccommodations({name, email, setAlertMessage, setShowAlert})
                                 <>
                                 <h3 className='subTitle'>You already have an existing request: </h3>
                                 {
-                                        existingRequest.has_documentation ? (
-                                        <p className='subTitle'>You have submitted your documentation, and your request is under review!</p>
+                                        existingRequest.documentation ? (
+                                                <p className='subTitle'>You have submitted your documentation, and your request is under review! Review your documentation <a href={existingRequest?.form?.formUrl}>here</a></p>
                                         ) : (
-                                        <p className='subTitle'>You have not submitted your documentation yet. Please submit it in Forms before we can review your request.</p>
+                                                <p className='subTitle'>You have not submitted your documentation yet. Please submit it in Forms before we can review your request.</p>
                                         )
                                 }
                                 <form className="newStudentApp" onSubmit={handleCancel} data-testid="existingRequest">
                                         <label htmlFor="name">Name</label>
-                                        <input data-testid="name" id="name" name="name" type="text" value={existingRequest.user_name} readOnly/>
+                                        <input data-testid="name" id="name" name="name" type="text" value={userInfo.name} readOnly/>
                                         <label htmlFor="email">Email</label>
-                                        <input data-testid="email" id="email" name="email" type="email" value={existingRequest.user_email} readOnly/>
+                                        <input data-testid="email" id="email" name="email" type="email" value={userInfo.email} readOnly/>
                                         <label htmlFor="dob">Date of Birth</label>
-                                        <input data-testid="dob" id="dob" type="date" name="dob" value={existingRequest.dob} readOnly/>
+                                        <input data-testid="dob" id="dob" type="date" name="dob" value={formatDate(userInfo.dob)} readOnly/>
                                         <label htmlFor="uin">UIN</label>
-                                        <input data-testid="uin" id="uin" type="number" name="uin" value={existingRequest.uin} readOnly/>
-                                        <label htmlFor="phoneNumber">Phone Number</label>
-                                        <input data-testid="phoneNumber" id="phoneNumber" type="tel" name="phoneNumber" value={existingRequest.phone_number} readOnly/>
+                                        <input data-testid="uin" id="uin" type="number" name="uin" value={userInfo.uin} readOnly/>
+                                        <label htmlFor="phone_number">Phone Number</label>
+                                        <input data-testid="phone_number" id="phone_number" type="tel" name="phone_number" value={userInfo.phone_number} readOnly/>
                                         <label htmlFor="notes">Notes</label>
                                         <textarea data-testid="notes" id="notes" name="notes" value={existingRequest.notes} readOnly></textarea>
                                         <button type="submit" aria-label="cancel request" data-testid="cancelBtn">Cancel Request</button>
