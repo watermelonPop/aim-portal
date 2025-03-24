@@ -1,44 +1,80 @@
 require('dotenv').config();
-const { neon } = require('@neondatabase/serverless');
-const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD } = process.env;
-const sql = neon(`postgresql://${PGUSER}:${PGPASSWORD}@${PGHOST}/${PGDATABASE}?sslmode=require`);
+const { PrismaClient } = require('@prisma/client');
+
+const prisma = new PrismaClient();
 
 module.exports = async (req, res) => {
+  console.log("CREATE REQUEST START");
   if (req.method === 'POST') {
-        try {
-                // Check if req.body exists and has the required properties
-                if (!req.body || !req.body.user_name || !req.body.user_email || !req.body.dob || !req.body.uin || !req.body.phone_number || !req.body.notes) {
-                  return res.status(400).json({ error: 'Missing required fields' });
-                }
-          
-                const { user_name, user_email, dob, uin, phone_number, notes } = req.body;
-          
-                // Construct the full URL for the getNextAdvisor API
-                const protocol = req.headers['x-forwarded-proto'] || 'http';
-                const host = req.headers['x-forwarded-host'] || req.headers.host;
-                const nextAdvisorUrl = `${protocol}://${host}/api/getNextAdvisor`;
-          
-                // Fetch the next advisor_id
-                const advisorResponse = await fetch(nextAdvisorUrl);
-                if (!advisorResponse.ok) {
-                  throw new Error('Failed to fetch next advisor');
-                }
-                const advisorData = await advisorResponse.json();
-                const advisor_id = advisorData.advisor_id;
+    const {userId, notes, documentation, doc_url} = req.body;
+    if (!userId || !notes || documentation === null) {
+      return res.status(400).json({ error: 'userId, notes, documentation are required' });
+    }
+    console.log(userId, notes, documentation);
 
-                console.log("ADVID: " + advisor_id);
-          
-                // Insert the new request
-                await sql`
-                  INSERT INTO requests (user_name, user_email, advisor_id, dob, uin, phone_number, notes) 
-                  VALUES (${user_name}, ${user_email}, ${advisor_id}, ${dob}, ${uin}, ${phone_number}, ${notes})
-                `;
-          
-                res.status(200).json({ message: 'Request created successfully' });
-              } catch (error) {
-                console.error('Error in POST request:', error);
-                res.status(500).json({ error: error.message });
-              }
+    if(doc_url === null){
+      documentation = false;
+    }
+
+    try {
+      const result = await prisma.advisor.findFirst({
+        orderBy: {
+          students: {
+            _count: 'asc',
+          },
+        },
+        include: {
+          _count: {
+            select: { students: true }
+          }
+        }
+      });
+
+      if(result){
+        const request = await prisma.request.create({
+          data: {
+            notes: notes,
+            documentation: documentation,
+            user: {
+              connect: { userId: Number(userId) }, // Link to an existing user
+            },
+            advisor: {
+              connect: {userId: Number(result.userId)}
+            }
+          },
+        });
+
+        if(documentation === true){
+          const formSubmit = await prisma.form.create({
+            data: {
+              name: doc_url.substring(doc_url.lastIndexOf("/") + 1),
+              type: 'REGISTRATION_ELIGIBILITY',
+              submittedDate: new Date(),
+              user: {
+                connect: { id: Number(userId) }, // Link to an existing user
+              },
+              formUrl: doc_url,
+            }
+          });
+          if (formSubmit && request) {
+            res.status(200).json({ success: true, request: request });
+          } else {
+            res.status(200).json({ success: false });
+          }
+        }else{
+          if (request) {
+            res.status(200).json({ success: true, request: request });
+          } else {
+            res.status(200).json({ success: false });
+          }
+        }
+      }else{
+        res.status(200).json({ success: false });
+      }
+    } catch (error) {
+      console.error('Error creating request:', error.message);
+      res.status(500).json({ error: error.message });
+    }
   } else {
     res.setHeader('Allow', ['POST']);
     res.status(405).end(`Method ${req.method} Not Allowed`);

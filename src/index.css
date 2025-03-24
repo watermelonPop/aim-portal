@@ -52,6 +52,7 @@ main{
 .basicScreen{
   width: 100%;
   height: 100%;
+  min-height: 100vh;
   display: flex;
   margin: 0;
   flex-direction: column;
@@ -203,8 +204,8 @@ button{
 
 .basicHeader{
   display: flex;
-  width: 100%;
-  height: 15%;
+  width: 100vw;
+  height: 15vh;
   justify-content: space-evenly;
   align-items: center;
   position: -webkit-sticky !important;
@@ -411,13 +412,13 @@ button{
 
 
 .tabNav {
-  width: 100%;
+  width: 100vw;
   display: flex;
   align-items: center;
   background-color: #4F0000;
   justify-content: space-evenly;
   position: sticky;
-  top: 15%;
+  top: 16vh;
   z-index: 100;
   box-shadow: 5px 5px 15px black;
 }
@@ -646,6 +647,12 @@ button{
 }
 
 .subTitle{
+  font-family: "Mitr", serif;
+  font-weight: 500;
+  font-size: calc(var(--txtSize) + 5px);
+  letter-spacing: var(--letterSpacing);
+  width: 80%;
+  text-align: center;
 }
 
 .alertTxt{
@@ -656,7 +663,7 @@ button{
 }
 
 .newStudentApp input,
-.newStudentApp textarea {
+.newStudentApp textarea, .newStudentApp select {
   margin-bottom: 15px;
   border-radius: 1rem;
   min-height: 2rem;
@@ -714,4 +721,43 @@ button{
   5% { opacity: 1; }
   95% { opacity: 1; }
   100% { opacity: 0; }
+}
+
+.stickyContainer{
+  background-color: aqua;
+  border: 1px black solid;
+  height: fit-content;
+}
+
+
+
+.signUpHeader{
+  display: flex;
+  width: 100vw;
+  height: 15vh;
+  justify-content: center;
+  align-items: center;
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 0;
+  align-self: flex-start;
+  background-color: #4F0000;
+  margin: 0;
+  z-index: 999;
+  column-gap: 5%;
+}
+
+.signUpTitle{
+  color: #FFEDED;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: fit-content;
+  min-width: 17rem;
+}
+
+#signUpActive{
+  background-color: #FFEDED;
+  color:#4F0000;
+  border-radius: 1rem;
 }

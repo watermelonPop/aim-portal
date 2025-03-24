@@ -6,20 +6,24 @@ const prisma = new PrismaClient();
 module.exports = async (req, res) => {
   if (req.method === 'GET') {
     const userId = req.query.user_id;
-    console.log("USER ID: ", userId);
 
     if (!userId) {
-      return res.status(400).json({ error: 'user_id is required' });
+      return res.status(400).json({ error: 'User ID is required' });
     }
 
     try {
-      // Fetch advisor data using Prisma
-      const advisor = await prisma.advisor.findFirst({
-        where: { userId: parseInt(userId, 10) },
+      // Fetch user settings from Prisma
+      const form = await prisma.form.findFirst({
+        where: { userId: parseInt(userId, 10), type: "REGISTRATION_ELIGIBILITY" },
       });
-      res.status(200).json({ res: advisor });
+
+      if (form) {
+        res.status(200).json({ exists: true, form: form });
+      } else {
+        res.status(200).json({ exists: false });
+      }
     } catch (error) {
-      console.error('Error fetching advisors:', error.message);
+      console.error('Error fetching user documentation:', error.message);
       res.status(500).json({ error: error.message });
     }
   } else {

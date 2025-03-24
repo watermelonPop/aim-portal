@@ -6,24 +6,24 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 module.exports = async (req, res) => {
-  if (req.method === 'POST') {
+  if (req.method === 'GET') {
       // Check if req.body exists and has the email property
-      const email = req.body?.email;
+      const id = req.query.userId;
 
-      if (!email) {
-          return res.status(400).json({ error: 'Email is required' });
+      if (!id) {
+          return res.status(400).json({ error: 'user id is required' });
       }
-      console.log("BEFORE CHECK ACCOUNT");
+      console.log("BEFORE GET USER");
       try {
-          // Fetch account using Prisma
-          const account = await prisma.account.findUnique({
-              where: { email },
+          // Fetch user account using Prisma
+          const user = await prisma.user.findUnique({
+              where: { userId: Number(id) },
           });
 
-          console.log(account);
+          console.log(user);
 
-          if (account) {
-              res.status(200).json({ exists: true, user_info: account });
+          if (user) {
+              res.status(200).json({ exists: true, user_info: user });
           } else {
               res.status(200).json({ exists: false });
           }
@@ -31,7 +31,7 @@ module.exports = async (req, res) => {
           res.status(500).json({ error: error.message });
       }
   } else {
-      res.setHeader('Allow', ['POST']);
+      res.setHeader('Allow', ['GET']);
       res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 };
