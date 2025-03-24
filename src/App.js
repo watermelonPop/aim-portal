@@ -127,8 +127,9 @@ export function App() {
       }else if(userType === "Professor"){
         setTabs(professorTabs);
         setCurrentTab(professorTabs[0]);
-      }else if(userType === "Staff"){
+      }else if(userType === "Advisor"){
         //check for staff access & set here
+        //CHECK HERE
         let newStaffTabs = [...staffTabs];
         for(let i = 0; i < staffAccess.length; i++){
           if(staffAccess[i].hasAccess === true){
@@ -171,7 +172,7 @@ export function App() {
       let deformattedSettings = {...setts};
       deformattedSettings.font_size = deformattedSettings.font_size.replace("px", "");
       deformattedSettings.letter_spacing = deformattedSettings.letter_spacing.replace("px", "");
-      const response = await fetch('/api/setSettings', {
+      const response = await fetch('/api/setSettings/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 

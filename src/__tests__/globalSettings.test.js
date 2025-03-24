@@ -16,9 +16,6 @@ describe('GlobalSettings component', () => {
     jest.useRealTimers();
   });
 
-
-
-
   test('renders initial message when search query is empty', () => {
     render(<GlobalSettings />);
     expect(
