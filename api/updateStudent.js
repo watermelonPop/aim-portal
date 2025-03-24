@@ -1,31 +1,46 @@
-require('dotenv').config();
-const { neon } = require('@neondatabase/serverless');
-const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD } = process.env;
-const sql = neon(`postgresql://${PGUSER}:${PGPASSWORD}@${PGHOST}/${PGDATABASE}?sslmode=require`);
+import { PrismaClient } from '@prisma/client';
 
+const prisma = new PrismaClient();
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: `Method ${req.method} Not Allowed` });
   }
 
   try {
-    const { student_id, name, uin, dob, email, phone_number } = req.body;
+    const { userId, student_name, UIN, dob, email, phone_number } = req.body;
 
-    if (!student_id || !name || !uin || !dob || !email || !phone_number) {
+    // Validate required fields
+    if (!userId || !student_name || !UIN || !dob || !email || !phone_number) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
-    // Update the student record in the database
-    await sql`
-      UPDATE students
-      SET name = ${name}, uin = ${uin}, dob = ${dob}, email = ${email}, phone_number = ${phone_number}
-      WHERE student_id = ${student_id}
-    `;
+    // Update the Account table (name, email)
+    const updatedAccount = await prisma.account.update({
+      where: { id: userId },
+      data: {
+        name: student_name,
+        email: email,
+      },
+    });
 
-    res.status(200).json({ message: 'Student information updated successfully' });
+    // Update the Student table (UIN, DOB, phone number)
+    const updatedStudent = await prisma.student.update({
+      where: { userId: userId },
+      data: {
+        UIN: UIN,
+        dob: dob,
+        phone_number: phone_number,
+      },
+    });
+
+    res.status(200).json({
+      message: 'Student information updated successfully',
+      updatedAccount,
+      updatedStudent,
+    });
   } catch (error) {
     console.error('Database update error:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
-};
+}

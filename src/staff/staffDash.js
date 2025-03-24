@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback  } from 'react';
 
 function StaffDash() {
   const [view, setView] = useState(null); // 'students', 'requests', 'forms', 'studentDetails'
@@ -12,45 +12,73 @@ function StaffDash() {
   const [successMessage, setSuccessMessage] = useState('');
   const [infoMessage, setInfoMessage] = useState('');
   const [selectedRequest, setSelectedRequest] = useState(null); // Stores the selected request
-
   const [currentPage, setCurrentPage] = useState(1); // Tracks the current page
-const [filteredRequests, setFilteredRequests] = useState([]); // Stores filtered results
-
-// Calculate total pages dynamically
-const totalPages = Math.ceil(filteredRequests.length / 10);
-
-
-  // ADDED FOR REQUESTS:
+  const [filteredRequests, setFilteredRequests] = useState([]); // Stores filtered results
+  const totalPages = Math.ceil(filteredRequests.length / 10);
   const [requestsData, setRequestsData] = useState([]); // Holds the requests from the DB
-
-  // Sample alerts (Replace with real-time data)
   const alerts = [
     { id: 1, date: '2024-03-05', message: 'New accommodation request from John Doe', notes: 'Pending approval by staff' },
     { id: 2, date: '2024-03-04', message: '2 pending form approvals', notes: 'Review submitted forms by end of day' },
     { id: 3, date: '2024-03-02', message: 'System maintenance scheduled for Friday', notes: 'Potential downtime from 12 AM - 3 AM' }
   ];
 
+  const debounce = (func, delay) => {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => func(...args), delay);
+    };
+  };
+
+    // Optimized Search with Debounce
+    const performSearch = useCallback(
+      debounce((query) => {
+        if (query.length === 0) {
+          setFilteredStudents([]);
+          return;
+        }
+  
+        const results = studentsData.filter(
+          (student) =>
+            (student.student_name &&
+              student.student_name.toLowerCase().includes(query)) ||
+            (student.UIN && student.UIN.toString().includes(query))
+        );
+  
+        setFilteredStudents(results);
+      }, 300), // Delay of 300ms
+      [studentsData]
+    );
+
   // ADDED FOR REQUESTS: Fetch requests when view is 'requests'
-useEffect(() => {
-  if (view === 'requests') {
-    setLoading(true); // Show loading indicator
+  useEffect(() => {
     fetch('/api/getRequests')
-      .then(res => res.json())
+      .then(response => response.json())
       .then(data => {
-        setRequestsData(data.requests);
+        if (data.requests) {
+          setRequestsData(data.requests);
+        } else {
+          console.error("Invalid API response:", data);
+        }
       })
-      .catch(err => console.error('Error fetching requests:', err))
-      .finally(() => setLoading(false)); // Hide loading indicator
-  }
-}, [view]);
+      .catch(error => console.error('Error fetching requests:', error));
+  }, []);
+  
 
 
   // Fetch students from API when component mounts
   useEffect(() => {
-    fetch('/api/getStudents') // API endpoint to get students
-      .then(response => response.json())
-      .then(data => setStudentsData(data.students))
-      .catch(error => console.error('Error fetching students:', error));
+    setLoading(true);
+    fetch('/api/getStudents')
+      .then((response) => response.json())
+      .then((data) => {
+        setStudentsData(data.students);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching students:', error);
+        setLoading(false);
+      });
   }, []);
 
   // ADDED FOR REQUESTS: Fetch requests when view is 'requests'
@@ -70,42 +98,68 @@ useEffect(() => {
     const filtered = requestsData.filter((request) => {
       const query = searchTerm.toLowerCase();
       return (
-        request.user_email.toLowerCase().includes(query) ||
-        request.uin.toString().includes(query)
+        (request.UIN && request.UIN.toString().includes(query)) ||  // ✅ Correct field
+        (request.notes && request.notes.toLowerCase().includes(query)) // ✅ Allows search by notes
       );
     });
-  
+
     setFilteredRequests(filtered);
     setCurrentPage(1); // Reset to first page when search updates
-  }, [searchTerm, requestsData]);
+}, [searchTerm, requestsData]);
+
   
+  const handleRequestClick = (request) => {
+    setSelectedRequest({
+      id: request.id,
+      advisorId: request.advisorId,
+      advisorRole: request.advisorRole || "N/A",
+      userId: request.userId,
+      UIN: request.UIN || "N/A",
+      dob: request.dob || "N/A",
+      phone_number: request.phone_number || "N/A",
+      notes: request.notes,
+      documentation: request.documentation,
+      non_registered_userId: request.non_registered_userId,
+    });
+  
+    setView('requestDetails');
+  };
   
 
   // Handle search input
   const handleSearchChange = (event) => {
     const query = event.target.value.toLowerCase();
     setSearchTerm(query);
-
+  
     if (query.length === 0) {
       setFilteredStudents([]);
       return;
     }
-
-    // Case-insensitive search on name or UIN
+  
+    // Case-insensitive search on student_name or UIN (updated for new API format)
     const results = studentsData.filter(student =>
-      student.name.toLowerCase().includes(query) ||
-      student.uin.toString().includes(query)
+      (student.student_name && student.student_name.toLowerCase().includes(query)) ||
+      student.UIN.toString().includes(query) // UIN must be referenced correctly
     );
-
+  
     setFilteredStudents(results);
   };
 
   // Handle clicking a student to open details
-  const handleStudentClick = (student) => {
-    setSelectedStudent(student);
-    setEditedStudent({ ...student }); // Create a copy for editing
-    setView('studentDetails');
-  };
+// Ensure correct structure when selecting a student
+const handleStudentClick = (student) => {
+  setSelectedStudent({
+    userId: student.userId,
+    student_name: student.student_name, // Now from `account`
+    UIN: student.UIN,
+    dob: student.dob,
+    email: student.email,
+    phone_number: student.phone_number,
+  });
+
+  setEditedStudent({ ...student });
+  setView('studentDetails');
+};
 
   // Handle input change for editing
   const handleEditChange = (event) => {
@@ -125,14 +179,24 @@ useEffect(() => {
       setTimeout(() => setInfoMessage(''), 3000);
       return;
     }
-
+  
     setLoading(true);
     setSuccessMessage('');
-
+  
+    // Ensure we send correct fields matching updateStudent.js
+    const studentUpdatePayload = {
+      userId: editedStudent.userId, // Matches API schema
+      student_name: editedStudent.student_name, // Updated field (from `account`)
+      UIN: editedStudent.UIN, // Ensure proper casing
+      dob: editedStudent.dob,
+      email: editedStudent.email,
+      phone_number: editedStudent.phone_number,
+    };
+  
     fetch('/api/updateStudent', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(editedStudent),
+      body: JSON.stringify(studentUpdatePayload), // Corrected payload
     })
       .then(response => response.json())
       .then(() => {
@@ -143,7 +207,6 @@ useEffect(() => {
       .catch(error => alert('❌ Failed to update student.'))
       .finally(() => setLoading(false));
   };
-
   // Function to reset everything when going back
   const resetToMainMenu = () => {
     setView(null);
@@ -183,17 +246,16 @@ useEffect(() => {
 {view === 'requests' && (
   <div className="staff-dashboard-section">
     {/* Show "Back to Search" ONLY when a request is selected */}
-{selectedStudent && (
-  <button className="back-btn" onClick={() => setSelectedStudent(null)}>
-    ← Back to Search
-  </button>
-)}
+    {selectedRequest && (
+      <button className="back-btn" onClick={() => setSelectedRequest(null)}>
+        ← Back to Requests
+      </button>
+    )}
 
-
-    {!selectedStudent && (
+    {!selectedRequest && (
       <input
         type="text"
-        placeholder="Search by Name or UIN..."
+        placeholder="Search by UIN..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         className="staff-search-bar"
@@ -201,18 +263,17 @@ useEffect(() => {
     )}
 
     {loading ? (
-      // Show loading spinner when data is loading
       <div className="loading-container">
         <div className="loading-spinner"></div>
         <p>Loading...</p>
       </div>
     ) : (
       <>
-        {!selectedStudent ? (
+        {!selectedRequest ? (
           <>
             <div className="requests-container">
               {filteredRequests
-                .slice((currentPage - 1) * 10, currentPage * 10) // Only show 10 per page
+                .slice((currentPage - 1) * 10, currentPage * 10) // Show only 10 per page
                 .map((request) => {
                   const previewLength = 100;
                   const notesPreview = request.notes?.length > previewLength
@@ -222,19 +283,18 @@ useEffect(() => {
                   return (
                     <div 
                       className="request-tile"
-                      key={request.user_id}
-                      onClick={() => setSelectedStudent(request)}
+                      key={request.id}  // FIX: Use request.id instead of userId
+                      onClick={() => setSelectedRequest(request)}
                       tabIndex="0"
                       role="button"
                       onKeyDown={(e) => {
                         if (e.key === 'Enter' || e.key === ' ') {
-                          setSelectedStudent(request);
+                          setSelectedRequest(request);
                         }
                       }}
                     >
-                      <h4>{request.user_email}</h4>
                       <p className="subheading">
-                        <em>UIN:</em> {request.uin}
+                        <em>UIN:</em> {request.UIN || "N/A"}
                       </p>
                       <p className="notes-preview">{notesPreview}</p>
                     </div>
@@ -263,17 +323,18 @@ useEffect(() => {
         ) : (
           <div className="staff-student-details-container">
             <h3>Student Request Details</h3>
-            <div className="staff-student-info">
-              <p><strong>Name:</strong> {selectedStudent.user_name}</p>
-              <p><strong>Email:</strong> {selectedStudent.user_email}</p>
-              <p><strong>Advisor ID:</strong> {selectedStudent.advisor_id}</p>
-              <p><strong>Date of Birth:</strong> {selectedStudent.dob}</p>
-              <p><strong>UIN:</strong> {selectedStudent.uin}</p>
-              <p><strong>Phone Number:</strong> {selectedStudent.phone_number}</p>
-              <p><strong>Full Notes:</strong></p>
-              <div className="full-notes-box">
-                {selectedStudent.notes}
-              </div>
+            <div className="staff-request-details">
+              <h3>Request Details</h3>
+              <p><strong>Request ID:</strong> {selectedRequest.id}</p>
+              <p><strong>Advisor ID:</strong> {selectedRequest.advisorId}</p>
+              <p><strong>Advisor Role:</strong> {selectedRequest.advisorRole || "N/A"}</p>
+              <p><strong>User ID:</strong> {selectedRequest.userId}</p>
+              <p><strong>UIN:</strong> {selectedRequest.UIN || "N/A"}</p>
+              <p><strong>Date of Birth:</strong> {selectedRequest.dob || "N/A"}</p>
+              <p><strong>Phone Number:</strong> {selectedRequest.phone_number || "N/A"}</p>
+              <p><strong>Notes:</strong> {selectedRequest.notes}</p>
+              <p><strong>Documentation:</strong> {selectedRequest.documentation ? "Yes" : "No"}</p>
+              <button onClick={() => setSelectedRequest(null)}>Back to Requests</button>
             </div>
           </div>
         )}
@@ -284,168 +345,159 @@ useEffect(() => {
 
 
 
+
         {/* Search for Students */}
         {view === 'students' && (
-          <div className="staff-dashboard-section">
-            <h3>Search for Students</h3>
-            <input
-              type="text"
-              placeholder="Enter student name or UIN..."
-              value={searchTerm}
-              onChange={handleSearchChange}
-              className="staff-search-bar"
-            />
+  <div className="staff-dashboard-section">
+    <h3>Search for Students</h3>
+    <input
+      type="text"
+      placeholder="Enter student name or UIN..."
+      value={searchTerm}
+      onChange={handleSearchChange}
+      className="staff-search-bar"
+    />
 
-            {/* Display search results (ONLY name and UIN) */}
-            {filteredStudents.length > 0 ? (
-              <div className="staff-search-results">
-                {filteredStudents.map(student => (
-                  <div
-                    key={student.student_id}
-                    className="staff-search-item"
-                    onClick={() => handleStudentClick(student)}
-                    tabIndex="0"
-                    role="button"
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        handleStudentClick(student);
-                      }
-                    }}
-                  >
-                    <p>
-                      <strong>{student.name}</strong> (UIN: {student.uin})
-                    </p>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              searchTerm.length > 0 && <p>No matching students found.</p>
-            )}
+    {/* Display search results with new API fields */}
+    {filteredStudents.length > 0 ? (
+      <div className="staff-search-results">
+        {filteredStudents.map(student => (
+          <div
+            key={student.userId} // Ensure we use userId instead of student_id
+            className="staff-search-item"
+            onClick={() => handleStudentClick(student)}
+            tabIndex="0"
+            role="button"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                handleStudentClick(student);
+              }
+            }}
+          >
+            <p>
+              <strong>{student.student_name}</strong> (UIN: {student.UIN})
+            </p>
           </div>
-        )}
+        ))}
+      </div>
+    ) : (
+      searchTerm.length > 0 && <p>No matching students found.</p>
+    )}
+  </div>
+)}
 
         {/* Student Details View (With Editing Feature) */}
         {view === 'studentDetails' && selectedStudent && (
-          <div className="staff-student-details-container">
-            <h3>Student Profile</h3>
-            <div className="staff-student-info">
-              {isEditing ? (
-                <div className="edit-student-form">
-                  <div className="staff-form-group">
-                    <label htmlFor="name">Full Name:</label>
-                    <input
-                      id="name"
-                      type="text"
-                      name="name"
-                      value={editedStudent.name}
-                      onChange={handleEditChange}
-                    />
-                  </div>
-
-                  <div className="staff-form-group">
-                    <label htmlFor="uin">UIN:</label>
-                    <input
-                      id="uin"
-                      type="text"
-                      name="uin"
-                      value={editedStudent.uin}
-                      onChange={handleEditChange}
-                    />
-                  </div>
-
-                  <div className="staff-form-group">
-                    <label htmlFor="dob">Date of Birth:</label>
-                    <input
-                      id="dob"
-                      type="date"
-                      name="dob"
-                      value={editedStudent.dob}
-                      onChange={handleEditChange}
-                    />
-                  </div>
-
-                  <div className="staff-form-group">
-                    <label htmlFor="email">Email:</label>
-                    <input
-                      id="email"
-                      type="email"
-                      name="email"
-                      value={editedStudent.email}
-                      onChange={handleEditChange}
-                    />
-                  </div>
-
-                  <div className="staff-form-group">
-                    <label htmlFor="phone">Phone Number:</label>
-                    <input
-                      id="phone"
-                      type="tel"
-                      name="phone_number"
-                      value={editedStudent.phone_number}
-                      onChange={handleEditChange}
-                    />
-                  </div>
-
-                  <button onClick={handleSaveChanges} disabled={loading}>
-                    {loading ? 'Saving...' : 'Save Changes'}
-                    {loading && <div className="staff-loading-spinner"></div>}
-                  </button>
-
-                  {successMessage && (
-                    <p
-                      className={`staff-success-message ${
-                        successMessage === 'fade-out' ? 'fade-out' : ''
-                      }`}
-                    >
-                      {successMessage !== 'fade-out' ? successMessage : ''}
-                    </p>
-                  )}
-
-                  {infoMessage && (
-                    <p
-                      className={`staff-info-message ${
-                        infoMessage === 'fade-out' ? 'fade-out' : ''
-                      }`}
-                    >
-                      {infoMessage !== 'fade-out' ? infoMessage : ''}
-                    </p>
-                  )}
-
-                  <button
-                    className="staff-cancel-btn"
-                    onClick={() => setIsEditing(false)}
-                  >
-                    Back to Profile View
-                  </button>
-                </div>
-              ) : (
-                <>
-                  <p>
-                    <strong>Name:</strong> {selectedStudent.name}
-                  </p>
-                  <p>
-                    <strong>UIN:</strong> {selectedStudent.uin}
-                  </p>
-                  <p>
-                    <strong>Date of Birth:</strong> {selectedStudent.dob}
-                  </p>
-                  <p>
-                    <strong>Email:</strong> {selectedStudent.email}
-                  </p>
-                  <p>
-                    <strong>Phone Number:</strong> {selectedStudent.phone_number}
-                  </p>
-                  <button
-                    className="staff-edit-btn"
-                    onClick={() => setIsEditing(true)}
-                  >
-                    Edit
-                  </button>
-                </>
-              )}
-            </div>
+  <div className="staff-student-details-container">
+    <h3>Student Profile</h3>
+    <div className="staff-student-info">
+      {isEditing ? (
+        <div className="edit-student-form">
+          <div className="staff-form-group">
+            <label htmlFor="name">Full Name:</label>
+            <input
+              id="name"
+              type="text"
+              name="student_name" // Updated field name
+              value={editedStudent.student_name}
+              onChange={handleEditChange}
+            />
           </div>
-        )}
+
+          <div className="staff-form-group">
+            <label htmlFor="uin">UIN:</label>
+            <input
+              id="uin"
+              type="text"
+              name="UIN" // Updated field name
+              value={editedStudent.UIN}
+              onChange={handleEditChange}
+            />
+          </div>
+
+          <div className="staff-form-group">
+            <label htmlFor="dob">Date of Birth:</label>
+            <input
+              id="dob"
+              type="date"
+              name="dob"
+              value={editedStudent.dob}
+              onChange={handleEditChange}
+            />
+          </div>
+
+          <div className="staff-form-group">
+            <label htmlFor="email">Email:</label>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              value={editedStudent.email}
+              onChange={handleEditChange}
+            />
+          </div>
+
+          <div className="staff-form-group">
+            <label htmlFor="phone">Phone Number:</label>
+            <input
+              id="phone"
+              type="tel"
+              name="phone_number"
+              value={editedStudent.phone_number}
+              onChange={handleEditChange}
+            />
+          </div>
+
+          <button onClick={handleSaveChanges} disabled={loading}>
+            {loading ? 'Saving...' : 'Save Changes'}
+            {loading && <div className="staff-loading-spinner"></div>}
+          </button>
+
+          {successMessage && (
+            <p
+              className={`staff-success-message ${
+                successMessage === 'fade-out' ? 'fade-out' : ''
+              }`}
+            >
+              {successMessage !== 'fade-out' ? successMessage : ''}
+            </p>
+          )}
+
+          {infoMessage && (
+            <p
+              className={`staff-info-message ${
+                infoMessage === 'fade-out' ? 'fade-out' : ''
+              }`}
+            >
+              {infoMessage !== 'fade-out' ? infoMessage : ''}
+            </p>
+          )}
+
+          <button
+            className="staff-cancel-btn"
+            onClick={() => setIsEditing(false)}
+          >
+            Back to Profile View
+          </button>
+        </div>
+      ) : (
+        <>
+          <p><strong>Name:</strong> {selectedStudent.student_name}</p>
+          <p><strong>UIN:</strong> {selectedStudent.UIN}</p>
+          <p><strong>Date of Birth:</strong> {selectedStudent.dob}</p>
+          <p><strong>Email:</strong> {selectedStudent.email}</p>
+          <p><strong>Phone Number:</strong> {selectedStudent.phone_number}</p>
+          <button
+            className="staff-edit-btn"
+            onClick={() => setIsEditing(true)}
+          >
+            Edit
+          </button>
+        </>
+      )}
+    </div>
+  </div>
+)}
       </div>
 
       {/* Alerts Section */}
