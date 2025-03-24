@@ -409,6 +409,54 @@
 }
 /*//////////////////////////////////////////////////////////////////////////////////////////*/
 
+
+.accommodationsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* 👈 Left-align the content */
+  gap: 1.5rem;
+  width: 90%;
+  max-width: 800px;
+  margin-top: 1rem;
+}
+
+.accommodationCard {
+  background-color: #fff4f4;
+  border: 2px solid #4F0000;
+  border-radius: 1rem;
+  padding: 1rem 1.5rem;
+  font-family: "Mitr", serif;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.accommodationCard div {
+  margin-bottom: 0.5rem;
+  font-size: calc(var(--txtSize) + 2px);
+}
+
+.accommodationCard strong {
+  color: #4F0000;
+}
+
+.accommodationCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease-in-out;
+}
+
+.studentAccommodationsWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-left: 5vw;
+}
+
+.studentAccommodationsWrapper .dashboardTitle {
+  text-align: left;
+  width: 100%;
+}
+=======
 .profileContainer {
   background-color: #fff5f5;
   padding: 1.5rem;
@@ -448,4 +496,3 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   width: fit-content;
 }
-
