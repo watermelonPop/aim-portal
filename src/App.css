@@ -409,6 +409,7 @@
 }
 /*//////////////////////////////////////////////////////////////////////////////////////////*/
 
+
 .accommodationsContainer {
   display: flex;
   flex-direction: column;
@@ -454,4 +455,44 @@
 .studentAccommodationsWrapper .dashboardTitle {
   text-align: left;
   width: 100%;
+}
+=======
+.profileContainer {
+  background-color: #fff5f5;
+  padding: 1.5rem;
+  border-radius: 8px;
+  max-width: 600px;
+  margin: 1rem auto;
+  box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+}
+
+.profileField {
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+  display: flex;
+  gap: 0.5rem;
+  line-height: 1.5;
+}
+
+.label {
+  font-weight: bold;
+  color: #5c0a0a;
+  min-width: 130px;
+  text-align: right;
+}
+
+.profileBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+.profileContainer {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: fit-content;
 }
