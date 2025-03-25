@@ -1,31 +1,37 @@
 require('dotenv').config();
 const { neon } = require('@neondatabase/serverless');
 const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD } = process.env;
-const sql = neon(`postgresql://${PGUSER}:${PGPASSWORD}@${PGHOST}/${PGDATABASE}?sslmode=require`);
+const { PrismaClient } = require('@prisma/client');
+
+const prisma = new PrismaClient();
 
 module.exports = async (req, res) => {
   if (req.method === 'POST') {
-    // Check if req.body exists and has the email property
-    const email = req.body && req.body.email;
-    
-    if (!email) {
-      return res.status(400).json({ error: 'Email is required' });
-    }
+      // Check if req.body exists and has the email property
+      const email = req.body?.email;
 
-    try {
-      const result = await sql`
-        SELECT * FROM accounts WHERE user_email = ${email}
-      `;
-      if (result.length > 0) { 
-        res.status(200).json({ exists: true, user_info: result});
-      }else{
-        res.status(200).json({ exists: false});
+      if (!email) {
+          return res.status(400).json({ error: 'Email is required' });
       }
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
+      console.log("BEFORE CHECK ACCOUNT");
+      try {
+          // Fetch account using Prisma
+          const account = await prisma.account.findUnique({
+              where: { email },
+          });
+
+          console.log(account);
+
+          if (account) {
+              res.status(200).json({ exists: true, user_info: account });
+          } else {
+              res.status(200).json({ exists: false });
+          }
+      } catch (error) {
+          res.status(500).json({ error: error.message });
+      }
   } else {
-    res.setHeader('Allow', ['POST']);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
+      res.setHeader('Allow', ['POST']);
+      res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 };

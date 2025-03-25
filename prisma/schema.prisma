@@ -41,6 +41,7 @@ model Student {
   account                Account                @relation(fields: [userId], references: [id])
   advisors               Advisor[]              @relation("AdvisorToStudent")
   courses                Course[]
+
 }
 
 model Professor {
@@ -147,7 +148,9 @@ model Course {
   professorId Int
   professor   Professor @relation(fields: [professorId], references: [userId])
   exams       Exam[]
+
   students    Student[] 
+
 }
 
 model Exam {
@@ -211,4 +214,6 @@ enum RequestStatus {
   PENDING
   APPROVED
   DENIED
+
 }
+

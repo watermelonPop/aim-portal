@@ -1,10 +1,7 @@
 :root {
-  --txtChangeSizeAmount: 1.0;
-  --txtSizeMax: 5rem;
-  --txtSizeMin: 0.2rem;
-  --letterSpacingChangeSizeAmount: 1.0;
-  --letterSpacingMin: 0.001rem;
-  --letterSpacingMax: 2rem;
+  --txtSize: 14px;
+  --letterSpacing: 0px;
+  --contrast: 100%;
 }
 
 html{
@@ -12,12 +9,16 @@ html{
 }
 
 body {
-  background-color: gray;
+  background-color: #FFEDED;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   margin: 0;
+}
+
+body.modal-open {
+  overflow: hidden;
 }
 
 main{
@@ -34,6 +35,7 @@ main{
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  filter: contrast(var(--contrast));
 }
 
 .loginScreen{
@@ -50,41 +52,70 @@ main{
 .basicScreen{
   width: 100%;
   height: 100%;
+  min-height: 100vh;
   display: flex;
   margin: 0;
   flex-direction: column;
   align-items: center;
+  position: relative;
 }
 
 h1{
   font-family: "Mitr", serif;
   font-weight: 700;
-  letter-spacing: clamp(var(--letterSpacingMin), calc(0.15rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
+  letter-spacing: var(--letterSpacing);
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0;
   width: fit-content;
-  height: 10rem;
   padding: 0;
+  font-size: calc(var(--txtSize) + 30px);
 }
 
 h2{
   font-family: "Mitr", serif;
   font-weight: 600;
-  letter-spacing: clamp(var(--letterSpacingMin), calc(0.15rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
+  letter-spacing: var(--letterSpacing);
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0;
   width: fit-content;
-  height: 10rem;
   padding: 0;
+  font-size: calc(var(--txtSize) + 20px);
 }
+
+h3{
+  font-family: "Mitr", serif;
+  font-weight: 500;
+  letter-spacing: var(--letterSpacing);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  width: fit-content;
+  padding: 0;
+  font-size: calc(var(--txtSize) + 10px);
+}
+
+h4{
+  font-family: "Mitr", serif;
+  font-weight: 500;
+  letter-spacing: var(--letterSpacing);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  width: fit-content;
+  padding: 0;
+  font-size: calc(var(--txtSize) + 5px);
+}
+
 
 .loginTitle {
   color: #4F0000;
-  font-size: clamp(var(--txtSizeMin), calc(5rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
+  font-size: calc(var(--txtSize) + 60px);
 }
 
 
@@ -101,21 +132,27 @@ button{
 }
 
 #loginBtn{
-  background-color: #4F0000;
-  color: #FFEDED;
+  background-color: #FFEDED;
+  color: #4F0000;
   font-weight: 650;
-  letter-spacing: clamp(var(--letterSpacingMin), calc(0.15rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
-  font-size: clamp(var(--txtSizeMin), calc(3rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
+  letter-spacing: var(--letterSpacing);
+  font-size: calc(var(--txtSize) + 30px);
   width: 50%;
   height: 7rem;
   max-width: 20rem;
+  border: 3px solid #4F0000;
+}
+
+#loginBtn:hover{
+  background-color: #4F0000;
+  color: #FFEDED;
 }
 
 .profileBtn{
   background-color: #FFEDED;
   font-weight: 650;
-  letter-spacing: clamp(var(--letterSpacingMin), calc(0.15rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
-  font-size: clamp(var(--txtSizeMin), calc(3rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
+  letter-spacing: var(--letterSpacing);
+  font-size: var(--txtSize);
   height: 60%;
   max-width: 20rem;
   border-radius: 50rem;
@@ -124,8 +161,8 @@ button{
 .searchBtn{
   background-color: #FFEDED;
   font-weight: 650;
-  letter-spacing: clamp(var(--letterSpacingMin), calc(0.15rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
-  font-size: clamp(var(--txtSizeMin), calc(3rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
+  letter-spacing: var(--letterSpacing);
+  font-size: var(--txtSize);
   height: 70%;
   width: 15%;
   max-width: 4rem;
@@ -135,7 +172,7 @@ button{
 
 .searchIcon{
   color: #4F0000;
-  font-size: clamp(var(--txtSizeMin), calc(1rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
+  font-size: var(--txtSize);
   margin: 0;
   padding: 1rem;
   width: fit-content;
@@ -167,8 +204,8 @@ button{
 
 .basicHeader{
   display: flex;
-  width: 100%;
-  height: 15%;
+  width: 100vw;
+  height: 15vh;
   justify-content: space-evenly;
   align-items: center;
   position: -webkit-sticky !important;
@@ -182,7 +219,6 @@ button{
 
 .basicTitle{
   color: #FFEDED;
-  font-size: clamp(var(--txtSizeMin), calc(3rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
   margin: 0;
   padding: 0;
   height: 100%;
@@ -192,7 +228,7 @@ button{
 
 .profileIcon{
   color: #4F0000;
-  font-size: clamp(var(--txtSizeMin), calc(1rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
+  font-size: var(--txtSize);
   margin: 0;
   padding: 1rem;
   height: 40%;
@@ -228,89 +264,80 @@ button{
   background-color: #FFEDED;
   font-family: "Mitr", serif;
   font-weight: 400;
-  font-size: clamp(var(--txtSizeMin), calc(1rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
-  letter-spacing: clamp(var(--letterSpacingMin), calc(0.02rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
+  font-size: var(--txtSize);
+  letter-spacing: var(--letterSpacing);
   padding: 1rem
 }
 
 .settingsNav ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  width: 70%;
-  height: 60%;
+  flex-grow: 1;
+  min-height: 0; /* Allow overflow */
+  overflow-y: auto; /* Use auto instead of scroll */
   background-color: #FFEDED;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  row-gap: 5%;
+  list-style: none;
+  width: 90%;
   border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overscroll-behavior: contain;
 }
 
 .settingsNav ul > li {
-  float: left;
-  display: block;
-  text-align: center;
-  text-decoration: none;
-  font-family: "Mitr", serif;
-  font-weight: 400;
-  font-size: clamp(var(--txtSizeMin), calc(1.2rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
-  letter-spacing: clamp(var(--letterSpacingMin), calc(0.1rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
+  flex-shrink: 0; /* Prevent list items from shrinking */
+  width: 100%;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
-  width: 90%;
-  height: 25%;
-  padding: 0;
-  margin: 0;
-  background-color: #4F0000;
-  border: 2px solid black;
-  border-radius: 1rem;
+  justify-content: center;
+  align-items: center;
 }
 
 .settingsNav ul > li > form {
+  margin: 0;
   display: flex;
-  width: 100%;
-  height: 60%;
-  justify-content: space-evenly;
-  align-items: center;
+  width: fit-content;
+  font-family: "Mitr", serif;
+  font-weight: 500;
+  letter-spacing: var(--letterSpacing);
   margin: 0;
   padding: 0;
-  color:#FFEDED;
+  font-size: calc(var(--txtSize) + 5px);
+  align-items: center;
+  column-gap: 1rem;
 }
 
 .settingsNav ul > li > h3 {
+}
+
+.innerSettingsNav {
+  flex-grow: 1;
   display: flex;
-  width: 100%;
-  height: 60%;
+  flex-direction: column;
+  height: 100%; /* Take full height of parent */
+  overflow-y: auto; /* Enable scrolling here instead */
   justify-content: center;
   align-items: center;
-  margin: 0;
-  padding: 0;
-  color:#FFEDED;
 }
+
 
 .settingsNav {
   visibility: hidden;
   opacity: 0;
-  background-color: #4F0000;
-  height: 100vh; /* Full viewport height */
+  height: 100vh; /* Change from min-height */
+  overflow: hidden; /* Prevent double scrollbars */
   width: 50%;
-  margin: 0;
-  padding: 0;
+  background-color: #4F0000;
   position: fixed;
   top: 0; /* Align to the top of the viewport */
   right: 0; /* Align to the right of the viewport */
   z-index: 1000; /* Ensure it's above other elements */
-  justify-content: center;
-  align-items: center;
-  overflow-y: auto; /* Allow scrolling if content overflows */
+  box-shadow: 5px 10px 15px black;
   display: flex;
   flex-direction: column;
-  box-shadow: 5px 10px 15px black;
-  row-gap: 5%;
 }
+
 
 .settingsNav[aria-hidden="false"] {
   visibility: visible;
@@ -329,30 +356,69 @@ button{
 }
 
 
-.settingsHeading{
-  color: black;
-  font-family: "Mitr", serif;
-  font-weight: 700;
-  font-size: clamp(var(--txtSizeMin), calc(2rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
-  width: 70%;
-  height: 10%;
+.settingsHeading {
+  flex-shrink: 0; /* Prevent header from shrinking */
+  /* Add any other styling you need */
+  background-color: #4F0000;
+  width: 100%;
+  height: 15%;
   display: flex;
-  justify-content: space-evenly;
+  flex-direction: row;
   align-items: center;
-  padding: 0;
-  margin: 0;
-  background-color: #FFEDED;
-  border-radius: 1rem;
+  justify-content: space-evenly;
+  color: #FFEDED;
 }
 
+.disProfilesList{
+  display: flex !important;
+  flex-direction: column !important;
+  width: 70% !important;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0 !important;
+}
+
+.disProfiles{
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+
+  font-family: "Mitr", serif;
+  font-weight: 500;
+  letter-spacing: var(--letterSpacing);
+  padding: 0;
+  font-size: calc(var(--txtSize) + 5px);
+}
+
+.disProfiles button{
+  border: none;
+  font-family: "Mitr", serif;
+  font-weight: 500;
+  letter-spacing: var(--letterSpacing);
+  margin: 0;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-size: calc(var(--txtSize) + 5px);
+  background-color: #FFEDED;
+  border: #4F0000 2px solid;
+}
+
+.disProfiles button:hover{
+  background-color: #4F0000;
+  color:#FFEDED;
+}
+
+
 .tabNav {
-  width: 100%;
+  width: 100vw;
   display: flex;
   align-items: center;
   background-color: #4F0000;
   justify-content: space-evenly;
   position: sticky;
-  top: 15%;
+  top: 16vh;
   z-index: 100;
   box-shadow: 5px 5px 15px black;
 }
@@ -375,8 +441,8 @@ button{
   color:#FFEDED;
   font-family: "Mitr", serif;
   font-weight: 400;
-  font-size: clamp(var(--txtSizeMin), calc(1.2rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
-  letter-spacing: clamp(var(--letterSpacingMin), calc(0.06rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
+  font-size: calc(var(--txtSize) + 5px);
+  letter-spacing: var(--letterSpacing);
   cursor: pointer;
   height: 80%;
 }
@@ -389,10 +455,6 @@ button{
 
 .footerTitle{
   color:#FFEDED;
-  font-family: "Mitr", serif;
-  font-weight: 500;
-  font-size: clamp(var(--txtSizeMin), calc(1.2rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
-  letter-spacing: clamp(var(--letterSpacingMin), calc(0.1rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
 }
 
 .basicFooter{
@@ -415,8 +477,8 @@ button{
   color:#FFEDED;
   font-family: "Mitr", serif;
   font-weight: 400;
-  font-size: clamp(var(--txtSizeMin), calc(1rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
-  letter-spacing: clamp(var(--letterSpacingMin), calc(0.05rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
+  font-size: var(--txtSize);
+  letter-spacing: var(--letterSpacing);
   row-gap: 0;
   text-align: center;
 }
@@ -428,17 +490,12 @@ button{
 .dashboardOuter{
   width: 100%;
   height: fit-content;
-  min-height: 65%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .dashboardTitle{
-  font-family: "Mitr", serif;
-  font-weight: 600;
-  font-size: clamp(var(--txtSizeMin), calc(1.5rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
-  letter-spacing: clamp(var(--letterSpacingMin), calc(0.1rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
 }
 
 .closeBtnDiv {
@@ -453,8 +510,7 @@ button{
   background-color: #FFEDED;
   color: #4F0000;
   font-weight: 650;
-  letter-spacing: clamp(var(--letterSpacingMin), calc(0.15rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
-  font-size: clamp(var(--txtSizeMin), calc(2rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
+  font-size: calc(var(--txtSize) + 15px);
   width: 3rem;
   height: 3rem; 
   display: flex;
@@ -463,15 +519,21 @@ button{
   margin: 0;
   padding: 0;
   line-height: 1; 
-  border: none;
+  border: 2px solid #4F0000;
+}
+
+#closeSettingPanel:hover{
+  background-color: #4F0000;
+  color: #FFEDED;
+  border-color: #FFEDED;
 }
 
 .settingsBtn{
   background-color: #FFEDED;
   color: #4F0000;
   font-weight: 650;
-  letter-spacing: clamp(var(--letterSpacingMin), calc(0.15rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
-  font-size: clamp(var(--txtSizeMin), calc(2rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
+  letter-spacing: var(--letterSpacing);
+  font-size: calc(var(--txtSize) + 20px);
   width: 3rem;
   height: 3rem; 
   display: flex;
@@ -480,7 +542,12 @@ button{
   margin: 0;
   padding: 0;
   line-height: 1; 
-  border: none;
+  border: 2px solid #4F0000;
+}
+
+.settingsBtn:hover{
+  background-color: #4F0000;
+  color: #FFEDED;
 }
 
 .loadingScreen {
@@ -517,10 +584,6 @@ button{
 }
 
 .spinner-text {
-  font-family: "Mitr", serif;
-  font-weight: 600;
-  font-size: clamp(var(--txtSizeMin), calc(2rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
-  letter-spacing: clamp(var(--letterSpacingMin), calc(0.1rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
   color: #4F0000;
 }
 
@@ -537,20 +600,164 @@ button{
   background-color: #FFEDED;
   color: #4F0000;
   font-weight: 650;
-  letter-spacing: clamp(var(--letterSpacingMin), calc(0.15rem * var(--letterSpacingChangeSizeAmount)), var(--letterSpacingMax));
-  font-size: clamp(var(--txtSizeMin), calc(2rem * var(--txtChangeSizeAmount)), var(--txtSizeMax));
-  width: 100%;
-  height: 100%; 
+  letter-spacing: var(--letterSpacing);
+  font-size: calc(var(--txtSize) + 20px);
+  width: 50%;
+  height: 4rem; 
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0;
   padding: 0;
   line-height: 1; 
-  border: none;
+  border: 2px solid #4F0000;
 }
 
 .logOutBtn:hover{
   background-color: #4F0000;
   color: #FFEDED;
+}
+
+
+.newStudentDiv {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100%; /* Changed from height to min-height */
+  width: 100%;
+  padding: 20px 0; /* Add some vertical padding */
+}
+
+.newStudentApp {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  font-family: "Mitr", serif;
+  font-weight: 400;
+  font-size: var(--txtSize);
+  letter-spacing: var(--letterSpacing);
+  padding: 20px;
+}
+
+
+.newStudentApp label {
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.subTitle{
+  font-family: "Mitr", serif;
+  font-weight: 500;
+  font-size: calc(var(--txtSize) + 5px);
+  letter-spacing: var(--letterSpacing);
+  width: 80%;
+  text-align: center;
+}
+
+.alertTxt{
+  font-family: "Mitr", serif;
+  font-weight: 500;
+  font-size: var(--txtSize);
+  letter-spacing: var(--letterSpacing);
+}
+
+.newStudentApp input,
+.newStudentApp textarea, .newStudentApp select {
+  margin-bottom: 15px;
+  border-radius: 1rem;
+  min-height: 2rem;
+  padding: 1%;
+  font-family: "Mitr", serif;
+  font-weight: 400;
+  font-size: var(--txtSize);
+  letter-spacing: var(--letterSpacing);
+}
+
+.newStudentApp button {
+  background-color: #FFEDED;
+  color: #4F0000;
+  font-weight: 650;
+  letter-spacing: var(--letterSpacing);
+  font-size: calc(var(--txtSize) + 20px);
+  width: 100%;
+  height: 4rem; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  line-height: 1; 
+  border: 2px solid #4F0000;
+}
+
+.newStudentApp button:hover{
+  background-color: #4F0000;
+  color:#FFEDED;
+}
+
+.alertDiv {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 4px;
+  padding: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  animation: fadeInOut 45s ease-in-out;
+  height: fit-content;
+}
+
+.alertTxt {
+  margin: 0;
+  color: #721c24;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; }
+  5% { opacity: 1; }
+  95% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.stickyContainer{
+  background-color: aqua;
+  border: 1px black solid;
+  height: fit-content;
+}
+
+
+
+.signUpHeader{
+  display: flex;
+  width: 100vw;
+  height: 15vh;
+  justify-content: center;
+  align-items: center;
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 0;
+  align-self: flex-start;
+  background-color: #4F0000;
+  margin: 0;
+  z-index: 999;
+  column-gap: 5%;
+}
+
+.signUpTitle{
+  color: #FFEDED;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: fit-content;
+  min-width: 17rem;
+}
+
+#signUpActive{
+  background-color: #FFEDED;
+  color:#4F0000;
+  border-radius: 1rem;
 }

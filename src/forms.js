@@ -1,13 +1,16 @@
 import './App.css';
-import { useEffect, useState } from 'react';
+import UserForms from './user/userForms.js';
 
-function Forms({userType}) {
-        return (
-            <main className='dashboardOuter'>
-                {userType === "User" && <p className='dashboardTitle'>USER FORMS</p>}
-                {userType === "Student" && <p className='dashboardTitle'>STUDENT FORMS</p>}
-                {userType === "Staff" && <p className='dashboardTitle'>STAFF FORMS</p>}
-            </main>
-        );
+
+function Forms({ userInfo }) {
+  return (
+    <main className="dashboardOuter">
+      {userInfo.role === "USER" && <UserForms />}
+      {userInfo.role === "STUDENT" && <p className='dashboardTitle'>STUDENT FORMS</p>}
+      {userInfo.role === "PROFESSOR" && <p className='dashboardTitle'>PROFESSOR FORMS</p>}
+      {userInfo.role === "ADVISOR" && <p className='dashboardTitle'>STAFF FORMS</p>}
+    </main>
+  );
 }
+
 export default Forms;

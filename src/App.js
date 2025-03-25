@@ -9,239 +9,297 @@ import Profile from './profile';
 import LoginScreen from './loginScreen';
 import Forms from './forms';
 import GlobalSettings from './globalSettings';
-import Accomodations from './accommodations';
+import Accommodations from './accommodations';
 import NoteTaking from './noteTaking';
 import AssistiveTech from './assistiveTech';
 import Testing from './testing';
 import StudentCases from './studentCases';
+import Alert from './alert';
+import BasicSettingsBar from './basicSettingsBar';
+import SignUp from './signUp';
 
 import BlobTest from './blobtest';
 
 
 export function App() {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("ERROR");
   const [tabs, setTabs] = useState([]);
-  const [userType, setUserType] = useState("User");
-  const [userId, setUserId] = useState(null);
+  const [userInfo, setUserInfo] = useState({
+    id: null,
+    name: null,
+    email: null,
+    role: null,
+    picture: null,
+    dob: null,
+    uin: null,
+    phone_number: null,
+  });
+  const [userConnected, setUserConnected] = useState(false);
   const [userTabs, setUserTabs] = useState([
-    {name: 'Dashboard', elem: <Dash userType={"User"}/>},
-    {name: 'Accommodations', elem: <Accomodations userType={"User"}/>},
-    {name: 'Forms', elem: <Forms userType={"User"}/>},
-    {name: 'Profile', elem: <Profile userType={"User"}/>},
-    {name: 'BlobTest', elem: <BlobTest />},
+
+    {name: 'Dashboard', elem: <Dash/>},
+    {name: 'Accommodations', elem: <Accommodations/>},
+    {name: 'Forms', elem: <Forms/>},
+    {name: 'Profile', elem: <Profile/>},
+
   ]);
   const [studentTabs, setStudentTabs] = useState([
-    {name: 'Dashboard', elem: <Dash userType={"Student"}/>},
-    {name: 'Accommodations', elem: <Accomodations userType={"Student"}/>},
-    {name: 'Testing', elem: <Testing userType={"Student"}/>},
-    {name: 'Note Taking',elem: <NoteTaking userType={"Student"}/>},
-    {name: 'Forms', elem: <Forms userType={"Student"}/>},
-    {name: 'Profile', elem: <Profile userType={"Student"}/>},
+    {name: 'Dashboard', elem: <Dash/>},
+    {name: 'Accommodations', elem: <Accommodations/>},
+    {name: 'Testing', elem: <Testing/>},
+    {name: 'Note Taking',elem: <NoteTaking/>},
+    {name: 'Forms', elem: <Forms/>},
+    {name: 'Profile', elem: <Profile/>},
   ]);
   const [professorTabs, setProfessorTabs] = useState([
-    {name: 'Dashboard', elem: <Dash userType={"Professor"}/>},
-    {name: 'Accommodations', elem: <Accomodations userType={"Professor"}/>},
-    {name: 'Testing', elem: <Testing userType={"Professor"}/>},
-    {name: 'Note Taking',elem: <NoteTaking userType={"Professor"}/>},
-    {name: 'Profile', elem: <Profile userType={"Professor"}/>},
+    {name: 'Dashboard', elem: <Dash/>},
+    {name: 'Accommodations', elem: <Accommodations/>},
+    {name: 'Testing', elem: <Testing/>},
+    {name: 'Note Taking',elem: <NoteTaking/>},
+    {name: 'Profile', elem: <Profile/>},
   ]);
   const [staffTabs, setStaffTabs] = useState([
-    {name: 'Dashboard', elem: <Dash userType={"Staff"}/>},
-    {name: 'Forms', elem: <Forms userType={"Staff"}/>},
-    {name: 'Profile', elem: <Profile userType={"Staff"}/>},
+    {name: 'Dashboard', elem: <Dash/>},
+    {name: 'Forms', elem: <Forms/>},
+    {name: 'Profile', elem: <Profile/>},
   ]);
   const [currentTab, setCurrentTab] = useState(null);
   const [staffAccess, setStaffAccess] = useState([
     {access: 'Global Settings', hasAccess: false, elem: <GlobalSettings/>},
-    {access: 'Accommodations', hasAccess: false, elem: <Accomodations userType={"Staff"}/>},
-    {access: 'Note Taking', hasAccess: false, elem: <NoteTaking userType={"Staff"}/>},
+    {access: 'Accommodations', hasAccess: false, elem: <Accommodations/>},
+    {access: 'Note Taking', hasAccess: false, elem: <NoteTaking/>},
     {access: 'Assistive Technology', hasAccess: false, elem: <AssistiveTech/>},
-    {access: 'Accessible Testing', hasAccess: false, elem: <Testing userType={"Staff"}/>},
+    {access: 'Accessible Testing', hasAccess: false, elem: <Testing/>},
     {access: 'Student Cases', hasAccess: false, elem: <StudentCases/>},
   ]);
   const [settingsTabOpen, setSettingsTabOpen] = useState(false);
-  const [txtChangeSizeAmount, setTxtChangeSizeAmount] = useState(1);
-  const [letterSpacingChangeSizeAmount, setLetterSpacingChangeSizeAmount] = useState(1);
-  const [settings, setSettings] = useState(() => {
-    const savedSettings = localStorage.getItem("aim-settings");
-    return savedSettings ? JSON.parse(savedSettings) : {
+  const [settings, setSettings] = useState({
       content_size: 100,
       highlight_tiles: false,
       highlight_links: false,
       text_magnifier: false,
       align_text: "Middle",
-      font_size: 1,
+      font_size: "14px",
       line_height: 5000,
-      letter_spacing: 1,
-      contrast: "Regular",
+      letter_spacing: "0px",
+      contrast: "100%",
       saturation: "Regular",
       mute_sounds: false,
       hide_images: false,
       reading_mask: false,
       highlight_hover: false,
       cursor: "Regular"
-    };
   });
+
+  useEffect(() => {
+    if (showAlert) {
+      const timer = setTimeout(() => {
+        setShowAlert(false);
+      }, 15000);
+      return () => clearTimeout(timer);
+    }
+  }, [showAlert]);
+
+  useEffect(() => {
+    if(settingsTabOpen === true){
+      document.body.classList.add('modal-open');
+    }else{
+      document.body.classList.remove('modal-open');
+    }
+  }, [settingsTabOpen]);
 
   useEffect(() => {
     if(!loggedIn){
       return;
     }
-    if(userType === "User"){
-      setTabs(userTabs);
-      setCurrentTab(userTabs[0]);
-      if(localStorage.getItem("aim-settings") === null){
-        console.log("SETTING LOCAL STORAGE");
-        localStorage.setItem("aim-settings", JSON.stringify(settings));
-      }
-    }else if(userType === "Student"){
-      setTabs(studentTabs);
-      setCurrentTab(studentTabs[0]);
-    }else if(userType === "Professor"){
-      setTabs(professorTabs);
-      setCurrentTab(professorTabs[0]);
-    }else if(userType === "Staff"){
-      //check for staff access & set here
-      let newStaffTabs = [...staffTabs];
-      for(let i = 0; i < staffAccess.length; i++){
-        if(staffAccess[i].hasAccess === true){
-          newStaffTabs.push({name: staffAccess[i].access, elem: staffAccess[i].elem});
-        }
-      }
-      setTabs(newStaffTabs);
-      setCurrentTab(newStaffTabs[0]);
-    }
+    checkAccountConnected(userInfo.id, setUserConnected);
     //get settings here
     return () => {
     };
-  }, [loggedIn, userType, staffAccess]);
+  }, [loggedIn, userInfo]);
 
   useEffect(() => {
-    const savedSettings = localStorage.getItem("aim-settings");
-    if (!savedSettings || savedSettings !== JSON.stringify(settings)) {
-      console.log("Updating local storage with new settings:", settings);
-      localStorage.setItem("aim-settings", JSON.stringify(settings));
+    if (userInfo && userInfo.role === "USER" && userInfo.id && userConnected) {
+      getUser(userInfo.id);
     }
-    if(userId){
-      setSettingsDatabase(userId, settings);
+  }, [userInfo?.id, userInfo?.role, userConnected]);
+
+  useEffect(() => {
+    if(!loggedIn || !userConnected || !userInfo){
+      return;
     }
-    setTxtChangeSizeAmount(settings.font_size);
-    setLetterSpacingChangeSizeAmount(settings.letter_spacing);
-  }, [settings, userId]);
+    let updatedUserTabs = {...userTabs};
+    let updatedProfessorTabs = {...professorTabs};
+    let updatedStudentTabs = {...studentTabs};
+    let updatedStaffTabs = {...staffTabs};
+    let updatedStaffAccess = [...staffAccess];
+    if(userInfo !== null){
+      console.log("UPDATING USER TABS");
+      updatedUserTabs = [
+        {name: 'Dashboard', elem: <Dash userInfo={userInfo}/>},
+        {name: 'Accommodations', elem: <Accommodations userInfo={userInfo} setAlertMessage={setAlertMessage} setShowAlert={setShowAlert}/>},
+        {name: 'Forms', elem: <Forms userInfo={userInfo}/>},
+        {name: 'Profile', elem: <Profile userInfo={userInfo}/>},
+      ];
+
+      updatedProfessorTabs = [
+        {name: 'Dashboard', elem: <Dash userInfo={userInfo}/>},
+        {name: 'Accommodations', elem: <Accommodations userInfo={userInfo} setAlertMessage={setAlertMessage} setShowAlert={setShowAlert}/>},
+        {name: 'Testing', elem: <Testing userInfo={userInfo}/>},
+        {name: 'Note Taking',elem: <NoteTaking userInfo={userInfo}/>},
+        {name: 'Profile', elem: <Profile userInfo={userInfo}/>},
+      ];
+
+      updatedStudentTabs = [
+        {name: 'Dashboard', elem: <Dash userInfo={userInfo}/>},
+        {name: 'Accommodations', elem: <Accommodations userInfo={userInfo} setAlertMessage={setAlertMessage} setShowAlert={setShowAlert}/>},
+        {name: 'Testing', elem: <Testing userInfo={userInfo}/>},
+        {name: 'Note Taking',elem: <NoteTaking userInfo={userInfo}/>},
+        {name: 'Forms', elem: <Forms userInfo={userInfo}/>},
+        {name: 'Profile', elem: <Profile userInfo={userInfo}/>},
+      ];
+
+      updatedStaffTabs = [
+        {name: 'Dashboard', elem: <Dash userInfo={userInfo}/>},
+        {name: 'Forms', elem: <Forms userInfo={userInfo}/>},
+        {name: 'Profile', elem: <Profile userInfo={userInfo}/>},
+      ];
+      updatedStaffAccess[0].elem = <GlobalSettings/>;
+      updatedStaffAccess[1].elem = <Accommodations userInfo={userInfo} setAlertMessage={setAlertMessage} setShowAlert={setShowAlert}/>;
+      updatedStaffAccess[2].elem = <NoteTaking userInfo={userInfo}/>;
+      updatedStaffAccess[3].elem = <AssistiveTech/>;
+      updatedStaffAccess[4].elem = <Testing userInfo={userInfo}/>;
+      updatedStaffAccess[5].elem = <StudentCases/>;
+    }
+    if(userInfo.role === "USER"){
+      setTabs(updatedUserTabs);
+      setCurrentTab(updatedUserTabs[0]);
+    }else{
+      if(userInfo.role === "STUDENT"){
+          setTabs(updatedStudentTabs);
+          setCurrentTab(updatedStudentTabs[0]);
+        }else if(userInfo.role === "PROFESSOR"){
+          setTabs(updatedProfessorTabs);
+          setCurrentTab(updatedProfessorTabs[0]);
+        }else if(userInfo.role === "ADVISOR"){
+          //check for staff access & set here
+          let newStaffTabs = [...updatedStaffTabs];
+          for(let i = 0; i < updatedStaffAccess.length; i++){
+            if(updatedStaffAccess[i].hasAccess === true){
+              newStaffTabs.push({name: updatedStaffAccess[i].access, elem: updatedStaffAccess[i].elem});
+            }
+          }
+          setTabs(newStaffTabs);
+          setCurrentTab(newStaffTabs[0]);
+        }
+    }
+  }, [loggedIn, userConnected, userInfo, staffAccess]);
 
   useEffect(() => {
-    document.documentElement.style.setProperty("--txtChangeSizeAmount", `${txtChangeSizeAmount}`);
-    console.log("setting txtChangeSizeAmount to " + txtChangeSizeAmount);
-  }, [txtChangeSizeAmount]);
 
-  useEffect(() => {
-    document.documentElement.style.setProperty("--letterSpacingChangeSizeAmount", `${letterSpacingChangeSizeAmount}`);
-    console.log("setting letterSpacingChangeSizeAmount to " + letterSpacingChangeSizeAmount);
-  }, [letterSpacingChangeSizeAmount]);
+    const updateSettings = async () => {
+      if(settings && userInfo.id !== null){
+        document.documentElement.style.setProperty("--txtSize", `${settings.font_size}`);
+        document.documentElement.style.setProperty("--letterSpacing", `${settings.letter_spacing}`);
+        document.documentElement.style.setProperty("--contrast", `${settings.contrast}`);
+        
+        await setSettingsDatabase(userInfo.id, settings); 
+      }
+    };
+    
+    updateSettings().catch(console.error);
+  }, [settings, userInfo]);
+
+  const checkAccountConnected = async (userId, setUserConnected) => {
+    if (!userId) {
+        console.error('Invalid user ID provided');
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/accountConnected?userId=${userId}`);
+        
+        if (!response.ok) {
+            console.error('Failed to check account connection:', response.status, response.statusText);
+            return;
+        }
+
+        const data = await response.json();
+        if (data && data.exists !== null) {
+          setUserConnected(data.exists);
+          setLoading(false);
+          return data.exists;
+        }
+        return false;
+    } catch (error) {
+        console.error('Error while getting settings:', error);
+    }
+  };
+
+  const getUser = async (userId) => {
+    if (!userId) {
+        console.error('Invalid user ID provided');
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/getUser?userId=${userId}`);
+        
+        if (!response.ok) {
+            console.error('Failed to get user:', response.status, response.statusText);
+            return;
+        }
+
+        const data = await response.json();
+
+        if (data && data.exists) {
+          setUserInfo({...userInfo, dob: data.user_info.dob, uin: data.user_info.UIN, phone_number: data.user_info.phone_number});
+          return data.user_info;
+        }
+        return null;
+    } catch (error) {
+        console.error('Error while getting user:', error);
+    }
+  };
+
 
   const setSettingsDatabase = async (userId, setts) => {
+    console.log("SETTINGS HERE: ", setts);
     try {
+      let deformattedSettings = {...setts};
+      deformattedSettings.font_size = parseInt(deformattedSettings.font_size.replace("px", ""));
+      deformattedSettings.letter_spacing = parseInt(deformattedSettings.letter_spacing.replace("px", ""));
       const response = await fetch('/api/setSettings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           user_id: userId,
-          settings: setts 
+          settings: deformattedSettings 
         }),
       });
   
       const data = await response.json();
+      console.log(data);
       return data;
     } catch (error) {
       console.error('Error checking exists', error);
     }
   };
 
-  const remFactor = 0.1; 
-
-  function incTxtChangeSizeAmount(amt) {
-    let newAmt = (amt * remFactor) + txtChangeSizeAmount;
-    if (newAmt < 2 && newAmt > 0.2) {
-      setTxtChangeSizeAmount(parseFloat(newAmt.toFixed(2)));
-      document.documentElement.style.setProperty("--txtChangeSizeAmount", `${parseFloat(newAmt.toFixed(2))}`);
-      let newSetts = {...settings};
-      newSetts.font_size = parseFloat(newAmt.toFixed(2));
-      setSettings(newSetts);
-    }
-  }
-
-
-  function decTxtChangeSizeAmount(amt) {
-    let newAmt = txtChangeSizeAmount - (amt * remFactor);
-    if(newAmt <= 2 && newAmt > 0.2){
-      setTxtChangeSizeAmount(parseFloat(newAmt.toFixed(2)));
-      document.documentElement.style.setProperty("--txtChangeSizeAmount", `${parseFloat(newAmt.toFixed(2))}`);
-      let newSetts = {...settings};
-      newSetts.font_size = parseFloat(newAmt.toFixed(2));
-      setSettings(newSetts);
-    }
-  }
-
-  const letterSpacingRem = 1;
-
-  function incLetterSpacingChangeSizeAmount(amt) {
-    let newAmt = (amt * letterSpacingRem) + letterSpacingChangeSizeAmount;
-    if (newAmt < 12 && newAmt > 0.001) {
-      setLetterSpacingChangeSizeAmount(parseFloat(newAmt.toFixed(2)));
-      let newSetts = {...settings};
-      newSetts.letter_spacing = parseFloat(newAmt.toFixed(2));
-      setSettings(newSetts);
-    }
-  }
-
-  function decLetterSpacingChangeSizeAmount(amt) {
-    let newAmt = letterSpacingChangeSizeAmount - (amt * (letterSpacingRem));
-    console.log(newAmt);
-    if (newAmt < 12 && newAmt > 0.001) {
-      setLetterSpacingChangeSizeAmount(parseFloat(newAmt.toFixed(2)));
-      let newSetts = {...settings};
-      newSetts.letter_spacing = parseFloat(newAmt.toFixed(2));
-      setSettings(newSetts);
-    }
-  }
-
-  function setStaffRoles({ staffRole }) {
-    let newStaffAccess = {...staffAccess}
-    if(staffRole === "Admin"){
-      for(let i = 0; i < newStaffAccess.length; i++){
-        newStaffAccess[i].hasAccess = true;
-      }
-    }else if(staffRole === "Coordinator"){
-      for(let i = 0; i < newStaffAccess.length; i++){
-        if(newStaffAccess[i].access !== "Global Settings"){
-          newStaffAccess[i].hasAccess = true;
-        }
-      }
-    }else if(staffRole === "Testing Staff"){
-      for(let i = 0; i < newStaffAccess.length; i++){
-        if(newStaffAccess[i].access === "Accessible Testing" || newStaffAccess[i].access === "Student Cases"){
-          newStaffAccess[i].hasAccess = true;
-        }
-      }
-    }else if(staffRole === "Assistive Technology"){
-      for(let i = 0; i < newStaffAccess.length; i++){
-        if(newStaffAccess[i].access === "Assistive Technology" || newStaffAccess[i].access === "Student Cases"){
-          newStaffAccess[i].hasAccess = true;
-        }
-      }
-    }
-    setStaffAccess(newStaffAccess);
-  }
-
   function BasicView({ currentTab, setCurrentTab, userType, tabs }) {
     return (
-      <main className='basicScreen' data-testid="basicScreen">
-        <BasicSettingsBar isOpen={settingsTabOpen} onClose={() => setSettingsTabOpen(false)}/>
-        <BasicHeader />
-        <BasicTabNav tabs={tabs} setCurrentTab={setCurrentTab} />
-        <Display currentTab={currentTab} />
-        <BasicFooter/>
-      </main>
+        <main className='basicScreen' data-testid="basicScreen">
+          <BasicSettingsBar isOpen={settingsTabOpen} onClose={() => setSettingsTabOpen(false)} settings={settings} setSettings={setSettings} logout={logout} setLoggedIn={setLoggedIn}/>
+          <div className='stickyContainer'>
+            <BasicHeader />
+            <BasicTabNav tabs={tabs} setCurrentTab={setCurrentTab} />
+          </div>
+          <Display currentTab={currentTab} />
+          <BasicFooter/>
+        </main>
     );
   }
 
@@ -269,58 +327,6 @@ export function App() {
           )) : <li>No tabs available</li>}
         </ul>
       </nav>
-    );
-  }
-
-
-
-  function BasicSettingsBar({ isOpen, onClose }) {
-    return (
-      <>
-        <nav role="dialog" aria-label='Settings' className='settingsNav' id='settings' aria-hidden={!isOpen} onClick={(e) => {
-                      e.stopPropagation();
-                    }} data-testid="settings">
-          <div role="presentation" className='closeBtnDiv'>
-            <button id="closeSettingPanel" onClick={onClose} aria-label='close'>x</button>
-          </div>
-          <h2 className="settingsHeading">Settings</h2>
-          <ul>
-              <li>
-                <h3>Text Size</h3>
-                <form onSubmit={(e) => e.preventDefault()}>
-                  <button onClick={(e) => {
-                      e.stopPropagation();  // Prevent closing the panel
-                      decTxtChangeSizeAmount(1);
-                    }}  className='settingsBtn' aria-label='Decrease Text Size' data-testid="txtSizeDec">-</button>
-                  <label data-testid="txtSizeLabel">{parseFloat((txtChangeSizeAmount*100).toFixed(2))}%</label>
-                  <button onClick={(e) => {
-                      e.stopPropagation();  // Prevent closing the panel
-                      incTxtChangeSizeAmount(1);
-                    }}  className='settingsBtn' aria-label='Increase Text Size' data-testid="txtSizeInc">+</button>
-                                </form>
-              </li>
-              <li>
-                <h3>Letter Spacing</h3>
-                <form onSubmit={(e) => e.preventDefault()}>
-                  <button onClick={(e) => {
-                      e.stopPropagation();  // Prevent closing the panel
-                      decLetterSpacingChangeSizeAmount(1);
-                    }}  className='settingsBtn' aria-label='Decrease Letter Spacing' data-testid="letterSpacingDec">-</button>
-                  <label data-testid="letterSpacingLabel">{parseFloat((letterSpacingChangeSizeAmount*100).toFixed(2))}%</label>
-                  <button onClick={(e) => {
-                      e.stopPropagation();  // Prevent closing the panel
-                      incLetterSpacingChangeSizeAmount(1);
-                    }} className='settingsBtn' aria-label='Increase Letter Spacing' data-testid="letterSpacingInc">+</button>
-                </form>
-              </li>
-              <li>
-                <button onClick={() => {
-                      logout(setLoggedIn);
-                    }} className='logOutBtn'>log out</button>
-              </li>
-          </ul>
-        </nav>
-      </>
     );
   }
 
@@ -352,7 +358,7 @@ export function App() {
     return (
       <>
           <footer className='basicFooter'>
-            <p className='footerTitle'>Disability Resources & Contact</p>
+            <h4 className='footerTitle'>Disability Resources & Contact</h4>
             <div>
               <div aria-label='Address'>
                 <p>Address</p>
@@ -372,23 +378,57 @@ export function App() {
   }
 
   App.setLoggedIn = setLoggedIn;
-  App.setUserType = setUserType;
-  App.setStaffRoles = setStaffRoles;
   App.staffAccess = staffAccess;
   App.setStaffAccess = setStaffAccess;
   App.setSettings = setSettings;
-  App.setUserId = setUserId;
+  App.setUserInfo = setUserInfo;
+  App.setShowAlert = setShowAlert;
+  App.setAlertMessage = setAlertMessage;
+  App.setUserConnected = setUserConnected;
+  App.setTabs = setTabs;
 
   return (
     <>
-      {loggedIn ? <BasicView 
-          currentTab={currentTab} 
-          setCurrentTab={setCurrentTab}
-          userType={userType}
-          tabs={tabs}
-        /> : <LoginScreen setUserId={setUserId} setSettings={setSettings} loggedIn={loggedIn} setLoggedIn={setLoggedIn} setUserType={setUserType} setStaffRoles={setStaffRoles}/>}
+      {showAlert && <Alert message={alertMessage} />}
+      {loading ? ( // Wrap `loading` in curly braces
+        <div className="loadingScreen" aria-hidden="true" tabIndex="-1">
+          <div className="spinner" role="alert">
+            <div className="spinner-icon"></div>
+            <h1 className="spinner-text">Loading...</h1>
+          </div>
+        </div>
+      ) : (
+        !loggedIn ? (
+          <LoginScreen 
+            userInfo={userInfo} 
+            setSettings={setSettings} 
+            loggedIn={loggedIn} 
+            setLoggedIn={setLoggedIn} 
+            staffAccess={staffAccess}
+            setStaffAccess={setStaffAccess} 
+            setUserInfo={setUserInfo}
+            setLoading={setLoading}
+          />
+        ) : !userConnected ? (
+          <SignUp 
+            userInfo={userInfo} 
+            setUserInfo={setUserInfo} 
+            setAlertMessage={setAlertMessage} 
+            setShowAlert={setShowAlert} 
+            setUserConnected={setUserConnected} 
+            setLoading={setLoading}
+          />
+        ) : (
+          <BasicView 
+            currentTab={currentTab} 
+            setCurrentTab={setCurrentTab}
+            userInfo={userInfo}
+            tabs={tabs}
+          />
+        )
+      )}
     </>
-  );
+  );  
 }
 
 export const logout = async (setLoggedIn) => {
