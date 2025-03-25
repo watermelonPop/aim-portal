@@ -40,6 +40,8 @@ model Student {
   assistive_technologies Assistive_Technology[]
   account                Account                @relation(fields: [userId], references: [id])
   advisors               Advisor[]              @relation("AdvisorToStudent")
+  courses                Course[]
+
 }
 
 model Professor {
@@ -67,9 +69,9 @@ model Settings {
   highlight_links Boolean    @default(false)
   text_magnifier  Boolean    @default(false)
   align_text      String     @default("Middle")
-  font_size       Int        @default(100)
-  line_height     Int        @default(100)
-  letter_spacing  Int        @default(100)
+  font_size       Int        @default(14)
+  line_height     Int        @default(5000)
+  letter_spacing  Int        @default(0)
   saturation      Saturation @default(Regular)
   mute_sounds     Boolean    @default(false)
   hide_images     Boolean    @default(false)
@@ -146,6 +148,9 @@ model Course {
   professorId Int
   professor   Professor @relation(fields: [professorId], references: [userId])
   exams       Exam[]
+
+  students    Student[] 
+
 }
 
 model Exam {
@@ -209,4 +214,6 @@ enum RequestStatus {
   PENDING
   APPROVED
   DENIED
+
 }
+

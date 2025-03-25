@@ -18,6 +18,8 @@ import Alert from './alert';
 import BasicSettingsBar from './basicSettingsBar';
 import SignUp from './signUp';
 
+import BlobTest from './blobtest';
+
 
 export function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -37,10 +39,12 @@ export function App() {
   });
   const [userConnected, setUserConnected] = useState(false);
   const [userTabs, setUserTabs] = useState([
+
     {name: 'Dashboard', elem: <Dash/>},
     {name: 'Accommodations', elem: <Accommodations/>},
     {name: 'Forms', elem: <Forms/>},
     {name: 'Profile', elem: <Profile/>},
+
   ]);
   const [studentTabs, setStudentTabs] = useState([
     {name: 'Dashboard', elem: <Dash/>},
