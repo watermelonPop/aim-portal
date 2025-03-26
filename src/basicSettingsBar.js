@@ -3,6 +3,7 @@ import { useEffect, useState, useCallback } from 'react';
 
 export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logout, setLoggedIn}) {
         const [scrolledPosition, setScrolledPosition] = useState(0);
+        const [tempCursorColor, setTempCursorColor] = useState(settings.cursor_color);
 
         const scrollEvent = useCallback((e) => {
                 const target = e.target;
@@ -96,6 +97,12 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                 setSettings(newSetts);
         };
 
+        const changeCursorColor = async (color) => {
+                let newSetts = {... settings};
+                newSetts.cursor_color = color;
+                setSettings(newSetts);
+        };
+
         BasicSettingsBar.scrolledPosition = scrolledPosition;
 
         return (
@@ -157,6 +164,13 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                 <label data-testid="contrastLabel">{settings.contrast}</label>
                         )}
                         <button onClick={handleButtonAction(() => changeContrast(true))} className='settingsBtn' aria-label='Increase Contrast' data-testid="contrastInc">+</button>
+                        </form>
+                </li>
+                <li>
+                        <h3>Cursor Color</h3>
+                        <form onSubmit={(e) => e.preventDefault()}>
+                        <input type="color" name="cursor_color" value={tempCursorColor} onChange={(e) => setTempCursorColor(e.target.value)}></input>
+                        <button onClick={() => changeCursorColor(tempCursorColor)} className='setBtn' aria-label='Set Cursor Color'>set</button>
                         </form>
                 </li>
                 <li>

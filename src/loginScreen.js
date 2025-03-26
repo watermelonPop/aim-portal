@@ -274,7 +274,7 @@ export function LoginScreen({ setSettings, loggedIn, setLoggedIn, staffAccess, s
 
   return (
       <main className='loginScreen' data-testid="login-screen">
-        <header className='loginHeader' role="heading" aria-level="1">
+        <header className='loginHeader'>
           <img src={logo} alt="TAMU Logo" className='logoImg'/>
           <h1 className='loginTitle'>AIM Portal</h1>
         </header>

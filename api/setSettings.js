@@ -31,6 +31,8 @@ module.exports = async (req, res) => {
           reading_mask: settings.reading_mask,
           highlight_hover: settings.highlight_hover,
           cursor: settings.cursor,
+          cursor_color: settings.cursor_color,
+          cursor_border: settings.cursor_border
         },
       });
 

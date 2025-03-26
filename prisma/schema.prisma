@@ -23,12 +23,12 @@ model Account {
 }
 
 model User {
-  userId       Int      @id @unique
+  userId       Int       @id @unique
   dob          DateTime
-  UIN          Int?     @unique
+  UIN          Int?      @unique
   phone_number String
-  account      Account  @relation(fields: [userId], references: [id])
-  request       Request[]
+  request      Request[]
+  account      Account   @relation(fields: [userId], references: [id])
 }
 
 model Student {
@@ -41,7 +41,6 @@ model Student {
   account                Account                @relation(fields: [userId], references: [id])
   advisors               Advisor[]              @relation("AdvisorToStudent")
   courses                Course[]
-
 }
 
 model Professor {
@@ -77,7 +76,9 @@ model Settings {
   hide_images     Boolean    @default(false)
   reading_mask    Boolean    @default(false)
   highlight_hover Boolean    @default(false)
-  cursor          Cursor     @default(Regular)
+  cursor          CursorSize @default(Regular)
+  cursor_color    String     @default("#000000")
+  cursor_border   String     @default("#FFFFFF")
   contrast        String     @default("100%")
   account         Account    @relation(fields: [userId], references: [id])
 }
@@ -91,9 +92,8 @@ model Form {
   dueDate       DateTime?
   createdAt     DateTime   @default(now())
   userId        Int
-  
-  user          Account    @relation(fields: [userId], references: [id])
   formUrl       String?
+  user          Account    @relation(fields: [userId], references: [id])
 }
 
 model Important_Dates {
@@ -133,13 +133,13 @@ model Accommodations {
 }
 
 model Request {
-  id            Int     @id @default(autoincrement())
-  advisorId     Int
-  notes         String?
-  documentation Boolean
+  id                    Int     @id @default(autoincrement())
+  advisorId             Int
+  notes                 String?
+  documentation         Boolean
   non_registered_userId Int
-  user          User  @relation(fields: [non_registered_userId], references: [userId])
-  advisor       Advisor @relation(fields: [advisorId], references: [userId])
+  advisor               Advisor @relation(fields: [advisorId], references: [userId])
+  user                  User    @relation(fields: [non_registered_userId], references: [userId])
 }
 
 model Course {
@@ -179,12 +179,6 @@ enum FormType {
   APPEALS_TEMP_WORKPLACE
 }
 
-enum Cursor {
-  BBC
-  BWC
-  Regular
-}
-
 enum Saturation {
   Regular
   Low
@@ -215,6 +209,10 @@ enum RequestStatus {
   PENDING
   APPROVED
   DENIED
-
 }
 
+enum CursorSize {
+  XLarge
+  Large
+  Regular
+}
