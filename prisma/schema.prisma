@@ -129,6 +129,7 @@ model Accommodations {
   studentId      Int
   advisor        Advisor  @relation(fields: [advisorId], references: [userId])
   student        Student  @relation(fields: [studentId], references: [userId])
+  courses        Course[]
 }
 
 model Request {
@@ -142,14 +143,14 @@ model Request {
 }
 
 model Course {
-  id          Int       @id @default(autoincrement())
-  name        String
-  department  String
-  professorId Int
-  professor   Professor @relation(fields: [professorId], references: [userId])
-  exams       Exam[]
-
-  students    Student[] 
+  id                Int       @id @default(autoincrement())
+  name              String
+  department        String
+  professorId       Int
+  professor         Professor @relation(fields: [professorId], references: [userId])
+  exams             Exam[]
+  accommodations    Accommodations[]
+  students          Student[] 
 
 }
 
