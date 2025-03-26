@@ -102,7 +102,7 @@ const encodeCursorSVG = (svg, type) => {
 };
 const [svgCursors, setSvgCursors] = useState({
   default: encodeCursorSVG(
-    `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 320 512">
+    `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 320 512">
       <path 
         fill="${settings.cursor_color}" 
         stroke="${settings.cursor_border}" 
@@ -113,7 +113,7 @@ const [svgCursors, setSvgCursors] = useState({
   ),
 
   pointer: encodeCursorSVG(
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="30" height="30">
       <path 
         fill="${settings.cursor_color}" 
         stroke="${settings.cursor_border}" 
@@ -124,7 +124,7 @@ const [svgCursors, setSvgCursors] = useState({
   ),
 
   text: encodeCursorSVG(
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512">
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512" width="30" height="30">
       <path 
         fill="${settings.cursor_color}" 
         stroke="${settings.cursor_border}" 
@@ -134,6 +134,12 @@ const [svgCursors, setSvgCursors] = useState({
     "text"
   )
 });
+
+document.documentElement.style.setProperty('--custom-cursor', svgCursors.default);
+document.documentElement.style.setProperty('--custom-hover-cursor', svgCursors.pointer);
+document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.text);
+
+
 
 
   useEffect(() => {
@@ -249,7 +255,7 @@ const [svgCursors, setSvgCursors] = useState({
         document.documentElement.style.setProperty("--contrast", `${settings.contrast}`);
         const newSvgCursors = {
           default: encodeCursorSVG(
-            `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 320 512">
+            `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 320 512">
               <path 
                 fill="${settings.cursor_color}" 
                 stroke="${settings.cursor_border}" 
@@ -260,7 +266,7 @@ const [svgCursors, setSvgCursors] = useState({
           ),
         
           pointer: encodeCursorSVG(
-            `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 448 512">
+            `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 448 512">
               <path 
                 fill="${settings.cursor_color}" 
                 stroke="${settings.cursor_border}" 
@@ -271,7 +277,7 @@ const [svgCursors, setSvgCursors] = useState({
           ),
         
           text: encodeCursorSVG(
-            `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512" width="32" height="32">
+            `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512" width="30" height="30">
               <path 
                 fill="${settings.cursor_color}" 
                 stroke="${settings.cursor_border}" 

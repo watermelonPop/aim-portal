@@ -19,6 +19,7 @@ body {
   flex-direction: column;
   margin: 0;
   cursor: var(--custom-cursor);
+  font-family: "Mitr", serif !important;
 }
 
 button, a{
@@ -27,6 +28,10 @@ button, a{
 
 input, textarea{
   cursor: var(--custom-text-cursor);
+}
+
+label{
+  cursor: var(--custom-cursor);
 }
 
 body.modal-open {
@@ -73,7 +78,6 @@ main{
 }
 
 h1{
-  font-family: "Mitr", serif;
   font-weight: 700;
   letter-spacing: var(--letterSpacing);
   display: flex;
@@ -86,7 +90,6 @@ h1{
 }
 
 h2{
-  font-family: "Mitr", serif;
   font-weight: 600;
   letter-spacing: var(--letterSpacing);
   display: flex;
@@ -99,7 +102,6 @@ h2{
 }
 
 h3{
-  font-family: "Mitr", serif;
   font-weight: 500;
   letter-spacing: var(--letterSpacing);
   display: flex;
@@ -112,7 +114,6 @@ h3{
 }
 
 h4{
-  font-family: "Mitr", serif;
   font-weight: 500;
   letter-spacing: var(--letterSpacing);
   display: flex;
@@ -133,7 +134,6 @@ h4{
 
 
 button{
-  font-family: "Mitr", serif;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -273,7 +273,6 @@ button{
   width: 80%;
   height: 70%;
   background-color: #FFEDED;
-  font-family: "Mitr", serif;
   font-weight: 400;
   font-size: var(--txtSize);
   letter-spacing: var(--letterSpacing);
@@ -309,7 +308,6 @@ button{
   margin: 0;
   display: flex;
   width: fit-content;
-  font-family: "Mitr", serif;
   font-weight: 500;
   letter-spacing: var(--letterSpacing);
   margin: 0;
@@ -393,8 +391,6 @@ button{
   display: flex !important;
   flex-direction: row !important;
   justify-content: space-between !important;
-
-  font-family: "Mitr", serif;
   font-weight: 500;
   letter-spacing: var(--letterSpacing);
   padding: 0;
@@ -403,7 +399,6 @@ button{
 
 .disProfiles button{
   border: none;
-  font-family: "Mitr", serif;
   font-weight: 500;
   letter-spacing: var(--letterSpacing);
   margin: 0;
@@ -450,7 +445,6 @@ button{
   padding: 14px 16px;
   text-decoration: none;
   color:#FFEDED;
-  font-family: "Mitr", serif;
   font-weight: 400;
   font-size: calc(var(--txtSize) + 5px);
   letter-spacing: var(--letterSpacing);
@@ -499,7 +493,6 @@ button{
   column-gap: 5%;
   width: 75%;
   color:#FFEDED;
-  font-family: "Mitr", serif;
   font-weight: 400;
   font-size: var(--txtSize);
   letter-spacing: var(--letterSpacing);
@@ -661,7 +654,6 @@ button{
   width: 80%;
   display: flex;
   flex-direction: column;
-  font-family: "Mitr", serif;
   font-weight: 400;
   font-size: var(--txtSize);
   letter-spacing: var(--letterSpacing);
@@ -675,7 +667,6 @@ button{
 }
 
 .subTitle{
-  font-family: "Mitr", serif;
   font-weight: 500;
   font-size: calc(var(--txtSize) + 5px);
   letter-spacing: var(--letterSpacing);
@@ -684,7 +675,6 @@ button{
 }
 
 .alertTxt{
-  font-family: "Mitr", serif;
   font-weight: 500;
   font-size: var(--txtSize);
   letter-spacing: var(--letterSpacing);
@@ -696,7 +686,6 @@ button{
   border-radius: 1rem;
   min-height: 2rem;
   padding: 1%;
-  font-family: "Mitr", serif;
   font-weight: 400;
   font-size: var(--txtSize);
   letter-spacing: var(--letterSpacing);
@@ -793,7 +782,6 @@ button{
 
 .setBtn{
   border: none;
-  font-family: "Mitr", serif;
   font-weight: 500;
   letter-spacing: var(--letterSpacing);
   margin: 0;
@@ -809,4 +797,10 @@ button{
 .setBtn:hover{
   background-color: #4F0000;
   color: #FFEDED;
+}
+
+.newStudentApp input[type="date"] {
+  position: relative;
+  z-index: 10;
+  cursor: var(--custom-cursor);
 }
