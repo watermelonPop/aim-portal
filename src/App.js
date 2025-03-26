@@ -18,6 +18,8 @@ import Alert from './alert';
 import BasicSettingsBar from './basicSettingsBar';
 import SignUp from './signUp';
 
+import BlobTest from './blobtest';
+
 
 export function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -37,10 +39,12 @@ export function App() {
   });
   const [userConnected, setUserConnected] = useState(false);
   const [userTabs, setUserTabs] = useState([
+
     {name: 'Dashboard', elem: <Dash/>},
     {name: 'Accommodations', elem: <Accommodations/>},
     {name: 'Forms', elem: <Forms/>},
     {name: 'Profile', elem: <Profile/>},
+
   ]);
   const [studentTabs, setStudentTabs] = useState([
     {name: 'Dashboard', elem: <Dash/>},
@@ -163,7 +167,7 @@ const [svgCursors, setSvgCursors] = useState({
     if (userInfo && userInfo.role === "USER" && userInfo.id && userConnected) {
       getUser(userInfo.id);
     }
-  }, [userInfo?.id, userInfo?.role, setUserConnected]);
+  }, [userInfo?.id, userInfo?.role, userConnected]);
 
   useEffect(() => {
     if(!loggedIn || !userConnected || !userInfo){

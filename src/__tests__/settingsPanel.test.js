@@ -35,6 +35,7 @@ describe('settingsPanel', () => {
                 
                     await act(async () => {
                         await App.setLoggedIn(true);
+                        await App.setUserConnected(true);
                     });
                     
                     await waitFor(() => {
@@ -58,6 +59,7 @@ describe('settingsPanel', () => {
                 
                     await act(async () => {
                         await App.setLoggedIn(true);
+                        await App.setUserConnected(true);
                     });
                 
                     expect(screen.getByTestId('settings')).toHaveAttribute('aria-hidden', 'true');

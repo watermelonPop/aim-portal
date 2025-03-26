@@ -3,22 +3,32 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+
+    "@azure/storage-blob": "^12.27.0",
+
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-brands-svg-icons": "^6.7.2",
     "@fortawesome/free-regular-svg-icons": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@neondatabase/serverless": "^0.10.4",
+
     "@prisma/adapter-neon": "^6.5.0",
     "@prisma/client": "^6.5.0",
     "cra-template": "1.2.0",
     "express": "^4.21.2",
+    "formidable": "^3.5.2",
+    "fs": "^0.0.1-security",
+
     "google-auth-library": "^9.15.1",
+    "multer": "^1.4.5-lts.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
+
+    "typescript": "^4.0.0",
+
     "web-vitals": "^4.2.4",
-    "ws": "^8.18.1",
-    "typescript": "^4.0.0"
+    "ws": "^8.18.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -52,7 +62,9 @@
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
+
     "@types/ws": "^8.18.0",
+
     "babel-jest": "^29.7.0",
     "jest": "^27.5.1",
     "prisma": "^6.5.0",

@@ -90,8 +90,8 @@ export function LoginScreen({ setSettings, loggedIn, setLoggedIn, staffAccess, s
           setUserInfo({...exists.user_info });
           if(exists.user_info.role === "ADVISOR"){
             let staffRole = await getStaffRoles(exists.user_info.id);
-            console.log(staffRole);
-            setStaffRoles(staffRole);
+            console.log("STAFF ROLE: ", staffRole);
+            setStaffRoles(staffRole, setStaffAccess, staffAccess);
           }
           await getUserSettings(exists.user_info.id, setSettings);
         }else{
@@ -157,7 +157,7 @@ export function LoginScreen({ setSettings, loggedIn, setLoggedIn, staffAccess, s
       }   
   };
 
-  const setStaffRoles = (staffRole) => {
+  const setStaffRoles = (staffRole, setStaffAccess, staffAccess) => {
     console.log("STAFF ROLE: ", staffRole);
     let newStaffAccess = [...staffAccess];
     console.log("NEW STAFF ACCESS: ", newStaffAccess);
@@ -172,13 +172,13 @@ export function LoginScreen({ setSettings, loggedIn, setLoggedIn, staffAccess, s
           newStaffAccess[i].hasAccess = true;
         }
       }
-    }else if(staffRole === "Testing Staff"){
+    }else if(staffRole === "Testing_Staff"){
       for(let i = 0; i < newStaffAccess.length; i++){
         if(newStaffAccess[i].access === "Accessible Testing" || newStaffAccess[i].access === "Student Cases"){
           newStaffAccess[i].hasAccess = true;
         }
       }
-    }else if(staffRole === "Assistive Technology"){
+    }else if(staffRole === "Tech_Staff"){
       for(let i = 0; i < newStaffAccess.length; i++){
         if(newStaffAccess[i].access === "Assistive Technology" || newStaffAccess[i].access === "Student Cases"){
           newStaffAccess[i].hasAccess = true;
@@ -269,6 +269,8 @@ export function LoginScreen({ setSettings, loggedIn, setLoggedIn, staffAccess, s
   LoginScreen.loggedIn = loggedIn;
   LoginScreen.setLoggedIn = setLoggedIn;
   LoginScreen.getUserSettings = getUserSettings;
+  LoginScreen.staffAccess = staffAccess;
+  LoginScreen.setStaffRoles = setStaffRoles;
 
   return (
       <main className='loginScreen' data-testid="login-screen">

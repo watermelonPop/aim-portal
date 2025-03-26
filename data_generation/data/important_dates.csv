@@ -1,0 +1,17 @@
+event_id,event_name,event_type,event_date
+97eb85d4-11ff-4425-9e8b-fc1a1a8fbe52,spring break,break,2024-12-11
+fe8067be-e08d-4482-96b3-e24f33a6930a,winter break,break,2024-03-26
+f0d94a0c-2d96-4ba8-bf77-cab532e80605,summer break,break,2024-05-16
+e6f3aac9-9196-40eb-8825-9074d588c1cb,fall break,break,2024-12-21
+346dbf60-42d3-4f60-80c4-182494144ad3,thanksgiving break,break,2024-06-20
+b0d580b5-8a8f-4d8b-a451-8904b5b220b6,MLK Day,office closure,2024-10-09
+e6a4e561-cc94-409f-b8b2-970c3334814f,Christmas,office closure,2024-04-15
+038f4a5c-41d4-4730-9ba0-40c37e11f010,New Years Eve,office closure,2024-11-27
+28961050-55fb-4f18-a49b-6aaeaf8ceddd,Labor Day,office closure,2024-10-22
+fc37e124-6e46-4aaf-9b60-417ede9444f9,Winter Storm,weather,2024-12-22
+de9e7570-6197-4ddb-adb5-695bc3c6203a,Monsoon,weather,2024-09-01
+9444cec4-cb93-4646-862d-f5e940d9855a,Hurricane,weather,2024-12-18
+98cccf5f-9b12-4d28-bfc3-00b7efde03b1,accomodations application deadline,deadline,2024-03-11
+39b887d3-0802-4cee-8d98-ba1015ea79f4,early registration deadline,deadline,2024-04-04
+0db372c4-480c-406a-a012-3e49aaf59af9,q-drop deadline,deadline,2024-02-08
+17fa5318-ef0c-4e6d-bb40-a4709f582fe0,testing request deadline,deadline,2024-08-18
