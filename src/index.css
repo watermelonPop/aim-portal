@@ -457,10 +457,24 @@ button{
   height: 80%;
 }
 
+.tabNav ul > li > a{
+  text-decoration: none;
+  color: #FFEDED;
+}
+
+.tabNav ul > li > a:hover{
+  color: #FFEDED;
+  border-color: #FFEDED;
+  border-radius: 1rem;
+  border: 2px solid;
+  padding: 0.5rem;
+}
+
 #activeTab{
   background-color: #FFEDED;
   color: #4F0000;
   border-radius: 1rem;
+  padding: 0.5rem;
 }
 
 .footerTitle{
@@ -496,6 +510,10 @@ button{
 .basicFooter div > div{
   display: flex;
   flex-direction: column;
+}
+
+.basicFooter div > div > p > a{
+  text-decoration: underline !important;
 }
 .dashboardOuter{
   width: 100%;
@@ -770,4 +788,25 @@ button{
   background-color: #FFEDED;
   color:#4F0000;
   border-radius: 1rem;
+}
+
+
+.setBtn{
+  border: none;
+  font-family: "Mitr", serif;
+  font-weight: 500;
+  letter-spacing: var(--letterSpacing);
+  margin: 0;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-size: calc(var(--txtSize) + 5px);
+  background-color: #FFEDED;
+  border: #4F0000 2px solid;
+}
+
+.setBtn:hover{
+  background-color: #4F0000;
+  color: #FFEDED;
 }

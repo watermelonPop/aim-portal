@@ -40,7 +40,7 @@ model Student {
   assistive_technologies Assistive_Technology[]
   account                Account                @relation(fields: [userId], references: [id])
   advisors               Advisor[]              @relation("AdvisorToStudent")
-  Course                 Course[]
+  courses                Course[]               @relation("CourseToStudent")
 }
 
 model Professor {
@@ -76,10 +76,10 @@ model Settings {
   hide_images     Boolean    @default(false)
   reading_mask    Boolean    @default(false)
   highlight_hover Boolean    @default(false)
-  contrast        String     @default("100%")
-  cursor_border   String     @default("#FFFFFF")
-  cursor_color    String     @default("#000000")
   cursor          CursorSize @default(Regular)
+  cursor_color    String     @default("#000000")
+  cursor_border   String     @default("#FFFFFF")
+  contrast        String     @default("100%")
   account         Account    @relation(fields: [userId], references: [id])
 }
 
@@ -148,7 +148,7 @@ model Course {
   professorId Int
   professor   Professor @relation(fields: [professorId], references: [userId])
   exams       Exam[]
-  Student     Student[]
+  students    Student[] @relation("CourseToStudent")
 }
 
 model Exam {

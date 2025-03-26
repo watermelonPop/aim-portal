@@ -293,31 +293,6 @@ const [svgCursors, setSvgCursors] = useState({
     
     updateSettings().catch(console.error);
   }, [settings, userInfo]);
-
-  /*useEffect(() => {
-    const handleMouseOver = (e) => {
-      const target = e.target;
-      if (target.tagName === 'A' || target.tagName === 'BUTTON') {
-        //console.log("BUTTON OR A: ", svgCursors.pointer);
-        //document.documentElement.style.setProperty('--custom-cursor', svgCursors.pointer);
-      }
-    };
-  
-    const handleMouseOut = (e) => {
-      const target = e.target;
-      if (target.tagName === 'A' || target.tagName === 'BUTTON') {
-        document.body.style.setProperty('--custom-cursor', svgCursors.default);
-      }
-    };
-  
-    document.addEventListener('mouseover', handleMouseOver);
-    document.addEventListener('mouseout', handleMouseOut);
-  
-    return () => {
-      document.removeEventListener('mouseover', handleMouseOver);
-      document.removeEventListener('mouseout', handleMouseOut);
-    };
-  }, [svgCursors]);*/
   
   
 
@@ -426,11 +401,20 @@ const [svgCursors, setSvgCursors] = useState({
       <nav role="navigation" className='tabNav' data-testid="basicTabNav">
         <ul role="menubar">
           {Array.isArray(tabs) ? tabs.map((tab, index) => (
-            <li key={index} role="menuitem" onClick={() => setCurrentTab(tab)} 
+            <li key={index} role="none">
+              <a
+                href="#"
+                role="menuitem"
                 id={tab === currentTab ? "activeTab" : undefined}
-                ref={(el) => (tabRefs.current[index] = el)} // Create a ref for each tab
-                tabIndex={0}>  {/* Add tabIndex to ensure it is focusable */}
-              {tab.name}
+                ref={(el) => (tabRefs.current[index] = el)}
+                tabIndex={0}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setCurrentTab(tab);
+                }}
+              >
+                {tab.name}
+              </a>
             </li>
           )) : <li>No tabs available</li>}
         </ul>

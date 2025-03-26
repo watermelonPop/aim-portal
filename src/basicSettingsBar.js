@@ -3,6 +3,7 @@ import { useEffect, useState, useCallback } from 'react';
 
 export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logout, setLoggedIn}) {
         const [scrolledPosition, setScrolledPosition] = useState(0);
+        const [tempCursorColor, setTempCursorColor] = useState(settings.cursor_color);
 
         const scrollEvent = useCallback((e) => {
                 const target = e.target;
@@ -168,7 +169,8 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                 <li>
                         <h3>Cursor Color</h3>
                         <form onSubmit={(e) => e.preventDefault()}>
-                        <input type="color" name="cursor_color" value={settings.cursor_color} onChange={handleButtonAction((e) => changeCursorColor(e.target.value))}></input>
+                        <input type="color" name="cursor_color" value={tempCursorColor} onChange={(e) => setTempCursorColor(e.target.value)}></input>
+                        <button onClick={() => changeCursorColor(tempCursorColor)} className='setBtn' aria-label='Set Cursor Color'>set</button>
                         </form>
                 </li>
                 <li>
