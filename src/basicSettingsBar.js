@@ -96,6 +96,12 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                 setSettings(newSetts);
         };
 
+        const changeCursorColor = async (color) => {
+                let newSetts = {... settings};
+                newSetts.cursor_color = color;
+                setSettings(newSetts);
+        };
+
         BasicSettingsBar.scrolledPosition = scrolledPosition;
 
         return (
@@ -157,6 +163,12 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                 <label data-testid="contrastLabel">{settings.contrast}</label>
                         )}
                         <button onClick={handleButtonAction(() => changeContrast(true))} className='settingsBtn' aria-label='Increase Contrast' data-testid="contrastInc">+</button>
+                        </form>
+                </li>
+                <li>
+                        <h3>Cursor Color</h3>
+                        <form onSubmit={(e) => e.preventDefault()}>
+                        <input type="color" name="cursor_color" value={settings.cursor_color} onChange={handleButtonAction((e) => changeCursorColor(e.target.value))}></input>
                         </form>
                 </li>
                 <li>

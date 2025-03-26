@@ -2,6 +2,9 @@
   --txtSize: 14px;
   --letterSpacing: 0px;
   --contrast: 100%;
+  --custom-cursor: auto;
+  --custom-hover-cursor: pointer;
+  --custom-text-cursor: text;
 }
 
 html{
@@ -15,6 +18,15 @@ body {
   align-items: center;
   flex-direction: column;
   margin: 0;
+  cursor: var(--custom-cursor);
+}
+
+button, a{
+  cursor: var(--custom-hover-cursor);
+}
+
+input, textarea{
+  cursor: var(--custom-text-cursor);
 }
 
 body.modal-open {
@@ -128,7 +140,6 @@ button{
   margin: 0;
   border-radius: 1rem;
   border-color: none;
-  cursor: pointer;
 }
 
 #loginBtn{
@@ -443,7 +454,6 @@ button{
   font-weight: 400;
   font-size: calc(var(--txtSize) + 5px);
   letter-spacing: var(--letterSpacing);
-  cursor: pointer;
   height: 80%;
 }
 
