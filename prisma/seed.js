@@ -509,7 +509,7 @@ async function main() {
   for (let i = 0; i < num_professors; i++) {
     const professor = professors[i % professors.length];
     for (let j = 0; j < 2; j++){
-      course_num = Math.floor(Math.random()*999)
+      let course_num = Math.floor(Math.random()*999)
       const course = await prisma.course.create({
         data: {
           name: course_letters[professor.department] + " " + String(course_num),
