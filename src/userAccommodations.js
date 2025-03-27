@@ -327,6 +327,7 @@ export function UserAccommodations({userInfo, setAlertMessage, setShowAlert}) {
                 };
                 fetchForm();
         }, [userInfo, existingRequest]);
+              
 
         UserAccommodations.setExistingRequest = setExistingRequest;
         UserAccommodations.existingRequest = existingRequest;

@@ -19,7 +19,7 @@ describe('Profile component', () => {
         json: () =>
           Promise.resolve({
             uin: 179008299,
-            dob: '2024-12-24T00:00:00.000Z',
+            dob: '2024-12-24T06:00:00.000Z',
             phone_number: '1-935-865-0245 x848',
             email: 'student1.aim@gmail.com',
           }),
