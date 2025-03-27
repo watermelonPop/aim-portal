@@ -40,7 +40,7 @@ model Student {
   assistive_technologies Assistive_Technology[]
   account                Account                @relation(fields: [userId], references: [id])
   advisors               Advisor[]              @relation("AdvisorToStudent")
-  courses                Course[]
+  courses                Course[]               @relation("CourseToStudent")
 }
 
 model Professor {
@@ -62,25 +62,25 @@ model Advisor {
 }
 
 model Settings {
-  userId          Int        @id @unique
-  content_size    Int        @default(100)
-  highlight_tiles Boolean    @default(false)
-  highlight_links Boolean    @default(false)
-  text_magnifier  Boolean    @default(false)
-  align_text      String     @default("Middle")
-  font_size       Int        @default(14)
-  line_height     Int        @default(5000)
-  letter_spacing  Int        @default(0)
-  saturation      Saturation @default(Regular)
-  mute_sounds     Boolean    @default(false)
-  hide_images     Boolean    @default(false)
-  reading_mask    Boolean    @default(false)
-  highlight_hover Boolean    @default(false)
-  cursor          CursorSize @default(Regular)
-  cursor_color    String     @default("#000000")
-  cursor_border   String     @default("#FFFFFF")
-  contrast        String     @default("100%")
-  account         Account    @relation(fields: [userId], references: [id])
+  userId              Int        @id @unique
+  content_size        Int        @default(100)
+  highlight_tiles     Boolean    @default(false)
+  highlight_links     Boolean    @default(false)
+  text_magnifier      Boolean    @default(false)
+  align_text          String     @default("Middle")
+  font_size           Int        @default(14)
+  line_height         Int        @default(5000)
+  letter_spacing      Int        @default(0)
+  saturation          Saturation @default(Regular)
+  mute_sounds         Boolean    @default(false)
+  hide_images         Boolean    @default(false)
+  reading_mask        Boolean    @default(false)
+  highlight_hover     Boolean    @default(false)
+  cursor_size         Int        @default(2)
+  cursor_color        String     @default("#000000")
+  cursor_border_color String     @default("#FFFFFF")
+  contrast            String     @default("100%")
+  account             Account    @relation(fields: [userId], references: [id])
 }
 
 model Form {
@@ -129,7 +129,7 @@ model Accommodations {
   studentId      Int
   advisor        Advisor  @relation(fields: [advisorId], references: [userId])
   student        Student  @relation(fields: [studentId], references: [userId])
-  courses        Course[]
+  courses        Course[] @relation("AccommodationsToCourse")
 }
 
 model Request {
@@ -143,15 +143,14 @@ model Request {
 }
 
 model Course {
-  id                Int       @id @default(autoincrement())
-  name              String
-  department        String
-  professorId       Int
-  professor         Professor @relation(fields: [professorId], references: [userId])
-  exams             Exam[]
-  accommodations    Accommodations[]
-  students          Student[] 
-
+  id             Int              @id @default(autoincrement())
+  name           String
+  department     String
+  professorId    Int
+  professor      Professor        @relation(fields: [professorId], references: [userId])
+  exams          Exam[]
+  accommodations Accommodations[] @relation("AccommodationsToCourse")
+  students       Student[]        @relation("CourseToStudent")
 }
 
 model Exam {
@@ -209,10 +208,4 @@ enum RequestStatus {
   PENDING
   APPROVED
   DENIED
-}
-
-enum CursorSize {
-  XLarge
-  Large
-  Regular
 }
