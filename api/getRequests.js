@@ -8,7 +8,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Fetch requests with related advisor and user details
+    // Fetch requests with related advisor, user, and user's account details
     const requests = await prisma.request.findMany({
       include: {
         advisor: {
@@ -23,6 +23,11 @@ export default async function handler(req, res) {
             dob: true,
             UIN: true,
             phone_number: true,
+            account: {  // Fetch associated account details (name)
+              select: {
+                name: true,
+              },
+            },
           },
         },
       },
@@ -37,6 +42,7 @@ export default async function handler(req, res) {
       documentation: request.documentation,
       non_registered_userId: request.non_registered_userId,
       userId: request.user?.userId || null,
+      student_name: request.user?.account?.name || "N/A", // Get student name from account
       dob: request.user?.dob || null,
       UIN: request.user?.UIN || null,
       phone_number: request.user?.phone_number || null,

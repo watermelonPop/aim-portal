@@ -16,6 +16,20 @@ function StaffDash() {
   const [filteredRequests, setFilteredRequests] = useState([]); // Stores filtered results
   const totalPages = Math.ceil(filteredRequests.length / 10);
   const [requestsData, setRequestsData] = useState([]); // Holds the requests from the DB
+  const [requests, setRequests] = useState([]);
+  const [expandedRequest, setExpandedRequest] = useState(null); // Track which request is expanded
+  const [showAccommodations, setShowAccommodations] = useState(false);
+  const [showAssistiveTech, setShowAssistiveTech] = useState(false);
+  const [loadingRequests, setLoadingRequests] = useState(true);
+  const [showStudentInfo, setShowStudentInfo] = useState(false);
+  const [refreshingStudent, setRefreshingStudent] = useState(false);
+  const [studentNeedsRefresh, setStudentNeedsRefresh] = useState(false);
+
+
+
+
+
+
   const alerts = [
     { id: 1, date: '2024-03-05', message: 'New accommodation request from John Doe', notes: 'Pending approval by staff' },
     { id: 2, date: '2024-03-04', message: '2 pending form approvals', notes: 'Review submitted forms by end of day' },
@@ -29,6 +43,31 @@ function StaffDash() {
       timer = setTimeout(() => func(...args), delay);
     };
   };
+  const refreshStudentData = async (userId) => {
+    setRefreshingStudent(true);
+    try {
+      const res = await fetch('/api/getStudents');
+      const data = await res.json();
+  
+      const updatedStudent = data.students.find(s => s.userId === userId);
+      if (updatedStudent) {
+        // ✅ Replace the updated student in the list
+        setStudentsData(prev =>
+          prev.map(s => (s.userId === userId ? updatedStudent : s))
+        );
+  
+        // ✅ Update selected + edited student
+        setSelectedStudent(updatedStudent);
+        setEditedStudent(updatedStudent);
+      }
+    } catch (err) {
+      console.error("❌ Error refreshing student data:", err);
+    } finally {
+      setRefreshingStudent(false);
+    }
+  };
+  
+  
 
     // Optimized Search with Debounce
     const performSearch = useCallback(
@@ -49,20 +88,33 @@ function StaffDash() {
       }, 300), // Delay of 300ms
       [studentsData]
     );
+    useEffect(() => {
+      if (view == null) {
+        setSearchTerm("");
+        setSelectedStudent(null);
+        setShowAccommodations(false);
+        setShowAssistiveTech(false);
+      }
+    }, [view]);
+    
 
-  // ADDED FOR REQUESTS: Fetch requests when view is 'requests'
-  useEffect(() => {
-    fetch('/api/getRequests')
-      .then(response => response.json())
-      .then(data => {
-        if (data.requests) {
-          setRequestsData(data.requests);
-        } else {
-          console.error("Invalid API response:", data);
+    useEffect(() => {
+      const fetchRequests = async () => {
+        setLoadingRequests(true); // Show loading spinner
+        try {
+          const response = await fetch('/api/getRequests'); // Replace with actual API
+          const data = await response.json();
+          setRequests(data.requests);
+        } catch (error) {
+          console.error("Error fetching requests:", error);
+        } finally {
+          setLoadingRequests(false); // Hide loading spinner
         }
-      })
-      .catch(error => console.error('Error fetching requests:', error));
-  }, []);
+      };
+    
+      fetchRequests();
+    }, []);
+    
   
 
 
@@ -150,11 +202,14 @@ function StaffDash() {
 const handleStudentClick = (student) => {
   setSelectedStudent({
     userId: student.userId,
-    student_name: student.student_name, // Now from `account`
+    student_name: student.student_name,
     UIN: student.UIN,
     dob: student.dob,
     email: student.email,
     phone_number: student.phone_number,
+
+    accommodations: student.accommodations || [],
+    assistive_technologies: student.assistive_technologies || [],
   });
 
   setEditedStudent({ ...student });
@@ -172,50 +227,131 @@ const handleStudentClick = (student) => {
   };
 
   // Submit edited student data to the database
-  const handleSaveChanges = () => {
+  const handleSaveChanges = async () => {
+    setInfoMessage('');
+    setSuccessMessage('');
+  
     if (!hasChanges()) {
       setInfoMessage('⚠️ No changes to save.');
-      setTimeout(() => setInfoMessage('fade-out'), 4000);
-      setTimeout(() => setInfoMessage(''), 3000);
+      setTimeout(() => setInfoMessage('fade-out'), 3000);
+      setTimeout(() => setInfoMessage(''), 4000);
+      return;
+    }
+    const errors = [];
+  
+    const nameRegex = /^[A-Za-z\s.,'-]+$/;
+    if (!editedStudent.student_name || !nameRegex.test(editedStudent.student_name)) {
+      errors.push("• Name must only contain letters and spaces.");
+    }
+  
+    if (!/^\d{9}$/.test(editedStudent.UIN)) {
+      errors.push("• UIN must be exactly 9 digits.");
+    }
+  
+    if (!editedStudent.dob || isNaN(new Date(editedStudent.dob).getTime())) {
+      errors.push("• Date of Birth is not valid.");
+    }
+  
+    const tamuEmailRegex = /^[^\s@]+@tamu\.edu$/i;
+    if (!tamuEmailRegex.test(editedStudent.email)) {
+      errors.push("• Email must end with @tamu.edu.");
+    }
+  
+    const phoneRegex = /^[()\d.\-\s]+(?: x\d+)?$/;
+    if (!phoneRegex.test(editedStudent.phone_number)) {
+      errors.push("• Phone number format is invalid.");
+    }
+  
+    if (errors.length > 0) {
+      setInfoMessage(`❌ Please fix the following:\n${errors.join("\n")}`);
+      setSuccessMessage('');
+      setLoading(false);
       return;
     }
   
     setLoading(true);
+    setInfoMessage('');
     setSuccessMessage('');
   
-    // Ensure we send correct fields matching updateStudent.js
     const studentUpdatePayload = {
-      userId: editedStudent.userId, // Matches API schema
-      student_name: editedStudent.student_name, // Updated field (from `account`)
-      UIN: editedStudent.UIN, // Ensure proper casing
+      userId: editedStudent.userId,
+      student_name: editedStudent.student_name.trim(),
+      UIN: parseInt(editedStudent.UIN, 10),
       dob: editedStudent.dob,
-      email: editedStudent.email,
-      phone_number: editedStudent.phone_number,
+      email: editedStudent.email.trim(),
+      phone_number: editedStudent.phone_number.trim(),
     };
   
-    fetch('/api/updateStudent', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(studentUpdatePayload), // Corrected payload
-    })
-      .then(response => response.json())
-      .then(() => {
-        setSuccessMessage('✅ Changes saved successfully!');
-        setTimeout(() => setSuccessMessage('fade-out'), 4000);
-        setTimeout(() => setSuccessMessage(''), 5000);
-      })
-      .catch(error => alert('❌ Failed to update student.'))
-      .finally(() => setLoading(false));
+    try {
+      const response = await fetch('/api/updateStudent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(studentUpdatePayload),
+      });
+  
+      const result = await response.json();
+  
+      if (!response.ok) throw new Error(result.error || 'Failed to update student.');
+  
+      setSuccessMessage('✅ Changes saved successfully!');
+      setSuccessMessage('✅ Changes saved successfully!');
+    setStudentNeedsRefresh(true); // mark that changes were made
+
+      setTimeout(() => setSuccessMessage('fade-out'), 3000);
+      setTimeout(() => setSuccessMessage(''), 4000);
+  
+    } catch (err) {
+      console.error("❌ Update error:", err);
+      setInfoMessage('❌ Failed to update student.');
+    } finally {
+      setLoading(false);
+    }
   };
+  
+  
   // Function to reset everything when going back
-  const resetToMainMenu = () => {
+  const resetToMainMenu = async () => {
+    if (studentNeedsRefresh && selectedStudent) {
+      await refreshStudentData(selectedStudent.userId);
+      setStudentNeedsRefresh(false);
+    }
+    if (isEditing && hasChanges()) {
+      const confirmLeave = window.confirm(
+        "⚠️ Are you sure you want to leave? Unsaved changes will be discarded."
+      );
+      if (!confirmLeave) return;
+    }
     setView(null);
     setSearchTerm('');
     setFilteredStudents([]);
     setSelectedStudent(null);
     setIsEditing(false);
     setEditedStudent(null);
+    setSelectedRequest(null);
+    setShowAccommodations(false);
+    setShowAssistiveTech(false);
   };
+
+  
+
+  const resetToStudentSearch = async () => {
+    if (studentNeedsRefresh && selectedStudent) {
+      await refreshStudentData(selectedStudent.userId);
+      setStudentNeedsRefresh(false);
+    }
+    if (isEditing && hasChanges()) {
+      const confirmLeave = window.confirm(
+        "⚠️ Are you sure you want to leave? Unsaved changes will be discarded."
+      );
+      if (!confirmLeave) return;
+    }
+    setView('students');
+    setShowAccommodations(false);
+    setShowAssistiveTech(false);
+    setIsEditing(false);
+    setShowStudentInfo(false);
+
+  }
 
   return (
     <div className="staff-dashboard-container">
@@ -243,105 +379,115 @@ const handleStudentClick = (student) => {
           </div>
         )}
 
+
 {view === 'requests' && (
-  <div className="staff-dashboard-section">
-    {/* Show "Back to Search" ONLY when a request is selected */}
-    {selectedRequest && (
-      <button className="back-btn" onClick={() => setSelectedRequest(null)}>
-        ← Back to Requests
-      </button>
-    )}
+  <div className="staff-dashboard">
 
-    {!selectedRequest && (
-      <input
-        type="text"
-        placeholder="Search by UIN..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="staff-search-bar"
-      />
-    )}
-
-    {loading ? (
+    {/* Show loading icon while fetching requests */}
+    {loadingRequests ? (
       <div className="loading-container">
         <div className="loading-spinner"></div>
-        <p>Loading...</p>
+        <p>Loading Requests...</p>
       </div>
-    ) : (
-      <>
-        {!selectedRequest ? (
-          <>
-            <div className="requests-container">
-              {filteredRequests
-                .slice((currentPage - 1) * 10, currentPage * 10) // Show only 10 per page
-                .map((request) => {
-                  const previewLength = 100;
-                  const notesPreview = request.notes?.length > previewLength
-                    ? request.notes.substring(0, previewLength) + '...'
-                    : request.notes;
+    ) : selectedRequest ? (
+      <div className="request-details-container">
+        <button className="back-btn" onClick={() => setSelectedRequest(null)}>
+          ← Back to Requests
+        </button>
 
-                  return (
-                    <div 
-                      className="request-tile"
-                      key={request.id}  // FIX: Use request.id instead of userId
-                      onClick={() => setSelectedRequest(request)}
-                      tabIndex="0"
-                      role="button"
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                          setSelectedRequest(request);
-                        }
-                      }}
-                    >
-                      <p className="subheading">
-                        <em>UIN:</em> {request.UIN || "N/A"}
-                      </p>
-                      <p className="notes-preview">{notesPreview}</p>
-                    </div>
-                  );
-                })}
-            </div>
+        <div className="request-details-grid">
+          <div>
+            <p><strong>Request ID:</strong> {selectedRequest.id}</p>
+            <p><strong>Advisor ID:</strong> {selectedRequest.advisorId}</p>
+            <p><strong>Advisor Role:</strong> {selectedRequest.advisorRole || "N/A"}</p>
+          </div>
 
-            <div className="pagination-controls">
-              <button 
-                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                disabled={currentPage === 1}
-                className="pagination-btn"
-              >
-                ← Previous
-              </button>
-              <span>Page {currentPage} of {totalPages}</span>
-              <button 
-                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                disabled={currentPage === totalPages}
-                className="pagination-btn"
-              >
-                Next →
-              </button>
-            </div>
-          </>
-        ) : (
-          <div className="staff-student-details-container">
-            <h3>Student Request Details</h3>
-            <div className="staff-request-details">
-              <h3>Request Details</h3>
-              <p><strong>Request ID:</strong> {selectedRequest.id}</p>
-              <p><strong>Advisor ID:</strong> {selectedRequest.advisorId}</p>
-              <p><strong>Advisor Role:</strong> {selectedRequest.advisorRole || "N/A"}</p>
-              <p><strong>User ID:</strong> {selectedRequest.userId}</p>
-              <p><strong>UIN:</strong> {selectedRequest.UIN || "N/A"}</p>
-              <p><strong>Date of Birth:</strong> {selectedRequest.dob || "N/A"}</p>
-              <p><strong>Phone Number:</strong> {selectedRequest.phone_number || "N/A"}</p>
-              <p><strong>Notes:</strong> {selectedRequest.notes}</p>
-              <p><strong>Documentation:</strong> {selectedRequest.documentation ? "Yes" : "No"}</p>
-              <button onClick={() => setSelectedRequest(null)}>Back to Requests</button>
-            </div>
+          <div>
+            <p><strong>User ID:</strong> {selectedRequest.userId}</p>
+          </div>
+
+          <div className="full-width">
+            <p><strong>Notes:</strong> {selectedRequest.notes}</p>
+            <p><strong>Documentation:</strong> {selectedRequest.documentation ? "Yes" : "No"}</p>
+          </div>
+        </div>
+
+        {/* Student Info Button */}
+        <button 
+          className="dropdown-button"
+          onClick={() => setExpandedRequest(expandedRequest === selectedRequest.id ? null : selectedRequest.id)}
+        >
+          {expandedRequest === selectedRequest.id ? "Hide Student Info" : "Show Student Info"}
+        </button>
+
+        {/* Compact Student Info Section */}
+        {expandedRequest === selectedRequest.id && (
+          <div className="student-info">
+            <h3>Student Info</h3>
+            <p><strong>Name:</strong> {selectedRequest.student_name || "N/A"}</p>
+            <p><strong>DOB:</strong> {selectedRequest.dob ? new Date(selectedRequest.dob).toLocaleDateString() : "N/A"}</p>
+            <p><strong>UIN:</strong> {selectedRequest.UIN || "N/A"}</p>
+            <p><strong>Phone Number:</strong> {selectedRequest.phone_number || "N/A"}</p>
           </div>
         )}
-      </>
+      </div>
+    ) : (
+      <div>
+        <input
+          type="text"
+          placeholder="Search by UIN..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="staff-search-bar"
+        />
+
+        {/* Requests List */}
+        <div className="requests-container">
+          {filteredRequests
+            .slice((currentPage - 1) * 10, currentPage * 10) // Show only 10 per page
+            .map((request) => (
+              <div 
+                className="request-tile"
+                key={request.id}
+                onClick={() => setSelectedRequest(request)}
+                tabIndex="0"
+                role="button"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    setSelectedRequest(request);
+                  }
+                }}
+              >
+                <p className="student-name">{request.student_name || "N/A"}</p>
+                <p className="student-uin">UIN: {request.UIN || "N/A"}</p>
+              </div>
+            ))}
+        </div>
+
+        {/* Pagination Controls */}
+        <div className="pagination-controls">
+          <button 
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            className="pagination-btn"
+          >
+            ← Previous
+          </button>
+          <span>Page {currentPage} of {totalPages}</span>
+          <button 
+            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+            disabled={currentPage === totalPages}
+            className="pagination-btn"
+          >
+            Next →
+          </button>
+        </div>
+      </div>
     )}
   </div>
 )}
+
+
 
 
 
@@ -358,12 +504,12 @@ const handleStudentClick = (student) => {
       className="staff-search-bar"
     />
 
-    {/* Display search results with new API fields */}
+    {/* Display search results */}
     {filteredStudents.length > 0 ? (
       <div className="staff-search-results">
         {filteredStudents.map(student => (
           <div
-            key={student.userId} // Ensure we use userId instead of student_id
+            key={student.userId}
             className="staff-search-item"
             onClick={() => handleStudentClick(student)}
             tabIndex="0"
@@ -375,7 +521,7 @@ const handleStudentClick = (student) => {
             }}
           >
             <p>
-              <strong>{student.student_name}</strong> (UIN: {student.UIN})
+              <strong>{student.student_name || "N/A"}</strong> (UIN: {student.UIN || "N/A"})
             </p>
           </div>
         ))}
@@ -386,115 +532,197 @@ const handleStudentClick = (student) => {
   </div>
 )}
 
-        {/* Student Details View (With Editing Feature) */}
-        {view === 'studentDetails' && selectedStudent && (
-  <div className="staff-student-details-container">
-    <h3>Student Profile</h3>
-    <div className="staff-student-info">
-      {isEditing ? (
-        <div className="edit-student-form">
-          <div className="staff-form-group">
-            <label htmlFor="name">Full Name:</label>
-            <input
-              id="name"
-              type="text"
-              name="student_name" // Updated field name
-              value={editedStudent.student_name}
-              onChange={handleEditChange}
-            />
-          </div>
+{/* Student Details View */}
+{view === 'studentDetails' && selectedStudent && (
+  <div className="staff-student-details-container two-column-layout">
+    
+    {/* LEFT COLUMN - Student Info */}
+    <div className="student-left-column">
+      <h2 className="student-profile-heading">
+        {selectedStudent.student_name}'s Profile
+      </h2>
 
-          <div className="staff-form-group">
-            <label htmlFor="uin">UIN:</label>
-            <input
-              id="uin"
-              type="text"
-              name="UIN" // Updated field name
-              value={editedStudent.UIN}
-              onChange={handleEditChange}
-            />
-          </div>
+      <button 
+        className="dropdown-button" 
+        onClick={() => setShowStudentInfo(prev => !prev)}
+      >
+        {showStudentInfo ? 'Hide Information' : 'Show Information'}
+      </button>
 
-          <div className="staff-form-group">
-            <label htmlFor="dob">Date of Birth:</label>
-            <input
-              id="dob"
-              type="date"
-              name="dob"
-              value={editedStudent.dob}
-              onChange={handleEditChange}
-            />
-          </div>
+      {showStudentInfo && (
+  <div className={`student-info-box ${refreshingStudent ? "blurred" : ""}`}>
+    {refreshingStudent && (
+      <div className="overlay-spinner">
+        <div className="loading-spinner"></div>
+        <p>Refreshing student data...</p>
+      </div>
+    )}
+          {isEditing ? (
+  <>
+    {/* Message banners */}
+    {infoMessage && (
+      <div className="form-warning">
+        {infoMessage}
+      </div>
+    )}
 
-          <div className="staff-form-group">
-            <label htmlFor="email">Email:</label>
-            <input
-              id="email"
-              type="email"
-              name="email"
-              value={editedStudent.email}
-              onChange={handleEditChange}
-            />
-          </div>
+    {successMessage && (
+      <div className="form-success">
+        {successMessage}
+      </div>
+    )}
 
-          <div className="staff-form-group">
-            <label htmlFor="phone">Phone Number:</label>
-            <input
-              id="phone"
-              type="tel"
-              name="phone_number"
-              value={editedStudent.phone_number}
-              onChange={handleEditChange}
-            />
-          </div>
+    <div className="edit-student-form">
+      <div className="staff-form-group">
+        <label htmlFor="name">Full Name:</label>
+        <input
+          id="name"
+          type="text"
+          name="student_name"
+          value={editedStudent.student_name || ""}
+          onChange={handleEditChange}
+        />
+      </div>
 
-          <button onClick={handleSaveChanges} disabled={loading}>
-            {loading ? 'Saving...' : 'Save Changes'}
-            {loading && <div className="staff-loading-spinner"></div>}
-          </button>
+      <div className="staff-form-group">
+        <label htmlFor="uin">UIN:</label>
+        <input
+          id="uin"
+          type="text"
+          name="UIN"
+          value={editedStudent.UIN || ""}
+          onChange={handleEditChange}
+        />
+      </div>
 
-          {successMessage && (
-            <p
-              className={`staff-success-message ${
-                successMessage === 'fade-out' ? 'fade-out' : ''
-              }`}
-            >
-              {successMessage !== 'fade-out' ? successMessage : ''}
-            </p>
-          )}
+      <div className="staff-form-group">
+        <label htmlFor="dob">Date of Birth:</label>
+        <input
+          id="dob"
+          type="date"
+          name="dob"
+          value={editedStudent.dob ? editedStudent.dob.split("T")[0] : ""}
+          onChange={handleEditChange}
+        />
+      </div>
 
-          {infoMessage && (
-            <p
-              className={`staff-info-message ${
-                infoMessage === 'fade-out' ? 'fade-out' : ''
-              }`}
-            >
-              {infoMessage !== 'fade-out' ? infoMessage : ''}
-            </p>
-          )}
+      <div className="staff-form-group">
+        <label htmlFor="email">Email:</label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          value={editedStudent.email || ""}
+          onChange={handleEditChange}
+        />
+      </div>
 
-          <button
-            className="staff-cancel-btn"
-            onClick={() => setIsEditing(false)}
-          >
-            Back to Profile View
-          </button>
-        </div>
-      ) : (
-        <>
-          <p><strong>Name:</strong> {selectedStudent.student_name}</p>
-          <p><strong>UIN:</strong> {selectedStudent.UIN}</p>
-          <p><strong>Date of Birth:</strong> {selectedStudent.dob}</p>
-          <p><strong>Email:</strong> {selectedStudent.email}</p>
-          <p><strong>Phone Number:</strong> {selectedStudent.phone_number}</p>
-          <button
-            className="staff-edit-btn"
-            onClick={() => setIsEditing(true)}
-          >
-            Edit
-          </button>
-        </>
+      <div className="staff-form-group">
+        <label htmlFor="phone_number">Phone Number:</label>
+        <input
+          id="phone_number"
+          type="text"
+          name="phone_number"
+          value={editedStudent.phone_number || ""}
+          onChange={handleEditChange}
+        />
+      </div>
+
+      <button onClick={handleSaveChanges} disabled={loading}>
+        {loading ? 'Saving...' : 'Save Changes'}
+        {loading && <div className="staff-loading-spinner"></div>}
+      </button>
+
+      <button
+        className="staff-backtoprofile-btn"
+        onClick={() => {
+          setIsEditing(false);
+          refreshStudentData(editedStudent.userId); // ← only reloads and triggers spinner on exit
+        }}
+      >
+        Back to Profile View
+      </button>
+
+    </div>
+  </>
+) : (
+  <>
+    <p><strong>Name:</strong> {selectedStudent?.student_name || "N/A"}</p>
+    <p><strong>UIN:</strong> {selectedStudent?.UIN || "N/A"}</p>
+    <p><strong>Date of Birth:</strong> {selectedStudent?.dob ? new Date(selectedStudent.dob).toLocaleDateString() : "N/A"}</p>
+    <p><strong>Email:</strong> {selectedStudent?.email || "N/A"}</p>
+    <p><strong>Phone Number:</strong> {selectedStudent?.phone_number || "N/A"}</p>
+    <button className="edit-profile-button" onClick={() => setIsEditing(true)}>
+      ✏️ Edit Profile
+    </button>
+  </>
+)}
+
+    </div>
       )}
+
+      <button className="staff-cancel-btn" onClick={() => resetToStudentSearch()}>
+        Back to Search
+      </button>
+    </div>
+
+    {/* RIGHT COLUMN - Actions */}
+    <div className="student-right-column">
+      <button 
+        className="toggle-button" 
+        onClick={() => setShowAccommodations(prev => !prev)}
+      >
+        {showAccommodations ? "Hide Accommodations" : "Show Accommodations"}
+      </button>
+
+      {showAccommodations && (
+        <div className="dropdown-content">
+          <h4>Accommodations</h4>
+          {selectedStudent?.accommodations?.length > 0 ? (
+            <ul>
+              {selectedStudent.accommodations.map(acc => (
+                <li key={acc.id}>
+                  <p><strong>Type:</strong> {acc.type || "N/A"}</p>
+                  <p><strong>Status:</strong> {acc.status || "N/A"}</p>
+                  <p><strong>Date Requested:</strong> {acc.date_requested ? new Date(acc.date_requested).toLocaleDateString() : "N/A"}</p>
+                  <p><strong>Advisor ID:</strong> {acc.advisorId || "N/A"}</p>
+                  <p><strong>Notes:</strong> {acc.notes || "N/A"}</p>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No accommodations assigned.</p>
+          )}
+        </div>
+      )}
+
+      <button 
+        className="toggle-button" 
+        onClick={() => setShowAssistiveTech(prev => !prev)}
+      >
+        {showAssistiveTech ? "Hide Assistive Technologies" : "Show Assistive Technologies"}
+      </button>
+
+      {showAssistiveTech && (
+        <div className="dropdown-content">
+          <h4>Assistive Technologies</h4>
+          {selectedStudent?.assistive_technologies?.length > 0 ? (
+            <ul>
+              {selectedStudent.assistive_technologies.map(tech => (
+                <li key={tech.id}>
+                  <p><strong>Type:</strong> {tech.type || "N/A"}</p>
+                  <p><strong>Available:</strong> {tech.available !== undefined ? (tech.available ? "Yes" : "No") : "N/A"}</p>
+                  <p><strong>Advisor ID:</strong> {tech.advisorId || "N/A"}</p>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No assistive technologies assigned.</p>
+          )}
+        </div>
+      )}
+
+      
     </div>
   </div>
 )}

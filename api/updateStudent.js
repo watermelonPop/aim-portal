@@ -28,7 +28,7 @@ export default async function handler(req, res) {
     const updatedStudent = await prisma.student.update({
       where: { userId: userId },
       data: {
-        UIN: UIN,
+        UIN: parseInt(UIN, 10),
         dob: dob,
         phone_number: phone_number,
       },

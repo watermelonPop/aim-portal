@@ -5,17 +5,31 @@ const prisma = new PrismaClient();
 export default async function handler(req, res) {
   if (req.method === 'GET') {
     try {
-      // Fetch all students with the new schema structure
+      // Fetch all students with complete details
       const students = await prisma.student.findMany({
-        select: {
-          userId: true,
-          UIN: true,
-          phone_number: true,
-          dob: true,
-          account: { // Fetch the related account details
+        include: {
+          account: {  // Fetch related account details
             select: {
               name: true,
               email: true,
+            },
+          },
+          accommodations: {  // Fetch student accommodations
+            select: {
+              id: true,
+              type: true,
+              status: true,
+              date_requested: true,
+              advisorId: true,
+              notes: true,
+            },
+          },
+          assistive_technologies: {  // Fetch assistive technology details
+            select: {
+              id: true,
+              type: true,
+              available: true,
+              advisorId: true,
             },
           },
         },
@@ -26,7 +40,7 @@ export default async function handler(req, res) {
         },
       });
 
-      // Format response to match expected output
+      // Format response properly
       const formattedStudents = students.map(student => ({
         userId: student.userId,
         UIN: student.UIN,
@@ -34,6 +48,20 @@ export default async function handler(req, res) {
         email: student.account?.email || "N/A",
         phone_number: student.phone_number,
         dob: student.dob,
+        accommodations: student.accommodations.map(accommodation => ({
+          id: accommodation.id,
+          type: accommodation.type,
+          status: accommodation.status,
+          date_requested: accommodation.date_requested,
+          advisorId: accommodation.advisorId,
+          notes: accommodation.notes,
+        })),
+        assistive_technologies: student.assistive_technologies.map(tech => ({
+          id: tech.id,
+          type: tech.type,
+          available: tech.available,
+          advisorId: tech.advisorId,
+        })),
       }));
 
       res.status(200).json({ students: formattedStudents });
