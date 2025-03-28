@@ -30,7 +30,9 @@ module.exports = async (req, res) => {
           hide_images: settings.hide_images,
           reading_mask: settings.reading_mask,
           highlight_hover: settings.highlight_hover,
-          cursor: settings.cursor,
+          cursor_size: settings.cursor_size,
+          cursor_color: settings.cursor_color,
+          cursor_border_color: settings.cursor_border_color
         },
       });
 

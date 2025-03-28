@@ -2,6 +2,9 @@
   --txtSize: 14px;
   --letterSpacing: 0px;
   --contrast: 100%;
+  --custom-cursor: auto;
+  --custom-hover-cursor: pointer;
+  --custom-text-cursor: text;
 }
 
 html{
@@ -15,6 +18,20 @@ body {
   align-items: center;
   flex-direction: column;
   margin: 0;
+  cursor: var(--custom-cursor);
+  font-family: "Mitr", serif !important;
+}
+
+button, a{
+  cursor: var(--custom-hover-cursor);
+}
+
+input, textarea{
+  cursor: var(--custom-text-cursor);
+}
+
+label{
+  cursor: var(--custom-cursor);
 }
 
 body.modal-open {
@@ -61,7 +78,6 @@ main{
 }
 
 h1{
-  font-family: "Mitr", serif;
   font-weight: 700;
   letter-spacing: var(--letterSpacing);
   display: flex;
@@ -74,7 +90,6 @@ h1{
 }
 
 h2{
-  font-family: "Mitr", serif;
   font-weight: 600;
   letter-spacing: var(--letterSpacing);
   display: flex;
@@ -87,7 +102,6 @@ h2{
 }
 
 h3{
-  font-family: "Mitr", serif;
   font-weight: 500;
   letter-spacing: var(--letterSpacing);
   display: flex;
@@ -100,7 +114,6 @@ h3{
 }
 
 h4{
-  font-family: "Mitr", serif;
   font-weight: 500;
   letter-spacing: var(--letterSpacing);
   display: flex;
@@ -121,14 +134,12 @@ h4{
 
 
 button{
-  font-family: "Mitr", serif;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0;
   border-radius: 1rem;
   border-color: none;
-  cursor: pointer;
 }
 
 #loginBtn{
@@ -262,7 +273,6 @@ button{
   width: 80%;
   height: 70%;
   background-color: #FFEDED;
-  font-family: "Mitr", serif;
   font-weight: 400;
   font-size: var(--txtSize);
   letter-spacing: var(--letterSpacing);
@@ -298,7 +308,6 @@ button{
   margin: 0;
   display: flex;
   width: fit-content;
-  font-family: "Mitr", serif;
   font-weight: 500;
   letter-spacing: var(--letterSpacing);
   margin: 0;
@@ -332,7 +341,7 @@ button{
   position: fixed;
   top: 0; /* Align to the top of the viewport */
   right: 0; /* Align to the right of the viewport */
-  z-index: 1000; /* Ensure it's above other elements */
+  z-index: 1001; /* Ensure it's above other elements */
   box-shadow: 5px 10px 15px black;
   display: flex;
   flex-direction: column;
@@ -382,8 +391,6 @@ button{
   display: flex !important;
   flex-direction: row !important;
   justify-content: space-between !important;
-
-  font-family: "Mitr", serif;
   font-weight: 500;
   letter-spacing: var(--letterSpacing);
   padding: 0;
@@ -392,7 +399,6 @@ button{
 
 .disProfiles button{
   border: none;
-  font-family: "Mitr", serif;
   font-weight: 500;
   letter-spacing: var(--letterSpacing);
   margin: 0;
@@ -419,8 +425,7 @@ button{
   justify-content: space-evenly;
   position: sticky;
   top: 16vh;
-  z-index: 100;
-  box-shadow: 5px 5px 15px black;
+  z-index: 1000;
 }
 
 
@@ -439,18 +444,30 @@ button{
   padding: 14px 16px;
   text-decoration: none;
   color:#FFEDED;
-  font-family: "Mitr", serif;
   font-weight: 400;
   font-size: calc(var(--txtSize) + 5px);
   letter-spacing: var(--letterSpacing);
-  cursor: pointer;
   height: 80%;
+}
+
+.tabNav ul > li > a{
+  text-decoration: none;
+  color: #FFEDED;
+}
+
+.tabNav ul > li > a:hover{
+  color: #FFEDED;
+  border-color: #FFEDED;
+  border-radius: 1rem;
+  border: 2px solid;
+  padding: 0.5rem;
 }
 
 #activeTab{
   background-color: #FFEDED;
   color: #4F0000;
   border-radius: 1rem;
+  padding: 0.5rem;
 }
 
 .footerTitle{
@@ -475,7 +492,6 @@ button{
   column-gap: 5%;
   width: 75%;
   color:#FFEDED;
-  font-family: "Mitr", serif;
   font-weight: 400;
   font-size: var(--txtSize);
   letter-spacing: var(--letterSpacing);
@@ -486,6 +502,10 @@ button{
 .basicFooter div > div{
   display: flex;
   flex-direction: column;
+}
+
+.basicFooter div > div > p > a{
+  text-decoration: underline !important;
 }
 .dashboardOuter{
   width: 100%;
@@ -633,7 +653,6 @@ button{
   width: 80%;
   display: flex;
   flex-direction: column;
-  font-family: "Mitr", serif;
   font-weight: 400;
   font-size: var(--txtSize);
   letter-spacing: var(--letterSpacing);
@@ -647,7 +666,6 @@ button{
 }
 
 .subTitle{
-  font-family: "Mitr", serif;
   font-weight: 500;
   font-size: calc(var(--txtSize) + 5px);
   letter-spacing: var(--letterSpacing);
@@ -656,7 +674,6 @@ button{
 }
 
 .alertTxt{
-  font-family: "Mitr", serif;
   font-weight: 500;
   font-size: var(--txtSize);
   letter-spacing: var(--letterSpacing);
@@ -668,7 +685,6 @@ button{
   border-radius: 1rem;
   min-height: 2rem;
   padding: 1%;
-  font-family: "Mitr", serif;
   font-weight: 400;
   font-size: var(--txtSize);
   letter-spacing: var(--letterSpacing);
@@ -760,4 +776,35 @@ button{
   background-color: #FFEDED;
   color:#4F0000;
   border-radius: 1rem;
+}
+
+
+.setBtn{
+  border: none;
+  font-weight: 500;
+  letter-spacing: var(--letterSpacing);
+  margin: 0;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-size: calc(var(--txtSize) + 5px);
+  background-color: #FFEDED;
+  border: #4F0000 2px solid;
+}
+
+.setBtn:hover{
+  background-color: #4F0000;
+  color: #FFEDED;
+}
+
+.newStudentApp input[type="date"] {
+  position: relative;
+  z-index: 10;
+  cursor: var(--custom-cursor);
+}
+
+#settingsScroll {
+  max-height: 80vh;
+  overflow-y: auto;
 }

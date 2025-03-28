@@ -146,7 +146,7 @@ describe('settingsPanel', () => {
                 });
             }); 
 
-            test('scrolling triggers setScrolledPosition', async () => {
+            test('scrolling triggers set local storage', async () => {
                 window.HTMLElement.prototype.scrollIntoView = jest.fn();
                 let mockSettings = {
                     content_size: 100,
@@ -182,7 +182,7 @@ describe('settingsPanel', () => {
                 });
 
                 await waitFor(() => {
-                    expect(BasicSettingsBar.scrolledPosition).toBe(100);
+                    expect(localStorage.getItem("scroll-position-settings")).toBe("100");
                 });
             }); 
         });
