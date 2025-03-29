@@ -62,25 +62,30 @@ model Advisor {
 }
 
 model Settings {
-  userId              Int        @id @unique
-  content_size        Int        @default(100)
-  highlight_tiles     Boolean    @default(false)
-  highlight_links     Boolean    @default(false)
-  text_magnifier      Boolean    @default(false)
-  align_text          String     @default("Middle")
-  font_size           Int        @default(14)
-  line_height         Int        @default(5000)
-  letter_spacing      Int        @default(0)
-  saturation          Saturation @default(Regular)
-  mute_sounds         Boolean    @default(false)
-  hide_images         Boolean    @default(false)
-  reading_mask        Boolean    @default(false)
-  highlight_hover     Boolean    @default(false)
-  cursor_size         Int        @default(2)
-  cursor_color        String     @default("#000000")
-  cursor_border_color String     @default("#FFFFFF")
-  contrast            String     @default("100%")
-  account             Account    @relation(fields: [userId], references: [id])
+  userId                Int     @id @unique
+  content_size          Int     @default(100)
+  highlight_tiles       Boolean @default(false)
+  highlight_links       Boolean @default(false)
+  text_magnifier        Boolean @default(false)
+  align_text            String  @default("center")
+  font_size             Int     @default(14)
+  line_height           Int     @default(5000)
+  letter_spacing        Int     @default(0)
+  mute_sounds           Boolean @default(false)
+  hide_images           Boolean @default(false)
+  reading_mask          Boolean @default(false)
+  highlight_hover       Boolean @default(false)
+  contrast              String  @default("100%")
+  cursor_color          String  @default("#000000")
+  cursor_border_color   String  @default("#FFFFFF")
+  cursor_size           Int     @default(2)
+  background_color      String  @default("#FFEDED")
+  foreground_color      String  @default("#4F0000")
+  text_color            String  @default("#000000")
+  highlight_hover_color String  @default("#BD180F")
+  saturation            String  @default("100%")
+  font                  Font    @default(Mitr)
+  account               Account @relation(fields: [userId], references: [id])
 }
 
 model Form {
@@ -178,13 +183,6 @@ enum FormType {
   APPEALS_TEMP_WORKPLACE
 }
 
-enum Saturation {
-  Regular
-  Low
-  High
-  Monochrome
-}
-
 enum AdvisorRoles {
   Admin
   Coordinator
@@ -208,4 +206,13 @@ enum RequestStatus {
   PENDING
   APPROVED
   DENIED
+}
+
+enum Font {
+  Mitr
+  Lexend
+  Roboto
+  Montserrat
+  Lato
+  Nunito
 }

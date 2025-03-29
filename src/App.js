@@ -1,5 +1,4 @@
 
-import logo2 from './logo2.png';
 import './App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faMagnifyingGlass, faBars} from '@fortawesome/free-solid-svg-icons';
@@ -81,20 +80,26 @@ export function App() {
       highlight_tiles: false,
       highlight_links: false,
       text_magnifier: false,
-      align_text: "Middle",
+      align_text: "center",
       font_size: "14px",
       line_height: 5000,
       letter_spacing: "0px",
       contrast: "100%",
-      saturation: "Regular",
+      saturation: "100%",
       mute_sounds: false,
       hide_images: false,
       reading_mask: false,
       highlight_hover: false,
-      cursor_size: 2,
+      highlight_hover_color: "#BD180F",
+      cursor_size: 3,
     cursor_color: "#000000",
     cursor_border_color: "#FFFFFF",
+    background_color: "#FFEDED",
+    foreground_color: "#4F0000",
+    text_color: "#000000",
+    font: "Mitr",
 });
+
 const encodeCursorSVG = (svg, type) => {
   return `url("data:image/svg+xml;utf8,${encodeURIComponent(svg)
     .replace(/'/g, "%27")
@@ -102,7 +107,7 @@ const encodeCursorSVG = (svg, type) => {
 };
 const [svgCursors, setSvgCursors] = useState({
   default: encodeCursorSVG(
-    `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 320 512">
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${20 + 5*Number(settings.cursor_size)}" height="${20 + 5*Number(settings.cursor_size)}" viewBox="0 0 320 512">
       <path 
         fill="${settings.cursor_color}" 
         stroke="${settings.cursor_border_color}" 
@@ -113,7 +118,7 @@ const [svgCursors, setSvgCursors] = useState({
   ),
 
   pointer: encodeCursorSVG(
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="30" height="30">
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="${20 + 5*Number(settings.cursor_size)}" height="${20 + 5*Number(settings.cursor_size)}">
       <path 
         fill="${settings.cursor_color}" 
         stroke="${settings.cursor_border_color}" 
@@ -124,7 +129,7 @@ const [svgCursors, setSvgCursors] = useState({
   ),
 
   text: encodeCursorSVG(
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512" width="30" height="30">
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512" width="${20 + 5*Number(settings.cursor_size)}" height="${20 + 5*Number(settings.cursor_size)}">
       <path 
         fill="${settings.cursor_color}" 
         stroke="${settings.cursor_border_color}" 
@@ -140,14 +145,16 @@ document.documentElement.style.setProperty('--custom-hover-cursor', svgCursors.p
 document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.text);
 
 
+
   useEffect(() => {
-    if (showAlert) {
-      const timer = setTimeout(() => {
-        setShowAlert(false);
-      }, 15000);
-      return () => clearTimeout(timer);
-    }
-  }, [showAlert]);
+      if (showAlert === true && settings.mute_sounds !== true) {
+        const alertSound = new Audio('/notif_on.mp3'); // replace with your actual sound file path
+        alertSound.play().catch((e) => {
+          console.error('Failed to play alert sound:', e);
+        });
+      }
+  }, [showAlert, settings]);
+
 
   useEffect(() => {
     if(settingsTabOpen === true){
@@ -252,9 +259,23 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
         document.documentElement.style.setProperty("--txtSize", `${settings.font_size}`);
         document.documentElement.style.setProperty("--letterSpacing", `${settings.letter_spacing}`);
         document.documentElement.style.setProperty("--contrast", `${settings.contrast}`);
+        document.documentElement.style.setProperty("--background-color", `${settings.background_color}`);
+        document.documentElement.style.setProperty("--foreground-color", `${settings.foreground_color}`);
+        document.documentElement.style.setProperty("--text-color", `${settings.text_color}`);
+        document.documentElement.style.setProperty("--highlight-hover-color", `${settings.highlight_hover_color}`);
+        document.documentElement.style.setProperty("--saturation", `${settings.saturation}`);
+        document.documentElement.style.setProperty("--font", `${settings.font}`);
+        document.documentElement.style.setProperty("--align-text", `${settings.align_text}`);
+        document.body.classList.remove('align-left', 'align-center', 'align-right');
+        document.body.classList.add(`align-${settings.align_text}`);
+        if (settings.highlight_hover) {
+          document.body.classList.add('highlight-hover-enabled');
+        } else {
+          document.body.classList.remove('highlight-hover-enabled');
+        }
         const newSvgCursors = {
           default: encodeCursorSVG(
-            `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 320 512">
+            `<svg xmlns="http://www.w3.org/2000/svg" width="${20 + 5*Number(settings.cursor_size)}" height="${20 + 5*Number(settings.cursor_size)}" viewBox="0 0 320 512">
               <path 
                 fill="${settings.cursor_color}" 
                 stroke="${settings.cursor_border_color}" 
@@ -265,7 +286,7 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
           ),
         
           pointer: encodeCursorSVG(
-            `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 448 512">
+            `<svg xmlns="http://www.w3.org/2000/svg" width="${20 + 5*Number(settings.cursor_size)}" height="${20 + 5*Number(settings.cursor_size)}" viewBox="0 0 448 512">
               <path 
                 fill="${settings.cursor_color}" 
                 stroke="${settings.cursor_border_color}" 
@@ -276,7 +297,7 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
           ),
         
           text: encodeCursorSVG(
-            `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512" width="30" height="30">
+            `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512" width="${20 + 5*Number(settings.cursor_size)}" height="${20 + 5*Number(settings.cursor_size)}">
               <path 
                 fill="${settings.cursor_color}" 
                 stroke="${settings.cursor_border_color}" 
@@ -431,7 +452,7 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
     return (
       <>
           <header className='basicHeader' data-testid="basicHeader">
-            <img src={logo2} alt="TAMU Logo" className='basicLogoImg' aria-label='TAMU'/>
+            <svg alt="Texas A&M University Logo" aria-label='TAMU' className='basicLogoImg' xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 216 216"><defs></defs><title>Artboard 1</title><polygon className="cls-1" points="190.36 84.32 173.7 84.32 172.73 84.32 172.31 85.19 160.22 110.34 148.1 85.19 147.69 84.32 146.72 84.32 130.63 84.32 129.09 84.32 129.09 85.85 129.09 94.43 129.09 95.96 130.63 95.96 133.38 95.96 133.38 131.97 130.4 131.97 128.86 131.97 128.86 133.51 128.86 142.08 128.86 143.62 130.4 143.62 148.48 143.62 150.02 143.62 150.02 142.08 150.02 133.51 150.02 131.97 148.48 131.97 145.35 131.97 145.35 106.42 158.86 134.28 160.23 137.12 161.62 134.28 175.27 106.36 175.27 131.97 172.28 131.97 170.74 131.97 170.74 133.51 170.74 142.08 170.74 143.62 172.28 143.62 190.36 143.62 191.9 143.62 191.9 142.08 191.9 133.51 191.9 131.97 190.36 131.97 187.25 131.97 187.25 95.96 190.36 95.96 191.9 95.96 191.9 94.43 191.9 85.85 191.9 84.32 190.36 84.32"></polygon><path className="cls-1" d="M85.37,131.94h-4.8L64.91,95.77h3V84.11H42.78V95.77h3.46L30.6,131.94H24.1v11.64H46.91V131.94H43.58l2.6-6H65l2.6,6H64.08v11.64H86.91V131.94ZM60,114.27H51.21l4.37-10.11Z"></path><path className="cls-1" d="M171.23,39.11H42.6v37.4H68V62.16H95.08v89.33H80.74v25.4h54.1v-25.4H120.51V62.16h26.9V76.35H173V39.11h-1.75ZM124.15,162l5.36-5.51v15.15l-5.36-5.13Zm-8.95-5.12-5.36,5.29V51.63L115.2,57Zm-62-107.21-5.53-5.37H165l-6.94,5.37Zm114.7,21.78-5.36-5.12V52.68l5.36-5.52Z"></path><path className="cls-1" d="M140.77,171.62a5.2,5.2,0,1,1,5.2,5.2A5.21,5.21,0,0,1,140.77,171.62Zm9.14,0a3.94,3.94,0,1,0-3.94,4.19A4,4,0,0,0,149.91,171.62Zm-5.94-3h2.19c1.41,0,2.17.5,2.17,1.73a1.47,1.47,0,0,1-1.54,1.59l1.58,2.58h-1.12L145.72,172h-.66v2.54H144Zm1.1,2.52h1c.65,0,1.21-.08,1.21-.87s-.63-.81-1.19-.81h-1v1.68Z"></path></svg> 
             <h1 className='basicTitle'>AIM Portal</h1>
             <form role="search" className='searchForm' onSubmit={(e) => e.preventDefault()}>
               <input type="search" placeholder="Search.." role="searchbox" id="search"></input>
@@ -458,10 +479,12 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
             <h4 className='footerTitle'>Disability Resources & Contact</h4>
             <div>
               <div aria-label='Address'>
-                <p>Address</p>
-                <p>Texas A&M University<br/>
+                <label>Address</label>
+                <a href="https://www.google.com/maps?q=Texas+A%26M+University+471+Houston+Street,+SSB+Ste+122,+College+Station,+TX+77843-1224" target="_blank" rel="noopener noreferrer">
+                  Texas A&M University<br/>
                   471 Houston Street, SSB Ste 122<br/>
-                  College Station, TX 77843-1224</p>
+                  College Station, TX 77843-1224
+                </a>
               </div>
               <div aria-label='Contact & Help'>
                 <p>Website: <a>https://disability.tamu.edu/</a></p>
@@ -486,7 +509,7 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
 
   return (
     <>
-      {showAlert && <Alert message={alertMessage} />}
+      {showAlert && <Alert message={alertMessage} setShowAlert={setShowAlert} />}
       {loading ? ( // Wrap `loading` in curly braces
         <div className="loadingScreen" aria-hidden="true" tabIndex="-1">
           <div className="spinner" role="alert">
