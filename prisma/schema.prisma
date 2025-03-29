@@ -84,6 +84,7 @@ model Settings {
   text_color            String  @default("#000000")
   highlight_hover_color String  @default("#BD180F")
   saturation            String  @default("100%")
+  font                  Font    @default(Mitr)
   account               Account @relation(fields: [userId], references: [id])
 }
 
@@ -182,13 +183,6 @@ enum FormType {
   APPEALS_TEMP_WORKPLACE
 }
 
-enum Saturation {
-  Regular
-  Low
-  High
-  Monochrome
-}
-
 enum AdvisorRoles {
   Admin
   Coordinator
@@ -212,4 +206,13 @@ enum RequestStatus {
   PENDING
   APPROVED
   DENIED
+}
+
+enum Font {
+  Mitr
+  Lexend
+  Roboto
+  Montserrat
+  Lato
+  Nunito
 }

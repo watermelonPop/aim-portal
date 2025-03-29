@@ -97,6 +97,7 @@ export function App() {
     background_color: "#FFEDED",
     foreground_color: "#4F0000",
     text_color: "#000000",
+    font: "Mitr",
 });
 
 const encodeCursorSVG = (svg, type) => {
@@ -263,6 +264,7 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
         document.documentElement.style.setProperty("--text-color", `${settings.text_color}`);
         document.documentElement.style.setProperty("--highlight-hover-color", `${settings.highlight_hover_color}`);
         document.documentElement.style.setProperty("--saturation", `${settings.saturation}`);
+        document.documentElement.style.setProperty("--font", `${settings.font}`);
         document.documentElement.style.setProperty("--align-text", `${settings.align_text}`);
         document.body.classList.remove('align-left', 'align-center', 'align-right');
         document.body.classList.add(`align-${settings.align_text}`);
