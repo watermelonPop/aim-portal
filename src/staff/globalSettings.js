@@ -37,6 +37,9 @@ function GlobalSettings() {
   const [simpleAdvisorList, setSimpleAdvisorList] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [slicedSearchResults, setSlicedSearchResults] = useState([]);
 
 
   //============================================ USEFFECT STARTS HERE ============================================
@@ -50,6 +53,8 @@ function GlobalSettings() {
       .then(response => response.json())
       .then(data=>{ 
         setAdvisorList(data.advisors || []);
+        setCurrentPage(0);
+        setTotalPages(Math.ceil(data.advisors.length/9));
         setLoaded(true);
       })
       .catch(error => console.error('error fetching advisors',error));
@@ -60,6 +65,9 @@ function GlobalSettings() {
   useEffect(()=>{
     if(loaded){
       console.log("advisorList:",advisorList);
+      console.log("currentPages: ", currentPage);
+      console.log("totalPages: ", totalPages);
+
     }
   },[loaded]);
 
@@ -74,10 +82,25 @@ function GlobalSettings() {
           }
         }
         setSearchResults(updatedSearchResults);
+        //set current page to 0
+        setCurrentPage(0);
+        setTotalPages(Math.ceil(updatedSearchResults.length/9));
+
         // setLoaded(true);
+        console.log("searchResults:",updatedSearchResults);
         console.log("DONE");
     }
   },[searchQuery]);
+
+  // useEffect(()=>{
+  //   if(loaded){
+  //     const current_page_index = currentPage * 9
+  //     const next_page_index = (currentPage + 1) * 9
+  //     setSlicedSearchResults(searchResults.slice(current_page_index, next_page_index));
+  //   }
+  // },[s,currentPage]);
+
+
 
 
   // },[searchQuery]);
@@ -86,7 +109,7 @@ function GlobalSettings() {
   //============================================ SCREEN OBJECTS STARTS HERE ============================================
   //============================================ SCREEN OBJECTS STARTS HERE ============================================
 
-  function CardView({ advisors }) {
+  function CardView({ advisors, skip, take }) {
     const gridContainerStyle = {
       display: 'grid',
       gridTemplateColumns: 'repeat(3, 28vw)',
@@ -136,10 +159,10 @@ function GlobalSettings() {
     let displayedAdvisors = [];
     //TODO: ADD SKIP AND TAKE
     if(searchQuery == ""){
-      displayedAdvisors = advisorList.slice(0, 9);
+      displayedAdvisors = advisorList.slice(skip, take);
     } 
     else{
-      displayedAdvisors = advisors.slice(0, 9);
+      displayedAdvisors = advisors.slice(skip, take);
     }
     
   
@@ -165,6 +188,55 @@ function GlobalSettings() {
       </div>
     );
   }
+
+
+
+  //                                  PAGINATION BUTTONS
+  function PaginationButtons() {
+    // Create an array of page numbers
+    const onPageChange = (page_update) =>{
+      console.log("onPageChange with page: ", page_update);
+      
+
+      if(page_update < 0){
+        if(currentPage != 0){
+          setCurrentPage(currentPage-1);
+        }
+      }
+      else{
+        if(currentPage != totalPages - 1){
+          setCurrentPage(currentPage+1);
+        }
+      }
+
+      console.log("currentPage: ", currentPage);
+      console.log("totalPages: ", totalPages);
+
+    }
+    
+    return (
+      <div className="pagination-buttons" style={{ display: 'flex', justifyContent: 'center', gap: '8px', padding: '16px' }}>
+        <button 
+          onClick={() => onPageChange(-1)} 
+          disabled={currentPage === 0}
+        >
+          Prev
+        </button>
+        
+        <button 
+          onClick={() => onPageChange(1)} 
+          disabled={currentPage === totalPages-1}
+        >
+          Next
+        </button>
+      </div>
+    );
+  }
+
+
+
+
+
 
   //============================================ RETURN STARTS HERE ============================================
   //============================================ RETURN STARTS HERE ============================================
@@ -193,8 +265,14 @@ function GlobalSettings() {
       <div> {/* Card View */}
         <CardView 
           advisors = {searchResults}
-          skip = {0}
-          take = {9}
+          skip = {currentPage * 9}
+          take = {(currentPage + 1) * 9}
+        />
+      </div>
+
+      <div>
+        <PaginationButtons
+        
         />
       </div>
     </>
