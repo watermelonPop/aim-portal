@@ -4,6 +4,12 @@ import '@testing-library/jest-dom';
 import {Alert} from '../alert';
 import {App} from '../App';
 
+beforeAll(() => {
+        global.Audio = class {
+          play = jest.fn().mockResolvedValue();
+        };
+});
+
 describe('alert', () => {
         beforeEach(() => {
                 jest.clearAllMocks();

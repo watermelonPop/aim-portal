@@ -67,6 +67,8 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                 }
         }, [selectedCategory]);
 
+        BasicSettingsBar.setSelectedCategory = setSelectedCategory;
+
         return (
                 <nav
                 role="dialog"
@@ -91,7 +93,7 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                 >
                                         <a
                                         className={`categoryTabBtn ${selectedCategory === cat ? 'activeCategory' : ''}`}
-                                        onClick={() => setSelectedCategory(cat)}>
+                                        onClick={() => setSelectedCategory(cat)} data-testid={cat}>
                                                 {cat}
                                                 <FontAwesomeIcon icon={faArrowRight} aria-hidden="true" />
                                         </a>
@@ -139,10 +141,11 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                                 })}
                                                 className="settingsBtn"
                                                 aria-label="Decrease Text Size"
+                                                data-testid="txtSizeDec"
                                                 >
                                                 -
                                                 </button>
-                                                <label>{settings.font_size}</label>
+                                                <label data-testid='txtSizeLabel'>{settings.font_size}</label>
                                                 <button
                                                 onClick={handleButtonAction(() => {
                                                 let curr = parseInt(settings.font_size.replace("px", ""));
@@ -150,6 +153,7 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                                 })}
                                                 className="settingsBtn"
                                                 aria-label="Increase Text Size"
+                                                data-testid="txtSizeInc"
                                                 >
                                                 +
                                                 </button>
@@ -166,10 +170,11 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                                 })}
                                                 className="settingsBtn"
                                                 aria-label="Decrease Letter Spacing"
+                                                data-testid='letterSpacingDec'
                                                 >
                                                 -
                                                 </button>
-                                                <label>{settings.letter_spacing}</label>
+                                                <label data-testid='letterSpacingLabel'>{settings.letter_spacing}</label>
                                                 <button
                                                 onClick={handleButtonAction(() => {
                                                 let curr = parseInt(settings.letter_spacing.replace("px", ""));
@@ -177,6 +182,7 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                                 })}
                                                 className="settingsBtn"
                                                 aria-label="Increase Letter Spacing"
+                                                data-testid='letterSpacingInc'
                                                 >
                                                 +
                                                 </button>
