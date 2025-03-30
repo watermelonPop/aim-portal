@@ -632,13 +632,9 @@ describe('userAccommodations', () => {
 
                                 await waitFor(() => {
                                         expect(UserAccommodations.errors).toStrictEqual({
-                                                disability: 'Disability is required',
-                                                testing: 'Testing is required',
-                                                inClass: 'InClass is required',
-                                                housing: 'Housing is required',
-                                                sideEffect: 'SideEffect is required',
-                                                accommodations: 'Accommodations is required',
-                                                pastAcc: 'PastAcc is required'
+                                                email: "Email is required",
+                                                name: "Name is required",
+                                                notes: "Please answer all of the longform questions"
                                         });
                                 });
                         });
@@ -751,13 +747,7 @@ describe('userAccommodations', () => {
                                                 dob: "Date of Birth is required",
                                                 uin: "UIN must be 9 digits",
                                                 phone_number: "Please enter a valid 10-digit phone number",
-                                                disability: 'Disability is required',
-                                                testing: 'Testing is required',
-                                                inClass: 'InClass is required',
-                                                housing: 'Housing is required',
-                                                sideEffect: 'SideEffect is required',
-                                                accommodations: 'Accommodations is required',
-                                                pastAcc: 'PastAcc is required'
+                                                notes: "Please answer all of the longform questions",
                                         });
                                 });
                         });
