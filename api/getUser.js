@@ -13,7 +13,6 @@ module.exports = async (req, res) => {
       if (!id) {
           return res.status(400).json({ error: 'user id is required' });
       }
-      console.log("BEFORE GET USER");
       try {
           // Fetch user account using Prisma
           const user = await prisma.user.findUnique({

@@ -8,7 +8,7 @@ import Dash from './dash';
 import Profile from './profile';
 import LoginScreen from './loginScreen';
 import Forms from './forms';
-import GlobalSettings from './globalSettings';
+import GlobalSettings from './staff/globalSettings';
 import Accommodations from './accommodations';
 import NoteTaking from './noteTaking';
 import AssistiveTech from './assistiveTech';
@@ -27,6 +27,7 @@ export function App() {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("ERROR");
   const [tabs, setTabs] = useState([]);
+  const [staffRole, setStaffRole] = useState(null);
   const [userInfo, setUserInfo] = useState({
     id: null,
     name: null,
@@ -223,25 +224,28 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
     if(userInfo.role === "USER"){
       setTabs(updatedUserTabs);
       setCurrentTab(updatedUserTabs[0]);
-    }else{
-      if(userInfo.role === "STUDENT"){
-          setTabs(updatedStudentTabs);
-          setCurrentTab(updatedStudentTabs[0]);
-        }else if(userInfo.role === "PROFESSOR"){
-          setTabs(updatedProfessorTabs);
-          setCurrentTab(updatedProfessorTabs[0]);
-        }else if(userInfo.role === "ADVISOR"){
-          //check for staff access & set here
-          let newStaffTabs = [...updatedStaffTabs];
-          for(let i = 0; i < updatedStaffAccess.length; i++){
-            if(updatedStaffAccess[i].hasAccess === true){
-              newStaffTabs.push({name: updatedStaffAccess[i].access, elem: updatedStaffAccess[i].elem});
-            }
-          }
-          setTabs(newStaffTabs);
-          setCurrentTab(newStaffTabs[0]);
-        }
     }
+    else if(userInfo.role === "STUDENT"){
+      setTabs(updatedStudentTabs);
+      setCurrentTab(updatedStudentTabs[0]);
+    }
+    else if(userInfo.role === "PROFESSOR"){
+      setTabs(updatedProfessorTabs);
+      setCurrentTab(updatedProfessorTabs[0]);
+    }
+    else if(userInfo.role === "ADVISOR"){
+      let newStaffTabs = [...updatedStaffTabs];
+      console.log("NEW STAFF TABS BEFORE CHANGES: ",newStaffTabs);
+      
+      for(let i = 0; i < updatedStaffAccess.length; i++){
+        if(updatedStaffAccess[i].hasAccess === true){
+          newStaffTabs.push({name: updatedStaffAccess[i].access, elem: updatedStaffAccess[i].elem});
+        }
+      }
+      setTabs(newStaffTabs);
+      setCurrentTab(newStaffTabs[0]);
+    }
+
   }, [loggedIn, userConnected, userInfo, staffAccess]);
 
   useEffect(() => {
@@ -329,7 +333,7 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
 
   const getUser = async (userId) => {
     if (!userId) {
-        console.error('Invalid user ID provided');
+        console.error('Invalid user ID provided to getUser');
         return;
     }
 
