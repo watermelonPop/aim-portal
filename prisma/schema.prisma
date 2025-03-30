@@ -59,6 +59,12 @@ model Advisor {
   exams                  Exam[]
   requests               Request[]
   students               Student[]              @relation("AdvisorToStudent")
+  global_settings        Boolean                @default(false)
+  accomodation_modules            Boolean                @default(false)
+  note_taking_modules             Boolean                @default(false)
+  assistive_technology_modules    Boolean                @default(false)
+  accessible_testing_modules      Boolean                @default(false)
+  student_case_information        Boolean                @default(false)
 }
 
 model Settings {
