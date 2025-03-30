@@ -34,12 +34,13 @@ function GlobalSettings() {
 
   const [advisorList, setAdvisorList] = useState([]);
   const [loaded, setLoaded] = useState(false)
-  const [simpleAdvisorList, setSimpleAdvisorList] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
-  const [slicedSearchResults, setSlicedSearchResults] = useState([]);
+  const [selectedAdvisor, setSelectedAdvisor] = useState(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState('');
 
 
   //============================================ USEFFECT STARTS HERE ============================================
@@ -59,7 +60,7 @@ function GlobalSettings() {
       })
       .catch(error => console.error('error fetching advisors',error));
     }
-    fetchAdv();
+      fetchAdv();
   },[]);
 
   useEffect(()=>{
@@ -155,6 +156,8 @@ function GlobalSettings() {
     const handleCardClick = (advisor) => {
       // Replace with your own behavior, e.g., navigate or open a modal
       console.log('Advisor clicked:', advisor);
+      setSelectedAdvisor(advisor);
+      console.log("advisor selected!");
     };
     let displayedAdvisors = [];
     //TODO: ADD SKIP AND TAKE
@@ -164,7 +167,6 @@ function GlobalSettings() {
     else{
       displayedAdvisors = advisors.slice(skip, take);
     }
-    
   
     return (
       <div style={gridContainerStyle}>
@@ -189,14 +191,10 @@ function GlobalSettings() {
     );
   }
 
-
-
-  //                                  PAGINATION BUTTONS
+  //============================================ PAGINATION BUTTONS ============================================
   function PaginationButtons() {
-    // Create an array of page numbers
     const onPageChange = (page_update) =>{
       console.log("onPageChange with page: ", page_update);
-      
 
       if(page_update < 0){
         if(currentPage != 0){
@@ -233,10 +231,151 @@ function GlobalSettings() {
     );
   }
 
+  //============================================ ADVISOR CARD ============================================
+  
+  function AdvisorCard({ advisor, onClose }) {
+    // Assume advisor.permissions holds an array of permission strings (or set an empty array if not available)
+    //use selectedAdvisor an 
+    const temp_advisor_perms = [advisor.global_settings, advisor.accessible_testing_modules, advisor.accomodation_modules, advisor.assistive_technology_modules, advisor.note_taking_modules, advisor.student_case_information];
+    const [permissions, setPermissions] = useState( [...temp_advisor_perms] || []);
+    
+    //redo permissions
+    
+  
+    // Example available permissions; in a real app this might come from your backend or context
+    const availablePermissions = ['Global Settings', 'Accessible Testing', 'Accommodation Modules', 'Assistive Technologies', 'Note Taking Modules', 'Student Case Information'];
+
+    //let curr_advisor_perms = [advisor.global_settings, advisor.accessible_testing_modules, advisor.accomodation_modules, advisor.assistive_technology_modules, advisor.note_taking_modules, advisor.student_case_information];
+    // const onClose = () => {};
+    console.log("CURRADVISORPERMS:",permissions);
 
 
+    const handleCheckboxChange = (perm_no) => {
+        let new_perms = [...permissions];
+        new_perms[perm_no] = !new_perms[perm_no];
+        setPermissions(new_perms);
+        console.log("updated permissions after checkbox change:",permissions);
+    };
+  
+    const handleSave = () => {
+      setIsSaving(true);
+      setSelectedAdvisor(prev => ({
+        ...prev,
+        global_settings: permissions[0],
+        accessible_testing_modules: permissions[1],
+        accomodation_modules: permissions[2],
+        assistive_technology_modules: permissions[3],
+        note_taking_modules:  permissions[4],
+        student_case_information: permissions[5],
+      }));
+      //setLoaded(false);
+      // Update permissions to the database via your API endpoint
+      fetch(`/api/updateAdvisors`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ advisorId: advisor.userId, permissions })
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Permissions updated:', data);
+          setIsSaving(false);
+          // Optionally update advisor in parent state here
+          setAdvisorList(prevList => {
+            // Create a new array from the previous state
+            const updatedList = [...prevList];
+            const index = updatedList.findIndex(item => item.userId === advisor.userId);
+            if (index !== -1) {
+              updatedList[index] = {
+                ...updatedList[index],
+                global_settings: permissions[0],
+                accessible_testing_modules: permissions[1],
+                accomodation_modules: permissions[2],
+                assistive_technology_modules: permissions[3],
+                note_taking_modules:  permissions[4],
+                student_case_information: permissions[5],
+              };
+            }
+            return updatedList;
+          });
 
+          setSaveSuccess('Settings saved successfully!');
+          // Clear the message after 3 seconds
+          setTimeout(() => {
+            setSaveSuccess('');
+          }, 3000);
+          // const updatedAdvisor = advisorList.find(item => item.userId === advisor.userId);
+          // setSelectedAdvisor(updatedAdvisor);
+          //onClose(); // Close the detailed card view after saving
+        })
+        .catch(error => {
+          console.error('Error updating permissions:', error);
+          setIsSaving(false);
+        });
+    };
+  
+    const detailCardStyle = {
+      border: '2px solid #333',
+      borderRadius: '8px',
+      padding: '30px',
+      margin: '20px',
+      textAlign: 'center'
+    };
+  
+    return (
+      <div style={detailCardStyle}>
+        <h2>{advisor.account.name}</h2>
+        <p>ID: {advisor.userId}</p>
+        <p>Email: {advisor.account.email}</p>
+        <p>Role: {advisor.role}</p>
+        <h3>Permissions</h3>
+        <div style={{ textAlign: 'left', display: 'inline-block' }}>
+          {availablePermissions.map((perm) => (
+            <label
+              key={perm}
+              style={{
+                display: 'block',
+                margin: '8px 0',
+                fontSize: '1.1em'
+              }}
+            >
+              <input
+                type="checkbox"
+                style={{
+                  transform: 'scale(1.8)',
+                  marginRight: '8px'
+                }}
+                checked={permissions[availablePermissions.indexOf(perm)]}
+                onChange={() => handleCheckboxChange(availablePermissions.indexOf(perm))}
+              />
+              {perm}
+            </label>
+          ))}
+        </div>
+        
 
+        <div
+          style={{
+            marginTop: '20px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center'
+          }}
+        >
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '8px' }}>
+            <button onClick={handleSave} disabled={isSaving} style={{ marginRight: '16px' }}>
+              {isSaving ? 'Saving...' : 'Save'}
+            </button>
+            <button onClick={onClose}>Back to Results</button>
+          </div>
+          {saveSuccess && (
+            <p style={{ color: 'green', margin: 0 }}>
+              {saveSuccess}
+            </p>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   //============================================ RETURN STARTS HERE ============================================
   //============================================ RETURN STARTS HERE ============================================
@@ -246,34 +385,45 @@ function GlobalSettings() {
   return (
     <>
       <div> {/* Title */}
-        <h1>Advisor Lookup and Access Control </h1>
+        <h2>Advisor Lookup and Access Control </h2>
       </div>
 
       <div> {/* Searchbar */}
           <input 
             type="text"
-            placeholder="Enter search query..."
+            placeholder="Enter Advisor Name..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
       </div>
 
       <div> {/* Card View Title */}
-        <h2>Current Search Query:</h2>  
+      {selectedAdvisor ? (
+        <h2>Edit Advisor Permissions:</h2>  
+      ):(
+        <h2>Search Results:</h2>  
+      )}
       </div>
 
       <div> {/* Card View */}
-        <CardView 
-          advisors = {searchResults}
-          skip = {currentPage * 9}
-          take = {(currentPage + 1) * 9}
-        />
+        {selectedAdvisor ? (
+          <AdvisorCard 
+            advisor={selectedAdvisor} 
+            onClose={() => setSelectedAdvisor(null)} 
+          />
+        ) : (
+          <CardView 
+            advisors = {searchResults}
+            skip = {currentPage * 9}
+            take = {(currentPage + 1) * 9}
+          />
+        )}
       </div>
 
       <div>
-        <PaginationButtons
-        
-        />
+      {selectedAdvisor ? null : (
+        <PaginationButtons/>
+      )}
       </div>
     </>
   );
