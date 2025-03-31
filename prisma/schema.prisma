@@ -65,8 +65,6 @@ model Advisor {
   assistive_technology_modules    Boolean                @default(false)
   accessible_testing_modules      Boolean                @default(false)
   student_case_information        Boolean                @default(false)
-
-  
 }
 
 model Settings {
