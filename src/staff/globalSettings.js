@@ -170,7 +170,7 @@ function GlobalSettings() {
       <div style={gridContainerStyle}>
         {displayedAdvisors.map(advisor => (
           <div 
-              key={advisor.id} 
+              key={advisor.id} // Key is here
               style={cardStyle}
               onClick={() => handleCardClick(advisor)}
               role="button"
@@ -182,11 +182,10 @@ function GlobalSettings() {
             <h3 style={nameStyle}>{advisor.account.name}</h3>
             <p style={emailStyle}>{advisor.account.email}</p>
             <p style={roleStyle}>{advisor.role}</p>
-
           </div>
         ))}
       </div>
-    );
+    );  
   }
 
   //============================================ PAGINATION BUTTONS ============================================

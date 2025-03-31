@@ -23,9 +23,20 @@ describe('App', () => {
         describe('loggedIn set to true', () => {
                 test('renders sign up', async () => {
                         // Mock the fetch call for setSettingsDatabase
-                        global.fetch.mockResolvedValueOnce({
-                          ok: true,
-                          json: () => Promise.resolve({ success: true })
+                        global.fetch = jest.fn((url) => {
+                                if (url === '/api/accountConnected?userId=123') {
+                                    return Promise.resolve({
+                                        ok: true,
+                                        json: () => Promise.resolve({ exists: false }),
+                                    });
+                                }else if (url === '/api/checkAccount') {
+                                    return Promise.resolve({
+                                        ok: true,
+                                        json: () => Promise.resolve({ exists: true, user_info: {id: 123}}),
+                                    });
+                                }else{
+                                    console.log("OTHER API ROUTE");
+                                }
                         });
                     
                         act(() => {
@@ -33,8 +44,8 @@ describe('App', () => {
                         });
                     
                         await act(async () => {
-                          await App.setLoggedIn(true);
-
+                                await App.setUserInfo({id: 123});
+                                await App.setLoggedIn(true);
                         });
                     
                         await waitFor(() => {
@@ -44,9 +55,20 @@ describe('App', () => {
 
                 test('renders basic view if account is connected', async () => {
                         // Mock the fetch call for setSettingsDatabase
-                        global.fetch.mockResolvedValueOnce({
-                          ok: true,
-                          json: () => Promise.resolve({ success: true })
+                        global.fetch = jest.fn((url) => {
+                                if (url === '/api/accountConnected?userId=123') {
+                                    return Promise.resolve({
+                                        ok: true,
+                                        json: () => Promise.resolve({ exists: true }),
+                                    });
+                                }else if (url === '/api/checkAccount') {
+                                    return Promise.resolve({
+                                        ok: true,
+                                        json: () => Promise.resolve({ exists: true, user_info: {id: 123}}),
+                                    });
+                                }else{
+                                    console.log("OTHER API ROUTE");
+                                }
                         });
                     
                         act(() => {
@@ -54,9 +76,10 @@ describe('App', () => {
                         });
                     
                         await act(async () => {
+                                await App.setUserInfo({id: 123});
                                 await App.setLoggedIn(true);
-                                await App.setUserConnected(true);
                         });
+                    
                     
                         await waitFor(() => {
                           expect(screen.queryByTestId('basicScreen')).toBeInTheDocument();
@@ -65,33 +88,59 @@ describe('App', () => {
                       
 
                 test('renders basicHeader if account is connected', async () => {
-                        global.fetch.mockResolvedValueOnce({
-                                ok: true,
-                                json: () => Promise.resolve({ success: true })
+                        global.fetch = jest.fn((url) => {
+                                if (url === '/api/accountConnected?userId=123') {
+                                    return Promise.resolve({
+                                        ok: true,
+                                        json: () => Promise.resolve({ exists: true }),
+                                    });
+                                }else if (url === '/api/checkAccount') {
+                                    return Promise.resolve({
+                                        ok: true,
+                                        json: () => Promise.resolve({ exists: true, user_info: {id: 123}}),
+                                    });
+                                }else{
+                                    console.log("OTHER API ROUTE");
+                                }
                         });
+                    
                         act(() => {
-                                render(<App />);
+                          render(<App />);
                         });
+                    
                         await act(async () => {
+                                await App.setUserInfo({id: 123});
                                 await App.setLoggedIn(true);
-                                await App.setUserConnected(true);
                         });
+
                         await waitFor(() => {
                                 expect(screen.queryByTestId('basicHeader')).toBeInTheDocument();
                         });
                 });
 
                 test('by default, userType = User, renders basicTabNav, with the correct User tabs', async () => {
-                        global.fetch.mockResolvedValueOnce({
-                                ok: true,
-                                json: () => Promise.resolve({ success: true })
+                        global.fetch = jest.fn((url) => {
+                                if (url === '/api/accountConnected?userId=123') {
+                                    return Promise.resolve({
+                                        ok: true,
+                                        json: () => Promise.resolve({ exists: true }),
+                                    });
+                                }else if (url === '/api/checkAccount') {
+                                    return Promise.resolve({
+                                        ok: true,
+                                        json: () => Promise.resolve({ exists: true, user_info: {id: 123}}),
+                                    });
+                                }else{
+                                    console.log("OTHER API ROUTE");
+                                }
                         });
-                        
+                    
                         act(() => {
-                                render(<App />);
+                          render(<App />);
                         });
-                          
+                    
                         await act(async () => {
+                                await App.setUserInfo({id: 123});
                                 await App.setLoggedIn(true);
                                 await App.setUserConnected(true);
                                 await App.setTabs([{name: 'Dashboard', elem: null},
@@ -110,16 +159,28 @@ describe('App', () => {
                 });
 
                 test('Student View renders basicTabNav, with the correct Student tabs', async () => {
-                        global.fetch.mockResolvedValueOnce({
-                                ok: true,
-                                json: () => Promise.resolve({ success: true })
+                        global.fetch = jest.fn((url) => {
+                                if (url === '/api/accountConnected?userId=123') {
+                                    return Promise.resolve({
+                                        ok: true,
+                                        json: () => Promise.resolve({ exists: true }),
+                                    });
+                                }else if (url === '/api/checkAccount') {
+                                    return Promise.resolve({
+                                        ok: true,
+                                        json: () => Promise.resolve({ exists: true, user_info: {id: 123}}),
+                                    });
+                                }else{
+                                    console.log("OTHER API ROUTE");
+                                }
                         });
-                        
+                    
                         act(() => {
-                                render(<App />);
+                          render(<App />);
                         });
-                          
+                    
                         await act(async () => {
+                                await App.setUserInfo({id: 123});
                                 await App.setLoggedIn(true);
                                 await App.setUserConnected(true);
                                 await App.setTabs([{name: 'Dashboard', elem: null},
@@ -127,6 +188,7 @@ describe('App', () => {
                                         {name: 'Forms', elem: null},
                                         {name: 'Profile', elem: null}, {name: 'Testing', elem: null}, {name: 'Note Taking', elem: null}]);
                         });
+                        
 
                         await waitFor(() => {
                                 const basicTN = screen.getByTestId('basicTabNav');
@@ -142,16 +204,28 @@ describe('App', () => {
                 });
 
                 test('Professor View renders basicTabNav, with the correct Professor tabs', async () => {
-                        global.fetch.mockResolvedValueOnce({
-                                ok: true,
-                                json: () => Promise.resolve({ success: true })
+                        global.fetch = jest.fn((url) => {
+                                if (url === '/api/accountConnected?userId=123') {
+                                    return Promise.resolve({
+                                        ok: true,
+                                        json: () => Promise.resolve({ exists: true }),
+                                    });
+                                }else if (url === '/api/checkAccount') {
+                                    return Promise.resolve({
+                                        ok: true,
+                                        json: () => Promise.resolve({ exists: true, user_info: {id: 123}}),
+                                    });
+                                }else{
+                                    console.log("OTHER API ROUTE");
+                                }
                         });
-                        
+                    
                         act(() => {
-                                render(<App />);
+                          render(<App />);
                         });
-                          
+                    
                         await act(async () => {
+                                await App.setUserInfo({id: 123});
                                 await App.setLoggedIn(true);
                                 await App.setUserConnected(true);
                                 await App.setTabs([{name: 'Dashboard', elem: null},
@@ -172,16 +246,28 @@ describe('App', () => {
                 });
 
                 test('Staff View renders basicTabNav, with the correct Staff tabs', async () => {
-                        global.fetch.mockResolvedValueOnce({
-                                ok: true,
-                                json: () => Promise.resolve({ success: true })
+                        global.fetch = jest.fn((url) => {
+                                if (url === '/api/accountConnected?userId=123') {
+                                    return Promise.resolve({
+                                        ok: true,
+                                        json: () => Promise.resolve({ exists: true }),
+                                    });
+                                }else if (url === '/api/checkAccount') {
+                                    return Promise.resolve({
+                                        ok: true,
+                                        json: () => Promise.resolve({ exists: true, user_info: {id: 123}}),
+                                    });
+                                }else{
+                                    console.log("OTHER API ROUTE");
+                                }
                         });
-                        
+                    
                         act(() => {
-                                render(<App />);
+                          render(<App />);
                         });
-                          
+                    
                         await act(async () => {
+                                await App.setUserInfo({id: 123});
                                 await App.setLoggedIn(true);
                                 await App.setUserConnected(true);
                                 await App.setTabs([{name: 'Dashboard', elem: null},

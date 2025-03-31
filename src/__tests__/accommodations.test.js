@@ -21,6 +21,16 @@ describe('accommodations', () => {
         });
 
         test('Accommodations should have no accessibility violations', async () => {
+                global.fetch = jest.fn((url) => {
+                        if (url === '/api/checkRequests?userId=123') {
+                            return Promise.resolve({
+                                ok: true,
+                                json: () => Promise.resolve({ exists: false, message: "No request found" }),
+                            });
+                        }else{
+                            console.log("OTHER API ROUTE");
+                        }
+                });
                 let mockUserInfo = {
                         id: 123,
                         name: "Mock User",
@@ -31,13 +41,33 @@ describe('accommodations', () => {
                         uin: 123456789,
                         phone_number: 1001001001,
                 };
-                const { container } = render(<Accommodations userInfo={mockUserInfo} setAlertMessage={mockSetAlertMessage} setShowAlert={mockSetShowAlert}/>);
+                let container;
+                await act(async () => {
+                        const rendered = render(
+                        <Accommodations
+                                userInfo={mockUserInfo}
+                                setAlertMessage={mockSetAlertMessage}
+                                setShowAlert={mockSetShowAlert}
+                        />
+                        );
+                        container = rendered.container;
+                });
                 const results = await axe(container);
                 expect(results).toHaveNoViolations();
         });
 
 
         test('renders user UserAccommodations if userType is user', async () => {
+                global.fetch = jest.fn((url) => {
+                        if (url === '/api/checkRequests?userId=123') {
+                            return Promise.resolve({
+                                ok: true,
+                                json: () => Promise.resolve({ exists: false, message: "No request found" }),
+                            });
+                        }else{
+                            console.log("OTHER API ROUTE");
+                        }
+                });
                 let mockUserInfo = {
                         id: 123,
                         name: "Mock User",
@@ -48,7 +78,7 @@ describe('accommodations', () => {
                         uin: 123456789,
                         phone_number: 1001001001,
                 };
-                act(() => {
+                await act(async () => {
                         render(<Accommodations userInfo={mockUserInfo} setAlertMessage={mockSetAlertMessage} setShowAlert={mockSetShowAlert}/>);
                 });
 
@@ -76,6 +106,16 @@ describe('accommodations', () => {
         });
 
         test('Does not call /api/getStudentData if role is not STUDENT', async () => {
+                global.fetch = jest.fn((url) => {
+                        if (url === '/api/checkRequests?userId=123') {
+                            return Promise.resolve({
+                                ok: true,
+                                json: () => Promise.resolve({ exists: false, message: "No request found" }),
+                            });
+                        }else{
+                            console.log("OTHER API ROUTE");
+                        }
+                });
                 const mockUserInfo = {
                   id: 123,
                   role: "USER", // Not student

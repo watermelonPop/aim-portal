@@ -4,11 +4,11 @@ import { useEffect, useState } from 'react';
 
 export function UserAccommodations({userInfo, setAlertMessage, setShowAlert}) {
         const [formData, setFormData] = useState({
-                name: userInfo.name,
-                email: userInfo.email,
-                dob: userInfo.dob,
-                uin: userInfo.uin,
-                phone_number: userInfo.phone_number,
+                name: userInfo.name || "",
+                email: userInfo.email || "",
+                dob: userInfo.dob || "",
+                uin: userInfo.uin || "",
+                phone_number: userInfo.phone_number || "",
                 disability: '',
                 testing: '',
                 inClass: '',

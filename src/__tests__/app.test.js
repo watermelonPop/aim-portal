@@ -170,6 +170,36 @@ describe('Dynamic tab initialization based on user role', () => {
         };
       
         test('sets USER tabs correctly', async () => {
+          global.fetch = jest.fn((url) => {
+            if (url === '/api/accountConnected?userId=1') {
+                return Promise.resolve({
+                    ok: true,
+                    json: () => Promise.resolve({ exists: true }),
+                });
+            }else if (url === '/api/checkAccount') {
+                return Promise.resolve({
+                    ok: true,
+                    json: () => Promise.resolve({ exists: true, user_info: {id: 1, name: 'Test User',
+                      role: 'USER',
+                      email: 'test@email.com',
+                      dob: '2000-01-01',
+                      uin: '123456789',
+                      phone_number: '1234567890',}}),
+                });
+            }else if (url === '/api/getUser?userId=1') {
+              return Promise.resolve({
+                  ok: true,
+                  json: () => Promise.resolve({ exists: true, user_info: {id: 1, name: 'Test User',
+                    role: 'USER',
+                    email: 'test@email.com',
+                    dob: '2000-01-01',
+                    uin: '123456789',
+                    phone_number: '1234567890',}}),
+              });
+            }else{
+                console.log("OTHER API ROUTE");
+            }
+          });
           await act(async () => {
             App.setUserInfo(mockUser);
             App.setUserConnected(true);
@@ -189,6 +219,41 @@ describe('Dynamic tab initialization based on user role', () => {
         });
       
         test('sets STUDENT tabs correctly', async () => {
+          global.fetch = jest.fn((url) => {
+            if (url === '/api/accountConnected?userId=1') {
+                return Promise.resolve({
+                    ok: true,
+                    json: () => Promise.resolve({ exists: true }),
+                });
+            }else if (url === '/api/checkAccount') {
+                return Promise.resolve({
+                    ok: true,
+                    json: () => Promise.resolve({ exists: true, user_info: {id: 1, name: 'Test User',
+                      role: 'USER',
+                      email: 'test@email.com',
+                      dob: '2000-01-01',
+                      uin: '123456789',
+                      phone_number: '1234567890',}}),
+                });
+            }else if (url === '/api/getUser?userId=1') {
+              return Promise.resolve({
+                  ok: true,
+                  json: () => Promise.resolve({ exists: true, user_info: {id: 1, name: 'Test User',
+                    role: 'USER',
+                    email: 'test@email.com',
+                    dob: '2000-01-01',
+                    uin: '123456789',
+                    phone_number: '1234567890',}}),
+              });
+            }else if (url === '/api/getStudentCourses?userId=1') {
+              return Promise.resolve({
+                  ok: true,
+                  json: () => Promise.resolve([]),
+              });
+            }else{
+                console.log("OTHER API ROUTE");
+            }
+          });
           await act(async () => {
             App.setUserInfo({ ...mockUser, role: 'STUDENT' });
             App.setUserConnected(true);
@@ -201,6 +266,41 @@ describe('Dynamic tab initialization based on user role', () => {
         });
       
         test('sets PROFESSOR tabs correctly', async () => {
+          global.fetch = jest.fn((url) => {
+            if (url === '/api/accountConnected?userId=1') {
+                return Promise.resolve({
+                    ok: true,
+                    json: () => Promise.resolve({ exists: true }),
+                });
+            }else if (url === '/api/checkAccount') {
+                return Promise.resolve({
+                    ok: true,
+                    json: () => Promise.resolve({ exists: true, user_info: {id: 1, name: 'Test User',
+                      role: 'USER',
+                      email: 'test@email.com',
+                      dob: '2000-01-01',
+                      uin: '123456789',
+                      phone_number: '1234567890',}}),
+                });
+            }else if (url === '/api/getUser?userId=1') {
+              return Promise.resolve({
+                  ok: true,
+                  json: () => Promise.resolve({ exists: true, user_info: {id: 1, name: 'Test User',
+                    role: 'USER',
+                    email: 'test@email.com',
+                    dob: '2000-01-01',
+                    uin: '123456789',
+                    phone_number: '1234567890',}}),
+              });
+            }else if (url === '/api/getStudentCourses?userId=1') {
+              return Promise.resolve({
+                  ok: true,
+                  json: () => Promise.resolve([]),
+              });
+            }else{
+                console.log("OTHER API ROUTE");
+            }
+          });
           await act(async () => {
             App.setUserInfo({ ...mockUser, role: 'PROFESSOR' });
             App.setUserConnected(true);
@@ -212,6 +312,41 @@ describe('Dynamic tab initialization based on user role', () => {
         });
       
         test('sets ADVISOR tabs correctly based on staffAccess', async () => {
+          global.fetch = jest.fn((url) => {
+            if (url === '/api/accountConnected?userId=1') {
+                return Promise.resolve({
+                    ok: true,
+                    json: () => Promise.resolve({ exists: true }),
+                });
+            }else if (url === '/api/checkAccount') {
+                return Promise.resolve({
+                    ok: true,
+                    json: () => Promise.resolve({ exists: true, user_info: {id: 1, name: 'Test User',
+                      role: 'USER',
+                      email: 'test@email.com',
+                      dob: '2000-01-01',
+                      uin: '123456789',
+                      phone_number: '1234567890',}}),
+                });
+            }else if (url === '/api/getUser?userId=1') {
+              return Promise.resolve({
+                  ok: true,
+                  json: () => Promise.resolve({ exists: true, user_info: {id: 1, name: 'Test User',
+                    role: 'USER',
+                    email: 'test@email.com',
+                    dob: '2000-01-01',
+                    uin: '123456789',
+                    phone_number: '1234567890',}}),
+              });
+            }else if (url === '/api/getStudentCourses?userId=1') {
+              return Promise.resolve({
+                  ok: true,
+                  json: () => Promise.resolve([]),
+              });
+            }else{
+                console.log("OTHER API ROUTE");
+            }
+          });
           const mockStaffAccess = [
             { hasAccess: true, access: 'Global Settings' },
             { hasAccess: true, access: 'Accommodations' },
