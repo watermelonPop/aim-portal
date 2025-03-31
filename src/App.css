@@ -1153,3 +1153,629 @@
   100% { transform: rotate(360deg); }
 }
 
+/* Ensure the requests container does not overflow */
+.requests-container {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;     /* Enable horizontal scrolling */
+  max-width: 90vw;      /* Keeps it inside the dashboard area */
+  margin: 0 auto;       /* Centers it horizontally */
+  padding: 1rem 0;
+  border: 1px solid #ddd; /* Light border for visual clarity */
+  border-radius: 8px;
+  background: white;
+}
+
+/* Request tile styles */
+.request-tile {
+  flex: 0 0 auto;
+  min-width: 280px;       /* Minimum width for consistent tiles */
+  max-width: 320px;       /* Avoid oversized tiles */
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+/* Subheading formatting */
+.request-tile .subheading {
+  font-style: italic;
+  margin-bottom: 0.5rem;
+}
+
+/* Notes preview formatting */
+.request-tile .notes-preview {
+  color: #555;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* Search bar styles */
+.staff-search-bar {
+  width: 90%;          /* Matches the container width */
+  max-width: 500px;    /* Limits the search bar width */
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Ensure request tiles are clickable */
+.request-tile {
+  flex: 0 0 auto;
+  min-width: 280px;
+  max-width: 320px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  cursor: pointer; /* Make it clear they are clickable */
+  transition: transform 0.2s ease-in-out;
+}
+
+.request-tile:hover,
+.request-tile:focus {
+  transform: scale(1.05);
+}
+
+/* Full student details page */
+.staff-student-details-container {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  max-width: 600px;
+  margin: 2rem auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.full-notes-box {
+  background: #f9f9f9;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-style: italic;
+}
+
+/* Pagination Controls */
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+  gap: 1rem;
+}
+
+.pagination-btn {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background-color: #f1f1f1;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 5px solid rgba(0, 0, 0, 0.1);
+  border-top: 5px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+.requests-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columns */
+  gap: 16px; /* Spacing between items */
+  max-height: 500px; /* Adjust based on need */
+  overflow-y: auto; /* Enable vertical scrolling */
+  padding: 10px;
+  border: 1px solid #ccc; /* Optional for visibility */
+}
+
+.request-card {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+.dropdown-button {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  margin-top: 8px;
+  border-radius: 4px;
+}
+
+.dropdown-button:hover {
+  background: #0056b3;
+}
+
+.student-info-dropdown {
+  background: #f9f9f9;
+  padding: 10px;
+  margin-top: 8px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+.request-tile {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.request-tile:hover {
+  transform: scale(1.05);
+}
+
+.student-name {
+  font-size: 1.5rem; /* Large text */
+  font-weight: bold;
+  color: #333;
+}
+
+.student-uin {
+  font-size: 0.9rem; /* Small text */
+  color: #666;
+  margin-top: 5px;
+}
+.staff-dashboard {
+  padding: 20px;
+  color: #333;
+}
+
+.back-btn {
+  background: #4F0000;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.back-btn:hover {
+  background: #4F0000;
+}
+
+.request-details-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.request-details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.request-details-grid .full-width {
+  grid-column: span 2;
+}
+
+/* Student Info Box - Compact and Clean */
+.student-info {
+  background: #f8f4fc; /* Soft purple for subtle contrast */
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-top: 10px;
+  max-width: 300px; /* Keep it compact */
+  font-size: 0.9rem;
+  text-align: left;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Reduce Heading Size */
+.student-info h3 {
+  font-size: 1.1rem;
+  margin-bottom: 5px;
+}
+
+/* Reduce Spacing in Text */
+.student-info p {
+  margin: 3px 0;
+  font-size: 0.9rem;
+}
+
+/* Dropdown Button - Smaller */
+.dropdown-button {
+  background: #4F0000;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  border-radius: 4px;
+}
+
+.dropdown-button:hover {
+  background: #220000;
+}
+
+.toggle-button {
+  background: #4F0000;
+  color: white;
+  border: none;
+  padding: 12px 16px;
+  cursor: pointer;
+  font-size: 1rem;
+  border-radius: 6px;
+  width: 100%;
+  max-width: 250px;
+  display: block;
+  margin: 10px auto;
+  text-align: center;
+}
+
+.toggle-button:hover {
+  background: #300000;
+}
+
+.dropdown-content {
+  background: #f8f4fc;
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 10px;
+  font-size: 0.9rem;
+  text-align: left;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-content h4 {
+  font-size: 1.1rem;
+  margin-bottom: 5px;
+}
+
+.dropdown-content ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.dropdown-content li {
+  border-bottom: 1px solid #ddd;
+  padding: 8px 0;
+}
+
+.dropdown-content li:last-child {
+  border-bottom: none;
+}
+
+.loading-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.loading-spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid #5c0d46; /* Spinner color */
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.staff-backtoprofile-btn {
+  margin-top:10px;
+}
+
+.two-column-layout {
+  display: flex;
+  gap: 40px;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.student-left-column {
+  flex: 1;
+  min-width: 300px;
+}
+
+.student-right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 250px;
+}
+
+.student-profile-heading {
+  font-size: 2rem;
+  color: #4F0000;
+  margin-bottom: 10px;
+}
+
+.student-info-box {
+  background: #f3f3f3;
+  padding: 15px 20px;
+  border-radius: 8px;
+  margin-top: 10px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  font-size: 0.95rem;
+}
+
+.edit-profile-button {
+  background-color: #4F0000;
+  color: white;
+  padding: 8px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+.edit-profile-button:hover {
+  background-color: #6a0000;
+}
+
+.form-warning {
+  background-color: #fff3cd;
+  color: #856404;
+  border-left: 4px solid #ffeeba;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.form-success {
+  background-color: #d4edda;
+  color: #155724;
+  border-left: 4px solid #c3e6cb;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.blurred {
+  position: relative;
+  filter: blur(3px);
+  pointer-events: none;
+}
+
+.overlay-spinner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255,255,255,0.6);
+  z-index: 10;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #800000; /* maroon to match your theme */
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.status-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.save-icon-button {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.overlay-spinner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255,255,255,0.7);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #7b0000;
+}
+
+.loading-spinner {
+  border: 6px solid #eee;
+  border-top: 6px solid #7b0000;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  animation: spin 0.9s linear infinite;
+  margin-bottom: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.staff-alerts {
+  max-height: 350px;
+  overflow-y: auto;
+  padding-right: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: #aaa #f0f0f0;
+}
+
+.staff-alerts::-webkit-scrollbar {
+  width: 6px;
+}
+
+.staff-alerts::-webkit-scrollbar-thumb {
+  background-color: #aaa;
+  border-radius: 10px;
+}
+
+.loading-spinner-small {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #8a0c24;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+.accommodationsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* 👈 Left-align the content */
+  gap: 1.5rem;
+  width: 90%;
+  max-width: 800px;
+  margin-top: 1rem;
+}
+
+.accommodationCard {
+  background-color: #fff4f4;
+  border: 2px solid #4F0000;
+  border-radius: 1rem;
+  padding: 1rem 1.5rem;
+  font-family: "Mitr", serif;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.accommodationCard div {
+  margin-bottom: 0.5rem;
+  font-size: calc(var(--txtSize) + 2px);
+}
+
+.accommodationCard strong {
+  color: #4F0000;
+}
+
+.accommodationCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease-in-out;
+}
+
+.studentAccommodationsWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-left: 5vw;
+}
+
+.studentAccommodationsWrapper .dashboardTitle {
+  text-align: left;
+  width: 100%;
+}
+
+.profileContainer {
+  background-color: #fff5f5;
+  padding: 1.5rem;
+  border-radius: 8px;
+  max-width: 600px;
+  margin: 1rem auto;
+  box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+}
+
+.profileField {
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+  display: flex;
+  gap: 0.5rem;
+  line-height: 1.5;
+}
+
+.label {
+  font-weight: bold;
+  color: #5c0a0a;
+  min-width: 130px;
+  text-align: right;
+}
+
+.profileBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+.profileContainer {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: fit-content;
+}

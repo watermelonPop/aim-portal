@@ -2,31 +2,168 @@
   --txtSize: 14px;
   --letterSpacing: 0px;
   --contrast: 100%;
+  --saturation: 100%;
+  --custom-cursor: auto;
+  --custom-hover-cursor: pointer;
+  --custom-text-cursor: text;
+  --background-color: #FFEDED;
+  --foreground-color: #4F0000;
+  --text-color: #000000;
+  --highlight-hover-color: #BD180F;
+  --align-text: center;
+  --align-items: center;
+  --font: "Mitr";
 }
+
+body.align-left{
+  --align-items: flex-start;
+}
+body.align-center{
+  --align-items: center;
+}
+body.align-right{
+  --align-items: flex-end;
+}
+
+
+body.highlight-hover-enabled a:hover {
+    background-color: var(--highlight-hover-color);
+    padding: 1rem;
+    border-radius: 1rem;
+}
+
+a{
+  padding: 1rem;
+}
+
+body.highlight-hover-enabled button:hover{
+  background-color: var(--highlight-hover-color) !important;
+}
+
+body.highlight-hover-enabled h1:hover{
+  background-color: var(--highlight-hover-color);
+  border-radius: 1rem;
+}
+
+body.highlight-hover-enabled h2:hover{
+  background-color: var(--highlight-hover-color);
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+body.highlight-hover-enabled h3:hover{
+  background-color: var(--highlight-hover-color);
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+
+
+body.highlight-hover-enabled h4:hover{
+  background-color: var(--highlight-hover-color);
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+body.highlight-hover-enabled .basicLogoImg:hover{
+  background-color: var(--highlight-hover-color);
+  border-radius: 1rem;
+}
+
+body.highlight-hover-enabled label:hover{
+  background-color: var(--highlight-hover-color);
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+body.highlight-hover-enabled .colorInput:hover{
+  background-color: var(--highlight-hover-color);
+}
+
+body.highlight-hover-enabled p:hover{
+  background-color: var(--highlight-hover-color);
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+body.highlight-hover-enabled input:hover{
+  background-color: var(--highlight-hover-color);
+}
+
+body.highlight-hover-enabled textarea:hover{
+  background-color: var(--highlight-hover-color);
+}
+
+body.highlight-hover-enabled .newStudentApp > div > label:hover{
+  background-color: transparent !important;
+}
+
+body.highlight-hover-enabled .newStudentApp > div:hover{
+  background-color: var(--highlight-hover-color);
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+body.highlight-hover-enabled .newStudentApp > div > input:hover,
+.newStudentApp > div > textarea:hover, .newStudentApp > div > select:hover{
+  background-color: var(--background-color) !important;
+}
+
+body.highlight-hover-enabled .settingsNav ul > li > ul > li:hover{
+  background-color: var(--highlight-hover-color);
+  border-radius: 1rem;
+}
+
+body.highlight-hover-enabled .settingsNav ul > li > form > select:hover{
+  background-color: var(--highlight-hover-color);
+  border-radius: 1rem;
+}
+
+body.highlight-hover-enabled .settingsNav ul > li:hover{
+  background-color: var(--highlight-hover-color);
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+label, p{
+  padding: 1rem;
+}
+
 
 html{
   overflow-x: hidden;
 }
 
 body {
-  background-color: #FFEDED;
+  background-color: var(--background-color);
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   margin: 0;
+  cursor: var(--custom-cursor);
+  font-family: var(--font), serif !important;
+  color: var(--text-color);
+}
+
+button, a{
+  cursor: var(--custom-hover-cursor);
+}
+
+input, textarea{
+  cursor: var(--custom-text-cursor);
+}
+
+label{
+  cursor: var(--custom-cursor);
 }
 
 body.modal-open {
   overflow: hidden;
 }
 
-main{
-  
-}
-
 #root{
-  background-color: #FFEDED;
+  background-color: var(--background-color);
   width: 100%;
   height: 51rem;
   display: flex;
@@ -35,7 +172,7 @@ main{
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  filter: contrast(var(--contrast));
+  filter: contrast(var(--contrast)) saturate(var(--saturation));
 }
 
 .loginScreen{
@@ -61,7 +198,6 @@ main{
 }
 
 h1{
-  font-family: "Mitr", serif;
   font-weight: 700;
   letter-spacing: var(--letterSpacing);
   display: flex;
@@ -69,12 +205,11 @@ h1{
   align-items: center;
   margin: 0;
   width: fit-content;
-  padding: 0;
-  font-size: calc(var(--txtSize) + 30px);
+  padding: 1rem;
+  font-size: calc(var(--txtSize) + 50px) !important;
 }
 
 h2{
-  font-family: "Mitr", serif;
   font-weight: 600;
   letter-spacing: var(--letterSpacing);
   display: flex;
@@ -82,12 +217,11 @@ h2{
   align-items: center;
   margin: 0;
   width: fit-content;
-  padding: 0;
+  padding: 1rem;
   font-size: calc(var(--txtSize) + 20px);
 }
 
 h3{
-  font-family: "Mitr", serif;
   font-weight: 500;
   letter-spacing: var(--letterSpacing);
   display: flex;
@@ -95,12 +229,11 @@ h3{
   align-items: center;
   margin: 0;
   width: fit-content;
-  padding: 0;
+  padding: 1rem;
   font-size: calc(var(--txtSize) + 10px);
 }
 
 h4{
-  font-family: "Mitr", serif;
   font-weight: 500;
   letter-spacing: var(--letterSpacing);
   display: flex;
@@ -108,48 +241,45 @@ h4{
   align-items: center;
   margin: 0;
   width: fit-content;
-  padding: 0;
+  padding: 1rem;
   font-size: calc(var(--txtSize) + 5px);
 }
 
 
 .loginTitle {
-  color: #4F0000;
+  color: var(--foreground-color);
   font-size: calc(var(--txtSize) + 60px);
 }
 
 
 
 button{
-  font-family: "Mitr", serif;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0;
   border-radius: 1rem;
   border-color: none;
-  cursor: pointer;
 }
 
 #loginBtn{
-  background-color: #FFEDED;
-  color: #4F0000;
+  background-color: var(--background-color);
+  color: var(--foreground-color);
   font-weight: 650;
   letter-spacing: var(--letterSpacing);
   font-size: calc(var(--txtSize) + 30px);
-  width: 50%;
+  width: 70%;
   height: 7rem;
-  max-width: 20rem;
-  border: 3px solid #4F0000;
+  border: 3px solid var(--foreground-color);
 }
 
 #loginBtn:hover{
-  background-color: #4F0000;
-  color: #FFEDED;
+  background-color: var(--foreground-color);
+  color: var(--background-color);
 }
 
 .profileBtn{
-  background-color: #FFEDED;
+  background-color: var(--background-color);
   font-weight: 650;
   letter-spacing: var(--letterSpacing);
   font-size: var(--txtSize);
@@ -159,7 +289,7 @@ button{
 }
 
 .searchBtn{
-  background-color: #FFEDED;
+  background-color: var(--background-color);
   font-weight: 650;
   letter-spacing: var(--letterSpacing);
   font-size: var(--txtSize);
@@ -171,7 +301,7 @@ button{
 }
 
 .searchIcon{
-  color: #4F0000;
+  color: var(--foreground-color);
   font-size: var(--txtSize);
   margin: 0;
   padding: 1rem;
@@ -191,6 +321,14 @@ button{
   width: auto;
   height: 70%;
   margin: 0;
+  fill: var(--background-color);
+}
+
+.loginLogoImg{
+  width: auto;
+  height: 20%;
+  margin: 0;
+  fill: var(--foreground-color);
 }
 
 .loginHeader{
@@ -200,6 +338,7 @@ button{
   width: 75%;
   margin: 0;
   column-gap: 2rem;
+  max-height: 50%;
 }
 
 .basicHeader{
@@ -212,13 +351,13 @@ button{
   position: sticky !important;
   top: 0;
   align-self: flex-start;
-  background-color: #4F0000;
+  background-color: var(--foreground-color);
   margin: 0;
   z-index: 999;
 }
 
 .basicTitle{
-  color: #FFEDED;
+  color: var(--background-color);
   margin: 0;
   padding: 0;
   height: 100%;
@@ -227,7 +366,7 @@ button{
 }
 
 .profileIcon{
-  color: #4F0000;
+  color: var(--foreground-color);
   font-size: var(--txtSize);
   margin: 0;
   padding: 1rem;
@@ -261,19 +400,23 @@ button{
   border-radius: 1rem;
   width: 80%;
   height: 70%;
-  background-color: #FFEDED;
-  font-family: "Mitr", serif;
+  background-color: var(--background-color);
   font-weight: 400;
   font-size: var(--txtSize);
   letter-spacing: var(--letterSpacing);
-  padding: 1rem
+  padding: 1rem;
+  color: var(--text-color);
+}
+
+body.highlight-hover-enabled #search:hover{
+  background-color: var(--highlight-hover-color);
 }
 
 .settingsNav ul {
   flex-grow: 1;
   min-height: 0; /* Allow overflow */
   overflow-y: auto; /* Use auto instead of scroll */
-  background-color: #FFEDED;
+  background-color: var(--background-color);
   list-style: none;
   width: 90%;
   border-radius: 1rem;
@@ -281,24 +424,30 @@ button{
   flex-direction: column;
   padding: 0;
   overscroll-behavior: contain;
+  align-items: center;
+  row-gap: 0px !important;
 }
 
 .settingsNav ul > li {
   flex-shrink: 0; /* Prevent list items from shrinking */
-  width: 100%;
+  width: 80%;
   margin-top: 1rem;
   margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 1rem;
+}
+
+.settingsNav ul > li > ul{
+  border-radius: 1rem !important;
 }
 
 .settingsNav ul > li > form {
   margin: 0;
   display: flex;
   width: fit-content;
-  font-family: "Mitr", serif;
   font-weight: 500;
   letter-spacing: var(--letterSpacing);
   margin: 0;
@@ -308,8 +457,19 @@ button{
   column-gap: 1rem;
 }
 
-.settingsNav ul > li > h3 {
+.settingsNav ul > li > form > select{
+  border: none;
+  font-weight: 500;
+  letter-spacing: var(--letterSpacing);
+  margin: 0;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  font-size: calc(var(--txtSize) + 5px);
+  background-color: var(--background-color);
+  border: var(--foreground-color) 2px solid;
+  border-radius: 1rem;
 }
+
 
 .innerSettingsNav {
   flex-grow: 1;
@@ -328,12 +488,12 @@ button{
   height: 100vh; /* Change from min-height */
   overflow: hidden; /* Prevent double scrollbars */
   width: 50%;
-  background-color: #4F0000;
+  background-color: var(--foreground-color);
   position: fixed;
   top: 0; /* Align to the top of the viewport */
   right: 0; /* Align to the right of the viewport */
-  z-index: 1000; /* Ensure it's above other elements */
-  box-shadow: 5px 10px 15px black;
+  z-index: 1001; /* Ensure it's above other elements */
+  box-shadow: 5px 10px 15px var(--text-color);
   display: flex;
   flex-direction: column;
 }
@@ -359,14 +519,14 @@ button{
 .settingsHeading {
   flex-shrink: 0; /* Prevent header from shrinking */
   /* Add any other styling you need */
-  background-color: #4F0000;
+  background-color: var(--foreground-color);
   width: 100%;
   height: 15%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-evenly;
-  color: #FFEDED;
+  color: var(--background-color);
 }
 
 .disProfilesList{
@@ -382,8 +542,6 @@ button{
   display: flex !important;
   flex-direction: row !important;
   justify-content: space-between !important;
-
-  font-family: "Mitr", serif;
   font-weight: 500;
   letter-spacing: var(--letterSpacing);
   padding: 0;
@@ -392,7 +550,6 @@ button{
 
 .disProfiles button{
   border: none;
-  font-family: "Mitr", serif;
   font-weight: 500;
   letter-spacing: var(--letterSpacing);
   margin: 0;
@@ -401,13 +558,13 @@ button{
   padding-left: 1rem;
   padding-right: 1rem;
   font-size: calc(var(--txtSize) + 5px);
-  background-color: #FFEDED;
-  border: #4F0000 2px solid;
+  background-color: var(--background-color);
+  border: var(--foreground-color) 2px solid;
 }
 
 .disProfiles button:hover{
-  background-color: #4F0000;
-  color:#FFEDED;
+  background-color: var(--foreground-color);
+  color:var(--background-color);
 }
 
 
@@ -415,12 +572,11 @@ button{
   width: 100vw;
   display: flex;
   align-items: center;
-  background-color: #4F0000;
+  background-color: var(--foreground-color);
   justify-content: space-evenly;
   position: sticky;
   top: 16vh;
-  z-index: 100;
-  box-shadow: 5px 5px 15px black;
+  z-index: 1000;
 }
 
 
@@ -435,26 +591,47 @@ button{
 .tabNav ul > li {
   float: left;
   display: block;
-  text-align: center;
+  text-align: var(--align-text);
   padding: 14px 16px;
   text-decoration: none;
-  color:#FFEDED;
-  font-family: "Mitr", serif;
+  color:var(--background-color);
   font-weight: 400;
   font-size: calc(var(--txtSize) + 5px);
   letter-spacing: var(--letterSpacing);
-  cursor: pointer;
   height: 80%;
 }
 
-#activeTab{
-  background-color: #FFEDED;
-  color: #4F0000;
+.tabNav ul > li > a{
+  text-decoration: none;
+  color: var(--background-color);
+  background-color: none;
+  padding: 0.5rem;
+}
+
+.tabNav ul > li > a:hover{
+  color: var(--background-color);
+  border-color: var(--background-color);
   border-radius: 1rem;
+  border: 2px solid;
+  padding: 0.5rem;
+}
+
+
+#activeTab{
+  background-color: var(--background-color);
+  color: var(--foreground-color);
+  border-radius: 1rem;
+  padding: 0.5rem;
+}
+
+body.highlight-hover-enabled #activeTab:hover{
+  background-color: var(--highlight-hover-color) !important;
+  border-style: none !important;
+  border-color: var(--foreground-color)!important;
 }
 
 .footerTitle{
-  color:#FFEDED;
+  color:var(--background-color);
 }
 
 .basicFooter{
@@ -464,7 +641,7 @@ button{
   height: fit-content;
   justify-content: space-evenly;
   align-items: center;
-  background-color: #4F0000;
+  background-color: var(--foreground-color);
   margin: 0;
   padding-bottom: 2%;
   padding-top: 2%;
@@ -474,18 +651,30 @@ button{
   display: flex;
   column-gap: 5%;
   width: 75%;
-  color:#FFEDED;
-  font-family: "Mitr", serif;
+  color:var(--background-color);
   font-weight: 400;
   font-size: var(--txtSize);
   letter-spacing: var(--letterSpacing);
   row-gap: 0;
-  text-align: center;
+  text-align: var(--align-text);
 }
 
 .basicFooter div > div{
   display: flex;
   flex-direction: column;
+}
+
+.basicFooter div > div > p > a{
+  text-decoration: underline !important;
+}
+
+body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
+  background-color: transparent !important;
+}
+
+.basicFooter div > div > a{
+  text-decoration: underline !important;
+  color: var(--background-color);
 }
 .dashboardOuter{
   width: 100%;
@@ -495,8 +684,6 @@ button{
   align-items: center;
 }
 
-.dashboardTitle{
-}
 
 .closeBtnDiv {
   width: 90%;
@@ -506,9 +693,16 @@ button{
   align-items: center;
 }
 
-#closeSettingPanel {
-  background-color: #FFEDED;
-  color: #4F0000;
+#backSettingPanelOuter{
+  align-items: flex-start;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+#backSettingPanel{
+  background-color: var(--background-color);
+  color: var(--foreground-color);
   font-weight: 650;
   font-size: calc(var(--txtSize) + 15px);
   width: 3rem;
@@ -519,18 +713,40 @@ button{
   margin: 0;
   padding: 0;
   line-height: 1; 
-  border: 2px solid #4F0000;
+  border: 2px solid var(--foreground-color);
+}
+
+#backSettingPanel:hover{
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+  border-color: var(--background-color);
+}
+
+#closeSettingPanel {
+  background-color: var(--background-color);
+  color: var(--foreground-color);
+  font-weight: 650;
+  font-size: calc(var(--txtSize) + 15px);
+  width: 3rem;
+  height: 3rem; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  line-height: 1; 
+  border: 2px solid var(--foreground-color);
 }
 
 #closeSettingPanel:hover{
-  background-color: #4F0000;
-  color: #FFEDED;
-  border-color: #FFEDED;
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+  border-color: var(--background-color);
 }
 
 .settingsBtn{
-  background-color: #FFEDED;
-  color: #4F0000;
+  background-color: var(--background-color);
+  color: var(--foreground-color);
   font-weight: 650;
   letter-spacing: var(--letterSpacing);
   font-size: calc(var(--txtSize) + 20px);
@@ -542,12 +758,12 @@ button{
   margin: 0;
   padding: 0;
   line-height: 1; 
-  border: 2px solid #4F0000;
+  border: 2px solid var(--foreground-color);
 }
 
 .settingsBtn:hover{
-  background-color: #4F0000;
-  color: #FFEDED;
+  background-color: var(--foreground-color);
+  color: var(--background-color);
 }
 
 .loadingScreen {
@@ -577,14 +793,14 @@ button{
   width: 5rem;
   height: 5rem;
   border: 1rem solid #ccc;
-  border-top: 1rem solid #4F0000;
+  border-top: 1rem solid var(--foreground-color);
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 10px;
 }
 
 .spinner-text {
-  color: #4F0000;
+  color: var(--foreground-color);
 }
 
 @keyframes spin {
@@ -597,8 +813,8 @@ button{
 }
 
 .logOutBtn{
-  background-color: #FFEDED;
-  color: #4F0000;
+  background-color: var(--background-color);
+  color: var(--foreground-color);
   font-weight: 650;
   letter-spacing: var(--letterSpacing);
   font-size: calc(var(--txtSize) + 20px);
@@ -610,12 +826,12 @@ button{
   margin: 0;
   padding: 0;
   line-height: 1; 
-  border: 2px solid #4F0000;
+  border: 2px solid var(--foreground-color);
 }
 
 .logOutBtn:hover{
-  background-color: #4F0000;
-  color: #FFEDED;
+  background-color: var(--foreground-color);
+  color: var(--background-color);
 }
 
 
@@ -633,50 +849,68 @@ button{
   width: 80%;
   display: flex;
   flex-direction: column;
-  font-family: "Mitr", serif;
   font-weight: 400;
   font-size: var(--txtSize);
   letter-spacing: var(--letterSpacing);
   padding: 20px;
 }
 
+.newStudentApp > div{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: var(--align-items);
+  padding: 1rem;
+}
 
-.newStudentApp label {
+
+.newStudentApp > div > label {
   font-weight: 600;
   margin-top: 10px;
+  text-align: var(--align-text);
+  width: 99%;
 }
 
 .subTitle{
-  font-family: "Mitr", serif;
   font-weight: 500;
   font-size: calc(var(--txtSize) + 5px);
   letter-spacing: var(--letterSpacing);
   width: 80%;
-  text-align: center;
+  text-align: var(--align-text);
 }
 
 .alertTxt{
-  font-family: "Mitr", serif;
   font-weight: 500;
   font-size: var(--txtSize);
   letter-spacing: var(--letterSpacing);
 }
 
-.newStudentApp input,
-.newStudentApp textarea, .newStudentApp select {
+.newStudentApp > div > input,
+.newStudentApp > div > textarea, .newStudentApp > div > select {
   margin-bottom: 15px;
   border-radius: 1rem;
   min-height: 2rem;
   padding: 1%;
-  font-family: "Mitr", serif;
   font-weight: 400;
   font-size: var(--txtSize);
   letter-spacing: var(--letterSpacing);
+  background-color: var(--background-color);
+  border-color: var(--text-color);
+  color: var(--text-color);
+  width: 100%;
+  text-align: var(--align-text);
 }
 
+
+#uploadFile{
+  width: fit-content !important;
+}
+
+
+
 .newStudentApp button {
-  background-color: #FFEDED;
-  color: #4F0000;
+  background-color: var(--background-color);
+  color: var(--foreground-color);
   font-weight: 650;
   letter-spacing: var(--letterSpacing);
   font-size: calc(var(--txtSize) + 20px);
@@ -688,12 +922,12 @@ button{
   margin: 0;
   padding: 0;
   line-height: 1; 
-  border: 2px solid #4F0000;
+  border: 2px solid var(--foreground-color);
 }
 
 .newStudentApp button:hover{
-  background-color: #4F0000;
-  color:#FFEDED;
+  background-color: var(--foreground-color);
+  color:var(--background-color);
 }
 
 .alertDiv {
@@ -702,13 +936,43 @@ button{
   left: 50%;
   transform: translateX(-50%);
   z-index: 9999;
-  background-color: #f8d7da;
-  border: 1px solid #f5c6cb;
+  background-color: var(--background-color);
+  border: 2px solid var(--foreground-color);
   border-radius: 4px;
   padding: 15px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   animation: fadeInOut 45s ease-in-out;
   height: fit-content;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.alertDiv > div{
+  width: 100%;
+}
+
+.alertDiv > div > button{
+  background-color: var(--background-color);
+  color: var(--foreground-color);
+  font-weight: 650;
+  font-size: calc(var(--txtSize) + 15px);
+  width: 3rem;
+  height: 3rem; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  line-height: 1; 
+  border: 2px solid var(--foreground-color);
+}
+
+.alertDiv > div > button:hover{
+  background-color: var(--foreground-color);
+  color: var(--background-color);
 }
 
 .alertTxt {
@@ -724,7 +988,6 @@ button{
 }
 
 .stickyContainer{
-  background-color: aqua;
   border: 1px black solid;
   height: fit-content;
 }
@@ -741,14 +1004,14 @@ button{
   position: sticky !important;
   top: 0;
   align-self: flex-start;
-  background-color: #4F0000;
+  background-color: var(--foreground-color);
   margin: 0;
   z-index: 999;
   column-gap: 5%;
 }
 
 .signUpTitle{
-  color: #FFEDED;
+  color: var(--background-color);
   margin: 0;
   padding: 0;
   height: 100%;
@@ -757,7 +1020,97 @@ button{
 }
 
 #signUpActive{
-  background-color: #FFEDED;
-  color:#4F0000;
+  background-color: var(--background-color);
+  color:var(--foreground-color);
   border-radius: 1rem;
+}
+
+
+.setBtn{
+  border: none;
+  font-weight: 500;
+  letter-spacing: var(--letterSpacing);
+  margin: 0;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-size: calc(var(--txtSize) + 5px);
+  background-color: var(--background-color);
+  border: var(--foreground-color) 2px solid;
+}
+
+.setBtn:hover{
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+}
+
+.newStudentApp input[type="date"] {
+  position: relative;
+  z-index: 10;
+  cursor: var(--custom-cursor);
+}
+
+#settingsScroll {
+  position: relative;
+  max-height: 80vh;
+  overflow-y: scroll;
+  scrollbar-gutter: stable; /* Adds space for scrollbar */
+}
+
+/* Chrome-specific scrollbar styling */
+#settingsScroll::-webkit-scrollbar {
+  width: 1rem;
+}
+
+#settingsScroll::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 6px;
+}
+
+#settingsScroll::-webkit-scrollbar-thumb {
+  background-color: var(--background-color);
+  border-radius: 6px;
+  border: 2px solid var(--foreground-color);
+  cursor: var(--custom-hover-cursor);
+}
+
+#settingsScroll::-webkit-scrollbar-thumb:hover{
+  background-color: var(--foreground-color);
+  border-color: var(--background-color);
+}
+
+.toggleBtn{
+  border: none;
+  font-size: var(--txtSize);
+  width: 100%;
+  background-color: var(--background-color);
+}
+
+.toggleIcon{
+  font-size: calc(var(--txtSize) + 30px);
+  padding: 1rem;
+  color: var(--foreground-color);
+}
+
+
+.colorInput{
+  border-radius: 1rem;
+  width: 4rem;
+  height: 3rem;
+}
+
+.categoryTabBtn{
+  display: flex;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+  align-items: center;
+  border-radius: 1rem;
+  border: 2px solid var(--foreground-color);
+  width: 100%;
+}
+
+.categoryTabBtn:hover{
+  background-color: var(--foreground-color);
+  color: var(--background-color);
 }

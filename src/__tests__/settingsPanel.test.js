@@ -136,8 +136,13 @@ describe('settingsPanel', () => {
                 });
 
                 await act(async () => {
+                    const inc = screen.getByTestId('Text');
+                    fireEvent.click(inc);
+                });
+
+                await act(async () => {
                     document.getElementById("settingsScroll").scrollTop = 35;
-                    const inc = screen.getByTestId('contrastInc');
+                    const inc = screen.getByTestId('txtSizeInc');
                     fireEvent.click(inc);
                 });
         
@@ -146,7 +151,7 @@ describe('settingsPanel', () => {
                 });
             }); 
 
-            test('scrolling triggers setScrolledPosition', async () => {
+            test('scrolling triggers set local storage', async () => {
                 window.HTMLElement.prototype.scrollIntoView = jest.fn();
                 let mockSettings = {
                     content_size: 100,
@@ -182,7 +187,7 @@ describe('settingsPanel', () => {
                 });
 
                 await waitFor(() => {
-                    expect(BasicSettingsBar.scrolledPosition).toBe(100);
+                    expect(localStorage.getItem("scroll-position-settings")).toBe("100");
                 });
             }); 
         });
@@ -216,6 +221,14 @@ describe('settingsPanel', () => {
                         logout={mockLogout} 
                         setLoggedIn={mockSetLoggedIn}
                     />);
+                });
+                await act(async () => {
+                    BasicSettingsBar.setSelectedCategory(null);
+                });
+
+                await act(async () => {
+                    const inc = screen.getByTestId('Profiles');
+                    fireEvent.click(inc);
                 });
 
                 await act(async () => {
@@ -284,12 +297,12 @@ describe('settingsPanel', () => {
                     highlight_tiles: false,
                     highlight_links: false,
                     text_magnifier: false,
-                    align_text: "Middle",
+                    align_text: "center",
                     font_size: "16px",
                     line_height: 5000,
                     letter_spacing: "5px",
                     contrast: "100%",
-                    saturation: "Regular",
+                    saturation: "100%",
                     mute_sounds: false,
                     hide_images: false,
                     reading_mask: false,
@@ -316,9 +329,21 @@ describe('settingsPanel', () => {
                 await waitFor(() => {
                     expect(mockSetSettings).toHaveBeenCalledWith({
                         ...mockSettings,
+                        align_text: "center",
                         font_size: "14px",
                         letter_spacing: "0px",
-                        contrast: "100%"
+                        contrast: "100%",
+                        saturation: "100%",
+                        mute_sounds: false,
+                        highlight_hover: false,
+                        highlight_hover_color: "#BD180F",
+                        cursor_size: 3,
+                        cursor_color: "#000000",
+                        cursor_border_color: "#FFFFFF",
+                        background_color: "#FFEDED",
+                        foreground_color: "#4F0000",
+                        text_color: "#000000",
+                        font: "Mitr",
                     });
                 });
             }); 
@@ -353,6 +378,15 @@ describe('settingsPanel', () => {
                             logout={mockLogout} 
                             setLoggedIn={mockSetLoggedIn}
                         />);
+                    });
+
+                    await act(async () => {
+                        BasicSettingsBar.setSelectedCategory(null);
+                    });
+
+                    await act(async () => {
+                        const inc = screen.getByTestId('Text');
+                        fireEvent.click(inc);
                     });
             
                     await waitFor(() => {
@@ -1070,7 +1104,7 @@ describe('settingsPanel', () => {
                     }); 
                     //should set database if databse user
                     //save to local storage if not databse user
-                });     
+                });    
         });
 
         describe('contrast adjust', () => {
@@ -1102,6 +1136,10 @@ describe('settingsPanel', () => {
                         logout={mockLogout} 
                         setLoggedIn={mockSetLoggedIn}
                     />);
+                });
+
+                await act(async () => {
+                    BasicSettingsBar.setSelectedCategory("Visuals");
                 });
             
                 await waitFor(() => {
@@ -1150,8 +1188,12 @@ describe('settingsPanel', () => {
                         logout={mockLogout} 
                         setLoggedIn={mockSetLoggedIn}
                     />);
+
+                    await act(async () => {
+                        BasicSettingsBar.setSelectedCategory("Visuals");
+                    });
                 
-                    act(() => {
+                    await act(async () => {
                         mockSetSetts({ contrast: "105%" });
                     });
                 
@@ -1446,6 +1488,7 @@ describe('settingsPanel', () => {
                 }); 
                 //should set database if databse user
                 //save to local storage if not databse user
-            });     
+            }); 
+               
         });
 });
