@@ -1,4 +1,17 @@
 import { useState, useEffect, useCallback  } from 'react';
+function renderNotes(type) {
+  switch (type.toLowerCase()) {
+    case 'break': return 'Scheduled break in academic calendar';
+    case 'office closure': return 'University offices closed';
+    case 'weather': return 'Weather-related advisory';
+    case 'deadline': return 'Upcoming student-related deadline';
+    default: return 'Important update';
+  }
+}
+
+function capitalizeWords(text) {
+  return text.replace(/\b\w/g, char => char.toUpperCase());
+}
 
 function StaffDash() {
   const [view, setView] = useState(null); // 'students', 'requests', 'forms', 'studentDetails'
@@ -24,6 +37,12 @@ function StaffDash() {
   const [showStudentInfo, setShowStudentInfo] = useState(false);
   const [refreshingStudent, setRefreshingStudent] = useState(false);
   const [studentNeedsRefresh, setStudentNeedsRefresh] = useState(false);
+  const [editedAccommodations, setEditedAccommodations] = useState({});
+  const [loadingStudentList, setLoadingStudentList] = useState(false);
+  const [importantDates, setImportantDates] = useState([]);
+
+
+
 
 
 
@@ -66,8 +85,39 @@ function StaffDash() {
       setRefreshingStudent(false);
     }
   };
+
+const [loadingDates, setLoadingDates] = useState(true);  // 👈 spinner flag
+
+useEffect(() => {
+  const fetchImportantDates = async () => {
+    try {
+      const res = await fetch('/api/getImportantDates');
+      const data = await res.json();
+      setImportantDates(data.dates);
+    } catch (err) {
+      console.error("Failed to fetch important dates:", err);
+    } finally {
+      setLoadingDates(false); // 👈 hide spinner
+    }
+  };
+
+  fetchImportantDates();
+}, []);
   
+  const handleStatusChange = (accId, newStatus) => {
+    setEditedAccommodations(prev => ({
+      ...prev,
+      [accId]: newStatus
+    }));
   
+    // Optimistically update the UI
+    setSelectedStudent(prev => ({
+      ...prev,
+      accommodations: prev.accommodations.map(acc =>
+        acc.id === accId ? { ...acc, status: newStatus } : acc
+      )
+    }));
+  };
 
     // Optimized Search with Debounce
     const performSearch = useCallback(
@@ -98,6 +148,20 @@ function StaffDash() {
     }, [view]);
     
 
+    useEffect(() => {
+      const fetchImportantDates = async () => {
+        try {
+          const res = await fetch('/api/getImportantDates');
+          const data = await res.json();
+          setImportantDates(data.dates);
+        } catch (err) {
+          console.error("Failed to fetch important dates:", err);
+        }
+      };
+    
+      fetchImportantDates();
+    }, []);
+    
     useEffect(() => {
       const fetchRequests = async () => {
         setLoadingRequests(true); // Show loading spinner
@@ -216,11 +280,14 @@ const handleStudentClick = (student) => {
   setView('studentDetails');
 };
 
+
+
   // Handle input change for editing
   const handleEditChange = (event) => {
     const { name, value } = event.target;
     setEditedStudent((prev) => ({ ...prev, [name]: value }));
   };
+
 
   const hasChanges = () => {
     return JSON.stringify(editedStudent) !== JSON.stringify(selectedStudent);
@@ -308,50 +375,93 @@ const handleStudentClick = (student) => {
     }
   };
   
-  
+  const confirmAndSaveStatus = async (accId) => {
+  const newStatus = editedAccommodations[accId];
+  if (!newStatus) return;
+
+  const confirmed = window.confirm("Are you sure you want to save this change?");
+  if (!confirmed) return;
+
+  try {
+    const res = await fetch('/api/updateAccommodationStatus', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ accommodationId: accId, status: newStatus })
+    });
+
+    if (res.ok) {
+      alert('✅ Status updated successfully!');
+    } else {
+      alert('❌ Failed to update status.');
+    }
+  } catch (error) {
+    console.error('Error updating status:', error);
+    alert('❌ Error while updating status.');
+  }
+};
+
   // Function to reset everything when going back
   const resetToMainMenu = async () => {
-    if (studentNeedsRefresh && selectedStudent) {
-      await refreshStudentData(selectedStudent.userId);
-      setStudentNeedsRefresh(false);
-    }
-    if (isEditing && hasChanges()) {
-      const confirmLeave = window.confirm(
-        "⚠️ Are you sure you want to leave? Unsaved changes will be discarded."
-      );
-      if (!confirmLeave) return;
-    }
-    setView(null);
-    setSearchTerm('');
-    setFilteredStudents([]);
-    setSelectedStudent(null);
-    setIsEditing(false);
-    setEditedStudent(null);
-    setSelectedRequest(null);
-    setShowAccommodations(false);
-    setShowAssistiveTech(false);
-  };
-
-  
-
-  const resetToStudentSearch = async () => {
-    if (studentNeedsRefresh && selectedStudent) {
-      await refreshStudentData(selectedStudent.userId);
-      setStudentNeedsRefresh(false);
-    }
-    if (isEditing && hasChanges()) {
-      const confirmLeave = window.confirm(
-        "⚠️ Are you sure you want to leave? Unsaved changes will be discarded."
-      );
-      if (!confirmLeave) return;
-    }
-    setView('students');
-    setShowAccommodations(false);
-    setShowAssistiveTech(false);
-    setIsEditing(false);
-    setShowStudentInfo(false);
-
+  if (isEditing && hasChanges()) {
+    const confirmLeave = window.confirm(
+      "⚠️ Are you sure you want to leave? Unsaved changes will be discarded."
+    );
+    if (!confirmLeave) return;
   }
+
+  if (studentNeedsRefresh) {
+    setLoadingStudentList(true);
+    try {
+      const res = await fetch('/api/getStudents');
+      const data = await res.json();
+      setStudentsData(data.students);
+    } catch (err) {
+      console.error("❌ Failed to refresh student list", err);
+    }
+    setLoadingStudentList(false);
+    setStudentNeedsRefresh(false);
+  }
+
+  setView(null);
+  setSearchTerm('');
+  setFilteredStudents([]);
+  setSelectedStudent(null);
+  setIsEditing(false);
+  setEditedStudent(null);
+  setSelectedRequest(null);
+  setShowAccommodations(false);
+  setShowAssistiveTech(false);
+};
+
+const resetToStudentSearch = async () => {
+  if (isEditing && hasChanges()) {
+    const confirmLeave = window.confirm(
+      "⚠️ Are you sure you want to leave? Unsaved changes will be discarded."
+    );
+    if (!confirmLeave) return;
+  }
+
+  if (studentNeedsRefresh) {
+    setLoadingStudentList(true);
+    try {
+      const res = await fetch('/api/getStudents');
+      const data = await res.json();
+      setStudentsData(data.students);
+    } catch (err) {
+      console.error("❌ Failed to refresh student list", err);
+    }
+    setLoadingStudentList(false);
+    setStudentNeedsRefresh(false);
+  }
+
+  setView('students');
+  setShowAccommodations(false);
+  setShowAssistiveTech(false);
+  setIsEditing(false);
+  setShowStudentInfo(false);
+  setSelectedStudent(null);
+  setEditedStudent(null);
+};
 
   return (
     <div className="staff-dashboard-container">
@@ -372,7 +482,7 @@ const handleStudentClick = (student) => {
           <div className="staff-menu">
             <h2>Select an action:</h2>
             <div className="staff-menu-buttons">
-              <button onClick={() => setView('students')}>🔍 Student Search</button>
+              <button onClick={() => setView('students')}>🔍 Student Profiles</button>
               <button onClick={() => setView('requests')}>📌 Manage Requests</button>
               <button onClick={() => setView('forms')}>📄 Review Submitted Forms</button>
             </div>
@@ -683,7 +793,25 @@ const handleStudentClick = (student) => {
               {selectedStudent.accommodations.map(acc => (
                 <li key={acc.id}>
                   <p><strong>Type:</strong> {acc.type || "N/A"}</p>
-                  <p><strong>Status:</strong> {acc.status || "N/A"}</p>
+                  <div className="status-row">
+                    <label><strong>Status:</strong></label>
+                    <select
+                      value={acc.status}
+                      onChange={(e) => handleStatusChange(acc.id, e.target.value)}
+                    >
+                      <option value="APPROVED">Approved</option>
+                      <option value="DENIED">Denied</option>
+                      <option value="PENDING">Pending</option>
+                    </select>
+
+                    <button
+                      className="save-icon-button"
+                      title="Save status change"
+                      onClick={() => confirmAndSaveStatus(acc.id)}
+                    >
+                      💾
+                    </button>
+                  </div>
                   <p><strong>Date Requested:</strong> {acc.date_requested ? new Date(acc.date_requested).toLocaleDateString() : "N/A"}</p>
                   <p><strong>Advisor ID:</strong> {acc.advisorId || "N/A"}</p>
                   <p><strong>Notes:</strong> {acc.notes || "N/A"}</p>
@@ -730,22 +858,28 @@ const handleStudentClick = (student) => {
 
       {/* Alerts Section */}
       {/* Alerts Section - Only Show on Landing Page */}
-{view === null && (
+      {view === null && (
   <aside className="staff-alerts">
     <h3>📢 Alerts</h3>
     <div className="alert-box">
-      {alerts.map(alert => (
-        <div key={alert.id} className="alert-item">
-          <p className="alert-date">{alert.date}</p>
-          <p className="alert-message">
-            <strong>{alert.message}</strong>
-          </p>
-          <p className="alert-notes">{alert.notes}</p>
-        </div>
-      ))}
+      {loadingDates ? (
+        <div className="loading-spinner-small" aria-label="Loading alerts..." />
+      ) : (
+        importantDates.map(date => (
+          <div key={date.id} className="alert-item">
+            <p className="alert-date">{new Date(date.date).toISOString().split('T')[0]}</p>
+            <p className="alert-message">
+              <strong>{capitalizeWords(date.name)}</strong>
+            </p>
+            <p className="alert-notes">{renderNotes(date.type)}</p>
+          </div>
+        ))
+      )}
     </div>
   </aside>
 )}
+
+
 
     </div>
   );
