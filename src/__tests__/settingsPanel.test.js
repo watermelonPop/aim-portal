@@ -738,7 +738,7 @@ describe('BasicSettingsBar Component', () => {
     });
 });
 
-/*describe('settingsPanel', () => {
+describe('settingsPanel', () => {
         beforeEach(() => {
                 jest.clearAllMocks();
         });
@@ -776,7 +776,7 @@ describe('BasicSettingsBar Component', () => {
             expect(results).toHaveNoViolations();
         });
 
-        describe('open & close panel', () => {
+        /*describe('open & close panel', () => {
             test('clicking the button opens the settings panel', async () => {
                     global.fetch = jest.fn((url) => {
                     if (url === '/api/accountConnected?userId=123') {
@@ -2315,5 +2315,5 @@ describe('BasicSettingsBar Component', () => {
                 //save to local storage if not databse user
             }); 
                
-        });
-});*/
+        });*/
+});
