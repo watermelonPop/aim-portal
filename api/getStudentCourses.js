@@ -18,15 +18,20 @@ export default async function handler(req, res) {
     console.log('🔍 Parsed userId:', parsedUserId);
 
     const student = await prisma.student.findFirst({
-        where: { userId: parsedUserId },
-        include: {
-          courses: {
-            include: {
-              exams: true, // include exam data
+      where: { userId: parsedUserId },
+      include: {
+        courses: {
+          include: {
+            exams: true, // includes date + location
+            professor: {
+              include: {
+                account: true, // includes name + email
+              },
             },
           },
         },
-      });
+      },
+    });
 
     if (!student) {
       console.error('❌ No student found for userId:', parsedUserId);
@@ -37,7 +42,7 @@ export default async function handler(req, res) {
     return res.status(200).json(student.courses);
   } catch (error) {
     console.error('🔥 ERROR during Prisma query:');
-    console.error(error); // Full stack trace
+    console.error(error);
     return res.status(500).json({ error: 'Internal server error' });
   } finally {
     await prisma.$disconnect();
