@@ -1,10 +1,36 @@
-// globalSettings.test.js
 import React from 'react';
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
-import GlobalSettings from '../globalSettings'; // adjust the import as needed
-import { cleanup } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act, cleanup } from '@testing-library/react';
+import GlobalSettings from '../staff/globalSettings';
 
-describe('GlobalSettings component', () => {
+// Sample advisor objects to use in tests
+const sampleAdvisors = [
+  {
+    id: 1,
+    userId: 1,
+    account: { name: "Alice Johnson", email: "alice@example.com" },
+    role: "Coordinator",
+    global_settings: true,
+    accessible_testing_modules: true,
+    accomodation_modules: false,
+    assistive_technology_modules: false,
+    note_taking_modules: false,
+    student_case_information: false,
+  },
+  {
+    id: 2,
+    userId: 2,
+    account: { name: "Bob Smith", email: "bob@example.com" },
+    role: "Advisor",
+    global_settings: false,
+    accessible_testing_modules: false,
+    accomodation_modules: true,
+    assistive_technology_modules: true,
+    note_taking_modules: true,
+    student_case_information: true,
+  }
+];
+
+describe('GlobalSettings Component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.useFakeTimers();
@@ -16,246 +42,207 @@ describe('GlobalSettings component', () => {
     jest.useRealTimers();
   });
 
-  test('renders initial message when search query is empty', () => {
-    render(<GlobalSettings />);
-    expect(
-      screen.getByText(/please enter a search query to find advisors/i)
-    ).toBeInTheDocument();
-  });
-
-  test('shows search results after successful API call', async () => {
-    const mockAdvisors = [
-      {
-        user_id: 1,
-        name: 'Alice Johnson',
-        email: 'alice@example.com',
-        role: 'Coordinator',
-        global_settings: true,
-        accommodation_modules: false,
-        note_taking_modules: true,
-        assistive_tech_modules: false,
-        accessible_testing_modules: true,
-        student_case_information: false,
-      },
-    ];
-    // Mock fetch to return advisor data
+  test('renders initial UI and fetches advisors', async () => {
+    // Mock the initial fetch call to /api/getAdvisors
     global.fetch = jest.fn().mockResolvedValueOnce({
       ok: true,
-      json: () => Promise.resolve({ advisors: mockAdvisors }),
+      json: async () => ({ advisors: sampleAdvisors }),
     });
-
+    
     render(<GlobalSettings />);
-    const input = screen.getByPlaceholderText(/search advisors/i);
+    
+    // Before fetch resolves, CardView should display a loading message
+    expect(screen.getByText(/Loading advisors.../i)).toBeInTheDocument();
+    
+    // Wait until the advisors are rendered in the card view
+    await waitFor(() => {
+      expect(screen.getByText(/Alice Johnson/i)).toBeInTheDocument();
+      expect(screen.getByText(/Bob Smith/i)).toBeInTheDocument();
+    });
+    
+    // Verify that the search input and title are in the document
+    expect(screen.getByPlaceholderText(/Enter Advisor Name.../i)).toBeInTheDocument();
+    expect(screen.getByText(/Search Results:/i)).toBeInTheDocument();
+  });
+
+  test('filters advisors based on search query', async () => {
+    global.fetch = jest.fn().mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ advisors: sampleAdvisors }),
+    });
+    
+    render(<GlobalSettings />);
+    
+    // Wait for advisors to load
+    await waitFor(() => {
+      expect(screen.getByText(/Alice Johnson/i)).toBeInTheDocument();
+    });
+    
+    const input = screen.getByPlaceholderText(/Enter Advisor Name.../i);
+    // Type a search query that should match only Alice
     fireEvent.change(input, { target: { value: 'Alice' } });
-
-    // Advance timers to trigger debounce
-    act(() => {
-      jest.advanceTimersByTime(300);
-    });
-
-    // Ensure the correct API endpoint is called
+    
+    // Wait for the filtering effect to update the displayed advisors
     await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledWith(
-        '/api/findAdvisor?query=' + encodeURIComponent('Alice')
-      );
+      expect(screen.getByText(/Alice Johnson/i)).toBeInTheDocument();
     });
-
-    // Check that the advisor's name appears in the table
-    expect(await screen.findByText(/alice johnson/i)).toBeInTheDocument();
-    // Check that at least one checkbox is rendered
-    const checkboxes = screen.getAllByRole('checkbox');
-    expect(checkboxes.length).toBeGreaterThan(0);
+    // Bob should not be displayed when filtering by "Alice"
+    expect(screen.queryByText(/Bob Smith/i)).toBeNull();
   });
 
-  test('shows "Loading..." message while fetching data', async () => {
-    let resolveFetch;
-    global.fetch = jest.fn().mockReturnValue(
-      new Promise((resolve) => {
-        resolveFetch = resolve;
-      })
-    );
-
-    render(<GlobalSettings />);
-    const input = screen.getByPlaceholderText(/search advisors/i);
-    fireEvent.change(input, { target: { value: 'Test' } });
-
-    act(() => {
-      jest.advanceTimersByTime(300);
-    });
-
-    // Immediately after advancing timers, "Loading..." should be displayed
-    expect(screen.getByText(/loading.../i)).toBeInTheDocument();
-
-    // Now resolve the fetch promise with empty results
-    act(() => {
-      resolveFetch({
-        ok: true,
-        json: () => Promise.resolve({ advisors: [] }),
-      });
-    });
-
-    await waitFor(() => {
-      expect(screen.getByText(/no matching advisors found/i)).toBeInTheDocument();
-    });
-  });
-
-  test('displays "No matching advisors found" when API returns empty array', async () => {
+  test('selecting an advisor opens the AdvisorCard view', async () => {
     global.fetch = jest.fn().mockResolvedValueOnce({
       ok: true,
-      json: () => Promise.resolve({ advisors: [] }),
+      json: async () => ({ advisors: sampleAdvisors }),
     });
-
+    
     render(<GlobalSettings />);
-    const input = screen.getByPlaceholderText(/search advisors/i);
-    fireEvent.change(input, { target: { value: 'Nonexistent' } });
-
-    act(() => {
-      jest.advanceTimersByTime(300);
-    });
-
+    
+    // Wait for advisors to load
     await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledWith(
-        '/api/findAdvisor?query=' + encodeURIComponent('Nonexistent')
-      );
+      expect(screen.getByText(/Alice Johnson/i)).toBeInTheDocument();
     });
-
-    expect(await screen.findByText(/no matching advisors found/i)).toBeInTheDocument();
+    
+    // Simulate clicking on the card for "Alice Johnson"
+    fireEvent.click(screen.getByText(/Alice Johnson/i));
+    
+    // The header should change to indicate the edit view
+    await waitFor(() => {
+      expect(screen.getByText(/Edit Advisor Permissions:/i)).toBeInTheDocument();
+    });
+    
+    // Verify advisor details in the AdvisorCard view
+    expect(screen.getByText(/alice@example.com/i)).toBeInTheDocument();
+    expect(screen.getByText(/Coordinator/i)).toBeInTheDocument();
   });
 
-  test('handles API fetch error gracefully', async () => {
-    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-    global.fetch = jest.fn().mockRejectedValueOnce(new Error('API error'));
-
-    render(<GlobalSettings />);
-    const input = screen.getByPlaceholderText(/search advisors/i);
-    fireEvent.change(input, { target: { value: 'ErrorTest' } });
-
-    act(() => {
-      jest.advanceTimersByTime(300);
-    });
-
-    await waitFor(() => {
-      expect(consoleErrorSpy).toHaveBeenCalledWith('Error fetching advisors:', expect.any(Error));
-    });
-
-    expect(await screen.findByText(/no matching advisors found/i)).toBeInTheDocument();
-    consoleErrorSpy.mockRestore();
-  });
-
-  test('checkbox change triggers update API call', async () => {
-    const mockAdvisors = [
-      {
-        user_id: 1,
-        name: 'Alice Johnson',
-        email: 'alice@example.com',
-        role: 'Coordinator',
-        global_settings: false,
-        accommodation_modules: false,
-        note_taking_modules: false,
-        assistive_tech_modules: false,
-        accessible_testing_modules: false,
-        student_case_information: false,
-      },
-    ];
-    // First fetch call returns the advisor list
+  test('AdvisorCard toggles checkbox and saves changes', async () => {
+    // Chain two fetch calls: one for initial data, one for the update
     global.fetch = jest
       .fn()
       .mockResolvedValueOnce({
         ok: true,
-        json: () => Promise.resolve({ advisors: mockAdvisors }),
+        json: async () => ({ advisors: [sampleAdvisors[0]] }),
       })
-      // Second fetch call simulates the update API call
       .mockResolvedValueOnce({
         ok: true,
-        json: () => Promise.resolve({ success: true }),
+        json: async () => ({ success: true }),
       });
-
+    
     render(<GlobalSettings />);
-    const input = screen.getByPlaceholderText(/search advisors/i);
-    fireEvent.change(input, { target: { value: 'Alice' } });
-
-    act(() => {
-      jest.advanceTimersByTime(300);
-    });
-
-    // Wait for the advisor to be rendered
+    
+    // Wait for the advisor to load
     await waitFor(() => {
-      expect(screen.getByText(/alice johnson/i)).toBeInTheDocument();
+      expect(screen.getByText(/Alice Johnson/i)).toBeInTheDocument();
     });
-
-    // Get the checkbox for global_settings (assumed to be the first checkbox)
+    
+    // Click the card to open the AdvisorCard view
+    fireEvent.click(screen.getByText(/Alice Johnson/i));
+    await waitFor(() => {
+      expect(screen.getByText(/Edit Advisor Permissions:/i)).toBeInTheDocument();
+    });
+    
+    // Get all checkboxes; the first corresponds to "Global Settings"
     const checkboxes = screen.getAllByRole('checkbox');
-    const checkbox = checkboxes[0];
-    expect(checkbox).not.toBeChecked();
-
-    // Simulate checking the checkbox
-    fireEvent.click(checkbox);
-
+    expect(checkboxes.length).toBeGreaterThan(0);
+    const globalSettingsCheckbox = checkboxes[0];
+    
+    // Initially, it should be checked because global_settings is true
+    expect(globalSettingsCheckbox).toBeChecked();
+    
+    // Toggle the checkbox (simulate unchecking)
+    fireEvent.click(globalSettingsCheckbox);
+    expect(globalSettingsCheckbox).not.toBeChecked();
+    
+    // Click the Save button to trigger the update call
+    const saveButton = screen.getByText(/^Save$/i);
+    fireEvent.click(saveButton);
+    
+    // While saving, the button text should change to "Saving..."
+    expect(screen.getByText(/Saving.../i)).toBeInTheDocument();
+    
+    // Wait for the update fetch call to complete and for the success message to appear
     await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledWith(
-        '/api/updateAdvisors',
-        expect.objectContaining({
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            advisor_id: 1,
-            field: 'global_settings',
-            value: true,
-          }),
-        })
-      );
+      expect(screen.getByText(/Settings saved successfully!/i)).toBeInTheDocument();
     });
+    
+    // Advance timers to simulate the 3000ms timeout for clearing the success message
+    act(() => {
+      jest.advanceTimersByTime(3000);
+    });
+    await waitFor(() => {
+      expect(screen.queryByText(/Settings saved successfully!/i)).toBeNull();
+    });
+    
+    // Verify that the update API was called with the expected payload.
+    // The payload should include the toggled permission for global_settings.
+    expect(global.fetch).toHaveBeenCalledWith(
+      '/api/updateAdvisors',
+      expect.objectContaining({
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          advisorId: sampleAdvisors[0].userId,
+          permissions: [
+            false, // global_settings toggled from true to false
+            sampleAdvisors[0].accessible_testing_modules,
+            sampleAdvisors[0].accomodation_modules,
+            sampleAdvisors[0].assistive_technology_modules,
+            sampleAdvisors[0].note_taking_modules,
+            sampleAdvisors[0].student_case_information,
+          ],
+        }),
+      })
+    );
   });
 
-  test('pagination works correctly', async () => {
-
-    const advisorsList = Array.from({ length: 15 }, (_, i) => ({
-      user_id: i + 1,
-      name: `Advisor ${i + 1}`,
-      email: `advisor${i + 1}@example.com`,
-      role: 'Coordinator',
+  test('pagination buttons navigate between pages', async () => {
+    // Create a list of 15 advisors for testing pagination (9 per page)
+    const advisorsForPagination = Array.from({ length: 15 }, (_, i) => ({
+      //id: i + 1,
+      userId: i + 1,
+      account: { name: `Advisor ${i + 1}`, email: `advisor${i + 1}@example.com` },
+      role: 'Advisor',
       global_settings: false,
-      accommodation_modules: false,
-      note_taking_modules: false,
-      assistive_tech_modules: false,
       accessible_testing_modules: false,
+      accomodation_modules: false,
+      assistive_technology_modules: false,
+      note_taking_modules: false,
       student_case_information: false,
     }));
-
+    
     global.fetch = jest.fn().mockResolvedValueOnce({
       ok: true,
-      json: () => Promise.resolve({ advisors: advisorsList }),
+      json: async () => ({ advisors: advisorsForPagination }),
     });
-
+    
     render(<GlobalSettings />);
-    const input = screen.getByPlaceholderText(/search advisors/i);
-    fireEvent.change(input, { target: { value: 'Advisor' } });
-
-    act(() => {
-      jest.advanceTimersByTime(300);
-    });
-
+    
+    // Wait for the first page to load (should display advisors 1-9)
     await waitFor(() => {
-      expect(screen.getByText(/advisor 1/i)).toBeInTheDocument();
+      expect(screen.getByText(/Advisor 1/i)).toBeInTheDocument();
     });
-
-    expect(screen.getByText(/page 1 of 2/i)).toBeInTheDocument();
-
-    const nextButton = screen.getByText(/next 10/i);
+    expect(screen.getByText(/Advisor 9/i)).toBeInTheDocument();
+    // Advisor 10 should not be visible on the first page
+    expect(screen.queryByText(/Advisor 10/i)).toBeNull();
+    
+    // Click the "Next" button to go to the next page
+    const nextButton = screen.getByRole('button', { name: /Next/i });
     fireEvent.click(nextButton);
-
+    
+    // Wait until the next page is rendered (advisor 10 should appear)
     await waitFor(() => {
-      expect(screen.getByText(/page 2 of 2/i)).toBeInTheDocument();
+      expect(screen.getByText(/Advisor 10/i)).toBeInTheDocument();
     });
-    expect(screen.getByText(/advisor 11/i)).toBeInTheDocument();
-
-    const prevButton = screen.getByText(/previous 10/i);
+    // Advisor from the first page should no longer be visible
+    expect(screen.queryByText(/^Advisor 1$/i)).toBeNull();
+    
+    // Click the "Prev" button to go back to page one
+    const prevButton = screen.getByRole('button', { name: /Prev/i });
     fireEvent.click(prevButton);
-
     await waitFor(() => {
-      expect(screen.getByText(/page 1 of 2/i)).toBeInTheDocument();
+      expect(screen.getByText(/^Advisor 1$/i)).toBeInTheDocument();
     });
-    expect(screen.getByText(/advisor 1/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Advisor 10/i)).toBeNull();
   });
 });
-
