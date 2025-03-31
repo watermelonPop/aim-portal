@@ -1023,7 +1023,7 @@ describe('settingsPanel', () => {
             }); 
         });
 
-        /*describe('disability profiles', () => {
+        describe('disability profiles', () => {
             test('button sets dyslexia settings', async () => {
                 let mockSettings = {
                     content_size: 100,
@@ -1180,7 +1180,7 @@ describe('settingsPanel', () => {
             }); 
         });
 
-        describe('text size adjust', () => {
+        /*describe('text size adjust', () => {
                 test('display text size amount', async () => {
                     let mockSettings = {
                         content_size: 100,
