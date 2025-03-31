@@ -75,5 +75,8 @@ What are your plans for this next week?
 | End2End manual tests for all roles | EVERYONE\!\!\!\!\!\!\! | Should be done after the project is close to done. |
 | Finish Student Form Submission | Aviral |  |
 | Begin making tutorials for student and user | Aviral |  |
-| Create testing tab for professor and  |  |  |
+| Create testing tab for professor to upload individual exams for students | Shreyas | Need to coordinate with student view on this |
+| Create professor dashboard | Shreyas |  |
+| User Audit Feature | Diego |  |
+| User Sign up Tutorials | Diego |  |
 
