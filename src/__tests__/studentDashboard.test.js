@@ -1,7 +1,7 @@
 // StudentDashboard.test.jsx
 import React from 'react';
 import { render, screen, waitFor, fireEvent, within } from '@testing-library/react';
-import StudentDashboard from '../StudentDashboard';
+import StudentDashboard from '../studentDashboard.js';
 
 describe('StudentDashboard', () => {
   const mockUser = { id: 1, name: 'Test Student' };
