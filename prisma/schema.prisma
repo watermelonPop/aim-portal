@@ -151,6 +151,7 @@ model Request {
   non_registered_userId Int
   advisor               Advisor @relation(fields: [advisorId], references: [userId])
   user                  User    @relation(fields: [non_registered_userId], references: [userId])
+  status                RequestStatus   @default(PENDING)
 }
 
 model Course {
