@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-function UserForms() {
+function StudentForms() {
   const [view, setView] = useState(null);
   const [selectedDisability, setSelectedDisability] = useState('');
   const [uploadedFiles, setUploadedFiles] = useState({});
@@ -120,4 +120,4 @@ function UserForms() {
   );
 }
 
-export default UserForms;
+export default StudentForms;

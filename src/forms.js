@@ -1,12 +1,12 @@
 import './App.css';
-import UserForms from './user/userForms.js';
+import StudentForms from './student/studentForms.js';
 
 
 function Forms({ userInfo }) {
   return (
     <main className="dashboardOuter">
-      {userInfo.role === "USER" && <UserForms />}
-      {userInfo.role === "STUDENT" && <p className='dashboardTitle'>STUDENT FORMS</p>}
+      {userInfo.role === "STUDENT" && <StudentForms />}
+      {userInfo.role === "USER" && <p className='dashboardTitle'>STUDENT FORMS</p>}
       {userInfo.role === "PROFESSOR" && <p className='dashboardTitle'>PROFESSOR FORMS</p>}
       {userInfo.role === "ADVISOR" && <p className='dashboardTitle'>STAFF FORMS</p>}
     </main>
