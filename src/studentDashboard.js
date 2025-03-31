@@ -87,8 +87,13 @@ export default function StudentDashboard({ userInfo }) {
         )}
         {selectedCourse && (
           <div className="modalOverlay" onClick={() => setSelectedCourse(null)}>
-            <div className="modalContent" onClick={(e) => e.stopPropagation()}>
-              <h2>{selectedCourse.name}</h2>
+            <div
+              className="modalContent"
+              data-testid="course-modal"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Add a data-testid to the modal header for unambiguous selection */}
+              <h2 data-testid="course-modal-heading">{selectedCourse.name}</h2>
               <p className="infoRow">
                 <strong>Professor:</strong> {selectedCourse.professor?.account?.name || 'N/A'}
               </p>
@@ -124,7 +129,6 @@ export default function StudentDashboard({ userInfo }) {
         )}
       </div>
       <div className="rightColumn">
-        {/* Alerts area on the right */}
         <AlertsArea />
       </div>
     </div>

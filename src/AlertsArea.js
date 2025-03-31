@@ -24,11 +24,11 @@ export default function AlertsArea() {
     fetchAlerts();
   }, []);
 
-  // Show the first 5 upcoming dates
+  // Show the first 5 upcoming alerts
   const upcomingFive = alerts.slice(0, 5);
 
   return (
-    <div className="alertsArea">
+    <div className="alertsArea" data-testid="alerts-area">
       <h3>Alerts</h3>
       {loading ? (
         <p>Loading alerts...</p>
@@ -57,9 +57,13 @@ export default function AlertsArea() {
       )}
       {isModalOpen && (
         <div className="modalOverlay" onClick={() => setIsModalOpen(false)}>
-          <div className="modalContent alertsModal" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="modalContent alertsModal"
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-label="All Alerts"
+          >
             <h2>All Alerts</h2>
-            {/* Added a scrollable container */}
             <div className="alertsListContainer">
               <ul className="alertsList">
                 {alerts.map((alert) => (

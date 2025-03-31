@@ -5,7 +5,6 @@ const prisma = new PrismaClient();
 
 export default async function handler(req, res) {
   try {
-    // Fetch only upcoming dates (>= today) and sort by date ascending (earliest first)
     const importantDates = await prisma.important_Dates.findMany({
       where: {
         date: {
