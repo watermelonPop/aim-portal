@@ -153,7 +153,7 @@ export function LoginScreen({ setSettings, loggedIn, setLoggedIn, staffAccess, s
         return null;
       }   
   };
-
+  //outdated, TODO: change so that it is purely based off of actual access params.
   const setStaffRoles = (staffRole, setStaffAccess, staffAccess) => {
     console.log("STAFF ROLE: ", staffRole);
     let newStaffAccess = [...staffAccess];
