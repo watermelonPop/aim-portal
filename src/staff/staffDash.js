@@ -73,6 +73,11 @@ function StaffDash() {
   const [loadingDates, setLoadingDates] = useState(true);  
   const [showForms, setShowForms] = useState(false);
   const [submittedForms, setSubmittedForms] = useState([]);
+  const [editedRequests, setEditedRequests] = useState({});
+  const [updatingRequestId, setUpdatingRequestId] = useState(null);
+  const [refreshingRequests, setRefreshingRequests] = useState(false);
+
+
 
 
 
@@ -360,19 +365,6 @@ function StaffDash() {
       if (!confirmLeave) return;
     }
 
-    if (studentNeedsRefresh) {
-      setLoadingStudentList(true);
-      try {
-        const res = await fetch('/api/getStudents');
-        const data = await res.json();
-        setStudentsData(data.students);
-      } catch (err) {
-        console.error("❌ Failed to refresh student list", err);
-      }
-      setLoadingStudentList(false);
-      setStudentNeedsRefresh(false);
-    }
-
     setView('students');
     setShowAccommodations(false);
     setShowAssistiveTech(false);
@@ -381,6 +373,42 @@ function StaffDash() {
     setSelectedStudent(null);
     setEditedStudent(null);
   };
+
+  const confirmAndSaveRequestStatus = async (requestId) => {
+    const newStatus = editedRequests[requestId];
+    if (!newStatus) return;
+  
+    const confirmed = window.confirm("Are you sure you want to save this status change?");
+    if (!confirmed) return;
+  
+    try {
+      const res = await fetch('/api/updateRequestStatus', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ requestId, status: newStatus }),
+      });
+  
+      if (res.ok) {
+        alert('✅ Request status updated!');
+        
+        // Refresh requests list
+        const updated = await fetch('/api/getRequests');
+        const data = await updated.json();
+        setRequestsData(data.requests || []);
+        setEditedRequests((prev) => {
+          const copy = { ...prev };
+          delete copy[requestId];
+          return copy;
+        });
+      } else {
+        alert('❌ Failed to update request status.');
+      }
+    } catch (err) {
+      console.error("❌ Error updating request status:", err);
+      alert("❌ Error while saving request status.");
+    }
+  };
+  
     
   // =========================================== USE EFFECTS ====================================================== //
 
@@ -533,8 +561,32 @@ function StaffDash() {
           <div><strong>Request ID:</strong> {selectedRequest.id}</div>
           <div><strong>User ID:</strong> {selectedRequest.userId}</div>
           <div><strong>Advisor ID:</strong> {selectedRequest.advisorId}</div>
-          <div><strong>Advisor Role:</strong> {selectedRequest.advisorRole}</div>
-        </div>
+          <p><strong>Advisor Role:</strong> {selectedRequest.advisorRole || "N/A"}</p>
+            <div className="status-row">
+              <label><strong>Status:</strong></label>
+              <select
+                value={editedRequests[selectedRequest.id] || selectedRequest.status || "PENDING"}
+                onChange={(e) =>
+                  setEditedRequests((prev) => ({
+                    ...prev,
+                    [selectedRequest.id]: e.target.value,
+                  }))
+                }
+              >
+                <option value="PENDING">Pending</option>
+                <option value="APPROVED">Approved</option>
+                <option value="DENIED">Denied</option>
+              </select>
+
+              <button
+                className="save-icon-button"
+                onClick={() => confirmAndSaveRequestStatus(selectedRequest.id)}
+                title="Save status change"
+              >
+                💾
+              </button>
+            </div>  
+            </div>
 
         <div className="request-notes">
           <strong>Notes:</strong>
