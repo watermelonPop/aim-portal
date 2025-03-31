@@ -1938,7 +1938,7 @@ describe('settingsPanel', () => {
                 });    
         });
 
-        /*describe('contrast adjust', () => {
+        describe('contrast adjust', () => {
             test('display contrast amount', async () => {
                 let mockSettings = {
                     content_size: 100,
@@ -2321,5 +2321,5 @@ describe('settingsPanel', () => {
                 //save to local storage if not databse user
             }); 
                
-        });*/
+        });
 });
