@@ -331,31 +331,33 @@ describe('BasicSettingsBar Component', () => {
       
       
     describe('back button', () => {
-        test('interaction page goes back to main menu when back button pressed', () => {
-
-            act(() => {
+        test('interaction page goes back to main menu when back button pressed', async () => {
+            await act(async () => {
                 render(
                     <BasicSettingsBar
-                    isOpen={true}
-                    onClose={onClose}
-                    settings={mockSettings}
-                    setSettings={setSettings}
-                    logout={logout}
-                    setLoggedIn={setLoggedIn}
+                        isOpen={true}
+                        onClose={onClose}
+                        settings={mockSettings}
+                        setSettings={setSettings}
+                        logout={logout}
+                        setLoggedIn={setLoggedIn}
                     />
                 );
             });
-            act(() => {
+        
+            await act(async () => {
                 BasicSettingsBar.setSelectedCategory("Interactions");
             });
-
-            act(() => {
+        
+            await act(async () => {
                 fireEvent.click(screen.getByRole('button', { name: /back/i }));
             });
-            waitFor(() => {
-                expect(mockSetSelectedCategory).toHaveBeenCalledWith(null);
+        
+            await waitFor(() => {
+                expect(BasicSettingsBar.selectedCategory).toBe(null);
             });
         });
+        
 
         test('text page goes back to main menu when back button pressed', () => {
 
@@ -379,7 +381,7 @@ describe('BasicSettingsBar Component', () => {
                 fireEvent.click(screen.getByRole('button', { name: /back/i }));
             });
             waitFor(() => {
-                expect(mockSetSelectedCategory).toHaveBeenCalledWith(null);
+                expect(BasicSettingsBar.selectedCategory).toBe(null);
             });
         });
 
@@ -405,7 +407,7 @@ describe('BasicSettingsBar Component', () => {
                 fireEvent.click(screen.getByTestId('backBtn'));
             });
             waitFor(() => {
-                expect(mockSetSelectedCategory).toHaveBeenCalledWith(null);
+                expect(BasicSettingsBar.selectedCategory).toBe(null);
             });
         });
 
@@ -431,7 +433,7 @@ describe('BasicSettingsBar Component', () => {
                 fireEvent.click(screen.getByRole('button', { name: /back/i }));
             });
             waitFor(() => {
-                expect(mockSetSelectedCategory).toHaveBeenCalledWith(null);
+                expect(BasicSettingsBar.selectedCategory).toBe(null);
             });
         });
 
@@ -457,7 +459,7 @@ describe('BasicSettingsBar Component', () => {
                 fireEvent.click(screen.getByRole('button', { name: /back/i }));
             });
             waitFor(() => {
-                expect(mockSetSelectedCategory).toHaveBeenCalledWith(null);
+                expect(BasicSettingsBar.selectedCategory).toBe(null);
             });
         });
 
@@ -483,7 +485,7 @@ describe('BasicSettingsBar Component', () => {
                 fireEvent.click(screen.getByRole('button', { name: /back/i }));
             });
             waitFor(() => {
-                expect(mockSetSelectedCategory).toHaveBeenCalledWith(null);
+                expect(BasicSettingsBar.selectedCategory).toBe(null);
             });
         });
     }); 
@@ -603,8 +605,8 @@ describe('BasicSettingsBar Component', () => {
         });
     });
 
-    test('should change and submit font setting', () => {
-        act(() => {
+    test('should change and submit font setting', async() => {
+        await act(async () => {
             render(
                 <BasicSettingsBar
                   isOpen={true}
@@ -617,17 +619,17 @@ describe('BasicSettingsBar Component', () => {
             );
         });
 
-        act(() => {
+        await act(async () => {
             BasicSettingsBar.setSelectedCategory("Text");
         });
 
-        act(() => {
+        await act(async() => {
             fireEvent.change(screen.getByRole('combobox', { name: /font/i }), { target: { value: 'Roboto' } });
             fireEvent.click(screen.getByRole('button', { name: /Set Font/i }));
         });
         
-        waitFor(() => {
-            expect(mockSetSettings).toHaveBeenCalledWith(expect.objectContaining({ font: 'Roboto' }));
+        await waitFor(() => {
+            expect(BasicSettingsBar.settings).toStrictEqual(expect.objectContaining({ font: 'Roboto' }));
         });
     });
   
@@ -738,7 +740,7 @@ describe('BasicSettingsBar Component', () => {
     });
 });
 
-/*describe('settingsPanel', () => {
+describe('settingsPanel', () => {
         beforeEach(() => {
                 jest.clearAllMocks();
         });
@@ -771,7 +773,11 @@ describe('BasicSettingsBar Component', () => {
                 highlight_hover: false,
                 cursor: "Regular"
             };
-            const { container } = render(<BasicSettingsBar isOpen={true} settings={mockSettings} setSettings={mockSetSettings} logout={mockLogout} setLoggedIn={mockSetLoggedIn} />);
+            let container;
+            await act(async () => {
+                    const rendered = render(<BasicSettingsBar isOpen={true} settings={mockSettings} setSettings={mockSetSettings} logout={mockLogout} setLoggedIn={mockSetLoggedIn} />);
+                    container = rendered.container;
+            });
             const results = await axe(container);
             expect(results).toHaveNoViolations();
         });
@@ -2316,4 +2322,4 @@ describe('BasicSettingsBar Component', () => {
             }); 
                
         });
-});*/
+});
