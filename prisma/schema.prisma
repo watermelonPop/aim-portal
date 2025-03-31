@@ -75,7 +75,7 @@ model Settings {
   text_magnifier        Boolean @default(false)
   align_text            String  @default("center")
   font_size             Int     @default(14)
-  line_height           Int     @default(5000)
+  line_height           Float   @default(1.5)
   letter_spacing        Int     @default(0)
   mute_sounds           Boolean @default(false)
   hide_images           Boolean @default(false)
@@ -144,14 +144,14 @@ model Accommodations {
 }
 
 model Request {
-  id                    Int     @id @default(autoincrement())
+  id                    Int           @id @default(autoincrement())
   advisorId             Int
   notes                 String?
   documentation         Boolean
   non_registered_userId Int
-  advisor               Advisor @relation(fields: [advisorId], references: [userId])
-  user                  User    @relation(fields: [non_registered_userId], references: [userId])
-  status                RequestStatus   @default(PENDING)
+  status                RequestStatus @default(PENDING)
+  advisor               Advisor       @relation(fields: [advisorId], references: [userId])
+  user                  User          @relation(fields: [non_registered_userId], references: [userId])
 }
 
 model Course {

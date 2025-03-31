@@ -83,7 +83,7 @@ export function App() {
       text_magnifier: false,
       align_text: "center",
       font_size: "14px",
-      line_height: 5000,
+      line_height: 1.5,
       letter_spacing: "0px",
       contrast: "100%",
       saturation: "100%",
@@ -510,6 +510,13 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
   App.setAlertMessage = setAlertMessage;
   App.setUserConnected = setUserConnected;
   App.setTabs = setTabs;
+  App.setSettingsTabOpen = setSettingsTabOpen;
+  App.tabs = tabs;
+  App.currentTab = currentTab;
+  App.encodeCursorSVG = encodeCursorSVG;
+  App.getUser = getUser;
+  App.checkAccountConnected = checkAccountConnected;
+  App.setSettingsDatabase = setSettingsDatabase;
 
   return (
     <>

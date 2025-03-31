@@ -2,10 +2,28 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import Profile from '../profile';
 import '@testing-library/jest-dom';
+import { axe, toHaveNoViolations } from 'jest-axe';
 
+expect.extend(toHaveNoViolations);
 describe('Profile component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  test('Profile should have no accessibility violations', async () => {
+    let mockUserInfo = {
+            id: "mockId",
+            name: "Mock User",
+            email: "test@gmail.com",
+            role: "USER",
+            picture: null,
+            dob: "2000-01-01",
+            uin: 123456789,
+            phone_number: 1001001001,
+    };
+    const { container } = render(<Profile userInfo={mockUserInfo} />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
   });
 
   test('renders student data correctly', async () => {

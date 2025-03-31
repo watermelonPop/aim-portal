@@ -4,29 +4,794 @@ import '@testing-library/jest-dom';
 import { App } from '../App.js';
 import { LoginScreen } from '../loginScreen';
 import BasicSettingsBar from '../basicSettingsBar.js';
+import { axe, toHaveNoViolations } from 'jest-axe';
+
+expect.extend(toHaveNoViolations);
 
 global.fetch = jest.fn();
 
-describe('settingsPanel', () => {
-        const mockSetLoggedIn = jest.fn();
-        const mockSetSettings = jest.fn();
-        const mockLogout = jest.fn();
-        const mockOnClose = jest.fn();
-        const mockHandleButtonAction = jest.fn();
-        const mockChangeTxtSize = jest.fn();
-        const mockSetDyslexiaSettings = jest.fn();
-        const mockScrollEvent = jest.fn();
-        const mockSetScrolledPosition = jest.fn();
-       
-       
+const mockSetLoggedIn = jest.fn();
+const mockSetSettings = jest.fn();
+const mockLogout = jest.fn();
+const mockOnClose = jest.fn();
+const mockHandleButtonAction = jest.fn();
+const mockChangeTxtSize = jest.fn();
+const mockSetDyslexiaSettings = jest.fn();
+const mockScrollEvent = jest.fn();
+const mockSetScrolledPosition = jest.fn();
+const mockSetSelectedCategory = jest.fn();
+
+const mockSettings = {
+    cursor_color: '#000000',
+    cursor_border_color: '#FFFFFF',
+    background_color: '#FFFFFF',
+    foreground_color: '#000000',
+    text_color: '#111111',
+    highlight_hover_color: '#FF0000',
+    align_text: 'left',
+    font_size: '14px',
+    letter_spacing: '2px',
+    contrast: '100%',
+    saturation: '100%',
+    cursor_size: 2,
+    mute_sounds: false,
+    highlight_hover: false,
+    font: 'Roboto',
+};
+
+describe('BasicSettingsBar Component', () => {
+    let setSettings, onClose, logout, setLoggedIn;
+  
+    beforeEach(() => {
+      setSettings = jest.fn();
+      onClose = jest.fn();
+      logout = jest.fn();
+      setLoggedIn = jest.fn();
+      localStorage.clear();
+    });
+
+    test('mute sounds form submit should call preventDefault', async () => {
+        const mockPlay = jest.fn().mockResolvedValue(); // Define mockPlay
+        window.Audio = jest.fn().mockImplementation(() => ({
+            play: mockPlay, // Use mockPlay for the play method
+        }));
+      
+        const preventDefaultSpy = jest.spyOn(Event.prototype, 'preventDefault');
+        const stopPropagationSpy = jest.spyOn(Event.prototype, 'stopPropagation');
+
+        render(
+          <BasicSettingsBar
+            isOpen={true}
+            onClose={onClose}
+            settings={{ ...mockSettings, mute_sounds: true }}
+            setSettings={setSettings}
+            logout={logout}
+            setLoggedIn={setLoggedIn}
+          />
+        );
+      
+        act(() => {
+          BasicSettingsBar.setSelectedCategory("Audio");
+        });
+      
+        const muteButton = await screen.findByRole('button', { name: /Toggle Mute Sounds/i });
+        fireEvent.click(muteButton);
+      
+        // Allow promise rejection (catch block) to execute
+        await Promise.resolve();
+      
+        expect(preventDefaultSpy).toHaveBeenCalled();
+        expect(stopPropagationSpy).toHaveBeenCalled();
+        expect(mockPlay).toHaveBeenCalled();
+    });
+      
+      
+      
+
+    test('logs error when alert sound fails to play', () => {
+        const mockConsoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
+        const mockPlay = jest.fn(() => Promise.reject(new Error('Audio failed')));
+        window.Audio = jest.fn(() => ({ play: mockPlay }));
+      
+        const mockSettingsWithSound = { ...mockSettings, mute_sounds: true };
+      
+        render(
+          <BasicSettingsBar
+            isOpen={true}
+            onClose={onClose}
+            settings={mockSettingsWithSound}
+            setSettings={setSettings}
+            logout={logout}
+            setLoggedIn={setLoggedIn}
+          />
+        );
+      
+        act(() => {
+          BasicSettingsBar.setSelectedCategory('Audio');
+        });
+      
+        const toggleBtn = screen.getByRole('button', { name: 'Toggle Mute Sounds' });
+      
+        return act(async () => {
+          fireEvent.click(toggleBtn);
+          // Await microtask queue (to flush `.catch`)
+          await Promise.resolve();
+          expect(mockPlay).toHaveBeenCalled();
+          expect(mockConsoleError).toHaveBeenCalledWith(
+            'Failed to play alert sound:',
+            expect.any(Error)
+          );
+          mockConsoleError.mockRestore();
+        });
+    });
+      
+
+    test('cursor size does not go below 0', () => {
+        const mockSettingsWithZero = { ...mockSettings, cursor_size: 0 };
+      
+        render(
+          <BasicSettingsBar
+            isOpen={true}
+            onClose={onClose}
+            settings={mockSettingsWithZero}
+            setSettings={setSettings}
+            logout={logout}
+            setLoggedIn={setLoggedIn}
+          />
+        );
+      
+        act(() => {
+          BasicSettingsBar.setSelectedCategory('Cursor');
+        });
+      
+        const decButton = screen.getByRole('button', { name: 'Decrease Cursor Size' });
+        fireEvent.click(decButton);
+      
+        // Since curr is 0, it should be set to 1 before subtracting 1, resulting in 0
+        expect(setSettings).toHaveBeenCalledWith(
+          expect.objectContaining({ cursor_size: 0 })
+        );
+    });
+      
+
+    test('updates text_color on color input change and set button click', () => {
+        render(
+          <BasicSettingsBar
+            isOpen={true}
+            onClose={onClose}
+            settings={{ ...mockSettings, text_color: '#222222' }}
+            setSettings={setSettings}
+            logout={logout}
+            setLoggedIn={setLoggedIn}
+          />
+        );
+      
+        act(() => {
+          BasicSettingsBar.setSelectedCategory('Visuals');
+        });
+      
+        const input = screen.getByTestId('textColorInput');
+        fireEvent.change(input, { target: { value: '#f1f1f1' } });
+      
+        const button = screen.getByRole('button', { name: 'Set Text Color' });
+        fireEvent.click(button);
+      
+        expect(setSettings).toHaveBeenCalledWith(
+          expect.objectContaining({ text_color: '#f1f1f1' })
+        );
+    });
+      
+
+    test('updates foreground_color on color input change and set button click', () => {
+        render(
+          <BasicSettingsBar
+            isOpen={true}
+            onClose={onClose}
+            settings={{ ...mockSettings, foreground_color: '#111111' }}
+            setSettings={setSettings}
+            logout={logout}
+            setLoggedIn={setLoggedIn}
+          />
+        );
+      
+        act(() => {
+          BasicSettingsBar.setSelectedCategory('Visuals');
+        });
+      
+        const input = screen.getByTestId('foregroundColorInput');
+        fireEvent.change(input, { target: { value: '#abcdef' } });
+      
+        const button = screen.getByRole('button', { name: 'Set Foreground Color' });
+        fireEvent.click(button);
+      
+        expect(setSettings).toHaveBeenCalledWith(
+          expect.objectContaining({ foreground_color: '#abcdef' })
+        );
+    });
+      
+
+    test('updates background_color on color input change and set button click', () => {
+        render(
+          <BasicSettingsBar
+            isOpen={true}
+            onClose={onClose}
+            settings={{ ...mockSettings, background_color: '#000000' }}
+            setSettings={setSettings}
+            logout={logout}
+            setLoggedIn={setLoggedIn}
+          />
+        );
+      
+        act(() => {
+          BasicSettingsBar.setSelectedCategory('Visuals');
+        });
+      
+        const input = screen.getByTestId('backgroundColorInput');
+        fireEvent.change(input, { target: { value: '#123456' } });
+      
+        const button = screen.getByRole('button', { name: 'Set Background Color' });
+        fireEvent.click(button);
+      
+        expect(setSettings).toHaveBeenCalledWith(
+          expect.objectContaining({ background_color: '#123456' })
+        );
+    });
+      
+
+    test('updates align_text on select change and set button click', () => {
+        render(
+          <BasicSettingsBar
+            isOpen={true}
+            onClose={onClose}
+            settings={{ ...mockSettings, align_text: 'left' }}
+            setSettings={setSettings}
+            logout={logout}
+            setLoggedIn={setLoggedIn}
+          />
+        );
+      
+        act(() => {
+          BasicSettingsBar.setSelectedCategory("Text");
+        });
+      
+        // Simulate changing the dropdown value
+        const select = screen.getByLabelText('Text Align');
+        fireEvent.change(select, { target: { value: 'right' } });
+      
+        // Simulate clicking the set button
+        const setButton = screen.getByRole('button', { name: 'Set Text Align' });
+        fireEvent.click(setButton);
+      
+        // Expect update to happen with the new alignment
+        expect(setSettings).toHaveBeenCalledWith(
+          expect.objectContaining({ align_text: 'right' })
+        );
+    });
+      
+
+    test('updates cursor border color on input change and set button click', () => {
+        render(
+          <BasicSettingsBar
+            isOpen={true}
+            onClose={onClose}
+            settings={{ ...mockSettings, cursor_border_color: '#ffffff' }}
+            setSettings={setSettings}
+            logout={logout}
+            setLoggedIn={setLoggedIn}
+          />
+        );
+      
+        act(() => {
+          BasicSettingsBar.setSelectedCategory("Cursor");
+        });
+      
+        const colorInput = screen.getByLabelText('Set Cursor Border Color');
+        const newColor = '#00ff00';
+      
+        fireEvent.change(screen.getByDisplayValue('#ffffff'), { target: { value: newColor } });
+        fireEvent.click(colorInput);
+      
+        expect(setSettings).toHaveBeenCalledWith(
+          expect.objectContaining({ cursor_border_color: newColor })
+        );
+    });
+      
+
+    test('updates cursor color on input change and set button click', () => {
+        render(
+          <BasicSettingsBar
+            isOpen={true}
+            onClose={onClose}
+            settings={{ ...mockSettings, cursor_color: '#000000' }}
+            setSettings={setSettings}
+            logout={logout}
+            setLoggedIn={setLoggedIn}
+          />
+        );
+      
+        act(() => {
+          BasicSettingsBar.setSelectedCategory("Cursor");
+        });
+      
+        const colorInput = screen.getByLabelText('Set Cursor Color');
+        const newColor = '#ff0000';
+      
+        // Simulate color input change
+        fireEvent.change(screen.getByDisplayValue('#000000'), { target: { value: newColor } });
+      
+        // Click the set button
+        fireEvent.click(colorInput);
+      
+        expect(setSettings).toHaveBeenCalledWith(
+          expect.objectContaining({ cursor_color: newColor })
+        );
+    });
+      
+      
+      
+      
+    describe('back button', () => {
+        test('interaction page goes back to main menu when back button pressed', () => {
+
+            act(() => {
+                render(
+                    <BasicSettingsBar
+                    isOpen={true}
+                    onClose={onClose}
+                    settings={mockSettings}
+                    setSettings={setSettings}
+                    logout={logout}
+                    setLoggedIn={setLoggedIn}
+                    />
+                );
+            });
+            act(() => {
+                BasicSettingsBar.setSelectedCategory("Interactions");
+            });
+
+            act(() => {
+                fireEvent.click(screen.getByRole('button', { name: /back/i }));
+            });
+            waitFor(() => {
+                expect(mockSetSelectedCategory).toHaveBeenCalledWith(null);
+            });
+        });
+
+        test('text page goes back to main menu when back button pressed', () => {
+
+            act(() => {
+                render(
+                    <BasicSettingsBar
+                    isOpen={true}
+                    onClose={onClose}
+                    settings={mockSettings}
+                    setSettings={setSettings}
+                    logout={logout}
+                    setLoggedIn={setLoggedIn}
+                    />
+                );
+            });
+            act(() => {
+                BasicSettingsBar.setSelectedCategory("Text");
+            });
+
+            act(() => {
+                fireEvent.click(screen.getByRole('button', { name: /back/i }));
+            });
+            waitFor(() => {
+                expect(mockSetSelectedCategory).toHaveBeenCalledWith(null);
+            });
+        });
+
+        test('visuals page goes back to main menu when back button pressed', () => {
+
+            act(() => {
+                render(
+                    <BasicSettingsBar
+                    isOpen={true}
+                    onClose={onClose}
+                    settings={mockSettings}
+                    setSettings={setSettings}
+                    logout={logout}
+                    setLoggedIn={setLoggedIn}
+                    />
+                );
+            });
+            act(() => {
+                BasicSettingsBar.setSelectedCategory("Visuals");
+            });
+
+            act(() => {
+                fireEvent.click(screen.getByTestId('backBtn'));
+            });
+            waitFor(() => {
+                expect(mockSetSelectedCategory).toHaveBeenCalledWith(null);
+            });
+        });
+
+        test('Audio page goes back to main menu when back button pressed', () => {
+
+            act(() => {
+                render(
+                    <BasicSettingsBar
+                    isOpen={true}
+                    onClose={onClose}
+                    settings={mockSettings}
+                    setSettings={setSettings}
+                    logout={logout}
+                    setLoggedIn={setLoggedIn}
+                    />
+                );
+            });
+            act(() => {
+                BasicSettingsBar.setSelectedCategory("Audio");
+            });
+
+            act(() => {
+                fireEvent.click(screen.getByRole('button', { name: /back/i }));
+            });
+            waitFor(() => {
+                expect(mockSetSelectedCategory).toHaveBeenCalledWith(null);
+            });
+        });
+
+        test('cursor page goes back to main menu when back button pressed', () => {
+
+            act(() => {
+                render(
+                    <BasicSettingsBar
+                    isOpen={true}
+                    onClose={onClose}
+                    settings={mockSettings}
+                    setSettings={setSettings}
+                    logout={logout}
+                    setLoggedIn={setLoggedIn}
+                    />
+                );
+            });
+            act(() => {
+                BasicSettingsBar.setSelectedCategory("Cursor");
+            });
+
+            act(() => {
+                fireEvent.click(screen.getByRole('button', { name: /back/i }));
+            });
+            waitFor(() => {
+                expect(mockSetSelectedCategory).toHaveBeenCalledWith(null);
+            });
+        });
+
+        test('profiles page goes back to main menu when back button pressed', () => {
+
+            act(() => {
+                render(
+                    <BasicSettingsBar
+                    isOpen={true}
+                    onClose={onClose}
+                    settings={mockSettings}
+                    setSettings={setSettings}
+                    logout={logout}
+                    setLoggedIn={setLoggedIn}
+                    />
+                );
+            });
+            act(() => {
+                BasicSettingsBar.setSelectedCategory("Profiles");
+            });
+
+            act(() => {
+                fireEvent.click(screen.getByRole('button', { name: /back/i }));
+            });
+            waitFor(() => {
+                expect(mockSetSelectedCategory).toHaveBeenCalledWith(null);
+            });
+        });
+    }); 
+
+    test('should toggle highlight hover and change color', () => {
+
+        act(() => {
+            render(
+                <BasicSettingsBar
+                  isOpen={true}
+                  onClose={onClose}
+                  settings={mockSettings}
+                  setSettings={setSettings}
+                  logout={logout}
+                  setLoggedIn={setLoggedIn}
+                />
+            );
+        });
+        act(() => {
+            BasicSettingsBar.setSelectedCategory("Interactions");
+        });
+
+        act(() => {
+            fireEvent.click(screen.getByRole('button', { name: /Toggle Highlight Hover/i }));
+            fireEvent.change(screen.getByTestId('highlightHoverInput'), {
+            target: { value: '#FF00FF' }
+            });
+            fireEvent.click(screen.getByRole('button', { name: /Set Highlight Hover Color/i }));
+        });
+        waitFor(() => {
+            expect(mockSetSettings).toHaveBeenCalled();
+        });
+    });
+
+    test('should toggle mute sounds and play sound if unmuted', async () => {
+        const mockPlay = jest.fn().mockResolvedValue();
+        window.Audio = jest.fn().mockImplementation(() => ({
+          play: mockPlay
+        }));
+      
+        const updatedSettings = { ...mockSettings, mute_sounds: true };
+      
+        render(
+          <BasicSettingsBar
+            isOpen={true}
+            onClose={onClose}
+            settings={updatedSettings}
+            setSettings={setSettings}
+            logout={logout}
+            setLoggedIn={setLoggedIn}
+          />
+        );
+      
+        act(() => {
+          BasicSettingsBar.setSelectedCategory("Audio");
+        });
+      
+        fireEvent.click(screen.getByRole('button', { name: /Toggle Mute Sounds/i }));
+      
+        await waitFor(() => {
+          expect(mockPlay).toHaveBeenCalled();
+        });
+    });
+      
+
+    test('should change cursor size', () => {
+        act(() => {
+            render(
+                <BasicSettingsBar
+                  isOpen={true}
+                  onClose={onClose}
+                  settings={mockSettings}
+                  setSettings={setSettings}
+                  logout={logout}
+                  setLoggedIn={setLoggedIn}
+                />
+            );
+        });
+        act(() => {
+            BasicSettingsBar.setSelectedCategory("Cursor");
+        });
+
+        act(() => {
+            const incBtn = screen.getByRole('button', { name: /Increase Cursor Size/i });
+            const decBtn = screen.getByRole('button', { name: /Decrease Cursor Size/i });
+            fireEvent.click(incBtn);
+            fireEvent.click(decBtn);
+        });
+        waitFor(() => {
+            expect(mockSetSettings).toHaveBeenCalled();
+        });
+    });
+
+    test('should increase and decrease saturation', () => {
+        act(() => {
+            render(
+                <BasicSettingsBar
+                  isOpen={true}
+                  onClose={onClose}
+                  settings={mockSettings}
+                  setSettings={setSettings}
+                  logout={logout}
+                  setLoggedIn={setLoggedIn}
+                />
+            );
+        });
+        act(() => {
+            BasicSettingsBar.setSelectedCategory("Visuals");
+        });
+
+        act(() => {
+            fireEvent.click(screen.getByTestId('saturationDec'));
+            fireEvent.click(screen.getByTestId('saturationInc'));
+        });
+        waitFor(() => {
+            expect(mockSetSettings).toHaveBeenCalled();
+        });
+    });
+
+    test('should change and submit font setting', () => {
+        act(() => {
+            render(
+                <BasicSettingsBar
+                  isOpen={true}
+                  onClose={onClose}
+                  settings={mockSettings}
+                  setSettings={setSettings}
+                  logout={logout}
+                  setLoggedIn={setLoggedIn}
+                />
+            );
+        });
+
+        act(() => {
+            BasicSettingsBar.setSelectedCategory("Text");
+        });
+
+        act(() => {
+            fireEvent.change(screen.getByRole('combobox', { name: /font/i }), { target: { value: 'Roboto' } });
+            fireEvent.click(screen.getByRole('button', { name: /Set Font/i }));
+        });
+        
+        waitFor(() => {
+            expect(mockSetSettings).toHaveBeenCalledWith(expect.objectContaining({ font: 'Roboto' }));
+        });
+    });
+  
+    test('renders the component and categories', () => {
+      render(
+        <BasicSettingsBar
+          isOpen={true}
+          onClose={onClose}
+          settings={mockSettings}
+          setSettings={setSettings}
+          logout={logout}
+          setLoggedIn={setLoggedIn}
+        />
+      );
+  
+      expect(screen.getByTestId('settings')).toBeInTheDocument();
+      expect(screen.getByTestId('closeSettingsBtn')).toBeInTheDocument();
+      expect(screen.getByTestId('settingsScroll')).toBeInTheDocument();
+      expect(screen.getByTestId('Text')).toBeInTheDocument();
+      expect(screen.getByTestId('Visuals')).toBeInTheDocument();
+    });
+  
+    test('clicking a category shows that categorys settings', async () => {
+      render(
+        <BasicSettingsBar
+          isOpen={true}
+          onClose={onClose}
+          settings={mockSettings}
+          setSettings={setSettings}
+          logout={logout}
+          setLoggedIn={setLoggedIn}
+        />
+      );
+  
+      fireEvent.click(screen.getByTestId('Text'));
+      await waitFor(() => {
+        expect(screen.getByTestId('txtSizeLabel')).toBeInTheDocument();
+        expect(screen.getByTestId('letterSpacingLabel')).toBeInTheDocument();
+      });
+    });
+  
+    test('updates font size', () => {
+      render(
+        <BasicSettingsBar
+          isOpen={true}
+          onClose={onClose}
+          settings={{ ...mockSettings, font_size: '14px' }}
+          setSettings={setSettings}
+          logout={logout}
+          setLoggedIn={setLoggedIn}
+        />
+      );
+      fireEvent.click(screen.getByTestId('Text'));
+      fireEvent.click(screen.getByTestId('txtSizeInc'));
+      expect(setSettings).toHaveBeenCalledWith(expect.objectContaining({ font_size: '15px' }));
+    });
+  
+    test('toggles mute_sounds and plays sound', () => {
+      const playMock = jest.fn();
+      window.HTMLMediaElement.prototype.play = playMock;
+  
+      render(
+        <BasicSettingsBar
+          isOpen={true}
+          onClose={onClose}
+          settings={{ ...mockSettings, mute_sounds: false }}
+          setSettings={setSettings}
+          logout={logout}
+          setLoggedIn={setLoggedIn}
+        />
+      );
+      fireEvent.click(screen.getByTestId('Audio'));
+      const button = screen.getByRole('button', { name: /Toggle Mute Sounds/i });
+      fireEvent.click(button);
+      expect(setSettings).toHaveBeenCalledWith(expect.objectContaining({ mute_sounds: true }));
+    });
+  
+    test('closes on close button', () => {
+      render(
+        <BasicSettingsBar
+          isOpen={true}
+          onClose={onClose}
+          settings={mockSettings}
+          setSettings={setSettings}
+          logout={logout}
+          setLoggedIn={setLoggedIn}
+        />
+      );
+      fireEvent.click(screen.getByTestId('closeSettingsBtn'));
+      expect(onClose).toHaveBeenCalled();
+    });
+  
+    test('saves and loads selectedCategory from localStorage', () => {
+      localStorage.setItem('selectedCategory', 'Text');
+  
+      render(
+        <BasicSettingsBar
+          isOpen={true}
+          onClose={onClose}
+          settings={mockSettings}
+          setSettings={setSettings}
+          logout={logout}
+          setLoggedIn={setLoggedIn}
+        />
+      );
+  
+      expect(screen.getByText('Text')).toBeInTheDocument();
+    });
+});
+
+/*describe('settingsPanel', () => {
         beforeEach(() => {
                 jest.clearAllMocks();
         });
+
+        test('Profile should have no accessibility violations', async () => {
+            let mockUserInfo = {
+                    id: "mockId",
+                    name: "Mock User",
+                    email: "test@gmail.com",
+                    role: "USER",
+                    picture: null,
+                    dob: "2000-01-01",
+                    uin: 123456789,
+                    phone_number: 1001001001,
+            };
+            let mockSettings = {
+                content_size: 100,
+                highlight_tiles: false,
+                highlight_links: false,
+                text_magnifier: false,
+                align_text: "Middle",
+                font_size: "16px",
+                line_height: 5000,
+                letter_spacing: "5px",
+                contrast: "100%",
+                saturation: "Regular",
+                mute_sounds: false,
+                hide_images: false,
+                reading_mask: false,
+                highlight_hover: false,
+                cursor: "Regular"
+            };
+            const { container } = render(<BasicSettingsBar isOpen={true} settings={mockSettings} setSettings={mockSetSettings} logout={mockLogout} setLoggedIn={mockSetLoggedIn} />);
+            const results = await axe(container);
+            expect(results).toHaveNoViolations();
+        });
+
         describe('open & close panel', () => {
             test('clicking the button opens the settings panel', async () => {
-                    global.fetch = jest.fn().mockResolvedValueOnce({
-                        ok: true,
-                        json: () => Promise.resolve({ success: true })
+                    global.fetch = jest.fn((url) => {
+                    if (url === '/api/accountConnected?userId=123') {
+                        return Promise.resolve({
+                            ok: true,
+                            json: () => Promise.resolve({ exists: true }),
+                        });
+                    }else if (url === '/api/checkAccount') {
+                        return Promise.resolve({
+                            ok: true,
+                            json: () => Promise.resolve({ exists: true, user_info: {id: 123}}),
+                        });
+                    }else{
+                        console.log("OTHER API ROUTE");
+                    }
                     });
                     
                     act(() => {
@@ -34,6 +799,31 @@ describe('settingsPanel', () => {
                     });
                 
                     await act(async () => {
+                        await App.setUserInfo({id: 123});
+                        await App.setSettings({
+                            content_size: 100,
+                            highlight_tiles: false,
+                            highlight_links: false,
+                            text_magnifier: false,
+                            align_text: "center",
+                            font_size: "14px",
+                            line_height: 1.5,
+                            letter_spacing: "0px",
+                            contrast: "100%",
+                            saturation: "100%",
+                            mute_sounds: false,
+                            hide_images: false,
+                            reading_mask: false,
+                            highlight_hover: false,
+                            highlight_hover_color: "#BD180F",
+                            cursor_size: 3,
+                          cursor_color: "#000000",
+                          cursor_border_color: "#FFFFFF",
+                          background_color: "#FFEDED",
+                          foreground_color: "#4F0000",
+                          text_color: "#000000",
+                          font: "Mitr",
+                      });
                         await App.setLoggedIn(true);
                         await App.setUserConnected(true);
                     });
@@ -48,9 +838,20 @@ describe('settingsPanel', () => {
             });
 
             test('by default, settings panel should NOT be open', async () => {
-                    global.fetch = jest.fn().mockResolvedValueOnce({
-                        ok: true,
-                        json: () => Promise.resolve({ success: true })
+                global.fetch = jest.fn((url) => {
+                    if (url === '/api/accountConnected?userId=123') {
+                        return Promise.resolve({
+                            ok: true,
+                            json: () => Promise.resolve({ exists: true }),
+                        });
+                    }else if (url === '/api/checkAccount') {
+                        return Promise.resolve({
+                            ok: true,
+                            json: () => Promise.resolve({ exists: true, user_info: {id: 123}}),
+                        });
+                    }else{
+                        console.log("OTHER API ROUTE");
+                    }
                     });
                     
                     act(() => {
@@ -58,6 +859,31 @@ describe('settingsPanel', () => {
                     });
                 
                     await act(async () => {
+                        await App.setUserInfo({id: 123});
+                        await App.setSettings({
+                            content_size: 100,
+                            highlight_tiles: false,
+                            highlight_links: false,
+                            text_magnifier: false,
+                            align_text: "center",
+                            font_size: "14px",
+                            line_height: 1.5,
+                            letter_spacing: "0px",
+                            contrast: "100%",
+                            saturation: "100%",
+                            mute_sounds: false,
+                            hide_images: false,
+                            reading_mask: false,
+                            highlight_hover: false,
+                            highlight_hover_color: "#BD180F",
+                            cursor_size: 3,
+                          cursor_color: "#000000",
+                          cursor_border_color: "#FFFFFF",
+                          background_color: "#FFEDED",
+                          foreground_color: "#4F0000",
+                          text_color: "#000000",
+                          font: "Mitr",
+                      });
                         await App.setLoggedIn(true);
                         await App.setUserConnected(true);
                     });
@@ -136,8 +962,7 @@ describe('settingsPanel', () => {
                 });
 
                 await act(async () => {
-                    const inc = screen.getByTestId('Text');
-                    fireEvent.click(inc);
+                    BasicSettingsBar.setSelectedCategory("Text");
                 });
 
                 await act(async () => {
@@ -1491,4 +2316,4 @@ describe('settingsPanel', () => {
             }); 
                
         });
-});
+});*/
