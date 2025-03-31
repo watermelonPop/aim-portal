@@ -782,7 +782,7 @@ describe('settingsPanel', () => {
             expect(results).toHaveNoViolations();
         });
 
-        /*describe('open & close panel', () => {
+        describe('open & close panel', () => {
             test('clicking the button opens the settings panel', async () => {
                     global.fetch = jest.fn((url) => {
                     if (url === '/api/accountConnected?userId=123') {
@@ -936,7 +936,7 @@ describe('settingsPanel', () => {
             });
         });
 
-        describe('scroll behavior', () => {
+        /*describe('scroll behavior', () => {
             test('scroll position persists after button click', async () => {
                 let mockSettings = {
                     content_size: 100,
