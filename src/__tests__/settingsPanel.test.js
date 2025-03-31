@@ -51,9 +51,9 @@ describe('BasicSettingsBar Component', () => {
     });
 
     test('mute sounds form submit should call preventDefault', async () => {
-        const mockPlay = jest.fn().mockRejectedValue(new Error("Playback error"));
+        const mockPlay = jest.fn().mockResolvedValue(); // Define mockPlay
         window.Audio = jest.fn().mockImplementation(() => ({
-          play: mockPlay,
+            play: mockPlay, // Use mockPlay for the play method
         }));
       
         const preventDefaultSpy = jest.spyOn(Event.prototype, 'preventDefault');
@@ -778,9 +778,20 @@ describe('settingsPanel', () => {
 
         describe('open & close panel', () => {
             test('clicking the button opens the settings panel', async () => {
-                    global.fetch = jest.fn().mockResolvedValueOnce({
-                        ok: true,
-                        json: () => Promise.resolve({ success: true })
+                    global.fetch = jest.fn((url) => {
+                    if (url === '/api/accountConnected?userId=123') {
+                        return Promise.resolve({
+                            ok: true,
+                            json: () => Promise.resolve({ exists: true }),
+                        });
+                    }else if (url === '/api/checkAccount') {
+                        return Promise.resolve({
+                            ok: true,
+                            json: () => Promise.resolve({ exists: true, user_info: {id: 123}}),
+                        });
+                    }else{
+                        console.log("OTHER API ROUTE");
+                    }
                     });
                     
                     act(() => {
@@ -788,6 +799,31 @@ describe('settingsPanel', () => {
                     });
                 
                     await act(async () => {
+                        await App.setUserInfo({id: 123});
+                        await App.setSettings({
+                            content_size: 100,
+                            highlight_tiles: false,
+                            highlight_links: false,
+                            text_magnifier: false,
+                            align_text: "center",
+                            font_size: "14px",
+                            line_height: 1.5,
+                            letter_spacing: "0px",
+                            contrast: "100%",
+                            saturation: "100%",
+                            mute_sounds: false,
+                            hide_images: false,
+                            reading_mask: false,
+                            highlight_hover: false,
+                            highlight_hover_color: "#BD180F",
+                            cursor_size: 3,
+                          cursor_color: "#000000",
+                          cursor_border_color: "#FFFFFF",
+                          background_color: "#FFEDED",
+                          foreground_color: "#4F0000",
+                          text_color: "#000000",
+                          font: "Mitr",
+                      });
                         await App.setLoggedIn(true);
                         await App.setUserConnected(true);
                     });
@@ -802,9 +838,20 @@ describe('settingsPanel', () => {
             });
 
             test('by default, settings panel should NOT be open', async () => {
-                    global.fetch = jest.fn().mockResolvedValueOnce({
-                        ok: true,
-                        json: () => Promise.resolve({ success: true })
+                global.fetch = jest.fn((url) => {
+                    if (url === '/api/accountConnected?userId=123') {
+                        return Promise.resolve({
+                            ok: true,
+                            json: () => Promise.resolve({ exists: true }),
+                        });
+                    }else if (url === '/api/checkAccount') {
+                        return Promise.resolve({
+                            ok: true,
+                            json: () => Promise.resolve({ exists: true, user_info: {id: 123}}),
+                        });
+                    }else{
+                        console.log("OTHER API ROUTE");
+                    }
                     });
                     
                     act(() => {
@@ -812,6 +859,31 @@ describe('settingsPanel', () => {
                     });
                 
                     await act(async () => {
+                        await App.setUserInfo({id: 123});
+                        await App.setSettings({
+                            content_size: 100,
+                            highlight_tiles: false,
+                            highlight_links: false,
+                            text_magnifier: false,
+                            align_text: "center",
+                            font_size: "14px",
+                            line_height: 1.5,
+                            letter_spacing: "0px",
+                            contrast: "100%",
+                            saturation: "100%",
+                            mute_sounds: false,
+                            hide_images: false,
+                            reading_mask: false,
+                            highlight_hover: false,
+                            highlight_hover_color: "#BD180F",
+                            cursor_size: 3,
+                          cursor_color: "#000000",
+                          cursor_border_color: "#FFFFFF",
+                          background_color: "#FFEDED",
+                          foreground_color: "#4F0000",
+                          text_color: "#000000",
+                          font: "Mitr",
+                      });
                         await App.setLoggedIn(true);
                         await App.setUserConnected(true);
                     });
