@@ -23,12 +23,12 @@ model Account {
 }
 
 model User {
-  userId       Int      @id @unique
+  userId       Int       @id @unique
   dob          DateTime
-  UIN          Int?     @unique
+  UIN          Int?      @unique
   phone_number String
-  account      Account  @relation(fields: [userId], references: [id])
-  request       Request[]
+  request      Request[]
+  account      Account   @relation(fields: [userId], references: [id])
 }
 
 model Student {
@@ -40,8 +40,7 @@ model Student {
   assistive_technologies Assistive_Technology[]
   account                Account                @relation(fields: [userId], references: [id])
   advisors               Advisor[]              @relation("AdvisorToStudent")
-  courses                Course[]
-
+  courses                Course[]               @relation("CourseToStudent")
 }
 
 model Professor {
@@ -52,34 +51,47 @@ model Professor {
 }
 
 model Advisor {
-  userId                 Int                    @id @unique
-  role                   AdvisorRoles           @default(Coordinator)
-  Accommodations         Accommodations[]
-  account                Account                @relation(fields: [userId], references: [id])
-  assistive_technologies Assistive_Technology[]
-  exams                  Exam[]
-  requests               Request[]
-  students               Student[]              @relation("AdvisorToStudent")
+  userId                       Int                    @id @unique
+  role                         AdvisorRoles           @default(Coordinator)
+  accessible_testing_modules   Boolean                @default(false)
+  accomodation_modules         Boolean                @default(false)
+  assistive_technology_modules Boolean                @default(false)
+  global_settings              Boolean                @default(false)
+  note_taking_modules          Boolean                @default(false)
+  student_case_information     Boolean                @default(false)
+  Accommodations               Accommodations[]
+  account                      Account                @relation(fields: [userId], references: [id])
+  assistive_technologies       Assistive_Technology[]
+  exams                        Exam[]
+  requests                     Request[]
+  students                     Student[]              @relation("AdvisorToStudent")
 }
 
 model Settings {
-  userId          Int        @id @unique
-  content_size    Int        @default(100)
-  highlight_tiles Boolean    @default(false)
-  highlight_links Boolean    @default(false)
-  text_magnifier  Boolean    @default(false)
-  align_text      String     @default("Middle")
-  font_size       Int        @default(14)
-  line_height     Int        @default(5000)
-  letter_spacing  Int        @default(0)
-  saturation      Saturation @default(Regular)
-  mute_sounds     Boolean    @default(false)
-  hide_images     Boolean    @default(false)
-  reading_mask    Boolean    @default(false)
-  highlight_hover Boolean    @default(false)
-  cursor          Cursor     @default(Regular)
-  contrast        String     @default("100%")
-  account         Account    @relation(fields: [userId], references: [id])
+  userId                Int     @id @unique
+  content_size          Int     @default(100)
+  highlight_tiles       Boolean @default(false)
+  highlight_links       Boolean @default(false)
+  text_magnifier        Boolean @default(false)
+  align_text            String  @default("center")
+  font_size             Int     @default(14)
+  line_height           Float   @default(1.5)
+  letter_spacing        Int     @default(0)
+  mute_sounds           Boolean @default(false)
+  hide_images           Boolean @default(false)
+  reading_mask          Boolean @default(false)
+  highlight_hover       Boolean @default(false)
+  contrast              String  @default("100%")
+  cursor_color          String  @default("#000000")
+  cursor_border_color   String  @default("#FFFFFF")
+  cursor_size           Int     @default(2)
+  background_color      String  @default("#FFEDED")
+  foreground_color      String  @default("#4F0000")
+  text_color            String  @default("#000000")
+  highlight_hover_color String  @default("#BD180F")
+  saturation            String  @default("100%")
+  font                  Font    @default(Mitr)
+  account               Account @relation(fields: [userId], references: [id])
 }
 
 model Form {
@@ -91,9 +103,8 @@ model Form {
   dueDate       DateTime?
   createdAt     DateTime   @default(now())
   userId        Int
-  
-  user          Account    @relation(fields: [userId], references: [id])
   formUrl       String?
+  user          Account    @relation(fields: [userId], references: [id])
 }
 
 model Important_Dates {
@@ -129,39 +140,41 @@ model Accommodations {
   studentId      Int
   advisor        Advisor  @relation(fields: [advisorId], references: [userId])
   student        Student  @relation(fields: [studentId], references: [userId])
-  courses        Course[]
+  courses        Course[] @relation("AccommodationsToCourse")
 }
 
 model Request {
-  id            Int     @id @default(autoincrement())
-  advisorId     Int
-  notes         String?
-  documentation Boolean
+  id                    Int           @id @default(autoincrement())
+  advisorId             Int
+  notes                 String?
+  documentation         Boolean
   non_registered_userId Int
-  user          User  @relation(fields: [non_registered_userId], references: [userId])
-  advisor       Advisor @relation(fields: [advisorId], references: [userId])
+  status                RequestStatus @default(PENDING)
+  advisor               Advisor       @relation(fields: [advisorId], references: [userId])
+  user                  User          @relation(fields: [non_registered_userId], references: [userId])
 }
 
 model Course {
-  id                Int       @id @default(autoincrement())
-  name              String
-  department        String
-  professorId       Int
-  professor         Professor @relation(fields: [professorId], references: [userId])
-  exams             Exam[]
-  accommodations    Accommodations[]
-  students          Student[] 
-
+  id             Int              @id @default(autoincrement())
+  name           String
+  department     String
+  professorId    Int
+  professor      Professor        @relation(fields: [professorId], references: [userId])
+  exams          Exam[]
+  accommodations Accommodations[] @relation("AccommodationsToCourse")
+  students       Student[]        @relation("CourseToStudent")
 }
 
 model Exam {
-  id        Int       @id @default(autoincrement())
-  courseId  Int
-  date      DateTime?
-  location  String
-  advisorId Int
-  advisor   Advisor   @relation(fields: [advisorId], references: [userId])
-  course    Course    @relation(fields: [courseId], references: [id])
+  id          Int       @id @default(autoincrement())
+  courseId    Int
+  studentIds  Int[]
+  examUrl     String?
+  date        DateTime?
+  location    String
+  advisorId   Int
+  advisor     Advisor   @relation(fields: [advisorId], references: [userId])
+  course      Course    @relation(fields: [courseId], references: [id])
 }
 
 enum FormStatus {
@@ -177,19 +190,6 @@ enum FormType {
   ACADEMIC_CLASSROOM
   CAMPUS_LIVING_MOBILITY
   APPEALS_TEMP_WORKPLACE
-}
-
-enum Cursor {
-  BBC
-  BWC
-  Regular
-}
-
-enum Saturation {
-  Regular
-  Low
-  High
-  Monochrome
 }
 
 enum AdvisorRoles {
@@ -215,6 +215,13 @@ enum RequestStatus {
   PENDING
   APPROVED
   DENIED
-
 }
 
+enum Font {
+  Mitr
+  Lexend
+  Roboto
+  Montserrat
+  Lato
+  Nunito
+}

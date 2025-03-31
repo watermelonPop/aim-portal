@@ -53,3 +53,44 @@ describe('logout', () => {
                 });
         });
 });
+
+describe('logout errors', () => {
+        let setLoggedIn;
+      
+        beforeEach(() => {
+          setLoggedIn = jest.fn();
+          global.fetch = jest.fn();
+          jest.spyOn(console, 'error').mockImplementation(() => {}); // silence errors in test logs
+        });
+      
+        afterEach(() => {
+          jest.resetAllMocks();
+        });
+      
+        test('throws error and logs when response is not ok', async () => {
+          global.fetch.mockResolvedValue({
+            ok: false,
+            json: async () => ({ message: 'Logout failed due to server error' }),
+          });
+      
+          await logout(setLoggedIn);
+      
+          expect(console.error).toHaveBeenCalledWith(
+            'Error logging out:',
+            expect.any(Error)
+          );
+          expect(setLoggedIn).not.toHaveBeenCalled();
+        });
+      
+        test('logs error if fetch itself throws', async () => {
+          global.fetch.mockRejectedValue(new Error('Network error'));
+      
+          await logout(setLoggedIn);
+      
+          expect(console.error).toHaveBeenCalledWith(
+            'Error logging out:',
+            expect.any(Error)
+          );
+          expect(setLoggedIn).not.toHaveBeenCalled();
+        });
+});

@@ -1,5 +1,5 @@
 import './App.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import UserAccommodations from './userAccommodations';
 
 export function Accommodations({ userInfo, setAlertMessage, setShowAlert }) {
@@ -35,7 +35,7 @@ export function Accommodations({ userInfo, setAlertMessage, setShowAlert }) {
   }, [userInfo]);
 
   return (
-    <main className='dashboardOuter' data-testid='basicAccommodations'>
+    <main className='dashboardOuter' data-testid='basicAccommodations' id='basicAccommodations'>
       {userInfo.role === "USER" && (
         <UserAccommodations
           userInfo={userInfo}
