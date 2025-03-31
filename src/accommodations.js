@@ -5,6 +5,15 @@ import UserAccommodations from './userAccommodations';
 export function Accommodations({ userInfo, setAlertMessage, setShowAlert }) {
   const [studentData, setStudentData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [professorData, setProfessorData] = useState(null);
+  const [openProfessorCourses, setOpenProfessorCourses] = useState({});
+
+  const toggleDropdown = (courseId) => {
+    setOpenProfessorCourses((prev) => ({
+      ...prev,
+      [courseId]: !prev[courseId],
+    }));
+  };
 
   useEffect(() => {
     if (userInfo?.role === 'STUDENT' && userInfo?.id) {
@@ -13,6 +22,14 @@ export function Accommodations({ userInfo, setAlertMessage, setShowAlert }) {
         .then(res => res.json())
         .then(data => setStudentData(data))
         .catch(err => console.error('Failed to fetch student data', err))
+        .finally(() => setLoading(false));
+    }
+    if (userInfo?.role === 'PROFESSOR' && userInfo?.id) {
+      setLoading(true);
+      fetch(`/api/getProfessorAccommodations?userId=${userInfo.id}`)
+        .then(res => res.json())
+        .then(data => setProfessorData(data))
+        .catch(err => console.error('Failed to fetch professor data', err))
         .finally(() => setLoading(false));
     }
   }, [userInfo]);
@@ -75,8 +92,57 @@ export function Accommodations({ userInfo, setAlertMessage, setShowAlert }) {
           )}
         </>
       )}
+      
+      {userInfo.role === "PROFESSOR" && (
+        <>
+          {/* <div>TESTING HERE</div> */}
+          {loading ? (
+            <div className="loadingScreen" role="status" aria-live="polite">
+              <div className="spinner">
+                <div className="spinner-icon"></div>
+                <p className="spinner-text">Loading accommodations...</p>
+              </div>
+            </div>
+          ) : (
+            <div className="accommodationsContainer">
+              {professorData?.courses.map((course) => (
+                <div key={course.id} className="courseCard">
+                  <button
+                    className="courseDropdown"
+                    onClick={() => toggleDropdown(course.id)}
+                    aria-expanded={openProfessorCourses[course.id]}
+                    aria-controls={`accommodations-${course.id}`}
+                  >
+                    {course.name} ({course.department})  
+                    <span aria-hidden="true">{openProfessorCourses[course.id] ? "🔼" : "🔽"}</span>
+                  </button>
 
-      {userInfo.role === "PROFESSOR" && <p className='dashboardTitle'>PROFESSOR ACCOMMODATIONS</p>}
+                  {openProfessorCourses[course.id] && (
+                    <div id={`accommodations-${course.id}`} role="region" aria-label={`Accommodations for ${course.name}`}>
+                      {course.accommodations.length > 0 ? (
+                        course.accommodations.map((acc) => (
+                          <div key={acc.id} className="accommodationCard">
+                            <div><strong>Type:</strong> {acc.type || 'N/A'}</div>
+                            <div><strong>Status:</strong> {acc.status}</div>
+                            <div><strong>Date Requested:</strong> {new Date(acc.date_requested).toLocaleDateString()}</div>
+                            <div><strong>Advisor ID:</strong> {acc.advisorId || 'N/A'}</div>
+                            <div><strong>Notes:</strong> {acc.notes}</div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="noAccommodations">No accommodations available.</div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
+        </>
+      )}
+
+      {/* {userInfo.role === "PROFESSOR" && <p className='dashboardTitle'>PROFESSOR ACCOMMODATIONS</p>} */}
       {userInfo.role === "ADVISOR" && <p className='dashboardTitle'>STAFF ACCOMMODATIONS</p>}
     </main>
   );
