@@ -1,5 +1,10 @@
 import { useState, useEffect, useCallback  } from 'react';
-function renderNotes(type) {
+
+
+
+//helper functions
+
+export function renderNotes(type) {
   switch (type.toLowerCase()) {
     case 'break': return 'Scheduled break in academic calendar';
     case 'office closure': return 'University offices closed';
@@ -9,9 +14,34 @@ function renderNotes(type) {
   }
 }
 
-function capitalizeWords(text) {
+function formatFormType(type) {
+  if (!type) return 'N/A';
+  return type
+    .toLowerCase()
+    .split('_')
+    .map(word => word[0].toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
+
+export function capitalizeWords(text) {
   return text.replace(/\b\w/g, char => char.toUpperCase());
 }
+
+function DropdownSection({ title, isOpen, toggleOpen, children }) {
+  return (
+    <div className="dropdown-section">
+      <button className="toggle-button" onClick={toggleOpen}>
+        {isOpen ? `Hide ${title}` : `Show ${title}`}
+      </button>
+      {isOpen && <div className="dropdown-content">{children}</div>}
+    </div>
+  );
+}
+
+
+
+// ============================== MAIN STAFF DASH FUNCTION ==============================================//
 
 function StaffDash() {
   const [view, setView] = useState(null); // 'students', 'requests', 'forms', 'studentDetails'
@@ -40,12 +70,9 @@ function StaffDash() {
   const [editedAccommodations, setEditedAccommodations] = useState({});
   const [loadingStudentList, setLoadingStudentList] = useState(false);
   const [importantDates, setImportantDates] = useState([]);
-
-
-
-
-
-
+  const [loadingDates, setLoadingDates] = useState(true);  
+  const [showForms, setShowForms] = useState(false);
+  const [submittedForms, setSubmittedForms] = useState([]);
 
 
 
@@ -62,6 +89,7 @@ function StaffDash() {
       timer = setTimeout(() => func(...args), delay);
     };
   };
+
   const refreshStudentData = async (userId) => {
     setRefreshingStudent(true);
     try {
@@ -86,24 +114,6 @@ function StaffDash() {
     }
   };
 
-const [loadingDates, setLoadingDates] = useState(true);  // 👈 spinner flag
-
-useEffect(() => {
-  const fetchImportantDates = async () => {
-    try {
-      const res = await fetch('/api/getImportantDates');
-      const data = await res.json();
-      setImportantDates(data.dates);
-    } catch (err) {
-      console.error("Failed to fetch important dates:", err);
-    } finally {
-      setLoadingDates(false); // 👈 hide spinner
-    }
-  };
-
-  fetchImportantDates();
-}, []);
-  
   const handleStatusChange = (accId, newStatus) => {
     setEditedAccommodations(prev => ({
       ...prev,
@@ -119,111 +129,25 @@ useEffect(() => {
     }));
   };
 
-    // Optimized Search with Debounce
-    const performSearch = useCallback(
-      debounce((query) => {
-        if (query.length === 0) {
-          setFilteredStudents([]);
-          return;
-        }
-  
-        const results = studentsData.filter(
-          (student) =>
-            (student.student_name &&
-              student.student_name.toLowerCase().includes(query)) ||
-            (student.UIN && student.UIN.toString().includes(query))
-        );
-  
-        setFilteredStudents(results);
-      }, 300), // Delay of 300ms
-      [studentsData]
-    );
-    useEffect(() => {
-      if (view == null) {
-        setSearchTerm("");
-        setSelectedStudent(null);
-        setShowAccommodations(false);
-        setShowAssistiveTech(false);
+  const performSearch = useCallback(
+    debounce((query) => {
+      if (query.length === 0) {
+        setFilteredStudents([]);
+        return;
       }
-    }, [view]);
-    
 
-    useEffect(() => {
-      const fetchImportantDates = async () => {
-        try {
-          const res = await fetch('/api/getImportantDates');
-          const data = await res.json();
-          setImportantDates(data.dates);
-        } catch (err) {
-          console.error("Failed to fetch important dates:", err);
-        }
-      };
-    
-      fetchImportantDates();
-    }, []);
-    
-    useEffect(() => {
-      const fetchRequests = async () => {
-        setLoadingRequests(true); // Show loading spinner
-        try {
-          const response = await fetch('/api/getRequests'); // Replace with actual API
-          const data = await response.json();
-          setRequests(data.requests);
-        } catch (error) {
-          console.error("Error fetching requests:", error);
-        } finally {
-          setLoadingRequests(false); // Hide loading spinner
-        }
-      };
-    
-      fetchRequests();
-    }, []);
-    
-  
-
-
-  // Fetch students from API when component mounts
-  useEffect(() => {
-    setLoading(true);
-    fetch('/api/getStudents')
-      .then((response) => response.json())
-      .then((data) => {
-        setStudentsData(data.students);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error('Error fetching students:', error);
-        setLoading(false);
-      });
-  }, []);
-
-  // ADDED FOR REQUESTS: Fetch requests when view is 'requests'
-  useEffect(() => {
-    if (view === 'requests') {
-      fetch('/api/getRequests')
-        .then(res => res.json())
-        .then(data => {
-          setRequestsData(data.requests);
-        })
-        .catch(err => console.error('Error fetching requests:', err));
-    }
-  }, [view]);
-
-  useEffect(() => {
-    // Filter results based on search
-    const filtered = requestsData.filter((request) => {
-      const query = searchTerm.toLowerCase();
-      return (
-        (request.UIN && request.UIN.toString().includes(query)) ||  // ✅ Correct field
-        (request.notes && request.notes.toLowerCase().includes(query)) // ✅ Allows search by notes
+      const results = studentsData.filter(
+        (student) =>
+          (student.student_name &&
+            student.student_name.toLowerCase().includes(query)) ||
+          (student.UIN && student.UIN.toString().includes(query))
       );
-    });
 
-    setFilteredRequests(filtered);
-    setCurrentPage(1); // Reset to first page when search updates
-}, [searchTerm, requestsData]);
+      setFilteredStudents(results);
+    }, 300), // Delay of 300ms
+    [studentsData]
+  );
 
-  
   const handleRequestClick = (request) => {
     setSelectedRequest({
       id: request.id,
@@ -262,25 +186,32 @@ useEffect(() => {
   };
 
   // Handle clicking a student to open details
-// Ensure correct structure when selecting a student
-const handleStudentClick = (student) => {
-  setSelectedStudent({
-    userId: student.userId,
-    student_name: student.student_name,
-    UIN: student.UIN,
-    dob: student.dob,
-    email: student.email,
-    phone_number: student.phone_number,
-
-    accommodations: student.accommodations || [],
-    assistive_technologies: student.assistive_technologies || [],
-  });
-
-  setEditedStudent({ ...student });
-  setView('studentDetails');
-};
-
-
+  // Ensure correct structure when selecting a student
+  const handleStudentClick = async (student) => {
+    setSelectedStudent({
+      userId: student.userId,
+      student_name: student.student_name,
+      UIN: student.UIN,
+      dob: student.dob,
+      email: student.email,
+      phone_number: student.phone_number,
+      accommodations: student.accommodations || [],
+      assistive_technologies: student.assistive_technologies || [],
+    });
+  
+    setEditedStudent({ ...student });
+    setView('studentDetails');
+  
+    // 🆕 Fetch submitted forms from the API
+    try {
+      const res = await fetch(`/api/getForms?userId=${student.userId}`);
+      const data = await res.json();
+      setSubmittedForms(data.forms || []);
+    } catch (err) {
+      console.error("❌ Error fetching submitted forms:", err);
+      setSubmittedForms([]);
+    }
+  };
 
   // Handle input change for editing
   const handleEditChange = (event) => {
@@ -288,12 +219,10 @@ const handleStudentClick = (student) => {
     setEditedStudent((prev) => ({ ...prev, [name]: value }));
   };
 
-
   const hasChanges = () => {
     return JSON.stringify(editedStudent) !== JSON.stringify(selectedStudent);
   };
 
-  // Submit edited student data to the database
   const handleSaveChanges = async () => {
     setInfoMessage('');
     setSuccessMessage('');
@@ -374,100 +303,192 @@ const handleStudentClick = (student) => {
       setLoading(false);
     }
   };
-  
+
   const confirmAndSaveStatus = async (accId) => {
-  const newStatus = editedAccommodations[accId];
-  if (!newStatus) return;
+    const newStatus = editedAccommodations[accId];
+    if (!newStatus) return;
 
-  const confirmed = window.confirm("Are you sure you want to save this change?");
-  if (!confirmed) return;
+    const confirmed = window.confirm("Are you sure you want to save this change?");
+    if (!confirmed) return;
 
-  try {
-    const res = await fetch('/api/updateAccommodationStatus', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ accommodationId: accId, status: newStatus })
+    try {
+      const res = await fetch('/api/updateAccommodationStatus', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ accommodationId: accId, status: newStatus })
+      });
+
+      if (res.ok) {
+        alert('✅ Status updated successfully!');
+      } else {
+        alert('❌ Failed to update status.');
+      }
+    } catch (error) {
+      console.error('Error updating status:', error);
+      alert('❌ Error while updating status.');
+    }
+
+    
+  };
+
+  const resetToMainMenu = async () => {
+    if (isEditing && hasChanges()) {
+      const confirmLeave = window.confirm(
+        "⚠️ Are you sure you want to leave? Unsaved changes will be discarded."
+      );
+      if (!confirmLeave) return;
+    }
+
+
+
+    setView(null);
+    // setSearchTerm('');
+    setFilteredStudents([]);
+    setSelectedStudent(null);
+    setIsEditing(false);
+    setEditedStudent(null);
+    setSelectedRequest(null);
+    setShowAccommodations(false);
+    setShowAssistiveTech(false);
+  };
+
+  const resetToStudentSearch = async () => {
+    if (isEditing && hasChanges()) {
+      const confirmLeave = window.confirm(
+        "⚠️ Are you sure you want to leave? Unsaved changes will be discarded."
+      );
+      if (!confirmLeave) return;
+    }
+
+    if (studentNeedsRefresh) {
+      setLoadingStudentList(true);
+      try {
+        const res = await fetch('/api/getStudents');
+        const data = await res.json();
+        setStudentsData(data.students);
+      } catch (err) {
+        console.error("❌ Failed to refresh student list", err);
+      }
+      setLoadingStudentList(false);
+      setStudentNeedsRefresh(false);
+    }
+
+    setView('students');
+    setShowAccommodations(false);
+    setShowAssistiveTech(false);
+    setIsEditing(false);
+    setShowStudentInfo(false);
+    setSelectedStudent(null);
+    setEditedStudent(null);
+  };
+    
+  // =========================================== USE EFFECTS ====================================================== //
+
+  useEffect(() => {
+    const fetchImportantDates = async () => {
+      try {
+        const res = await fetch('/api/getImportantDates');
+        const data = await res.json();
+        setImportantDates(data.dates);
+      } catch (err) {
+        console.error("Failed to fetch important dates:", err);
+      } finally {
+        setLoadingDates(false); // 👈 hide spinner
+      }
+    };
+
+    fetchImportantDates();
+  }, []);
+
+  useEffect(() => {
+    if (view == null) {
+      setSearchTerm("");
+      setSelectedStudent(null);
+      setShowAccommodations(false);
+      setShowAssistiveTech(false);
+
+    }
+  }, [view]);
+
+  useEffect(() => {
+    const fetchImportantDates = async () => {
+      try {
+        const res = await fetch('/api/getImportantDates');
+        const data = await res.json();
+        setImportantDates(data.dates);
+      } catch (err) {
+        console.error("Failed to fetch important dates:", err);
+      }
+    };
+  
+    fetchImportantDates();
+  }, []);
+
+  useEffect(() => {
+    const fetchRequests = async () => {
+      setLoadingRequests(true); // Show loading spinner
+      try {
+        const response = await fetch('/api/getRequests'); // Replace with actual API
+        const data = await response.json();
+        setRequests(data.requests);
+      } catch (error) {
+        console.error("Error fetching requests:", error);
+      } finally {
+        setLoadingRequests(false); // Hide loading spinner
+      }
+    };
+  
+    fetchRequests();
+  }, []);
+  
+  
+  useEffect(() => {
+    setLoading(true);
+    fetch('/api/getStudents')
+      .then((response) => response.json())
+      .then((data) => {
+        setStudentsData(data.students);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching students:', error);
+        setLoading(false);
+      });
+  }, []);
+
+  // ADDED FOR REQUESTS: Fetch requests when view is 'requests'
+  useEffect(() => {
+    if (view === 'requests') {
+      fetch('/api/getRequests')
+        .then(res => res.json())
+        .then(data => {
+          setRequestsData(data.requests);
+        })
+        .catch(err => console.error('Error fetching requests:', err));
+    }
+  }, [view]);
+
+  useEffect(() => {
+    // Filter results based on search
+    const filtered = requestsData.filter((request) => {
+      const query = searchTerm.toLowerCase();
+      return (
+        (request.UIN && request.UIN.toString().includes(query)) ||  // ✅ Correct field
+        (request.notes && request.notes.toLowerCase().includes(query)) // ✅ Allows search by notes
+      );
     });
 
-    if (res.ok) {
-      alert('✅ Status updated successfully!');
-    } else {
-      alert('❌ Failed to update status.');
-    }
-  } catch (error) {
-    console.error('Error updating status:', error);
-    alert('❌ Error while updating status.');
-  }
-};
+    setFilteredRequests(filtered);
+    setCurrentPage(1); // Reset to first page when search updates
+}, [searchTerm, requestsData]);
 
-  // Function to reset everything when going back
-  const resetToMainMenu = async () => {
-  if (isEditing && hasChanges()) {
-    const confirmLeave = window.confirm(
-      "⚠️ Are you sure you want to leave? Unsaved changes will be discarded."
-    );
-    if (!confirmLeave) return;
-  }
-
-  if (studentNeedsRefresh) {
-    setLoadingStudentList(true);
-    try {
-      const res = await fetch('/api/getStudents');
-      const data = await res.json();
-      setStudentsData(data.students);
-    } catch (err) {
-      console.error("❌ Failed to refresh student list", err);
-    }
-    setLoadingStudentList(false);
-    setStudentNeedsRefresh(false);
-  }
-
-  setView(null);
-  setSearchTerm('');
-  setFilteredStudents([]);
-  setSelectedStudent(null);
-  setIsEditing(false);
-  setEditedStudent(null);
-  setSelectedRequest(null);
-  setShowAccommodations(false);
-  setShowAssistiveTech(false);
-};
-
-const resetToStudentSearch = async () => {
-  if (isEditing && hasChanges()) {
-    const confirmLeave = window.confirm(
-      "⚠️ Are you sure you want to leave? Unsaved changes will be discarded."
-    );
-    if (!confirmLeave) return;
-  }
-
-  if (studentNeedsRefresh) {
-    setLoadingStudentList(true);
-    try {
-      const res = await fetch('/api/getStudents');
-      const data = await res.json();
-      setStudentsData(data.students);
-    } catch (err) {
-      console.error("❌ Failed to refresh student list", err);
-    }
-    setLoadingStudentList(false);
-    setStudentNeedsRefresh(false);
-  }
-
-  setView('students');
-  setShowAccommodations(false);
-  setShowAssistiveTech(false);
-  setIsEditing(false);
-  setShowStudentInfo(false);
-  setSelectedStudent(null);
-  setEditedStudent(null);
-};
+  
+  
 
   return (
     <div className="staff-dashboard-container">
       {/* Main Content Section */}
       <div className="staff-main-content">
-
         {/* Dashboard Title & Back Button */}
         <div className="staff-header">
           {view !== null && (
@@ -476,7 +497,12 @@ const resetToStudentSearch = async () => {
             </button>
           )}
         </div>
-
+        {view === 'forms' && (
+  <div className="staff-forms-section">
+    <h2>Submitted Forms</h2>
+    {/* more content goes here */}
+  </div>
+)}
         {/* Default Staff Menu */}
         {view === null && (
           <div className="staff-menu">
@@ -500,40 +526,42 @@ const resetToStudentSearch = async () => {
         <p>Loading Requests...</p>
       </div>
     ) : selectedRequest ? (
-      <div className="request-details-container">
-        <button className="back-btn" onClick={() => setSelectedRequest(null)}>
-          ← Back to Requests
-        </button>
+      <div className="request-details-card">
+        <h2 className="card-title">📌 Request Details</h2>
 
-        <div className="request-details-grid">
-          <div>
-            <p><strong>Request ID:</strong> {selectedRequest.id}</p>
-            <p><strong>Advisor ID:</strong> {selectedRequest.advisorId}</p>
-            <p><strong>Advisor Role:</strong> {selectedRequest.advisorRole || "N/A"}</p>
-          </div>
-
-          <div>
-            <p><strong>User ID:</strong> {selectedRequest.userId}</p>
-          </div>
-
-          <div className="full-width">
-            <p><strong>Notes:</strong> {selectedRequest.notes}</p>
-            <p><strong>Documentation:</strong> {selectedRequest.documentation ? "Yes" : "No"}</p>
-          </div>
+        <div className="request-meta-grid">
+          <div><strong>Request ID:</strong> {selectedRequest.id}</div>
+          <div><strong>User ID:</strong> {selectedRequest.userId}</div>
+          <div><strong>Advisor ID:</strong> {selectedRequest.advisorId}</div>
+          <div><strong>Advisor Role:</strong> {selectedRequest.advisorRole}</div>
         </div>
 
-        {/* Student Info Button */}
-        <button 
-          className="dropdown-button"
-          onClick={() => setExpandedRequest(expandedRequest === selectedRequest.id ? null : selectedRequest.id)}
+        <div className="request-notes">
+          <strong>Notes:</strong>
+          <p>{selectedRequest.notes || "N/A"}</p>
+        </div>
+
+        <div className="request-docs">
+          <strong>Documentation:</strong>
+          <span className={`doc-badge ${selectedRequest.documentation ? "yes" : "no"}`}>
+            {selectedRequest.documentation ? "✔️ Yes" : "❌ No"}
+          </span>
+        </div>
+
+        <button
+          className="expand-button"
+          onClick={() =>
+            setExpandedRequest(
+              expandedRequest === selectedRequest.id ? null : selectedRequest.id
+            )
+          }
         >
           {expandedRequest === selectedRequest.id ? "Hide Student Info" : "Show Student Info"}
         </button>
 
-        {/* Compact Student Info Section */}
         {expandedRequest === selectedRequest.id && (
-          <div className="student-info">
-            <h3>Student Info</h3>
+          <div className="student-info-box">
+            <h3>🎓 Student Info</h3>
             <p><strong>Name:</strong> {selectedRequest.student_name || "N/A"}</p>
             <p><strong>DOB:</strong> {selectedRequest.dob ? new Date(selectedRequest.dob).toLocaleDateString() : "N/A"}</p>
             <p><strong>UIN:</strong> {selectedRequest.UIN || "N/A"}</p>
@@ -622,6 +650,7 @@ const resetToStudentSearch = async () => {
             key={student.userId}
             className="staff-search-item"
             onClick={() => handleStudentClick(student)}
+            data-testid={`student-item-${student.userId}`}
             tabIndex="0"
             role="button"
             onKeyDown={(e) => {
@@ -630,8 +659,8 @@ const resetToStudentSearch = async () => {
               }
             }}
           >
-            <p>
-              <strong>{student.student_name || "N/A"}</strong> (UIN: {student.UIN || "N/A"})
+            <p data-testid={`student-${student.userId}`}>
+              {student.student_name || "N/A"} (UIN: {student.UIN || "N/A"})
             </p>
           </div>
         ))}
@@ -644,215 +673,174 @@ const resetToStudentSearch = async () => {
 
 {/* Student Details View */}
 {view === 'studentDetails' && selectedStudent && (
-  <div className="staff-student-details-container two-column-layout">
-    
-    {/* LEFT COLUMN - Student Info */}
-    <div className="student-left-column">
-      <h2 className="student-profile-heading">
-        {selectedStudent.student_name}'s Profile
-      </h2>
+  <div className="staff-student-details-container updated-layout">
 
-      <button 
-        className="dropdown-button" 
-        onClick={() => setShowStudentInfo(prev => !prev)}
-      >
-        {showStudentInfo ? 'Hide Information' : 'Show Information'}
-      </button>
+{/* LEFT COLUMN – Student Info and Edit Form */}
+<div className="student-profile-card">
+  <h2 className="student-profile-heading">{selectedStudent.student_name}'s Profile</h2>
 
-      {showStudentInfo && (
-  <div className={`student-info-box ${refreshingStudent ? "blurred" : ""}`}>
-    {refreshingStudent && (
-      <div className="overlay-spinner">
-        <div className="loading-spinner"></div>
-        <p>Refreshing student data...</p>
-      </div>
-    )}
-          {isEditing ? (
-  <>
-    {/* Message banners */}
-    {infoMessage && (
-      <div className="form-warning">
-        {infoMessage}
-      </div>
-    )}
+  <button 
+    className="dropdown-button" 
+    onClick={() => setShowStudentInfo(prev => !prev)}
+  >
+    {showStudentInfo ? 'Hide Information' : 'Show Information'}
+  </button>
 
-    {successMessage && (
-      <div className="form-success">
-        {successMessage}
-      </div>
-    )}
-
-    <div className="edit-student-form">
-      <div className="staff-form-group">
-        <label htmlFor="name">Full Name:</label>
-        <input
-          id="name"
-          type="text"
-          name="student_name"
-          value={editedStudent.student_name || ""}
-          onChange={handleEditChange}
-        />
-      </div>
-
-      <div className="staff-form-group">
-        <label htmlFor="uin">UIN:</label>
-        <input
-          id="uin"
-          type="text"
-          name="UIN"
-          value={editedStudent.UIN || ""}
-          onChange={handleEditChange}
-        />
-      </div>
-
-      <div className="staff-form-group">
-        <label htmlFor="dob">Date of Birth:</label>
-        <input
-          id="dob"
-          type="date"
-          name="dob"
-          value={editedStudent.dob ? editedStudent.dob.split("T")[0] : ""}
-          onChange={handleEditChange}
-        />
-      </div>
-
-      <div className="staff-form-group">
-        <label htmlFor="email">Email:</label>
-        <input
-          id="email"
-          type="email"
-          name="email"
-          value={editedStudent.email || ""}
-          onChange={handleEditChange}
-        />
-      </div>
-
-      <div className="staff-form-group">
-        <label htmlFor="phone_number">Phone Number:</label>
-        <input
-          id="phone_number"
-          type="text"
-          name="phone_number"
-          value={editedStudent.phone_number || ""}
-          onChange={handleEditChange}
-        />
-      </div>
-
-      <button onClick={handleSaveChanges} disabled={loading}>
-        {loading ? 'Saving...' : 'Save Changes'}
-        {loading && <div className="staff-loading-spinner"></div>}
-      </button>
-
-      <button
-        className="staff-backtoprofile-btn"
-        onClick={() => {
-          setIsEditing(false);
-          refreshStudentData(editedStudent.userId); // ← only reloads and triggers spinner on exit
-        }}
-      >
-        Back to Profile View
-      </button>
-
-    </div>
-  </>
-) : (
-  <>
-    <p><strong>Name:</strong> {selectedStudent?.student_name || "N/A"}</p>
-    <p><strong>UIN:</strong> {selectedStudent?.UIN || "N/A"}</p>
-    <p><strong>Date of Birth:</strong> {selectedStudent?.dob ? new Date(selectedStudent.dob).toLocaleDateString() : "N/A"}</p>
-    <p><strong>Email:</strong> {selectedStudent?.email || "N/A"}</p>
-    <p><strong>Phone Number:</strong> {selectedStudent?.phone_number || "N/A"}</p>
-    <button className="edit-profile-button" onClick={() => setIsEditing(true)}>
-      ✏️ Edit Profile
-    </button>
-  </>
-)}
-
-    </div>
-      )}
-
-      <button className="staff-cancel-btn" onClick={() => resetToStudentSearch()}>
-        Back to Search
-      </button>
-    </div>
-
-    {/* RIGHT COLUMN - Actions */}
-    <div className="student-right-column">
-      <button 
-        className="toggle-button" 
-        onClick={() => setShowAccommodations(prev => !prev)}
-      >
-        {showAccommodations ? "Hide Accommodations" : "Show Accommodations"}
-      </button>
-
-      {showAccommodations && (
-        <div className="dropdown-content">
-          <h4>Accommodations</h4>
-          {selectedStudent?.accommodations?.length > 0 ? (
-            <ul>
-              {selectedStudent.accommodations.map(acc => (
-                <li key={acc.id}>
-                  <p><strong>Type:</strong> {acc.type || "N/A"}</p>
-                  <div className="status-row">
-                    <label><strong>Status:</strong></label>
-                    <select
-                      value={acc.status}
-                      onChange={(e) => handleStatusChange(acc.id, e.target.value)}
-                    >
-                      <option value="APPROVED">Approved</option>
-                      <option value="DENIED">Denied</option>
-                      <option value="PENDING">Pending</option>
-                    </select>
-
-                    <button
-                      className="save-icon-button"
-                      title="Save status change"
-                      onClick={() => confirmAndSaveStatus(acc.id)}
-                    >
-                      💾
-                    </button>
-                  </div>
-                  <p><strong>Date Requested:</strong> {acc.date_requested ? new Date(acc.date_requested).toLocaleDateString() : "N/A"}</p>
-                  <p><strong>Advisor ID:</strong> {acc.advisorId || "N/A"}</p>
-                  <p><strong>Notes:</strong> {acc.notes || "N/A"}</p>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No accommodations assigned.</p>
-          )}
+  {showStudentInfo && (
+    <div className={`student-info-box ${refreshingStudent ? "blurred" : ""}`}>
+      {refreshingStudent && (
+        <div className="overlay-spinner">
+          <div className="loading-spinner"></div>
+          <p>Refreshing student data...</p>
         </div>
       )}
 
-      <button 
-        className="toggle-button" 
-        onClick={() => setShowAssistiveTech(prev => !prev)}
-      >
-        {showAssistiveTech ? "Hide Assistive Technologies" : "Show Assistive Technologies"}
-      </button>
+      {isEditing ? (
+        <>
+          {infoMessage && <div className="form-warning">{infoMessage}</div>}
+          {successMessage && <div className="form-success">{successMessage}</div>}
 
-      {showAssistiveTech && (
-        <div className="dropdown-content">
-          <h4>Assistive Technologies</h4>
-          {selectedStudent?.assistive_technologies?.length > 0 ? (
-            <ul>
-              {selectedStudent.assistive_technologies.map(tech => (
-                <li key={tech.id}>
-                  <p><strong>Type:</strong> {tech.type || "N/A"}</p>
-                  <p><strong>Available:</strong> {tech.available !== undefined ? (tech.available ? "Yes" : "No") : "N/A"}</p>
-                  <p><strong>Advisor ID:</strong> {tech.advisorId || "N/A"}</p>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No assistive technologies assigned.</p>
-          )}
-        </div>
+          <div className="edit-student-form">
+            {/* Editable fields (name, UIN, DOB, etc) */}
+            {/* KEEP ALL YOUR EXISTING EDIT FORM HERE */}
+            <div className="staff-form-group">
+              <label htmlFor="name">Full Name:</label>
+              <input
+                id="name"
+                type="text"
+                name="student_name"
+                value={editedStudent.student_name || ""}
+                onChange={handleEditChange}
+              />
+            </div>
+
+            <div className="staff-form-group">
+              <label htmlFor="uin">UIN:</label>
+              <input
+                id="uin"
+                type="text"
+                name="UIN"
+                value={editedStudent.UIN || ""}
+                onChange={handleEditChange}
+              />
+            </div>
+
+            <div className="staff-form-group">
+              <label htmlFor="dob">Date of Birth:</label>
+              <input
+                id="dob"
+                type="date"
+                name="dob"
+                value={editedStudent.dob ? editedStudent.dob.split("T")[0] : ""}
+                onChange={handleEditChange}
+              />
+            </div>
+
+            <div className="staff-form-group">
+              <label htmlFor="email">Email:</label>
+              <input
+                id="email"
+                type="email"
+                name="email"
+                value={editedStudent.email || ""}
+                onChange={handleEditChange}
+              />
+            </div>
+
+            <div className="staff-form-group">
+              <label htmlFor="phone_number">Phone Number:</label>
+              <input
+                id="phone_number"
+                type="text"
+                name="phone_number"
+                value={editedStudent.phone_number || ""}
+                onChange={handleEditChange}
+              />
+            </div>
+
+            <button onClick={handleSaveChanges} disabled={loading}>
+              {loading ? 'Saving...' : 'Save Changes'}
+              {loading && <div className="staff-loading-spinner"></div>}
+            </button>
+
+            <button
+              className="staff-backtoprofile-btn"
+              onClick={() => {
+                setIsEditing(false);
+                refreshStudentData(editedStudent.userId);
+              }}
+            >
+              Back to Profile View
+            </button>
+          </div>
+        </>
+      ) : (
+        <>
+          <p><strong>Name:</strong> {selectedStudent?.student_name || "N/A"}</p>
+          <p><strong>UIN:</strong> {selectedStudent?.UIN || "N/A"}</p>
+          <p><strong>DOB:</strong> {selectedStudent?.dob ? new Date(selectedStudent.dob).toLocaleDateString() : "N/A"}</p>
+          <p><strong>Email:</strong> {selectedStudent?.email || "N/A"}</p>
+          <p><strong>Phone Number:</strong> {selectedStudent?.phone_number || "N/A"}</p>
+          <button className="edit-profile-button" onClick={() => setIsEditing(true)}>✏️ Edit Profile</button>
+        </>
       )}
-
-      
     </div>
-  </div>
+  )}
+
+  <button className="staff-cancel-btn" onClick={() => resetToStudentSearch()}>
+    Back to Search
+  </button>
+</div>
+
+{/* RIGHT COLUMN – Dropdowns */}
+<div className="student-dropdown-column">
+  <DropdownSection title="Submitted Forms" isOpen={showForms} toggleOpen={() => setShowForms(!showForms)}>
+      {submittedForms.length > 0 ? (
+      <ul className="form-list">
+        {submittedForms.map((form) => (
+          <li key={form.id} className="form-entry">
+            <p><strong>Type:</strong> {formatFormType(form.type)}</p>
+            <p><strong>Status:</strong> {form.status}</p>
+            <p><strong>Submitted:</strong> {form.submittedDate ? new Date(form.submittedDate).toLocaleDateString() : 'N/A'}</p>
+            <p><strong>Due:</strong> {form.dueDate ? new Date(form.dueDate).toLocaleDateString() : 'N/A'}</p>
+            {form.formUrl && (
+              <p><a href={form.formUrl} target="_blank" rel="noopener noreferrer">View Form 🔗</a></p>
+            )}
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p>No forms submitted.</p>
+    )}
+  </DropdownSection>
+
+  <DropdownSection title="Accommodations" isOpen={showAccommodations} toggleOpen={() => setShowAccommodations(!showAccommodations)}>
+    {selectedStudent.accommodations?.length > 0 ? (
+      selectedStudent.accommodations.map(acc => (
+        <div key={acc.id}>
+          <p><strong>Type:</strong> {acc.type}</p>
+          <p><strong>Status:</strong> {acc.status}</p>
+          <p><strong>Date Requested:</strong> {new Date(acc.date_requested).toLocaleDateString()}</p>
+        </div>
+      ))
+    ) : <p>No accommodations.</p>}
+  </DropdownSection>
+
+  <DropdownSection title="Assistive Technologies" isOpen={showAssistiveTech} toggleOpen={() => setShowAssistiveTech(!showAssistiveTech)}>
+    {selectedStudent.assistive_technologies?.length > 0 ? (
+      selectedStudent.assistive_technologies.map(tech => (
+        <div key={tech.id}>
+          <p><strong>Type:</strong> {tech.type}</p>
+          <p><strong>Available:</strong> {tech.available ? "Yes" : "No"}</p>
+        </div>
+      ))
+    ) : <p>No assistive tech assigned.</p>}
+  </DropdownSection>
+</div>
+</div>
+
+
+
 )}
       </div>
 
