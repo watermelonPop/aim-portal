@@ -83,7 +83,7 @@ export function App() {
       text_magnifier: false,
       align_text: "center",
       font_size: "14px",
-      line_height: 5000,
+      line_height: 1.5,
       letter_spacing: "0px",
       contrast: "100%",
       saturation: "100%",

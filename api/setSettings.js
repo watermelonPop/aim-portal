@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { PrismaClient } = require('@prisma/client');
+const { PrismaClient} = require('@prisma/client');
 
 const prisma = new PrismaClient();
 
@@ -10,6 +10,8 @@ module.exports = async (req, res) => {
     if (!user_id || !settings) {
       return res.status(400).json({ error: 'User ID & settings are required' });
     }
+
+    console.log(settings);
 
     try {
       // Update user settings using Prisma
