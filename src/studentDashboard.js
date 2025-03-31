@@ -1,5 +1,7 @@
+// StudentDashboard.jsx
 import React, { useEffect, useState } from 'react';
 import './App.css';
+import AlertsArea from './AlertsArea'; // Import the alerts component
 
 export default function StudentDashboard({ userInfo }) {
   const [courses, setCourses] = useState([]);
@@ -33,12 +35,10 @@ export default function StudentDashboard({ userInfo }) {
     <div className="studentDashboard">
       <div className="leftColumn">
         <h2>Welcome, {userInfo?.name || 'Student'}</h2>
-
         <div className="viewToggle">
           <button onClick={() => setViewMode('card')}>Card View</button>
           <button onClick={() => setViewMode('list')}>List View</button>
         </div>
-
         {loading ? (
           <p>Loading courses...</p>
         ) : error ? (
@@ -50,9 +50,10 @@ export default function StudentDashboard({ userInfo }) {
             {courses.map((course) => {
               const latestExam = course.exams?.reduce((latest, exam) => {
                 if (!exam.date) return latest;
-                return new Date(exam.date) > new Date(latest?.date || 0) ? exam : latest;
+                return new Date(exam.date) > new Date(latest?.date || 0)
+                  ? exam
+                  : latest;
               }, null);
-
               return (
                 <div
                   key={course.id}
@@ -62,7 +63,7 @@ export default function StudentDashboard({ userInfo }) {
                   <h3 className="courseTitle">{course.name}</h3>
                   {latestExam?.date ? (
                     <p className="examDate">
-                      Exam: {new Date(latestExam.date).toLocaleDateString()}
+                      Next Exam: {new Date(latestExam.date).toLocaleDateString()}
                     </p>
                   ) : (
                     <p className="examDate examDate--none">No exams scheduled</p>
@@ -84,12 +85,10 @@ export default function StudentDashboard({ userInfo }) {
             ))}
           </div>
         )}
-
         {selectedCourse && (
           <div className="modalOverlay" onClick={() => setSelectedCourse(null)}>
             <div className="modalContent" onClick={(e) => e.stopPropagation()}>
               <h2>{selectedCourse.name}</h2>
-
               <p className="infoRow">
                 <strong>Professor:</strong> {selectedCourse.professor?.account?.name || 'N/A'}
               </p>
@@ -105,7 +104,6 @@ export default function StudentDashboard({ userInfo }) {
               <p className="infoRow">
                 <strong>Department:</strong> {selectedCourse.professor?.department || 'N/A'}
               </p>
-
               <p><strong>Exam Dates:</strong></p>
               <ul>
                 {selectedCourse.exams && selectedCourse.exams.length > 0 ? (
@@ -118,7 +116,6 @@ export default function StudentDashboard({ userInfo }) {
                   <li>No exams scheduled</li>
                 )}
               </ul>
-
               <button className="modalCloseBtn" onClick={() => setSelectedCourse(null)}>
                 Close
               </button>
@@ -126,9 +123,9 @@ export default function StudentDashboard({ userInfo }) {
           </div>
         )}
       </div>
-
       <div className="rightColumn">
-        {/* Future content here */}
+        {/* Alerts area on the right */}
+        <AlertsArea />
       </div>
     </div>
   );
