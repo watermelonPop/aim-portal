@@ -258,7 +258,7 @@ describe('App.getUser', () => {
       
         test('logs and returns early if no userId is provided', async () => {
           const result = await App.getUser(null);
-          expect(consoleErrorSpy).toHaveBeenCalledWith('Invalid user ID provided');
+          expect(consoleErrorSpy).toHaveBeenCalledWith('Invalid user ID provided to getUser');
           expect(result).toBeUndefined();
         });
       
