@@ -51,14 +51,20 @@ model Professor {
 }
 
 model Advisor {
-  userId                 Int                    @id @unique
-  role                   AdvisorRoles           @default(Coordinator)
-  Accommodations         Accommodations[]
-  account                Account                @relation(fields: [userId], references: [id])
-  assistive_technologies Assistive_Technology[]
-  exams                  Exam[]
-  requests               Request[]
-  students               Student[]              @relation("AdvisorToStudent")
+  userId                       Int                    @id @unique
+  role                         AdvisorRoles           @default(Coordinator)
+  accessible_testing_modules   Boolean                @default(false)
+  accomodation_modules         Boolean                @default(false)
+  assistive_technology_modules Boolean                @default(false)
+  global_settings              Boolean                @default(false)
+  note_taking_modules          Boolean                @default(false)
+  student_case_information     Boolean                @default(false)
+  Accommodations               Accommodations[]
+  account                      Account                @relation(fields: [userId], references: [id])
+  assistive_technologies       Assistive_Technology[]
+  exams                        Exam[]
+  requests                     Request[]
+  students                     Student[]              @relation("AdvisorToStudent")
 }
 
 model Settings {

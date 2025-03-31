@@ -8,7 +8,9 @@ function SignUp({ userInfo, setUserInfo, setAlertMessage, setShowAlert, setUserC
                 name: userInfo.name || "",
                 email: userInfo.email || "",
                 dob: userInfo.dob || "",
-                phone_number: userInfo.phone_number || ""
+                phone_number: userInfo.phone_number || "",
+                uin: userInfo.uin || "",
+                role: "", // in case of STAFF
         });
         const [errors, setErrors] = useState(null);
 
@@ -29,58 +31,57 @@ function SignUp({ userInfo, setUserInfo, setAlertMessage, setShowAlert, setUserC
                 }));
         };
 
-        const signUpUser = async (chosenRole, userInfo)=> {
+        const signUpUser = async (chosenRole, userInfo) => {
                 const { isValid, newErrors } = validateForm(chosenRole);
-                if(isValid){
-                        if(chosenRole === "USER"){
-                                console.log(formData);
-                                try {
-                                        const response = await fetch('/api/createUser', {
-                                                method: 'POST',
-                                                credentials: 'include', // Ensure cookies are sent with the request
-                                                headers: {
-                                                        'Content-Type': 'application/json'
-                                                },
-                                                body: JSON.stringify({ 
-                                                        userId: formData.id, 
-                                                        dob: new Date(formData.dob).toISOString(), 
-                                                        uin: Number(formData.uin), 
-                                                        phoneNumber: formData.phone_number
-                                                }),
-                                        });
-                                
-                                        const data = await response.json();
-                                
-                                        if (!response.ok) {
-                                                throw new Error(data.message || 'Sign Up failed');
-                                        }
-
-                                        if(data && data.success){
-                                                if(data.success === true){
-                                                        setLoading(true);
-                                                        setUserConnected(true);
-                                                        console.log("SETS USER INFO: ", formData);
-                                                        setUserInfo({...userInfo, dob: formData.dob, uin: formData.uin, phone_number: formData.phone_number});
-                                                }
-                                        }
-                                } catch (error) {
-                                        console.error('Error Signing Up:', error);
-                                }
-                        }else if(chosenRole === "STAFF"){
-        
-                        }
-                }else{
-                        let newErrorMess = "Incorrect required fields: \n";
-                        for (const key in newErrors) {
-                                if (newErrors.hasOwnProperty(key)) {
-                                    newErrorMess += newErrors[key] + "\n";
-                                }
-                        }
-                       
-                        setAlertMessage(newErrorMess);
-                        setShowAlert(true);
+              
+                if (!isValid) {
+                  const errorMsg = Object.values(newErrors).reduce(
+                    (msg, err) => `${msg}${err}\n`,
+                    'Incorrect required fields: \n'
+                  );
+                  setAlertMessage(errorMsg);
+                  setShowAlert(true);
+                  return;
+                }
+              
+                if (chosenRole !== 'USER') return; // Staff handling can be added later
+              
+                try {
+                  const payload = {
+                    userId: formData.id,
+                    dob: new Date(formData.dob).toISOString(),
+                    uin: Number(formData.uin),
+                    phoneNumber: formData.phone_number,
+                  };
+              
+                  const response = await fetch('/api/createUser', {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                  });
+              
+                  const data = await response.json();
+              
+                  if (!response.ok || !data?.success) {
+                    throw new Error(data.message || 'Sign Up failed');
+                  }
+              
+                  setLoading(true);
+                  setUserConnected(true);
+                  setUserInfo({
+                    ...userInfo,
+                    dob: formData.dob,
+                    uin: formData.uin,
+                    phone_number: formData.phone_number,
+                  });
+                } catch (error) {
+                  console.error('Error Signing Up:', error);
+                  setAlertMessage('Failed to sign up. Please try again.');
+                  setShowAlert(true);
                 }
         };
+              
 
         const validateForm = (chosenRole) => {
                 let newErrors = {};
@@ -121,6 +122,7 @@ function SignUp({ userInfo, setUserInfo, setAlertMessage, setShowAlert, setUserC
                                                 key={role} 
                                                 onClick={() => handleRoleChange(role)} 
                                                 id={chosenRole === role ? 'signUpActive' : ''}
+                                                data-testid={role}
                                                 >
                                                 {role}
                                                 </li>
@@ -130,36 +132,36 @@ function SignUp({ userInfo, setUserInfo, setAlertMessage, setShowAlert, setUserC
                         </div>
                         <main className='dashboardOuter'>
                                 <form className='newStudentApp'>
-                                        <label htmlFor="name">Name</label>
+                                        <label htmlFor="name" data-testid="nameLabel">Name</label>
                                         <input 
                                         type="text" 
-                                        value={userInfo.name} 
+                                        value={formData.name}
                                         onChange={handleChange}
                                         name="name" 
                                         />
 
-                                        <label htmlFor="email">Email</label>
+                                        <label htmlFor="email" data-testid="emailLabel">Email</label>
                                         <input 
                                         type="email" 
-                                        value={userInfo.email} 
+                                        value={formData.email} 
                                         onChange={handleChange}
                                         name="email" 
                                         />
 
                                         {chosenRole === "USER" && (
                                         <>
-                                                <label htmlFor="dob">Date of Birth</label>
+                                                <label htmlFor="dob" data-testid="dobLabel">Date of Birth</label>
                                                 <input type='date' onChange={handleChange} name="dob"></input>
-                                                <label htmlFor="uin">UIN</label>
+                                                <label htmlFor="uin" data-testid="uinLabel">UIN</label>
                                                 <input onChange={handleChange} name="uin"></input>
-                                                <label htmlFor="phone_number">Phone Number</label>
+                                                <label htmlFor="phone_number" data-testid="phoneLabel">Phone Number</label>
                                                 <input type='tel' onChange={handleChange} name="phone_number"></input>
                                         </>
                                         )}
 
                                         {chosenRole === "STAFF" && (
                                         <>
-                                                <label htmlFor='role'>Staff Role</label>
+                                                <label htmlFor='role' data-testid="staffRole">Staff Role</label>
                                                 <select onChange={handleChange} name='role'>
                                                         <option>Administration</option>
                                                         <option>Testing Center</option>
@@ -174,6 +176,7 @@ function SignUp({ userInfo, setUserInfo, setAlertMessage, setShowAlert, setUserC
                                         e.stopPropagation();
                                         signUpUser(chosenRole, userInfo);
                                         }}
+                                        data-testid="submitSignUp"
                                         >Sign Up as {chosenRole}</button>
                                 </form>
                         </main>

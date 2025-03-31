@@ -2,6 +2,16 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { App } from '../App.js';
+import { axe, toHaveNoViolations } from 'jest-axe';
+import LoginScreen from '../loginScreen.js';
+
+expect.extend(toHaveNoViolations);
+
+const mockSetSettings = jest.fn(); 
+const mockSetStaffAccess = jest.fn(); 
+const mockSetUserInfo = jest.fn(); 
+const mockSetLoading = jest.fn(); 
+const mockSetLoggedIn = jest.fn();
 
 global.fetch = jest.fn();
 
@@ -9,6 +19,7 @@ describe('App', () => {
         beforeEach(() => {
                 jest.clearAllMocks();
         });
+        
         describe('loggedIn set to true', () => {
                 test('renders sign up', async () => {
                         // Mock the fetch call for setSettingsDatabase

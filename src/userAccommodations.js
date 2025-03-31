@@ -92,78 +92,76 @@ export function UserAccommodations({userInfo, setAlertMessage, setShowAlert}) {
         const handleSubmit = async (e) => {
                 e.preventDefault();
                 const { isValid, newErrors } = validateForm();
-                if (isValid) {
-                        console.log("before Form submitted:", formData);
-                        let formDataToSend = null;
-                        let has_doc = false;
-                        let fileUrl = null;
-
-                        // Append file if it exists
-                        if (formData.file) {
-                                try{
-                                        fileUrl = await handleFileUpload(formData.file);
-                                        if(fileUrl !== null){
-                                                has_doc = true;
-                                        }
-                                }catch (error) {
-                                        console.error('Error submitting documentation:', error);
-                                        setAlertMessage("Documentation Submission failed. Please try again.");
-                                        setShowAlert(true);
-                                        has_doc = false;
-                                }
-                        }
-                        try {
-                                const response = await fetch('/api/createRequest', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ 
-                                        userId: userInfo.id,
-                                        documentation: has_doc,
-                                        notes: formData.disability + "\n" + formData.testing + "\n" + formData.inClass + "\n" + formData.housing + "\n" + formData.sideEffect + "\n" + formData.accommodations + "\n" + formData.pastAcc,
-                                        doc_url: fileUrl
-                                }),
-                                });
-                
-                                if (!response.ok) {
-                                        throw new Error(`HTTP error! status: ${response.status}`);
-                                }
-                
-                                const result = await response.json();
-                                console.log("SUBMIT: ", result);
-                
-                                if (result && result.success === true) {
-                                        // You might want to clear the form or redirect the user here
-
-                                        setAlertMessage("Request submitted successfully");
-                                        setShowAlert(true);
-
-                                        const fetchRequest = async () => {
-                                                const request = await checkRequests(userInfo.id);
-                                                setExistingRequest(request);
-                                        };
-                                        fetchRequest();
-
-                                } else {
-                                        setAlertMessage("Request submission failed. Please try again.");
-                                        setShowAlert(true);
-                                }
-                        } catch (error) {
-                                console.error('Error submitting request:', error);
-                                setAlertMessage("Request submission failed. Please try again.");
-                                setShowAlert(true);
-                        }
-                } else {
-                        let newErrorMess = "Incorrect required fields: \n";
-                        for (const key in newErrors) {
-                                if (newErrors.hasOwnProperty(key)) {
-                                    newErrorMess += newErrors[key] + "\n";
-                                }
-                        }
-                       
-                        setAlertMessage(newErrorMess);
-                        setShowAlert(true);
+              
+                if (!isValid) {
+                  const errorMsg = Object.values(newErrors).reduce(
+                    (msg, err) => `${msg}${err}\n`,
+                    'Incorrect required fields: \n'
+                  );
+                  setAlertMessage(errorMsg);
+                  setShowAlert(true);
+                  return;
+                }
+              
+                console.log("before Form submitted:", formData);
+              
+                let fileUrl = null;
+                let has_doc = false;
+              
+                if (formData.file) {
+                  try {
+                    fileUrl = await handleFileUpload(formData.file);
+                    has_doc = fileUrl !== null;
+                  } catch (error) {
+                    console.error('Error submitting documentation:', error);
+                    setAlertMessage("Documentation Submission failed. Please try again.");
+                    setShowAlert(true);
+                    return;
+                  }
+                }
+              
+                try {
+                  const response = await fetch('/api/createRequest', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      userId: userInfo.id,
+                      documentation: has_doc,
+                      notes: [
+                        formData.disability,
+                        formData.testing,
+                        formData.inClass,
+                        formData.housing,
+                        formData.sideEffect,
+                        formData.accommodations,
+                        formData.pastAcc
+                      ].join('\n'),
+                      doc_url: fileUrl
+                    }),
+                  });
+              
+                  if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+              
+                  const result = await response.json();
+                  console.log("SUBMIT: ", result);
+              
+                  if (result?.success) {
+                    setAlertMessage("Request submitted successfully");
+                    setShowAlert(true);
+              
+                    const request = await checkRequests(userInfo.id);
+                    setExistingRequest(request);
+                  } else {
+                    setAlertMessage("Request submission failed. Please try again.");
+                    setShowAlert(true);
+                  }
+                } catch (error) {
+                  console.error('Error submitting request:', error);
+                  setAlertMessage("Request submission failed. Please try again.");
+                  setShowAlert(true);
                 }
         };
+              
             
 
         const handleCancel = async (e) => {
@@ -176,75 +174,61 @@ export function UserAccommodations({userInfo, setAlertMessage, setShowAlert}) {
 
         const deleteDocumentation = async (userId) => {
                 try {
-                        const response = await fetch('/api/deleteForm', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ 
-                                userId: userId,
-                                type: "REGISTRATION_ELIGIBILITY"
-                            }),
-                        });
-            
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
-                        }
-            
-                        const result = await response.json();
-
-                        console.log("RESULT HERE: " + result);
-            
-                        if (result && result.message === 'Form deleted successfully') {
-                            setAlertMessage("Documentation deleted successfully!");
-                            setShowAlert(true);
-                            return true;
-                        } else {
-                            setAlertMessage("Form deletion failed.");
-                            setShowAlert(true);
-                            return false;
-                        }
+                  const response = await fetch('/api/deleteForm', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      userId,
+                      type: 'REGISTRATION_ELIGIBILITY',
+                    }),
+                  });
+              
+                  const result = await response.json();
+              
+                  if (!response.ok || !result || result.message !== 'Form deleted successfully') {
+                    throw new Error('Deletion failed');
+                  }
+              
+                  setAlertMessage('Documentation deleted successfully!');
+                  setShowAlert(true);
+                  return true;
+              
                 } catch (error) {
-                        console.error('Error deleting form:', error);
-                        setAlertMessage("Form deletion failed.");
-                        setShowAlert(true);
-                        return false;
+                  console.error('Error deleting form:', error);
+                  setAlertMessage('Form deletion failed.');
+                  setShowAlert(true);
+                  return false;
                 }
-                return false;
         };
+              
 
         const cancelRequest = async (userId) => {
                 try {
-                        const response = await fetch('/api/cancelRequest', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ 
-                                userId: userId
-                            }),
-                        });
-            
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
-                        }
-            
-                        const result = await response.json();
-
-                        console.log("RESULT HERE: " + result);
-            
-                        if (result && result.message === 'Request deleted successfully') {
-                            //alert("Request cancelled successfully!");
-                            // You might want to clear the form or redirect the user here
-                            setAlertMessage("Request cancelled successfully!");
-                            setShowAlert(true);
-                            setExistingRequest(null);
-                        } else {
-                            setAlertMessage("Request cancellation failed. Please try again.");
-                            setShowAlert(true);
-                        }
+                  const response = await fetch('/api/cancelRequest', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId }),
+                  });
+              
+                  const result = await response.json();
+              
+                  if (!response.ok || !result || result.message !== 'Request deleted successfully') {
+                    throw new Error('Cancellation failed');
+                  }
+              
+                  setAlertMessage('Request cancelled successfully!');
+                  setShowAlert(true);
+                  setExistingRequest(null);
+                  return true;
+              
                 } catch (error) {
-                        console.error('Error cancelling request:', error);
-                        setAlertMessage("Request cancellation failed. Please try again.");
-                        setShowAlert(true);
+                  console.error('Error cancelling request:', error);
+                  setAlertMessage('Request cancellation failed. Please try again.');
+                  setShowAlert(true);
+                  return false;
                 }
         };
+              
 
         const checkRequests = async (userId) => {
                 try {
@@ -269,26 +253,21 @@ export function UserAccommodations({userInfo, setAlertMessage, setShowAlert}) {
         };
 
         const getUserDocumentation = async (userId) => {
-                console.log("USER DOC URL: ", `/api/getUserDocumentation?user_id=${userId}`);
                 try {
-                        const response = await fetch(`/api/getUserDocumentation?user_id=${userId}`);
-                        if (!response.ok) {
-                                throw new Error(`HTTP error! status: ${response.status}`);
-                        }
-                        console.log("RESPONSE HERE: ", response);
-                        const data = await response.json();
-                        console.log("USER DOC DATA: ", data);
-                        if (data?.exists) {
-                                return data.form;
-                        } else {
-                                console.log('No form found for this user');
-                                return null;
-                        }
+                  const response = await fetch(`/api/getUserDocumentation?user_id=${userId}`);
+                  if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                  }
+              
+                  const data = await response.json();
+                  return data?.exists ? data.form : null;
+              
                 } catch (error) {
-                        console.error('Error while getting user Documentation:', error);
-                        return null;
+                  console.error('Error while getting user documentation:', error);
+                  return null;
                 }
         };
+              
 
         function formatDate(dateString) {
                 console.log("FORMAT: ", dateString);
@@ -334,6 +313,9 @@ export function UserAccommodations({userInfo, setAlertMessage, setShowAlert}) {
         UserAccommodations.setFormData = setFormData;
         UserAccommodations.errors = errors;
         UserAccommodations.validateForm = validateForm;
+        UserAccommodations.handleFileUpload = handleFileUpload;
+        UserAccommodations.getUserDocumentation = getUserDocumentation;
+        UserAccommodations.deleteDocumentation = deleteDocumentation;
 
         return (
                 <>

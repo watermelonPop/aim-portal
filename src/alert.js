@@ -10,7 +10,7 @@ function Alert({ message, setShowAlert }) {
   return (
     <div role="alert" className='alertDiv' data-testid='alert'>
       <div>
-        <button onClick={() => setShowAlert(false)}>x</button>
+        <button onClick={() => setShowAlert(false)} data-testid='alert-close'>x</button>
       </div>
       {messageLines}
     </div>

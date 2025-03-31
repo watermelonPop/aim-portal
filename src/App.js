@@ -506,6 +506,13 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
   App.setAlertMessage = setAlertMessage;
   App.setUserConnected = setUserConnected;
   App.setTabs = setTabs;
+  App.setSettingsTabOpen = setSettingsTabOpen;
+  App.tabs = tabs;
+  App.currentTab = currentTab;
+  App.encodeCursorSVG = encodeCursorSVG;
+  App.getUser = getUser;
+  App.checkAccountConnected = checkAccountConnected;
+  App.setSettingsDatabase = setSettingsDatabase;
 
   return (
     <>
