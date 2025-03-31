@@ -13,22 +13,10 @@ function StudentForms({ userInfo }) {
   const [uploading, setUploading] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [uploadError, setUploadError] = useState('');
+  const [loadingForms, setLoadingForms] = useState(false);
 
 
 
-
-
-
-  const disabilityOptions = ["ADHD", "Blind/Low Vision", "Hearing Impairment", "Physical Disability", "Emotional or Psychological Disability", "Temporary Disability"];
-
-  const disabilityForms = {
-    "ADHD": ["Priority Registration Request", "Reduced Course Load Request", "Application for Disability Services"],
-    "Blind/Low Vision": ["Interpreter or Captioning Request", "Assistive Technology Request", "Transportation Assistance Form"],
-    "Hearing Impairment": ["Interpreter or Captioning Request", "Assistive Technology Request", "Alternative Testing Request Form"],
-    "Physical Disability": ["Housing Accommodation Request", "Medical or Psychological Documentation Form", "Assistive Technology Request"],
-    "Emotional or Psychological Disability": ["Medical or Psychological Documentation Form", "Emotional Support Animal (ESA) Request"],
-    "Temporary Disability": ["Temporary Accommodations Request", "Medical or Psychological Documentation Form"]
-  };
 
   function handleDisabilityChange(event) {
     setSelectedDisability(event.target.value);
@@ -98,6 +86,13 @@ function StudentForms({ userInfo }) {
     } finally {
       setUploading(false);
     }
+
+    formData.append("file", formFile);
+    formData.append("type", formType);
+    formData.append("formName", formName);
+    formData.append("userId", userInfo.id);
+    formData.append("dueDate", dueDate || "");
+
   }
   
   
@@ -116,9 +111,22 @@ function StudentForms({ userInfo }) {
   }
 
   function handleExitUploadView() {
+    if (formType || formName || dueDate || formFile) {
+      const confirmLeave = window.confirm("⚠️ Are you sure you want to leave? Unsaved changes will be lost.");
+      if (!confirmLeave) return;
+    }
+  
+    // Reset all upload-related state
+    setFormType('');
+    setFormName('');
+    setDueDate('');
+    setFormFile(null);
+    setUploadError('');
+    setUploadSuccess(false);
+    setUploading(false); 
     setView(null);
-    setSelectedDisability(''); // Reset disability selection when exiting Upload Forms
   }
+  
   function formatFormType(type) {
     if (!type) return 'N/A';
     return type
@@ -136,6 +144,86 @@ function StudentForms({ userInfo }) {
       formFile !== null
     );
   }
+
+  async function handleSubmitFileOnly(e) {
+    e.preventDefault();
+    const confirmed = window.confirm("Are you sure you want to submit this form?");
+    if (!confirmed) {
+      return;
+    }
+    setUploading(true);
+    setUploadSuccess(false);
+    setUploadError('');
+  
+    if (!formFile) {
+      setUploadError("Please select a file to upload.");
+      setUploading(false);
+      return;
+    }
+  
+    const formData = new FormData();
+    formData.append("file", formFile);
+    formData.append("type", formType);
+    formData.append("formName", formName);
+    formData.append("userId", userInfo.id);
+    formData.append("dueDate", dueDate || "");
+  
+    try {
+      const res = await fetch("/api/uploadForm", {
+        method: "POST",
+        body: formData,
+      });
+  
+      const data = await res.json();
+  
+      if (!res.ok) {
+        throw new Error(data.error || "Upload failed.");
+      }
+  
+      console.log("✅ File uploaded to:", data.url);
+      setUploadSuccess(true);
+      setFormFile(null);
+    } catch (error) {
+      console.error("❌ Upload error:", error);
+      setUploadError(error.message);
+    } finally {
+      setUploading(false);
+    }
+
+    formData.append("file", formFile);
+    
+  }
+
+  async function handleDeleteForm(formId) {
+    const confirmed = window.confirm("Are you sure you want to delete this form?");
+    if (!confirmed) return;
+  
+    try {
+      const res = await fetch("/api/deleteForm", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ formId }),
+      });
+  
+      const data = await res.json();
+  
+      if (res.ok) {
+        setSubmittedForms(prev => prev.filter(f => f.id !== formId));
+      } else {
+        console.error("Failed to delete:", data.error);
+        alert("Error deleting form: " + data.error);
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+      alert("Network error while deleting form.");
+    }
+  }
+  
+
+  
+  
   
 
   useEffect(() => {
@@ -156,6 +244,18 @@ function StudentForms({ userInfo }) {
     fetchForms();
   }, [userInfo]);
 
+  useEffect(() => {
+    if (view === 'manage' && userInfo?.id) {
+      setLoadingForms(true);
+      fetch(`/api/getStudentForms?userId=${userInfo.id}`)
+        .then(res => res.json())
+        .then(data => setSubmittedForms(data.forms || []))
+        .catch(err => console.error("Error loading forms:", err))
+        .finally(() => setLoadingForms(false));
+    }
+  }, [view, userInfo]);
+  
+
 
   return (
     <div className="content-container">
@@ -171,129 +271,89 @@ function StudentForms({ userInfo }) {
 
 {view === 'upload' && (
   <div className="form-wrapper">
-  <button
-    className="back-btn"
-    onClick={() => {
-      if (hasUnsavedChanges()) {
-        const confirmLeave = window.confirm(
-          "⚠️ Are you sure you want to leave? Unsaved changes will be lost."
-        );
-        if (!confirmLeave) return;
-      }
+    <button className="back-btn" onClick={handleExitUploadView}>← Back</button>
+    <h2>📤 Upload Documentation</h2>
 
-      // Clear all fields
-      setFormType('');
-      setFormName('');
-      setDueDate('');
-      setFormFile(null);
-      setUploadError('');
-      setUploadSuccess(false);
-      setView(null);
-    }}
-  >
-    ← Back
-  </button>
-
-<h2>📤 Upload New Form</h2>
-
-    <form onSubmit={handleSubmitForm} className="upload-form">
-
+    <form onSubmit={handleSubmitFileOnly} className="upload-form upload-file-only">
       <label>
-        Form Type:
-        <select value={formType} onChange={(e) => setFormType(e.target.value)} required>
-          <option value="">-- Select Type --</option>
-          <option value="priority_registration_request">Priority Registration Request</option>
-          <option value="medical_documentation">Medical Documentation</option>
-          <option value="reduced_course_load">Reduced Course Load</option>
-          <option value="assistive_tech_request">Assistive Technology Request</option>
-          <option value="testing_request">Alternative Testing Request</option>
-          <option value="other">Other</option>
-        </select>
-      </label>
-
-      <label>
-        Form Name:
-        <input
-          type="text"
-          placeholder="Enter form name..."
-          value={formName}
-          onChange={(e) => setFormName(e.target.value)}
-          required
-        />
-      </label>
-
-      <label>
-        Due Date (optional):
-        <input
-          type="date"
-          value={dueDate}
-          onChange={(e) => setDueDate(e.target.value)}
-        />
-      </label>
-
-      <label>
-        Upload File:
+        Upload PDF:
         <input
           type="file"
+          accept="application/pdf"
           onChange={(e) => setFormFile(e.target.files[0])}
           required
         />
       </label>
-      {formFile && formFile.type === "application/pdf" && (
-      <div className="pdf-preview">
-        <p>📄 Preview:</p>
-        <embed
-          src={URL.createObjectURL(formFile)}
-          type="application/pdf"
-          width="100%"
-          height="400px"
-        />
-      </div>
-    )}
 
+      {formFile && formFile.type === "application/pdf" && (
+        <div className="pdf-preview">
+          <p>📄 Preview:</p>
+          <embed
+            src={URL.createObjectURL(formFile)}
+            type="application/pdf"
+            width="100%"
+            height="400px"
+          />
+        </div>
+      )}
 
       <button type="submit" className="submit-btn" disabled={uploading}>
         {uploading ? (
-          <span><span className="student-forms-spinner"></span> Uploading...</span>
-        ) : "Submit Form"}
+          <span><span className="spinner"></span> Uploading...</span>
+        ) : "Submit Documentation"}
       </button>
 
-      {uploadSuccess && <p className="success-msg">✅ Form submitted successfully!</p>}
+      {uploadSuccess && <p className="success-msg">✅ Upload successful!</p>}
       {uploadError && <p className="error-msg">❌ {uploadError}</p>}
-
     </form>
   </div>
 )}
 
-    {view === 'manage' && (
-      <div className="form-wrapper">
-        <button className="back-btn" onClick={() => setView(null)}>← Back</button>
-        <h2>📄 Your Submitted Forms</h2>
 
-        {loading ? (
-          <p>Loading...</p>
-        ) : submittedForms.length === 0 ? (
-          <p>No forms submitted yet.</p>
-        ) : (
-          <div className="manage-forms-list">
-            {submittedForms.map((form, index) => (
-              <div key={index} className="manage-form-item">
-                <h3>{formatFormType(form.type)}</h3>
-                <p><strong>Status:</strong> <span className={`status-${form.status.toLowerCase()}`}>{form.status}</span></p>
-                <p><strong>Submitted:</strong> {form.submittedDate ? new Date(form.submittedDate).toLocaleDateString() : "N/A"}</p>
-                <p><strong>Due:</strong> {form.dueDate ? new Date(form.dueDate).toLocaleDateString() : "N/A"}</p>
-                {form.formUrl ? (
-                  <p><a href={form.formUrl} target="_blank" rel="noopener noreferrer">📎 View Form</a></p>
-                ) : (
-                  <p>⚠️ No file uploaded.</p>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+{view === 'manage' && (
+  <div className="form-wrapper">
+    <button className="back-btn" onClick={handleExitUploadView}>← Back</button>
+    <h2>📁 Submitted Forms</h2>
+
+    {loadingForms ? (
+      <p>Loading your forms...</p>
+    ) : submittedForms.length === 0 ? (
+      <p>No forms submitted yet.</p>
+    ) : (
+      <table className="submitted-forms-table">
+        <thead>
+          <tr>
+            <th>File Name</th>
+            <th>Submitted</th>
+            <th>Status</th>
+            <th>View</th>
+            <td>
+</td>
+
+          </tr>
+        </thead>
+        <tbody>
+        {submittedForms.map((form) => (
+          <tr key={form.id}>
+            <td>{form.name}</td>
+            <td>{new Date(form.submittedDate).toLocaleDateString()}</td>
+            <td>{form.status}</td>
+            <td>
+              <a href={form.formUrl} target="_blank" rel="noopener noreferrer">View</a>
+            </td>
+            <td>
+              <button className="delete-btn" onClick={() => handleDeleteForm(form.id)}>
+                🗑️ Delete
+              </button>
+            </td>
+          </tr>
+        ))}
+
+        </tbody>
+      </table>
     )}
-
+  </div>
+)}
     </div>
   );
 }

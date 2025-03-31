@@ -3,34 +3,25 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export default async function handler(req, res) {
-        console.log("STARTING DELETE FORM");
+  console.log("🗑️ STARTING DELETE FORM");
+
   if (req.method === 'POST') {
     try {
-      const { userId, type } = req.body;
+      const { formId } = req.body;
 
-      // Validate required fields
-      if (!userId || !type) {
-        return res.status(400).json({ error: 'Missing required user id and form type to delete' });
+      if (!formId) {
+        return res.status(400).json({ error: 'Missing formId' });
       }
 
-      const deletedForm = await prisma.form.deleteMany({
-        where: {
-          userId: userId,
-          type: type 
-        },
+      const deletedForm = await prisma.form.delete({
+        where: { id: formId },
       });
 
-      console.log("deleted form: ", deletedForm);
-      
+      console.log("✅ Deleted form:", deletedForm);
+      res.status(200).json({ message: 'Form deleted successfully', deletedForm });
 
-      // Check if any rows were deleted
-      if (deletedForm.count === 0) {
-        return res.status(404).json({ error: `No forms of type: ${type} were found for this user` });
-      }
-
-      res.status(200).json({ message: 'Form deleted successfully' });
     } catch (error) {
-      console.error('Error in POST request:', error);
+      console.error('❌ Error deleting form:', error);
       res.status(500).json({ error: error.message });
     }
   } else {
