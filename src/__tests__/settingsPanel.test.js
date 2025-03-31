@@ -381,7 +381,7 @@ describe('BasicSettingsBar Component', () => {
                 fireEvent.click(screen.getByRole('button', { name: /back/i }));
             });
             waitFor(() => {
-                expect(mockSetSelectedCategory).toHaveBeenCalledWith(null);
+                expect(BasicSettingsBar.selectedCategory).toBe(null);
             });
         });
 
@@ -407,7 +407,7 @@ describe('BasicSettingsBar Component', () => {
                 fireEvent.click(screen.getByTestId('backBtn'));
             });
             waitFor(() => {
-                expect(mockSetSelectedCategory).toHaveBeenCalledWith(null);
+                expect(BasicSettingsBar.selectedCategory).toBe(null);
             });
         });
 
