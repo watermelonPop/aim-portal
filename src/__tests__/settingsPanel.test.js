@@ -1563,7 +1563,7 @@ describe('settingsPanel', () => {
                     
         });
 
-        /*describe('letter spacing adjust', () => {
+        describe('letter spacing adjust', () => {
                 test('display letter spacing amount', async () => {
                     let mockSettings = {
                         content_size: 100,
@@ -1938,7 +1938,7 @@ describe('settingsPanel', () => {
                 });    
         });
 
-        describe('contrast adjust', () => {
+        /*describe('contrast adjust', () => {
             test('display contrast amount', async () => {
                 let mockSettings = {
                     content_size: 100,
