@@ -331,31 +331,33 @@ describe('BasicSettingsBar Component', () => {
       
       
     describe('back button', () => {
-        test('interaction page goes back to main menu when back button pressed', () => {
-
-            act(() => {
+        test('interaction page goes back to main menu when back button pressed', async () => {
+            await act(async () => {
                 render(
                     <BasicSettingsBar
-                    isOpen={true}
-                    onClose={onClose}
-                    settings={mockSettings}
-                    setSettings={setSettings}
-                    logout={logout}
-                    setLoggedIn={setLoggedIn}
+                        isOpen={true}
+                        onClose={onClose}
+                        settings={mockSettings}
+                        setSettings={setSettings}
+                        logout={logout}
+                        setLoggedIn={setLoggedIn}
                     />
                 );
             });
-            act(() => {
+        
+            await act(async () => {
                 BasicSettingsBar.setSelectedCategory("Interactions");
             });
-
-            act(() => {
+        
+            await act(async () => {
                 fireEvent.click(screen.getByRole('button', { name: /back/i }));
             });
-            waitFor(() => {
-                expect(mockSetSelectedCategory).toHaveBeenCalledWith(null);
+        
+            await waitFor(() => {
+                expect(BasicSettingsBar.selectedCategory).toBe(null);
             });
         });
+        
 
         test('text page goes back to main menu when back button pressed', () => {
 
