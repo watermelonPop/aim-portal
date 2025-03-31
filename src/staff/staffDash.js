@@ -421,7 +421,7 @@ function StaffDash() {
       } catch (err) {
         console.error("Failed to fetch important dates:", err);
       } finally {
-        setLoadingDates(false); // 👈 hide spinner
+        setLoadingDates(false);
       }
     };
 
@@ -441,7 +441,7 @@ function StaffDash() {
   useEffect(() => {
     const fetchImportantDates = async () => {
       try {
-        const res = await fetch('/api/getImportantDates');
+        const res = await fetch('/api/studentgetImportantDates');
         const data = await res.json();
         setImportantDates(data.dates);
       } catch (err) {
