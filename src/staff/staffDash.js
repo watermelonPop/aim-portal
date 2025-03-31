@@ -415,7 +415,7 @@ function StaffDash() {
   useEffect(() => {
     const fetchImportantDates = async () => {
       try {
-        const res = await fetch('/api/getImportantDates');
+        const res = await fetch('/api/staffgetImportantDates');
         const data = await res.json();
         setImportantDates(data.dates);
       } catch (err) {
