@@ -771,7 +771,11 @@ describe('settingsPanel', () => {
                 highlight_hover: false,
                 cursor: "Regular"
             };
-            const { container } = render(<BasicSettingsBar isOpen={true} settings={mockSettings} setSettings={mockSetSettings} logout={mockLogout} setLoggedIn={mockSetLoggedIn} />);
+            let container;
+            await act(async () => {
+                    const rendered = render(<BasicSettingsBar isOpen={true} settings={mockSettings} setSettings={mockSetSettings} logout={mockLogout} setLoggedIn={mockSetLoggedIn} />);
+                    container = rendered.container;
+            });
             const results = await axe(container);
             expect(results).toHaveNoViolations();
         });
