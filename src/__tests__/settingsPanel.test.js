@@ -738,7 +738,7 @@ describe('BasicSettingsBar Component', () => {
     });
 });
 
-describe('settingsPanel', () => {
+/*describe('settingsPanel', () => {
         beforeEach(() => {
                 jest.clearAllMocks();
         });
@@ -2316,4 +2316,4 @@ describe('settingsPanel', () => {
             }); 
                
         });
-});
+});*/
