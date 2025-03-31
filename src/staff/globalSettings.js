@@ -1,4 +1,3 @@
-// globalSettings.js
 import '../App.css';
 import { useState, useEffect } from 'react';
 
@@ -48,7 +47,6 @@ function GlobalSettings() {
   //============================================ USEFFECT STARTS HERE ============================================
   
   useEffect(() => {
-    console.log("NUKING THE FUCK OIUT THIS AUIDBWAIOLUBDLAWKHJB");
     async function fetchAdv(){
       fetch(`/api/getAdvisors`)
       .then(response => response.json())
@@ -66,8 +64,8 @@ function GlobalSettings() {
   useEffect(()=>{
     if(loaded){
       console.log("advisorList:",advisorList);
-      console.log("currentPages: ", currentPage);
-      console.log("totalPages: ", totalPages);
+      // console.log("currentPages: ", currentPage);
+      // console.log("totalPages: ", totalPages);
 
     }
   },[loaded]);
@@ -75,7 +73,7 @@ function GlobalSettings() {
   useEffect(()=>{
     if(loaded){
         // setLoaded(false);
-        console.log("advisorList",advisorList)
+        //console.log("advisorList",advisorList)
         let updatedSearchResults = []
         for(let i = 0; i<advisorList.length; i ++){
           if(advisorList[i].account.name.toLowerCase().includes(searchQuery.toLowerCase())){
@@ -88,8 +86,8 @@ function GlobalSettings() {
         setTotalPages(Math.ceil(updatedSearchResults.length/9));
 
         // setLoaded(true);
-        console.log("searchResults:",updatedSearchResults);
-        console.log("DONE");
+        // console.log("searchResults:",updatedSearchResults);
+        // console.log("DONE");
     }
   },[searchQuery]);
 
@@ -155,9 +153,9 @@ function GlobalSettings() {
 
     const handleCardClick = (advisor) => {
       // Replace with your own behavior, e.g., navigate or open a modal
-      console.log('Advisor clicked:', advisor);
+      // console.log('Advisor clicked:', advisor);
       setSelectedAdvisor(advisor);
-      console.log("advisor selected!");
+      // console.log("advisor selected!");
     };
     let displayedAdvisors = [];
     //TODO: ADD SKIP AND TAKE
@@ -194,7 +192,7 @@ function GlobalSettings() {
   //============================================ PAGINATION BUTTONS ============================================
   function PaginationButtons() {
     const onPageChange = (page_update) =>{
-      console.log("onPageChange with page: ", page_update);
+      // console.log("onPageChange with page: ", page_update);
 
       if(page_update < 0){
         if(currentPage != 0){
@@ -207,8 +205,8 @@ function GlobalSettings() {
         }
       }
 
-      console.log("currentPage: ", currentPage);
-      console.log("totalPages: ", totalPages);
+      // console.log("currentPage: ", currentPage);
+      // console.log("totalPages: ", totalPages);
 
     }
     
@@ -247,14 +245,14 @@ function GlobalSettings() {
 
     //let curr_advisor_perms = [advisor.global_settings, advisor.accessible_testing_modules, advisor.accomodation_modules, advisor.assistive_technology_modules, advisor.note_taking_modules, advisor.student_case_information];
     // const onClose = () => {};
-    console.log("CURRADVISORPERMS:",permissions);
+    // console.log("CURRADVISORPERMS:",permissions);
 
 
     const handleCheckboxChange = (perm_no) => {
         let new_perms = [...permissions];
         new_perms[perm_no] = !new_perms[perm_no];
         setPermissions(new_perms);
-        console.log("updated permissions after checkbox change:",permissions);
+        // console.log("updated permissions after checkbox change:",permissions);
     };
   
     const handleSave = () => {
@@ -277,7 +275,7 @@ function GlobalSettings() {
       })
         .then(response => response.json())
         .then(data => {
-          console.log('Permissions updated:', data);
+          // console.log('Permissions updated:', data);
           setIsSaving(false);
           // Optionally update advisor in parent state here
           setAdvisorList(prevList => {

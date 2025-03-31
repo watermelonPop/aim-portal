@@ -25,28 +25,15 @@ module.exports = async (req, res) => {
 
       const settings = await prisma.settings.create({
         data: {
-          content_size: 100,
-          highlight_tiles: false,
-          highlight_links: false,
-          text_magnifier: false,
-          align_text: "Middle",
-          font_size: 14,
-          line_height: 5000,
-          letter_spacing: 0,
-          contrast: "100%",
-          saturation: "Regular",
-          mute_sounds: false,
-          hide_images: false,
-          reading_mask: false,
-          highlight_hover: false,
-          cursor: "Regular",
           account: {
             connect: {id: Number(account.id)}
           }
         }
       });
+      
+      console.log("SETTINGS FIX COMPLETE: ",settings);
 
-      console.log(account);
+      //console.log(account);
 
       if (account && settings) {
         res.status(200).json({ success: true, account: account });

@@ -13,7 +13,7 @@ function SignUp({ userInfo, setUserInfo, setAlertMessage, setShowAlert, setUserC
         const [errors, setErrors] = useState(null);
 
         useEffect(() => {
-                console.log("USEE EFFECT");
+                console.log("USE EFFECT");
                 setLoading(false);
         }, []);
 
