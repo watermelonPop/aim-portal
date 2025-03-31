@@ -1180,7 +1180,7 @@ describe('settingsPanel', () => {
             }); 
         });
 
-        /*describe('text size adjust', () => {
+        describe('text size adjust', () => {
                 test('display text size amount', async () => {
                     let mockSettings = {
                         content_size: 100,
@@ -1563,7 +1563,7 @@ describe('settingsPanel', () => {
                     
         });
 
-        describe('letter spacing adjust', () => {
+        /*describe('letter spacing adjust', () => {
                 test('display letter spacing amount', async () => {
                     let mockSettings = {
                         content_size: 100,
