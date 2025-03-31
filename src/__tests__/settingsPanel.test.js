@@ -629,7 +629,7 @@ describe('BasicSettingsBar Component', () => {
         });
         
         waitFor(() => {
-            expect(mockSetSettings).toHaveBeenCalledWith(expect.objectContaining({ font: 'Roboto' }));
+            expect(BasicSettingsBar.settings).toBe(expect.objectContaining({ font: 'Roboto' }));
         });
     });
   

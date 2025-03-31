@@ -69,6 +69,7 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
 
         BasicSettingsBar.setSelectedCategory = setSelectedCategory;
         BasicSettingsBar.selectedCategory = selectedCategory;
+        BasicSettingsBar.settings = settings;
 
         return (
                 <nav
