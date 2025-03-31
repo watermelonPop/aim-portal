@@ -936,7 +936,7 @@ describe('settingsPanel', () => {
             });
         });
 
-        /*describe('scroll behavior', () => {
+        describe('scroll behavior', () => {
             test('scroll position persists after button click', async () => {
                 let mockSettings = {
                     content_size: 100,
@@ -1023,7 +1023,7 @@ describe('settingsPanel', () => {
             }); 
         });
 
-        describe('disability profiles', () => {
+        /*describe('disability profiles', () => {
             test('button sets dyslexia settings', async () => {
                 let mockSettings = {
                     content_size: 100,
