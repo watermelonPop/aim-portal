@@ -605,8 +605,8 @@ describe('BasicSettingsBar Component', () => {
         });
     });
 
-    test('should change and submit font setting', () => {
-        act(() => {
+    test('should change and submit font setting', async() => {
+        await act(async () => {
             render(
                 <BasicSettingsBar
                   isOpen={true}
@@ -619,17 +619,17 @@ describe('BasicSettingsBar Component', () => {
             );
         });
 
-        act(() => {
+        await act(async () => {
             BasicSettingsBar.setSelectedCategory("Text");
         });
 
-        act(() => {
+        await act(async() => {
             fireEvent.change(screen.getByRole('combobox', { name: /font/i }), { target: { value: 'Roboto' } });
             fireEvent.click(screen.getByRole('button', { name: /Set Font/i }));
         });
         
-        waitFor(() => {
-            expect(BasicSettingsBar.settings).toBe(expect.objectContaining({ font: 'Roboto' }));
+        await waitFor(() => {
+            expect(BasicSettingsBar.settings).toStrictEqual(expect.objectContaining({ font: 'Roboto' }));
         });
     });
   
