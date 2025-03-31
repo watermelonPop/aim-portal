@@ -13,7 +13,7 @@ export default async function handler(req, res) {
     const professor = await prisma.professor.findUnique({
       where: { userId: parseInt(userId) },
       include: {
-        courses: true
+        account: true
       }
     });
 
