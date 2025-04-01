@@ -15,6 +15,17 @@ export function Accommodations({ userInfo, setAlertMessage, setShowAlert }) {
     }));
   };
 
+  const allowedAccommodations = new Set([
+    "Note-Taking Assistance",
+    "Alternative Format Materials",
+    "Accessible Seating",
+    "Use of Assistive Technology",
+    "Interpreter Services",
+    "Audio/Visual Aids",
+    "Flexibility with Attendance",
+    "Modified Assignments"
+  ]);
+
   useEffect(() => {
     if (userInfo?.role === 'STUDENT' && userInfo?.id) {
       setLoading(true);
@@ -119,16 +130,18 @@ export function Accommodations({ userInfo, setAlertMessage, setShowAlert }) {
 
                   {openProfessorCourses[course.id] && (
                     <div id={`accommodations-${course.id}`} role="region" aria-label={`Accommodations for ${course.name}`}>
-                      {course.accommodations.length > 0 ? (
-                        course.accommodations.map((acc) => (
-                          <div key={acc.id} className="accommodationCard">
-                            <div><strong>Type:</strong> {acc.type || 'N/A'}</div>
-                            <div><strong>Status:</strong> {acc.status}</div>
-                            <div><strong>Date Requested:</strong> {new Date(acc.date_requested).toLocaleDateString()}</div>
-                            <div><strong>Advisor ID:</strong> {acc.advisorId || 'N/A'}</div>
-                            <div><strong>Notes:</strong> {acc.notes}</div>
-                          </div>
-                        ))
+                      {course.accommodations.filter(acc => allowedAccommodations.has(acc.type)).length > 0 ? (
+                        course.accommodations
+                          .filter(acc => allowedAccommodations.has(acc.type))
+                          .map((acc) => (
+                            <div key={acc.id} className="accommodationCard">
+                              <div><strong>Type:</strong> {acc.type || 'N/A'}</div>
+                              <div><strong>Status:</strong> {acc.status}</div>
+                              <div><strong>Date Requested:</strong> {new Date(acc.date_requested).toLocaleDateString()}</div>
+                              <div><strong>Advisor ID:</strong> {acc.advisorId || 'N/A'}</div>
+                              <div><strong>Notes:</strong> {acc.notes}</div>
+                            </div>
+                          ))
                       ) : (
                         <div className="noAccommodations">No accommodations available.</div>
                       )}
@@ -142,7 +155,6 @@ export function Accommodations({ userInfo, setAlertMessage, setShowAlert }) {
         </>
       )}
 
-      {/* {userInfo.role === "PROFESSOR" && <p className='dashboardTitle'>PROFESSOR ACCOMMODATIONS</p>} */}
       {userInfo.role === "ADVISOR" && <p className='dashboardTitle'>STAFF ACCOMMODATIONS</p>}
     </main>
   );

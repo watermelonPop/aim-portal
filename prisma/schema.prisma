@@ -166,15 +166,17 @@ model Course {
 }
 
 model Exam {
-  id          Int       @id @default(autoincrement())
-  courseId    Int
-  studentIds  Int[]
-  examUrl     String?
-  date        DateTime?
-  location    String
-  advisorId   Int
-  advisor     Advisor   @relation(fields: [advisorId], references: [userId])
-  course      Course    @relation(fields: [courseId], references: [id])
+  id                Int       @id @default(autoincrement())
+  courseId          Int
+  studentIds        Int[]
+  accommodations    String?
+  examUrl           String?
+  completedExamURL  String?
+  date              DateTime?
+  location          String
+  advisorId         Int
+  advisor           Advisor   @relation(fields: [advisorId], references: [userId])
+  course            Course    @relation(fields: [courseId], references: [id])
 }
 
 enum FormStatus {
