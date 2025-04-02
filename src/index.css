@@ -533,6 +533,10 @@ body.highlight-hover-enabled #search:hover{
   color: var(--background-color);
 }
 
+.settingsHeading:focus{
+  background-color: blue;
+}
+
 .disProfilesList{
   display: flex !important;
   flex-direction: column !important;
@@ -583,36 +587,26 @@ body.highlight-hover-enabled #search:hover{
   z-index: 1000;
 }
 
-
-.tabNav ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  height: 100%;
-}
-
-.tabNav ul > li {
+.tabNav a {
   float: left;
   display: block;
   text-align: var(--align-text);
-  padding: 14px 16px;
+  padding: 0.5rem;
   text-decoration: none;
   color:var(--background-color);
   font-weight: 400;
   font-size: calc(var(--txtSize) + 5px);
   letter-spacing: var(--letterSpacing);
   height: 80%;
+  border: 2px solid transparent;
 }
 
-.tabNav ul > li > a{
-  text-decoration: none;
-  color: var(--background-color);
-  background-color: none;
+body.highlight-hover-enabled .tabNav a:hover{
+  background-color: var(--highlight-hover-color);
   padding: 0.5rem;
 }
 
-.tabNav ul > li > a:hover{
+.tabNav a:hover{
   color: var(--background-color);
   border-color: var(--background-color);
   border-radius: 1rem;
@@ -621,17 +615,18 @@ body.highlight-hover-enabled #search:hover{
 }
 
 
-#activeTab{
+.tabNav a.activeTab{
   background-color: var(--background-color);
   color: var(--foreground-color);
   border-radius: 1rem;
   padding: 0.5rem;
 }
 
-body.highlight-hover-enabled #activeTab:hover{
+body.highlight-hover-enabled .activeTab:hover{
   background-color: var(--highlight-hover-color) !important;
   border-style: none !important;
   border-color: var(--foreground-color)!important;
+  padding: 0.5rem;
 }
 
 .footerTitle{

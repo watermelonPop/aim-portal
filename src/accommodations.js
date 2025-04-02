@@ -2,7 +2,7 @@ import './App.css';
 import { useEffect, useState, useCallback } from 'react';
 import UserAccommodations from './userAccommodations';
 
-export function Accommodations({ userInfo, setAlertMessage, setShowAlert }) {
+export function Accommodations({ userInfo, setAlertMessage, setShowAlert, displayHeaderRef }) {
   const [studentData, setStudentData] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -24,6 +24,7 @@ export function Accommodations({ userInfo, setAlertMessage, setShowAlert }) {
           userInfo={userInfo}
           setAlertMessage={setAlertMessage}
           setShowAlert={setShowAlert}
+          displayHeaderRef={displayHeaderRef}
         />
       )}
 
