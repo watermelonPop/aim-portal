@@ -1,4 +1,6 @@
 import { useState, useEffect, useCallback  } from 'react';
+import PopupModal from "../PopupModal"; // adjust path as needed
+
 
 
 
@@ -76,6 +78,9 @@ function StaffDash() {
   const [editedRequests, setEditedRequests] = useState({});
   const [updatingRequestId, setUpdatingRequestId] = useState(null);
   const [refreshingRequests, setRefreshingRequests] = useState(false);
+  const [activeModal, setActiveModal] = useState(null); // 'forms', 'accommodations', 'tech'
+  const [formEdits, setFormEdits] = useState({}); // { formId: newStatus }
+
 
 
 
@@ -118,6 +123,34 @@ function StaffDash() {
       setRefreshingStudent(false);
     }
   };
+
+  const handleFormStatusChange = async (formId, newStatus) => {
+    const confirmed = window.confirm("Are you sure you want to change the form status?");
+    if (!confirmed) return;
+  
+    try {
+      const response = await fetch("/api/updateFormStatus", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ formId, status: newStatus }),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Failed to update form status: ${response.status}`);
+      }
+  
+      setFormEdits((prev) => ({ ...prev, [formId]: newStatus }));
+      alert("Form status updated successfully.");
+    } catch (err) {
+      console.error("Error updating form status:", err);
+      alert("An error occurred while updating the status. Please try again.");
+    }
+  };
+  
+  
+  
 
   const handleStatusChange = (accId, newStatus) => {
     setEditedAccommodations(prev => ({
@@ -555,72 +588,80 @@ function StaffDash() {
       </div>
     ) : selectedRequest ? (
       <div className="request-details-card">
-        <h2 className="card-title">📌 Request Details</h2>
+  <h2 className="card-title">📌 Request Details</h2>
 
-        <div className="request-meta-grid">
-          <div><strong>Request ID:</strong> {selectedRequest.id}</div>
-          <div><strong>User ID:</strong> {selectedRequest.userId}</div>
-          <div><strong>Advisor ID:</strong> {selectedRequest.advisorId}</div>
-          <p><strong>Advisor Role:</strong> {selectedRequest.advisorRole || "N/A"}</p>
-            <div className="status-row">
-              <label><strong>Status:</strong></label>
-              <select
-                value={editedRequests[selectedRequest.id] || selectedRequest.status || "PENDING"}
-                onChange={(e) =>
-                  setEditedRequests((prev) => ({
-                    ...prev,
-                    [selectedRequest.id]: e.target.value,
-                  }))
-                }
-              >
-                <option value="PENDING">Pending</option>
-                <option value="APPROVED">Approved</option>
-                <option value="DENIED">Denied</option>
-              </select>
+  {/* Dropdown for Advisor Info */}
+  <details className="request-meta-dropdown">
+    <summary className="meta-toggle">Toggle Request Metadata</summary>
+    
+    <div className="request-meta-grid">
+      <div><strong>Request ID:</strong> {selectedRequest.id}</div>
+      <div><strong>User ID:</strong> {selectedRequest.userId}</div>
+      <div><strong>Advisor ID:</strong> {selectedRequest.advisorId}</div>
+      <div><strong>Advisor Role:</strong> {selectedRequest.advisorRole || "N/A"}</div>
+    </div>
+  </details>
 
-              <button
-                className="save-icon-button"
-                onClick={() => confirmAndSaveRequestStatus(selectedRequest.id)}
-                title="Save status change"
-              >
-                💾
-              </button>
-            </div>  
-            </div>
+  {/* Centered Status Control */}
+  <div className="status-control-centered">
+    <label><strong>Status:</strong></label>
+    <select
+      value={editedRequests[selectedRequest.id] || selectedRequest.status || "PENDING"}
+      onChange={(e) =>
+        setEditedRequests((prev) => ({
+          ...prev,
+          [selectedRequest.id]: e.target.value,
+        }))
+      }
+    >
+      <option value="PENDING">Pending</option>
+      <option value="APPROVED">Approved</option>
+      <option value="DENIED">Denied</option>
+    </select>
 
-        <div className="request-notes">
-          <strong>Notes:</strong>
-          <p>{selectedRequest.notes || "N/A"}</p>
-        </div>
+    <button
+      className="save-icon-button"
+      onClick={() => confirmAndSaveRequestStatus(selectedRequest.id)}
+      title="Save status change"
+    >
+      💾
+    </button>
+  </div>
 
-        <div className="request-docs">
-          <strong>Documentation:</strong>
-          <span className={`doc-badge ${selectedRequest.documentation ? "yes" : "no"}`}>
-            {selectedRequest.documentation ? "✔️ Yes" : "❌ No"}
-          </span>
-        </div>
+  <div className="request-notes">
+    <strong>Notes:</strong>
+    <p>{selectedRequest.notes || "N/A"}</p>
+  </div>
 
-        <button
-          className="expand-button"
-          onClick={() =>
-            setExpandedRequest(
-              expandedRequest === selectedRequest.id ? null : selectedRequest.id
-            )
-          }
-        >
-          {expandedRequest === selectedRequest.id ? "Hide Student Info" : "Show Student Info"}
-        </button>
+  <div className="request-docs">
+    <strong>Documentation:</strong>
+    <span className={`doc-badge ${selectedRequest.documentation ? "yes" : "no"}`}>
+      {selectedRequest.documentation ? "✔️ Yes" : "❌ No"}
+    </span>
+  </div>
 
-        {expandedRequest === selectedRequest.id && (
-          <div className="student-info-box">
-            <h3>🎓 Student Info</h3>
-            <p><strong>Name:</strong> {selectedRequest.student_name || "N/A"}</p>
-            <p><strong>DOB:</strong> {selectedRequest.dob ? new Date(selectedRequest.dob).toLocaleDateString() : "N/A"}</p>
-            <p><strong>UIN:</strong> {selectedRequest.UIN || "N/A"}</p>
-            <p><strong>Phone Number:</strong> {selectedRequest.phone_number || "N/A"}</p>
-          </div>
-        )}
-      </div>
+  <button
+    className="expand-button"
+    onClick={() =>
+      setExpandedRequest(
+        expandedRequest === selectedRequest.id ? null : selectedRequest.id
+      )
+    }
+  >
+    {expandedRequest === selectedRequest.id ? "Hide Student Info" : "Show Student Info"}
+  </button>
+
+  {expandedRequest === selectedRequest.id && (
+    <div className="student-info-box">
+      <h3>🎓 Student Info</h3>
+      <p><strong>Name:</strong> {selectedRequest.student_name || "N/A"}</p>
+      <p><strong>DOB:</strong> {selectedRequest.dob ? new Date(selectedRequest.dob).toLocaleDateString() : "N/A"}</p>
+      <p><strong>UIN:</strong> {selectedRequest.UIN || "N/A"}</p>
+      <p><strong>Phone Number:</strong> {selectedRequest.phone_number || "N/A"}</p>
+    </div>
+  )}
+</div>
+
     ) : (
       <div>
         <input
@@ -845,49 +886,10 @@ function StaffDash() {
 </div>
 
 {/* RIGHT COLUMN – Dropdowns */}
-<div className="student-dropdown-column">
-  <DropdownSection title="Submitted Forms" isOpen={showForms} toggleOpen={() => setShowForms(!showForms)}>
-      {submittedForms.length > 0 ? (
-      <ul className="form-list">
-        {submittedForms.map((form) => (
-          <li key={form.id} className="form-entry">
-            <p><strong>Type:</strong> {formatFormType(form.type)}</p>
-            <p><strong>Status:</strong> {form.status}</p>
-            <p><strong>Submitted:</strong> {form.submittedDate ? new Date(form.submittedDate).toLocaleDateString() : 'N/A'}</p>
-            <p><strong>Due:</strong> {form.dueDate ? new Date(form.dueDate).toLocaleDateString() : 'N/A'}</p>
-            {form.formUrl && (
-              <p><a href={form.formUrl} target="_blank" rel="noopener noreferrer">View Form 🔗</a></p>
-            )}
-          </li>
-        ))}
-      </ul>
-    ) : (
-      <p>No forms submitted.</p>
-    )}
-  </DropdownSection>
-
-  <DropdownSection title="Accommodations" isOpen={showAccommodations} toggleOpen={() => setShowAccommodations(!showAccommodations)}>
-    {selectedStudent.accommodations?.length > 0 ? (
-      selectedStudent.accommodations.map(acc => (
-        <div key={acc.id}>
-          <p><strong>Type:</strong> {acc.type}</p>
-          <p><strong>Status:</strong> {acc.status}</p>
-          <p><strong>Date Requested:</strong> {new Date(acc.date_requested).toLocaleDateString()}</p>
-        </div>
-      ))
-    ) : <p>No accommodations.</p>}
-  </DropdownSection>
-
-  <DropdownSection title="Assistive Technologies" isOpen={showAssistiveTech} toggleOpen={() => setShowAssistiveTech(!showAssistiveTech)}>
-    {selectedStudent.assistive_technologies?.length > 0 ? (
-      selectedStudent.assistive_technologies.map(tech => (
-        <div key={tech.id}>
-          <p><strong>Type:</strong> {tech.type}</p>
-          <p><strong>Available:</strong> {tech.available ? "Yes" : "No"}</p>
-        </div>
-      ))
-    ) : <p>No assistive tech assigned.</p>}
-  </DropdownSection>
+<div className="student-modal-buttons">
+  <button onClick={() => setActiveModal({ type: 'forms' })}>📄 View Submitted Forms</button>
+  <button onClick={() => setActiveModal({ type: 'accommodations' })}>📝 View Accommodations</button>
+  <button onClick={() => setActiveModal({ type: 'tech' })}>💻 View Assistive Tech</button>
 </div>
 </div>
 
@@ -920,6 +922,122 @@ function StaffDash() {
 )}
 
 
+{activeModal?.type === 'formStatus' && (
+  <div className="modalOverlay">
+    <div className="modalContent">
+      <h2>Update Form Status</h2>
+      <p><strong>Form:</strong> {formatFormType(activeModal.form.type)}</p>
+      <p><strong>Current Status:</strong> {activeModal.form.status}</p>
+
+      <label htmlFor="newStatusSelect">Select New Status:</label>
+      <select
+        id="newStatusSelect"
+        value={formEdits[activeModal.form.id] || activeModal.form.status}
+        onChange={(e) =>
+          setFormEdits((prev) => ({
+            ...prev,
+            [activeModal.form.id]: e.target.value,
+          }))
+        }
+      >
+        <option value="PENDING">Pending</option>
+        <option value="APPROVED">Approved</option>
+        <option value="DENIED">Denied</option>
+      </select>
+
+      <div className="viewToggle" style={{ marginTop: '1rem' }}>
+        <button onClick={() => handleFormStatusChange(activeModal.form.id, formEdits[activeModal.form.id] || activeModal.form.status)}>
+          ✅ Save
+        </button>
+        <button onClick={() => setActiveModal(null)}>Cancel</button>
+      </div>
+    </div>
+  </div>
+)}
+{activeModal?.type === 'forms' && (
+  <div className="modalOverlay">
+    <div className="modalContent">
+    <div className="modalHeader">
+      <h2>Submitted Forms</h2>
+      <button className="modalHeaderCloseBtn" onClick={() => setActiveModal(null)}>✕</button>
+    </div>
+      {submittedForms.length > 0 ? (
+        submittedForms.map(form => (
+          <div key={form.id} className="form-entry">
+            <p><strong>Type:</strong> {formatFormType(form.type)}</p>
+            <p><strong>Status:</strong> {form.status}</p>
+            <p><strong>Submitted:</strong> {form.submittedDate ? new Date(form.submittedDate).toLocaleDateString() : 'N/A'}</p>
+            <p><strong>Due:</strong> {form.dueDate ? new Date(form.dueDate).toLocaleDateString() : 'N/A'}</p>
+            {form.formUrl && (
+              <p><a href={form.formUrl} target="_blank" rel="noopener noreferrer">🔗 View Form</a></p>
+            )}
+            <label htmlFor={`status-${form.id}`}>Change Status:</label>
+            <select
+              id={`status-${form.id}`}
+              value={formEdits[form.id] || form.status}
+              onChange={(e) =>
+                setFormEdits((prev) => ({
+                  ...prev,
+                  [form.id]: e.target.value,
+                }))
+              }
+            >
+              <option value="PENDING">Pending</option>
+              <option value="APPROVED">Approved</option>
+              <option value="DENIED">Denied</option>
+            </select>
+            <button onClick={() => handleFormStatusChange(form.id, formEdits[form.id] || form.status)}>💾 Save</button>
+          </div>
+        ))
+      ) : (
+        <p>No forms submitted.</p>
+      )}
+    </div>
+  </div>
+)}
+
+{activeModal?.type === 'accommodations' && (
+  <div className="modalOverlay">
+    <div className="modalContent">
+    <div className="modalHeader">
+      <h2>Accomodations</h2>
+      <button className="modalHeaderCloseBtn" onClick={() => setActiveModal(null)}>✕</button>
+    </div>
+      {selectedStudent.accommodations?.length > 0 ? (
+        selectedStudent.accommodations.map(acc => (
+          <div key={acc.id} className="accommodation-entry">
+            <p><strong>Type:</strong> {acc.type}</p>
+            <p><strong>Status:</strong> {acc.status}</p>
+            <p><strong>Requested On:</strong> {new Date(acc.date_requested).toLocaleDateString()}</p>
+          </div>
+        ))
+      ) : (
+        <p>No accommodations available.</p>
+      )}
+    </div>
+  </div>
+)}
+
+{activeModal?.type === 'tech' && (
+  <div className="modalOverlay">
+    <div className="modalContent">
+        <div className="modalHeader">
+        <h2>Assistive Technologies</h2>
+        <button className="modalHeaderCloseBtn" onClick={() => setActiveModal(null)}>✕</button>
+      </div>
+      {selectedStudent.assistive_technologies?.length > 0 ? (
+        selectedStudent.assistive_technologies.map(tech => (
+          <div key={tech.id} className="assistive-tech-entry">
+            <p><strong>Type:</strong> {tech.type}</p>
+            <p><strong>Available:</strong> {tech.available ? "Yes" : "No"}</p>
+          </div>
+        ))
+      ) : (
+        <p>No assistive technology assigned.</p>
+      )}
+    </div>
+  </div>
+)}
 
     </div>
   );

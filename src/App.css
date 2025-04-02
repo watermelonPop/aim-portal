@@ -2218,3 +2218,157 @@
 .modalCloseBtn:hover {
   background-color: #6a0000;
 }
+
+/* Distinct styling for each dropdown group */
+.form-entry {
+  background-color: #f9f9f9;
+  border-left: 5px solid #4F0000;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.accommodation-entry {
+  background-color: #fff6e6;
+  border-left: 5px solid #ff9900;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.assistive-tech-entry {
+  background-color: #e6f4ff;
+  border-left: 5px solid #3399ff;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+.request-meta-dropdown {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.meta-toggle {
+  font-weight: bold;
+  font-size: 1rem;
+  color: maroon;
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+}
+
+.request-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.status-control-centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 1.5rem 0;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 6rem;
+  z-index: 2000;
+}
+
+.modalContent {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;           /* Limit height */
+  overflow-y: auto;           /* Enable vertical scroll */
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
+
+
+.modalCloseBtn {
+  margin-top: 1rem;
+  background-color: #4F0000;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modalHeader {
+  position: sticky;
+  padding: 0;
+  background-color: white;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1001;
+}
+
+.modalHeaderCloseBtn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #444;
+  cursor: pointer;
+}
+
+.modalHeaderCloseBtn:hover {
+  color: #d00;
+}
+.modalHeader h2 {
+  margin: 0;
+  padding: 0;
+}
+.modalHeader {
+  padding: 1rem 1.5rem;
+}
+
+.student-modal-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  align-items: flex-end;
+}
+
+.student-modal-buttons button {
+  background-color: #4F0000;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.student-modal-buttons button:hover {
+  background-color: #6a0000;
+}
+
+
+
+
