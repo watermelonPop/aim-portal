@@ -21,7 +21,11 @@ describe('Profile component', () => {
             uin: 123456789,
             phone_number: 1001001001,
     };
-    const { container } = render(<Profile userInfo={mockUserInfo} />);
+    const mockDisplayHeaderRef = { current: null };
+    const mockLastIntendedFocusRef = { current: null };
+    const { container } = render(<Profile userInfo={mockUserInfo} displayHeaderRef={mockDisplayHeaderRef}
+      lastIntendedFocusRef={mockLastIntendedFocusRef}
+      settingsTabOpen={false}/>);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
@@ -44,7 +48,12 @@ describe('Profile component', () => {
       })
     );
 
-    render(<Profile userInfo={mockUserInfo} />);
+    const mockDisplayHeaderRef = { current: null };
+    const mockLastIntendedFocusRef = { current: null };
+
+    render(<Profile userInfo={mockUserInfo} displayHeaderRef={mockDisplayHeaderRef}
+      lastIntendedFocusRef={mockLastIntendedFocusRef}
+      settingsTabOpen={false}/>);
 
     expect(await screen.findByText(/STUDENT PROFILE/)).toBeInTheDocument();
     expect(await screen.findByText(/179008299/)).toBeInTheDocument();
@@ -58,8 +67,12 @@ describe('Profile component', () => {
       id: 2,
       role: 'ADVISOR',
     };
+    const mockDisplayHeaderRef = { current: null };
+    const mockLastIntendedFocusRef = { current: null };
 
-    render(<Profile userInfo={mockAdvisor} />);
+    render(<Profile userInfo={mockAdvisor} displayHeaderRef={mockDisplayHeaderRef}
+      lastIntendedFocusRef={mockLastIntendedFocusRef}
+      settingsTabOpen={false}/>);
     expect(screen.getByText('STAFF PROFILE')).toBeInTheDocument();
   });
 
@@ -69,7 +82,12 @@ describe('Profile component', () => {
       role: 'PROFESSOR',
     };
 
-    render(<Profile userInfo={mockProfessor} />);
+    const mockDisplayHeaderRef = { current: null };
+    const mockLastIntendedFocusRef = { current: null };
+
+    render(<Profile userInfo={mockProfessor} displayHeaderRef={mockDisplayHeaderRef}
+      lastIntendedFocusRef={mockLastIntendedFocusRef}
+      settingsTabOpen={false}/>);
     expect(screen.getByText('PROFESSOR PROFILE')).toBeInTheDocument();
   });
 });

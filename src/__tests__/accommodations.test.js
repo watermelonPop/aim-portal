@@ -41,16 +41,23 @@ describe('accommodations', () => {
                         uin: 123456789,
                         phone_number: 1001001001,
                 };
+                const mockSetAlertMessage = jest.fn();
+                const mockSetShowAlert = jest.fn();
+                const mockDisplayHeaderRef = { current: null };
+                const mockLastIntendedFocusRef = { current: null };
                 let container;
                 await act(async () => {
                         const rendered = render(
-                        <Accommodations
-                                userInfo={mockUserInfo}
-                                setAlertMessage={mockSetAlertMessage}
-                                setShowAlert={mockSetShowAlert}
-                        />
-                        );
-                        container = rendered.container;
+                    <Accommodations
+                      userInfo={mockUserInfo}
+                      setAlertMessage={mockSetAlertMessage}
+                      setShowAlert={mockSetShowAlert}
+                      displayHeaderRef={mockDisplayHeaderRef}
+                      lastIntendedFocusRef={mockLastIntendedFocusRef}
+                      settingsTabOpen={false}
+                    />
+                  );
+                  container = rendered.container;
                 });
                 const results = await axe(container);
                 expect(results).toHaveNoViolations();
@@ -78,30 +85,59 @@ describe('accommodations', () => {
                         uin: 123456789,
                         phone_number: 1001001001,
                 };
+                const mockSetAlertMessage = jest.fn();
+                const mockSetShowAlert = jest.fn();
+                const mockDisplayHeaderRef = { current: null };
+                const mockLastIntendedFocusRef = { current: null };
+              
                 await act(async () => {
-                        render(<Accommodations userInfo={mockUserInfo} setAlertMessage={mockSetAlertMessage} setShowAlert={mockSetShowAlert}/>);
+                  render(
+                    <Accommodations
+                      userInfo={mockUserInfo}
+                      setAlertMessage={mockSetAlertMessage}
+                      setShowAlert={mockSetShowAlert}
+                      displayHeaderRef={mockDisplayHeaderRef}
+                      lastIntendedFocusRef={mockLastIntendedFocusRef}
+                      settingsTabOpen={false}
+                    />
+                  );
                 });
 
                 expect(screen.queryByTestId('basicAccommodations')).toBeInTheDocument();
         });
 
         test('On render, student type role calls /api/getStudentData', async () => {
-                let mockUserInfo = {
-                        id: 123,
-                        name: "Mock User",
-                        email: "test@gmail.com",
-                        role: "STUDENT",
-                        picture: null,
-                        dob: "2000-01-01",
-                        uin: 123456789,
-                        phone_number: 1001001001,
+                const mockUserInfo = {
+                  id: 123,
+                  name: "Mock User",
+                  email: "test@gmail.com",
+                  role: "STUDENT",
+                  picture: null,
+                  dob: "2000-01-01",
+                  uin: 123456789,
+                  phone_number: 1001001001,
                 };
-                act(() => {
-                        render(<Accommodations userInfo={mockUserInfo} setAlertMessage={mockSetAlertMessage} setShowAlert={mockSetShowAlert}/>);
+              
+                const mockSetAlertMessage = jest.fn();
+                const mockSetShowAlert = jest.fn();
+                const mockDisplayHeaderRef = { current: null };
+                const mockLastIntendedFocusRef = { current: null };
+              
+                await act(async () => {
+                  render(
+                    <Accommodations
+                      userInfo={mockUserInfo}
+                      setAlertMessage={mockSetAlertMessage}
+                      setShowAlert={mockSetShowAlert}
+                      displayHeaderRef={mockDisplayHeaderRef}
+                      lastIntendedFocusRef={mockLastIntendedFocusRef}
+                      settingsTabOpen={false}
+                    />
+                  );
                 });
-
+              
                 await waitFor(() => {
-                        expect(global.fetch).toHaveBeenCalledWith('/api/getStudentData?userId=123');
+                  expect(global.fetch).toHaveBeenCalledWith('/api/getStudentData?userId=123');
                 });
         });
 
@@ -121,8 +157,22 @@ describe('accommodations', () => {
                   role: "USER", // Not student
                 };
               
+                const mockSetAlertMessage = jest.fn();
+                const mockSetShowAlert = jest.fn();
+                const mockDisplayHeaderRef = { current: null };
+                const mockLastIntendedFocusRef = { current: null };
+              
                 await act(async () => {
-                  render(<Accommodations userInfo={mockUserInfo} setAlertMessage={mockSetAlertMessage} setShowAlert={mockSetShowAlert} />);
+                  render(
+                    <Accommodations
+                      userInfo={mockUserInfo}
+                      setAlertMessage={mockSetAlertMessage}
+                      setShowAlert={mockSetShowAlert}
+                      displayHeaderRef={mockDisplayHeaderRef}
+                      lastIntendedFocusRef={mockLastIntendedFocusRef}
+                      settingsTabOpen={false}
+                    />
+                  );
                 });
               
                 await waitFor(() => {
@@ -139,8 +189,22 @@ describe('accommodations', () => {
               
                 global.fetch.mockRejectedValueOnce(new Error("Fetch failed"));
               
+                const mockSetAlertMessage = jest.fn();
+                const mockSetShowAlert = jest.fn();
+                const mockDisplayHeaderRef = { current: null };
+                const mockLastIntendedFocusRef = { current: null };
+              
                 await act(async () => {
-                  render(<Accommodations userInfo={mockUserInfo} setAlertMessage={mockSetAlertMessage} setShowAlert={mockSetShowAlert} />);
+                  render(
+                    <Accommodations
+                      userInfo={mockUserInfo}
+                      setAlertMessage={mockSetAlertMessage}
+                      setShowAlert={mockSetShowAlert}
+                      displayHeaderRef={mockDisplayHeaderRef}
+                      lastIntendedFocusRef={mockLastIntendedFocusRef}
+                      settingsTabOpen={false}
+                    />
+                  );
                 });
               
                 await waitFor(() => {

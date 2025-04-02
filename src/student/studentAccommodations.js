@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from 'react';
 
 
 export function StudentAccommodations({userInfo, setAlertMessage, setShowAlert, displayHeaderRef, settingsTabOpen, lastIntendedFocusRef}) {
+        const [loading, setLoading] = useState(false);
         const [studentData, setStudentData] = useState(null);
         const localRef = useRef(null);
         
@@ -38,6 +39,17 @@ export function StudentAccommodations({userInfo, setAlertMessage, setShowAlert, 
               
                 return () => cancelAnimationFrame(frame);
         }, [settingsTabOpen, headingRef]);
+
+        useEffect(() => {
+          if (userInfo?.role === 'STUDENT' && userInfo?.id) {
+            setLoading(true);
+            fetch(`/api/getStudentData?userId=${userInfo.id}`)
+              .then(res => res.json())
+              .then(data => setStudentData(data))
+              .catch(err => console.error('Failed to fetch student data', err))
+              .finally(() => setLoading(false));
+          }
+        }, [userInfo]);
         
         return (
         

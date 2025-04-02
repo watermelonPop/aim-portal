@@ -462,6 +462,7 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
       <div
         role="tablist"
         className="tabNav"
+        data-testid="basicTabNav"
         ref={(el) => {
           refs.current.tabNav = el;
         }}
