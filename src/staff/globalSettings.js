@@ -1,5 +1,5 @@
-import '../App.css';
-import { useState, useEffect } from 'react';
+
+import { useState, useEffect, useRef } from 'react';
 
 //
 /*
@@ -11,7 +11,7 @@ Test cases:
  - bad search results in no advisors found.
 */
 
-function GlobalSettings() {
+function GlobalSettings({displayHeaderRef, settingsTabOpen, lastIntendedFocusRef}) {
   
   
   /* 
@@ -40,6 +40,40 @@ function GlobalSettings() {
   const [selectedAdvisor, setSelectedAdvisor] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState('');
+  const localRef = useRef(null);
+          
+              // If ref is passed in (from parent), use that. Otherwise use internal.
+              const headingRef = displayHeaderRef || localRef;
+          
+              useEffect(() => {
+                  if (!headingRef.current || settingsTabOpen === true) return;
+                
+                  if (lastIntendedFocusRef?.current !== headingRef.current) {
+                      lastIntendedFocusRef.current = headingRef.current;
+                  }
+              }, [settingsTabOpen, headingRef]);
+                
+              useEffect(() => {
+                  if (!headingRef.current || settingsTabOpen === true) return;
+                
+                  const frame = requestAnimationFrame(() => {
+                    const isAlertOpen = document.querySelector('[data-testid="alert"]') !== null;
+                
+                    if (
+                      headingRef.current &&
+                      !isAlertOpen &&
+                      document.activeElement !== headingRef.current &&
+                      lastIntendedFocusRef.current === headingRef.current
+                    ) {
+                      console.log("FOCUSING DASH");
+                      console.log("Intent:", lastIntendedFocusRef.current, "Target:", headingRef.current);
+                      headingRef.current.focus();
+                      lastIntendedFocusRef.current = null;
+                    }
+                  });
+                
+                  return () => cancelAnimationFrame(frame);
+          }, [settingsTabOpen, headingRef]);
 
 
   //============================================ USEFFECT STARTS HERE ============================================
@@ -382,7 +416,8 @@ function GlobalSettings() {
   return (
     <>
       <div> {/* Title */}
-        <h2>Advisor Lookup and Access Control </h2>
+        <h2 ref={headingRef}
+                        tabIndex={0}>Advisor Lookup and Access Control </h2>
       </div>
 
       <div> {/* Searchbar */}

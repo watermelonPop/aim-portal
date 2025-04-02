@@ -1,6 +1,5 @@
 // AlertsArea.jsx
 import React, { useEffect, useState } from 'react';
-import './App.css';
 
 export default function AlertsArea() {
   const [alerts, setAlerts] = useState([]);

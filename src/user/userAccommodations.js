@@ -1,8 +1,8 @@
-import './App.css';
-import { useEffect, useState } from 'react';
+
+import { useEffect, useState, useRef } from 'react';
 
 
-export function UserAccommodations({userInfo, setAlertMessage, setShowAlert}) {
+export function UserAccommodations({userInfo, setAlertMessage, setShowAlert, displayHeaderRef, settingsTabOpen, lastIntendedFocusRef}) {
         const [formData, setFormData] = useState({
                 name: userInfo.name || "",
                 email: userInfo.email || "",
@@ -22,6 +22,41 @@ export function UserAccommodations({userInfo, setAlertMessage, setShowAlert}) {
         const [errors, setErrors] = useState(null);
 
         const [existingRequest, setExistingRequest] = useState(null);
+
+        const localRef = useRef(null);
+        
+            // If ref is passed in (from parent), use that. Otherwise use internal.
+            const headingRef = displayHeaderRef || localRef;
+        
+            useEffect(() => {
+                if (!headingRef.current || settingsTabOpen === true) return;
+              
+                if (lastIntendedFocusRef?.current !== headingRef.current) {
+                    lastIntendedFocusRef.current = headingRef.current;
+                }
+            }, [settingsTabOpen, headingRef]);
+              
+            useEffect(() => {
+                if (!headingRef.current || settingsTabOpen === true) return;
+              
+                const frame = requestAnimationFrame(() => {
+                  const isAlertOpen = document.querySelector('[data-testid="alert"]') !== null;
+              
+                  if (
+                    headingRef.current &&
+                    !isAlertOpen &&
+                    document.activeElement !== headingRef.current &&
+                    lastIntendedFocusRef.current === headingRef.current
+                  ) {
+                    console.log("FOCUSING DASH");
+                    console.log("Intent:", lastIntendedFocusRef.current, "Target:", headingRef.current);
+                    headingRef.current.focus();
+                    lastIntendedFocusRef.current = null;
+                  }
+                });
+              
+                return () => cancelAnimationFrame(frame);
+        }, [settingsTabOpen, headingRef]);
 
         const handleFileChange = (event) => {
                 setFormData(prevState => ({
@@ -320,64 +355,65 @@ export function UserAccommodations({userInfo, setAlertMessage, setShowAlert}) {
         return (
                 <>
                 <div role="presentation" className="newStudentDiv">
-                        <h2 className='dashboardTitle'>New Student Application</h2>
+                        <h2 className='dashboardTitle' ref={headingRef}
+                                tabIndex={0}>New Student Application</h2>
                         {existingRequest === null ? (
                                 <>
-                                <h3 className='subTitle'>Need Accommodations? Start Here!</h3>
+                                <h3 className='subTitle' tabIndex={0}>Need Accommodations? Start Here!</h3>
                                 <form className="newStudentApp" onSubmit={handleSubmit} data-testid="newStudentApp">
                                         <div role="group">
-                                                <label htmlFor="name">Name</label>
-                                                <input data-testid="name" id="name" name="name" value={formData.name} type="text" onChange={handleChange}/>
+                                                <label htmlFor="name" tabIndex={0}>Name</label>
+                                                <input tabIndex={0} data-testid="name" id="name" name="name" value={formData.name || ""} type="text" onChange={handleChange}/>
                                         </div>
                                         <div role="group">
-                                                <label htmlFor="email">Email</label>
-                                                <input data-testid="email" id="email" name="email" value={formData.email} type="email" onChange={handleChange} />
+                                                <label htmlFor="email" tabIndex={0}>Email</label>
+                                                <input tabIndex={0} data-testid="email" id="email" name="email" value={formData.email || ""} type="email" onChange={handleChange} />
                                         </div>
                                         <div role="group">
-                                                <label htmlFor="dob">Date of Birth</label>
-                                                <input data-testid="dob" id="dob" type="date" name="dob" value={formatDate(formData.dob)} onChange={handleChange} />
+                                                <label htmlFor="dob" tabIndex={0}>Date of Birth</label>
+                                                <input tabIndex={0} data-testid="dob" id="dob" type="date" name="dob" value={formatDate(formData.dob) || ""} onChange={handleChange} />
                                         </div>
                                         <div role="group">
-                                                <label htmlFor="uin">UIN</label>
-                                                <input data-testid="uin" id="uin" type="number" name="uin" value={formData.uin} onChange={handleChange} />
+                                                <label htmlFor="uin" tabIndex={0}>UIN</label>
+                                                <input tabIndex={0} data-testid="uin" id="uin" type="number" name="uin" value={formData.uin || ""} onChange={handleChange} />
                                         </div>
                                         <div role="group">
-                                                <label htmlFor="phone_number">Phone Number</label>
-                                                <input data-testid="phone_number" id="phone_number" type="tel" name="phone_number" value={formData.phone_number} onChange={handleChange} />
+                                                <label htmlFor="phone_number" tabIndex={0}>Phone Number</label>
+                                                <input tabIndex={0} data-testid="phone_number" id="phone_number" type="tel" name="phone_number" value={formData.phone_number || ""} onChange={handleChange} />
                                         </div>
                                         <div role="group">
-                                                <label htmlFor="disability">What is your disability or disabilities?</label>
-                                                <textarea data-testid="disability" id="disability" name="disability" rows="5" value={formData.disability} onChange={handleChange}></textarea>
+                                                <label tabIndex={0} htmlFor="disability">What is your disability or disabilities?</label>
+                                                <textarea tabIndex={0} data-testid="disability" id="disability" name="disability" rows="5" value={formData.disability || ""} onChange={handleChange}></textarea>
                                         </div>
                                         <div role="group">
-                                                <label htmlFor="testing">What challenges do you experience related to taking tests/exams, if any?</label>
-                                                <textarea data-testid="testing" id="testing" name="testing" rows="5" value={formData.testing} onChange={handleChange}></textarea>
+                                                <label tabIndex={0} htmlFor="testing">What challenges do you experience related to taking tests/exams, if any?</label>
+                                                <textarea tabIndex={0} data-testid="testing" id="testing" name="testing" rows="5" value={formData.testing || ""} onChange={handleChange}></textarea>
                                         </div>
                                         <div role="group">
-                                                <label htmlFor="inClass">What challenges do you experience in the classroom or learning environment, if any?</label>
-                                                <textarea data-testid="inClass" id="inClass" name="inClass" rows="5" value={formData.inClass} onChange={handleChange}></textarea>
+                                                <label tabIndex={0} htmlFor="inClass">What challenges do you experience in the classroom or learning environment, if any?</label>
+                                                <textarea tabIndex={0} data-testid="inClass" id="inClass" name="inClass" rows="5" value={formData.inClass || ""} onChange={handleChange}></textarea>
                                         </div>
                                         <div role="group">
-                                                <label htmlFor="housing">If you are living on-campus, do you require any disability accommodations in the housing environment?</label>
-                                                <textarea data-testid="housing" id="housing" name="housing" rows="5" value={formData.housing} onChange={handleChange}></textarea>
+                                                <label tabIndex={0} htmlFor="housing">If you are living on-campus, do you require any disability accommodations in the housing environment?</label>
+                                                <textarea tabIndex={0} data-testid="housing" id="housing" name="housing" rows="5" value={formData.housing || ""} onChange={handleChange}></textarea>
                                         </div>
                                         <div role="group">
-                                                <label htmlFor="sideEffect">Do you experience any side effects related to treatment or medications that may be relevant to identifying accommodations?</label>
-                                                <textarea data-testid="sideEffect" id="sideEffect" name="sideEffect" rows="5" value={formData.sideEffect} onChange={handleChange}></textarea>
+                                                <label tabIndex={0} htmlFor="sideEffect">Do you experience any side effects related to treatment or medications that may be relevant to identifying accommodations?</label>
+                                                <textarea tabIndex={0} data-testid="sideEffect" id="sideEffect" name="sideEffect" rows="5" value={formData.sideEffect || ""} onChange={handleChange}></textarea>
                                         </div>
                                         <div role="group">
-                                                <label htmlFor="accommodations">What specific accommodations are you requesting?</label>
-                                                <textarea data-testid="accommodations" id="accommodations" name="accommodations" rows="5" value={formData.accommodations} onChange={handleChange}></textarea>
+                                                <label tabIndex={0} htmlFor="accommodations">What specific accommodations are you requesting?</label>
+                                                <textarea tabIndex={0} data-testid="accommodations" id="accommodations" name="accommodations" rows="5" value={formData.accommodations || ""} onChange={handleChange}></textarea>
                                         </div>
                                         <div role="group">
-                                                <label htmlFor="pastAcc">What accommodations have you used in the past?</label>
-                                                <textarea data-testid="pastAcc" id="pastAcc" name="pastAcc" rows="5" value={formData.pastAcc} onChange={handleChange}></textarea>
+                                                <label tabIndex={0} htmlFor="pastAcc">What accommodations have you used in the past?</label>
+                                                <textarea tabIndex={0} data-testid="pastAcc" id="pastAcc" name="pastAcc" rows="5" value={formData.pastAcc || ""} onChange={handleChange}></textarea>
                                         </div>
                                         <div role="group" id="uploadFileOuter">
-                                                <label htmlFor="uploadFile">Already have documentation? Upload Here!</label>
-                                                <input type="file" onChange={handleFileChange} data-testid="uploadFile" id="uploadFile" name="uploadFile"/>
+                                                <label tabIndex={0} htmlFor="uploadFile">Already have documentation? Upload Here!</label>
+                                                <input tabIndex={0} type="file" onChange={handleFileChange} data-testid="uploadFile" id="uploadFile" name="uploadFile"/>
                                         </div>
-                                        <button type="submit" aria-label="submit">Submit</button>
+                                        <button type="submit" aria-label="submit" tabIndex={0}>Submit</button>
                                 </form>
                                 </>
                         ) : (
