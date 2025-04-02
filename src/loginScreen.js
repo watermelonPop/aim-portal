@@ -1,4 +1,4 @@
-import './App.css';
+
 import { useEffect, useState } from 'react';
 
 export function LoginScreen({ setSettings, loggedIn, setLoggedIn, staffAccess, setStaffAccess, userInfo, setUserInfo, setLoading }) {

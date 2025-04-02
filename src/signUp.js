@@ -1,4 +1,4 @@
-import './App.css';
+
 import { useState, useEffect } from 'react';
 
 function SignUp({ userInfo, setUserInfo, setAlertMessage, setShowAlert, setUserConnected, setSettings, setLoading }) {

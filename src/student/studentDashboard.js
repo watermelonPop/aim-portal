@@ -1,14 +1,48 @@
 // StudentDashboard.jsx
-import React, { useEffect, useState } from 'react';
-import './App.css';
-import AlertsArea from './AlertsArea'; // Import the alerts component
+import React, { useEffect, useState, useRef } from 'react';
+import AlertsArea from '../AlertsArea'; // Import the alerts component
 
-export default function StudentDashboard({ userInfo }) {
+export default function StudentDashboard({userInfo, displayHeaderRef, settingsTabOpen, lastIntendedFocusRef }) {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(false);
   const [viewMode, setViewMode] = useState('card');
   const [error, setError] = useState('');
   const [selectedCourse, setSelectedCourse] = useState(null);
+
+  const localRef = useRef(null);
+          
+              // If ref is passed in (from parent), use that. Otherwise use internal.
+              const headingRef = displayHeaderRef || localRef;
+          
+              useEffect(() => {
+                  if (!headingRef.current || settingsTabOpen === true) return;
+                
+                  if (lastIntendedFocusRef?.current !== headingRef.current) {
+                      lastIntendedFocusRef.current = headingRef.current;
+                  }
+              }, [settingsTabOpen, headingRef]);
+                
+              useEffect(() => {
+                  if (!headingRef.current || settingsTabOpen === true) return;
+                
+                  const frame = requestAnimationFrame(() => {
+                    const isAlertOpen = document.querySelector('[data-testid="alert"]') !== null;
+                
+                    if (
+                      headingRef.current &&
+                      !isAlertOpen &&
+                      document.activeElement !== headingRef.current &&
+                      lastIntendedFocusRef.current === headingRef.current
+                    ) {
+                      console.log("FOCUSING DASH");
+                      console.log("Intent:", lastIntendedFocusRef.current, "Target:", headingRef.current);
+                      headingRef.current.focus();
+                      lastIntendedFocusRef.current = null;
+                    }
+                  });
+                
+                  return () => cancelAnimationFrame(frame);
+    }, [settingsTabOpen, headingRef]);
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -34,7 +68,8 @@ export default function StudentDashboard({ userInfo }) {
   return (
     <div className="studentDashboard">
       <div className="leftColumn">
-        <h2>Welcome, {userInfo?.name || 'Student'}</h2>
+        <h2 ref={headingRef}
+                        tabIndex={0}>Welcome, {userInfo?.name || 'Student'}</h2>
         <div className="viewToggle">
           <button onClick={() => setViewMode('card')}>Card View</button>
           <button onClick={() => setViewMode('list')}>List View</button>

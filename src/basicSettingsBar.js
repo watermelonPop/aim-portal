@@ -1,4 +1,4 @@
-import './App.css';
+
 import { useEffect, useState, useCallback, useRef, useLayoutEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faToggleOff, faToggleOn, faArrowLeft, faArrowRight} from '@fortawesome/free-solid-svg-icons';
@@ -116,10 +116,10 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                         </div>
 
                         <ul onScroll={scrollEvent} id="settingsScroll" data-testid="settingsScroll">
-                                {selectedCategory === null ? (
-                                Object.keys(categories).map((cat) => (
-                                <li key={cat}
-                                >
+                        {selectedCategory === null ? (
+                                <>
+                                {Object.keys(categories).map((cat) => (
+                                        <li key={cat}>
                                         <a
                                         tabIndex={0}
                                         role="button"
@@ -127,8 +127,8 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                         onClick={() => setSelectedCategory(cat)}
                                         onKeyDown={(e) => {
                                         if (e.key === 'Enter' || e.key === ' ') {
-                                        e.preventDefault();
-                                        setSelectedCategory(cat);
+                                                e.preventDefault();
+                                                setSelectedCategory(cat);
                                         }
                                         }}
                                         data-testid={cat}
@@ -136,8 +136,19 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                         {cat}
                                         <FontAwesomeIcon icon={faArrowRight} aria-hidden="true" />
                                         </a>
+                                        </li>
+                                ))}
+                                <li>
+                                        <button
+                                        onClick={() => {
+                                        logout(setLoggedIn);
+                                        }}
+                                        className="logOutBtn"
+                                        >
+                                        log out
+                                        </button>
                                 </li>
-                                ))
+                                </>
                                 ) : selectedCategory === "Text" ? (
                                 <>
                                         <li id="backSettingPanelOuter">

@@ -1,5 +1,4 @@
 
-import './App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faMagnifyingGlass, faBars} from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState, useRef, useCallback, useLayoutEffect, cloneElement} from 'react';
@@ -10,9 +9,9 @@ import Forms from './forms';
 import GlobalSettings from './staff/globalSettings';
 import Accommodations from './accommodations';
 import NoteTaking from './noteTaking';
-import AssistiveTech from './assistiveTech';
+import AssistiveTech from './staff/assistiveTech';
 import Testing from './testing';
-import StudentCases from './studentCases';
+import StudentCases from './staff/studentCases';
 import Alert from './alert';
 import BasicSettingsBar from './basicSettingsBar';
 import SignUp from './signUp';
