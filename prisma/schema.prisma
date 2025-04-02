@@ -167,6 +167,7 @@ model Course {
 
 model Exam {
   id                Int       @id @default(autoincrement())
+  name              String?
   courseId          Int
   studentIds        Int[]
   accommodations    String?
