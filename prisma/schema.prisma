@@ -173,9 +173,9 @@ model Exam {
   advisorId        Int
   examUrl          String?
   studentIds       Int[]
-  accommodations   String?
+  accommodations   String[]
   completedExamURL String?
-  name             String?
+  name             String
   advisor          Advisor   @relation(fields: [advisorId], references: [userId])
   course           Course    @relation(fields: [courseId], references: [id])
 }
