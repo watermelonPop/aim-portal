@@ -1,5 +1,8 @@
-import './App.css';
+
 import { useEffect, useState } from 'react';
+import StudentTesting from './student/studentTesting';
+import ProfessorTesting from './professor/professorTesting';
+import StaffTesting from './staff/staffTesting';
 
 import StaffTesting from "./staff/staffTesting.js"
 

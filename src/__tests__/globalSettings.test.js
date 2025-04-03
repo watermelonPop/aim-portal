@@ -44,12 +44,18 @@ describe('GlobalSettings Component', () => {
 
   test('renders initial UI and fetches advisors', async () => {
     // Mock the initial fetch call to /api/getAdvisors
+    //displayHeaderRef, settingsTabOpen, lastIntendedFocusRef
     global.fetch = jest.fn().mockResolvedValueOnce({
       ok: true,
       json: async () => ({ advisors: sampleAdvisors }),
     });
+
+    const mockDisplayHeaderRef = { current: null };
+    const mockLastIntendedFocusRef = { current: null };
     
-    render(<GlobalSettings />);
+    render(<GlobalSettings displayHeaderRef={mockDisplayHeaderRef}
+      lastIntendedFocusRef={mockLastIntendedFocusRef}
+      settingsTabOpen={false}/>);
     
     // Before fetch resolves, CardView should display a loading message
     expect(screen.getByText(/Loading advisors.../i)).toBeInTheDocument();
@@ -71,7 +77,12 @@ describe('GlobalSettings Component', () => {
       json: async () => ({ advisors: sampleAdvisors }),
     });
     
-    render(<GlobalSettings />);
+    const mockDisplayHeaderRef = { current: null };
+    const mockLastIntendedFocusRef = { current: null };
+    
+    render(<GlobalSettings displayHeaderRef={mockDisplayHeaderRef}
+      lastIntendedFocusRef={mockLastIntendedFocusRef}
+      settingsTabOpen={false}/>);
     
     // Wait for advisors to load
     await waitFor(() => {
@@ -96,7 +107,12 @@ describe('GlobalSettings Component', () => {
       json: async () => ({ advisors: sampleAdvisors }),
     });
     
-    render(<GlobalSettings />);
+    const mockDisplayHeaderRef = { current: null };
+    const mockLastIntendedFocusRef = { current: null };
+    
+    render(<GlobalSettings displayHeaderRef={mockDisplayHeaderRef}
+      lastIntendedFocusRef={mockLastIntendedFocusRef}
+      settingsTabOpen={false}/>);
     
     // Wait for advisors to load
     await waitFor(() => {
@@ -129,7 +145,12 @@ describe('GlobalSettings Component', () => {
         json: async () => ({ success: true }),
       });
     
-    render(<GlobalSettings />);
+      const mockDisplayHeaderRef = { current: null };
+      const mockLastIntendedFocusRef = { current: null };
+      
+      render(<GlobalSettings displayHeaderRef={mockDisplayHeaderRef}
+        lastIntendedFocusRef={mockLastIntendedFocusRef}
+        settingsTabOpen={false}/>);
     
     // Wait for the advisor to load
     await waitFor(() => {
@@ -216,7 +237,12 @@ describe('GlobalSettings Component', () => {
       json: async () => ({ advisors: advisorsForPagination }),
     });
     
-    render(<GlobalSettings />);
+    const mockDisplayHeaderRef = { current: null };
+    const mockLastIntendedFocusRef = { current: null };
+    
+    render(<GlobalSettings displayHeaderRef={mockDisplayHeaderRef}
+      lastIntendedFocusRef={mockLastIntendedFocusRef}
+      settingsTabOpen={false}/>);
     
     // Wait for the first page to load (should display advisors 1-9)
     await waitFor(() => {

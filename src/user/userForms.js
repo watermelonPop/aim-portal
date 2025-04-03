@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
-function UserForms() {
+function UserForms({displayHeaderRef, settingsTabOpen, lastIntendedFocusRef}) {
   const [view, setView] = useState(null);
   const [selectedDisability, setSelectedDisability] = useState('');
   const [uploadedFiles, setUploadedFiles] = useState({});
@@ -19,6 +19,41 @@ function UserForms() {
     "Emotional or Psychological Disability": ["Medical or Psychological Documentation Form", "Emotional Support Animal (ESA) Request"],
     "Temporary Disability": ["Temporary Accommodations Request", "Medical or Psychological Documentation Form"]
   };
+
+  const localRef = useRef(null);
+  
+      // If ref is passed in (from parent), use that. Otherwise use internal.
+      const headingRef = displayHeaderRef || localRef;
+  
+      useEffect(() => {
+          if (!headingRef.current || settingsTabOpen === true) return;
+        
+          if (lastIntendedFocusRef?.current !== headingRef.current) {
+              lastIntendedFocusRef.current = headingRef.current;
+          }
+      }, [settingsTabOpen, headingRef]);
+        
+      useEffect(() => {
+          if (!headingRef.current || settingsTabOpen === true) return;
+        
+          const frame = requestAnimationFrame(() => {
+            const isAlertOpen = document.querySelector('[data-testid="alert"]') !== null;
+        
+            if (
+              headingRef.current &&
+              !isAlertOpen &&
+              document.activeElement !== headingRef.current &&
+              lastIntendedFocusRef.current === headingRef.current
+            ) {
+              console.log("FOCUSING DASH");
+              console.log("Intent:", lastIntendedFocusRef.current, "Target:", headingRef.current);
+              headingRef.current.focus();
+              lastIntendedFocusRef.current = null;
+            }
+          });
+        
+          return () => cancelAnimationFrame(frame);
+        }, [settingsTabOpen, headingRef]);
 
   function handleDisabilityChange(event) {
     setSelectedDisability(event.target.value);
@@ -52,7 +87,8 @@ function UserForms() {
     <div className="content-container">
       {view === null && (
         <div className="selection-container">
-          <h2>Select an option below to proceed:</h2>
+          <h2 ref={headingRef}
+                    tabIndex={0}>Select an option below to proceed:</h2>
           <div className="selection-buttons">
             <button onClick={() => { setView('upload'); setSelectedDisability(''); }}>Upload Forms</button>
             <button onClick={() => setView('manage')}>Manage Forms</button>

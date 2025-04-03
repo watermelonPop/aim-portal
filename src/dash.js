@@ -1,16 +1,22 @@
-import './App.css';
-import { useEffect, useState } from 'react';
 
+import { useEffect, useRef } from 'react';
+import StudentDashboard from './student/studentDashboard';
+import UserDashboard from './user/userDashboard';
+import ProfessorDashboard from './professor/professorDashboard';
+import StaffDashboard from './staff/staffDashboard';
 
-function Dash({userInfo}) {
-        return (
-            <main className='dashboardOuter'>
-                {userInfo?.role === "USER" && <h2 className='dashboardTitle'>USER DASHBOARD</h2>}
-                {userInfo?.role === "STUDENT" && <h2 className='dashboardTitle'>STUDENT DASHBOARD</h2>}
-                {userInfo?.role === "PROFESSOR" && <h2 className='dashboardTitle'>PROFESSOR DASHBOARD</h2>}
-                {userInfo?.role === "ADVISOR" && <h2 className='dashboardTitle'>STAFF DASHBOARD</h2>}
-            </main>
-        );
+function Dash({ userInfo, displayHeaderRef, settingsTabOpen, lastIntendedFocusRef }) {
+
+    return (
+        <main className='dashboardOuter'>
+            {userInfo?.role === "USER" && (
+                <UserDashboard userInfo={userInfo} displayHeaderRef={displayHeaderRef} settingsTabOpen={settingsTabOpen} lastIntendedFocusRef={lastIntendedFocusRef}/>
+            )}
+            {userInfo?.role === "STUDENT" && <StudentDashboard userInfo={userInfo} displayHeaderRef={displayHeaderRef} settingsTabOpen={settingsTabOpen} lastIntendedFocusRef={lastIntendedFocusRef}/>}
+            {userInfo?.role === "PROFESSOR" && <ProfessorDashboard userInfo={userInfo} displayHeaderRef={displayHeaderRef} settingsTabOpen={settingsTabOpen} lastIntendedFocusRef={lastIntendedFocusRef}/>}
+            {userInfo?.role === "ADVISOR" && <ProfessorDashboard userInfo={userInfo} displayHeaderRef={displayHeaderRef} settingsTabOpen={settingsTabOpen} lastIntendedFocusRef={lastIntendedFocusRef}/>}
+        </main>
+    );
 }
 
 export default Dash;
