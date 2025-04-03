@@ -70,10 +70,12 @@ model Advisor {
 model Settings {
   userId                         Int     @id @unique
   highlight_links                Boolean @default(false)
+  highlight_links_color          String  @default("#335CFF")
   text_magnifier                 Boolean @default(false)
   align_text                     String  @default("center")
   font_size                      Int     @default(14)
   line_height                    Float   @default(1.5)
+  word_spacing                   Int     @default(0)
   letter_spacing                 Int     @default(0)
   mute_sounds                    Boolean @default(false)
   highlight_hover                Boolean @default(false)
@@ -225,4 +227,5 @@ enum Font {
   Montserrat
   Lato
   Nunito
+  Arimo
 }
