@@ -345,9 +345,9 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                                 </form>
                                         </li>
                                         <li>
-                                                <h3 tabIndex={0}>Highlight Link Color</h3>
+                                                <h3 tabIndex={0} id="highlightLinkColorLabel">Highlight Link Color</h3>
                                                 <form onSubmit={(e) => e.preventDefault()}>
-                                                        <input type="color" name="highlight_links_color" value={tempVars.highlight_links_color} onChange={(e) => setTempVars({...tempVars, highlight_links_color: e.target.value})} className="colorInput"/>
+                                                        <input aria-labelledby="highlightLinkColorLabel" type="color" name="highlight_links_color" value={tempVars.highlight_links_color} onChange={(e) => setTempVars({...tempVars, highlight_links_color: e.target.value})} className="colorInput"/>
                                                         <button type="button" onClick={handleButtonAction(() => updateSettings({ highlight_links_color: tempVars.highlight_links_color }))} className="setBtn" aria-label="Set Highlight Link Color">set</button>
                                                 </form>
                                         </li>
@@ -574,7 +574,7 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                         <li>
                                                 <h3 tabIndex={0}>Highlight Keyboard Focus</h3>
                                                 <form onSubmit={(e) => e.preventDefault()}>
-                                                        <button type="button" onClick={handleButtonAction(() => updateSettings({ highlight_keyboard_focus: !settings.highlight_keyboard_focus }))} className="toggleBtn" aria-label="Toggle Highlight Hover">{settings.highlight_keyboard_focus === true ? <FontAwesomeIcon className='toggleIcon' icon={faToggleOn} aria-hidden="true" /> : <FontAwesomeIcon icon={faToggleOff} className='toggleIcon' aria-hidden="true" />}</button>
+                                                        <button type="button" onClick={handleButtonAction(() => updateSettings({ highlight_keyboard_focus: !settings.highlight_keyboard_focus }))} className="toggleBtn" aria-label="Toggle Highlight Keyboard Focus">{settings.highlight_keyboard_focus === true ? <FontAwesomeIcon className='toggleIcon' icon={faToggleOn} aria-hidden="true" /> : <FontAwesomeIcon icon={faToggleOff} className='toggleIcon' aria-hidden="true" />}</button>
                                                 </form>
                                         </li>
                                         <li>

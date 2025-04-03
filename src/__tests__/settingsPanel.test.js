@@ -1071,8 +1071,16 @@ describe('settingsPanel', () => {
                     expect(mockSetSettings).toHaveBeenCalledWith({
                         ...mockSettings,
                         font_size: "14px",
-                        letter_spacing: "4.5px",
-                        contrast: "50%"
+                                                        letter_spacing: "4.5px",
+                                                        contrast: "50%",
+                                                        background_color: "#FFFFF6",
+                                                        line_height: 2,
+                                                        align_text: "left",
+                                                        font: "Lexend",
+                                                        highlight_hover: false,
+                                                        highlight_links_color: "#8398EB",
+                                                        cursor_size: 5,
+                                                        word_spacing: "5px",
                     });
                 });
             }); 
@@ -1116,8 +1124,19 @@ describe('settingsPanel', () => {
                     expect(mockSetSettings).toHaveBeenCalledWith({
                         ...mockSettings,
                         font_size: "16px",
-                        letter_spacing: "2px",
-                        contrast: "200%"
+                                                        letter_spacing: "2px",
+                                                        contrast: "200%",
+                                                        font: "Arimo",
+                                                        line_height: 1.5,
+                                                        align_text: "left",
+                                                        highlight_links: true,
+                                                        saturation: "200%",
+                                                        highlight_hover: true,
+                                                        highlight_hover_color: "#335CFF",
+                                                        cursor_size: 6,
+                                                        cursor_color:"#A42D2D",
+                                                        highlight_links_color: "#A42D2D",
+                                                        word_spacing: "3px",
                     });
                 });
             }); 
@@ -1160,21 +1179,28 @@ describe('settingsPanel', () => {
                 await waitFor(() => {
                     expect(mockSetSettings).toHaveBeenCalledWith({
                         ...mockSettings,
-                        align_text: "center",
-                        font_size: "14px",
-                        letter_spacing: "0px",
-                        contrast: "100%",
-                        saturation: "100%",
-                        mute_sounds: false,
-                        highlight_hover: false,
-                        highlight_hover_color: "#BD180F",
-                        cursor_size: 3,
-                        cursor_color: "#000000",
-                        cursor_border_color: "#FFFFFF",
-                        background_color: "#FFEDED",
-                        foreground_color: "#4F0000",
-                        text_color: "#000000",
-                        font: "Mitr",
+                        highlight_links: false,
+      highlight_links_color: "#335CFF",
+      text_magnifier: false,
+      align_text: "center",
+      font_size: "14px",
+      line_height: 1.5,
+      letter_spacing: "0px",
+      contrast: "100%",
+      saturation: "100%",
+      mute_sounds: false,
+      highlight_hover: false,
+      highlight_keyboard_focus: false,
+      highlight_keyboard_focus_color: "#BD180F",
+      highlight_hover_color: "#BD180F",
+      cursor_size: 3,
+    cursor_color: "#000000",
+    cursor_border_color: "#FFFFFF",
+    background_color: "#FFEDED",
+    foreground_color: "#4F0000",
+    text_color: "#000000",
+    font: "Mitr",
+    word_spacing: "0px"
                     });
                 });
             }); 
