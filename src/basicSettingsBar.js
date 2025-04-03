@@ -10,14 +10,14 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
 
         const categories = {
                 Profiles: ['disability_profile'],
-                Text: ['font_size', 'letter_spacing', 'align_text'],
+                Text: ['font_size', 'letter_spacing', 'align_text', 'highlight_links', 'highlight_links_color'],
                 Visuals: ['contrast', 'saturation', 'background_color', 'foreground_color', 'text_color'],
                 Cursor: ['cursor_color', 'cursor_border_color', 'cursor_size'],
-                Interactions: ['mute_sounds', 'highlight_hover', 'highlight_hover_color'],
+                Interactions: ['highlight_hover', 'highlight_hover_color'],
                 Audio: ['mute_sounds'],
         };
 
-        const fonts = ["Mitr", "Lexend", "Roboto", "Montserrat", "Lato", "Nunito"];
+        const fonts = ["Mitr", "Lexend", "Roboto", "Montserrat", "Lato", "Nunito", "Arimo"];
 
         const [selectedCategory, setSelectedCategory] = useState(null);
 
@@ -30,6 +30,9 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                 highlight_hover_color: settings.highlight_hover_color,
                 align_text: settings.align_text,
                 font: settings.font,
+                highlight_links: settings.highlight_links,
+                highlight_keyboard_focus_color: settings.highlight_keyboard_focus_color,
+                highlight_links_color: settings.highlight_links_color,
         });
               
 
@@ -250,7 +253,36 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                                 </button>
                                                 </form>
                                         </li>
-
+                                        <li>
+                                                <h3 tabIndex={0}>Word Spacing</h3>
+                                                <form onSubmit={(e) => e.preventDefault()}>
+                                                <button
+                                                tabIndex={0}
+                                                type="button"
+                                                onClick={handleButtonAction(() => {
+                                                let curr = parseInt(settings.word_spacing.replace("px", ""));
+                                                updateSettings({ word_spacing: Math.max(0, curr - 1) + "px" });
+                                                })}
+                                                className="settingsBtn"
+                                                aria-label="Decrease Word Spacing"
+                                                >
+                                                -
+                                                </button>
+                                                <label tabIndex={0}>{settings.word_spacing}</label>
+                                                <button
+                                                tabIndex={0}
+                                                type="button"
+                                                onClick={handleButtonAction(() => {
+                                                let curr = parseInt(settings.word_spacing.replace("px", ""));
+                                                updateSettings({ word_spacing: (curr + 1) + "px" });
+                                                })}
+                                                className="settingsBtn"
+                                                aria-label="Increase Word Spacing"
+                                                >
+                                                +
+                                                </button>
+                                                </form>
+                                        </li>
                                         <li>
                                                 <h3 tabIndex={0}>Line Height</h3>
                                                 <form onSubmit={(e) => e.preventDefault()}>
@@ -304,6 +336,19 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                                 >
                                                 set
                                                 </button>
+                                                </form>
+                                        </li>
+                                        <li>
+                                                <h3 tabIndex={0}>Highlight Links</h3>
+                                                <form onSubmit={(e) => e.preventDefault()}>
+                                                        <button type="button" onClick={handleButtonAction(() => updateSettings({ highlight_links: !settings.highlight_links }))} className="toggleBtn" aria-label="Toggle Highlight Links">{settings.highlight_links === true ? <FontAwesomeIcon className='toggleIcon' icon={faToggleOn} aria-hidden="true" /> : <FontAwesomeIcon icon={faToggleOff} className='toggleIcon' aria-hidden="true" />}</button>
+                                                </form>
+                                        </li>
+                                        <li>
+                                                <h3 tabIndex={0} id="highlightLinkColorLabel">Highlight Link Color</h3>
+                                                <form onSubmit={(e) => e.preventDefault()}>
+                                                        <input aria-labelledby="highlightLinkColorLabel" type="color" name="highlight_links_color" value={tempVars.highlight_links_color} onChange={(e) => setTempVars({...tempVars, highlight_links_color: e.target.value})} className="colorInput"/>
+                                                        <button type="button" onClick={handleButtonAction(() => updateSettings({ highlight_links_color: tempVars.highlight_links_color }))} className="setBtn" aria-label="Set Highlight Link Color">set</button>
                                                 </form>
                                         </li>
                                 </>
@@ -445,7 +490,15 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                                         <button onClick={handleButtonAction(() => updateSettings({
                                                         font_size: "14px",
                                                         letter_spacing: "4.5px",
-                                                        contrast: "50%"
+                                                        contrast: "50%",
+                                                        background_color: "#FFFFF6",
+                                                        line_height: 2,
+                                                        align_text: "left",
+                                                        font: "Lexend",
+                                                        highlight_hover: false,
+                                                        highlight_links_color: "#8398EB",
+                                                        cursor_size: 5,
+                                                        word_spacing: "5px",
                                                         }))} data-testid="dyslexiaBtn">set</button>
                                                 </li>
                                                 <li className="disProfiles">
@@ -453,27 +506,46 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                                         <button onClick={handleButtonAction(() => updateSettings({
                                                         font_size: "16px",
                                                         letter_spacing: "2px",
-                                                        contrast: "200%"
+                                                        contrast: "200%",
+                                                        font: "Arimo",
+                                                        line_height: 1.5,
+                                                        align_text: "left",
+                                                        highlight_links: true,
+                                                        saturation: "200%",
+                                                        highlight_hover: true,
+                                                        highlight_hover_color: "#335CFF",
+                                                        cursor_size: 6,
+                                                        cursor_color:"#A42D2D",
+                                                        highlight_links_color: "#A42D2D",
+                                                        word_spacing: "3px",
                                                         }))} data-testid="visImpBtn">set</button>
                                                 </li>
                                                 <li className="disProfiles">
                                                         <label tabIndex={0}>Default</label>
                                                         <button onClick={handleButtonAction(() => updateSettings({
-                                                        font_size: "14px",
-                                                        letter_spacing: "0px",
-                                                        contrast: "100%",
-                                                        cursor_color: "#000000",
-                                                        cursor_size: 3,
-                                                        cursor_border_color: "#FFFFFF",
-                                                        background_color: "#FFEDED",
-                                                        foreground_color: "#4F0000",
-                                                        text_color: "#000000",
-                                                        highlight_hover: false,
-                                                        highlight_hover_color: "#BD180F",
-                                                        align_text: "center",
-                                                        saturation: "100%",
-                                                        font: "Mitr",
-                                                        }))} data-testid="defaultBtn">set</button>
+      highlight_links: false,
+      highlight_links_color: "#335CFF",
+      text_magnifier: false,
+      align_text: "center",
+      font_size: "14px",
+      line_height: 1.5,
+      letter_spacing: "0px",
+      contrast: "100%",
+      saturation: "100%",
+      mute_sounds: false,
+      highlight_hover: false,
+      highlight_keyboard_focus: false,
+      highlight_keyboard_focus_color: "#BD180F",
+      highlight_hover_color: "#BD180F",
+      cursor_size: 3,
+    cursor_color: "#000000",
+    cursor_border_color: "#FFFFFF",
+    background_color: "#FFEDED",
+    foreground_color: "#4F0000",
+    text_color: "#000000",
+    font: "Mitr",
+    word_spacing: "0px"
+}))} data-testid="defaultBtn">set</button>
                                                 </li>
                                                 </ul>
                                                 </li>
@@ -497,6 +569,19 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                                 <form onSubmit={(e) => e.preventDefault()}>
                                                         <input type="color" name="highlight_hover_color" value={tempVars.highlight_hover_color} onChange={(e) => setTempVars({...tempVars, highlight_hover_color: e.target.value})} className="colorInput" data-testid="highlightHoverInput"/>
                                                         <button type="button" onClick={handleButtonAction(() => updateSettings({ highlight_hover_color: tempVars.highlight_hover_color }))} className="setBtn" aria-label="Set Highlight Hover Color">set</button>
+                                                </form>
+                                        </li>
+                                        <li>
+                                                <h3 tabIndex={0}>Highlight Keyboard Focus</h3>
+                                                <form onSubmit={(e) => e.preventDefault()}>
+                                                        <button type="button" onClick={handleButtonAction(() => updateSettings({ highlight_keyboard_focus: !settings.highlight_keyboard_focus }))} className="toggleBtn" aria-label="Toggle Highlight Keyboard Focus">{settings.highlight_keyboard_focus === true ? <FontAwesomeIcon className='toggleIcon' icon={faToggleOn} aria-hidden="true" /> : <FontAwesomeIcon icon={faToggleOff} className='toggleIcon' aria-hidden="true" />}</button>
+                                                </form>
+                                        </li>
+                                        <li>
+                                                <h3 tabIndex={0}>Highlight Keyboard Focus Color</h3>
+                                                <form onSubmit={(e) => e.preventDefault()}>
+                                                        <input type="color" name="highlight_keyboard_focus_color" value={tempVars.highlight_keyboard_focus_color} onChange={(e) => setTempVars({...tempVars, highlight_keyboard_focus_color: e.target.value})} className="colorInput"/>
+                                                        <button type="button" onClick={handleButtonAction(() => updateSettings({ highlight_keyboard_focus_color: tempVars.highlight_keyboard_focus_color }))} className="setBtn" aria-label="Set Highlight Keyboard Focus Color">set</button>
                                                 </form>
                                         </li>
                                 </>
