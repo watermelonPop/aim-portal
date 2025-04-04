@@ -2,7 +2,14 @@ import { useEffect, useRef, useState, useMemo, useLayoutEffect} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faCheck, faArrowLeft} from '@fortawesome/free-solid-svg-icons';
 
-function ProfessorDashboard({ userInfo, setAlertMessage, setShowAlert, displayHeaderRef, settingsTabOpen, lastIntendedFocusRef }) {
+export const formatDate = (dateString) => {
+        console.log("FORMAT: ", dateString);
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        return isNaN(date.getTime()) ? '' : date.toISOString().split('T')[0];
+}
+
+export function ProfessorDashboard({ userInfo, setAlertMessage, setShowAlert, displayHeaderRef, settingsTabOpen, lastIntendedFocusRef }){
         const localRef = useRef(null);
         const headingRef = displayHeaderRef || localRef;
         const backBtnRef = useRef(null);
@@ -164,13 +171,6 @@ function ProfessorDashboard({ userInfo, setAlertMessage, setShowAlert, displayHe
                 }
                 return num;
         };
-
-        function formatDate(dateString) {
-                console.log("FORMAT: ", dateString);
-                if (!dateString) return '';
-                const date = new Date(dateString);
-                return isNaN(date.getTime()) ? '' : date.toISOString().split('T')[0];
-        }
 
         const acceptAccommodationRequest = async (request_id) => {
                 console.log("ACCEPTING");
