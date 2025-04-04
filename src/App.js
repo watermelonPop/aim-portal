@@ -216,7 +216,7 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
       ];
 
       updatedProfessorTabs = [
-        {name: 'Dashboard', elem: <Dash userInfo={userInfo}/>},
+        {name: 'Dashboard', elem: <Dash userInfo={userInfo} setAlertMessage={setAlertMessage} setShowAlert={setShowAlert}/>},
         {name: 'Accommodations', elem: <Accommodations userInfo={userInfo} setAlertMessage={setAlertMessage} setShowAlert={setShowAlert}/>},
         {name: 'Testing', elem: <Testing userInfo={userInfo}/>},
         {name: 'Note Taking',elem: <NoteTaking userInfo={userInfo}/>},
