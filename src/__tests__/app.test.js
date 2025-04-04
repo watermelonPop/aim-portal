@@ -1,14 +1,190 @@
 import React, { useState } from 'react';
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act, createEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import * as AppModule from '../App';
-import App from '../App';
+import { App } from '../App';
 import { axe, toHaveNoViolations } from 'jest-axe';
 
 // Mock the fetch function
 global.fetch = jest.fn();
 expect.extend(toHaveNoViolations);
 jest.useFakeTimers();
+
+test('pressing Enter or Space on paragraph triggers anchor click via keydown', () => {
+  render(
+    <p
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          e.currentTarget.querySelector('a')?.click();
+        }
+      }}
+    >
+      Website:{' '}
+      <a
+        href="https://disability.tamu.edu/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        https://disability.tamu.edu/
+      </a>
+    </p>
+  );
+
+  const paragraph = screen.getByText(/Website:/i).closest('p');
+  const link = paragraph.querySelector('a');
+
+  const linkClickSpy = jest.spyOn(link, 'click');
+
+  // Simulate Enter key press
+  const enterEvent = createEvent.keyDown(paragraph, { key: 'Enter' });
+  enterEvent.preventDefault = jest.fn();
+  fireEvent(paragraph, enterEvent);
+
+  expect(enterEvent.preventDefault).toHaveBeenCalled();
+  expect(linkClickSpy).toHaveBeenCalledTimes(1);
+
+  // Reset
+  linkClickSpy.mockClear();
+
+  // Simulate Space key press
+  const spaceEvent = createEvent.keyDown(paragraph, { key: ' ' });
+  spaceEvent.preventDefault = jest.fn();
+  fireEvent(paragraph, spaceEvent);
+
+  expect(spaceEvent.preventDefault).toHaveBeenCalled();
+  expect(linkClickSpy).toHaveBeenCalledTimes(1);
+
+  linkClickSpy.mockRestore();
+});
+
+
+
+test('clicking settings button sets hasManuallyOpenedSettings and opens settings panel', async () => {
+  await act(async () => {
+    render(<App />);
+  });
+
+  await act(async () => {
+    App.setUserInfo({ id: '123', role: 'USER' });
+    App.setLoggedIn(true);
+    App.setUserConnected(true);
+  });
+
+  // Ensure settings is initially closed
+  expect(document.body.classList.contains('modal-open')).toBe(false);
+
+  // Click the settings button
+  const settingsBtn = screen.getByTestId('settingsBtn');
+  await act(async () => {
+    fireEvent.click(settingsBtn);
+  });
+
+  // Wait for the effect to apply
+  expect(document.body.classList.contains('modal-open')).toBe(true);
+});
+
+
+describe('App updateSettings behavior with timeout', () => {
+  const customSettings = {
+    font_size: '18px',
+    letter_spacing: '2px',
+    word_spacing: '3px',
+    contrast: '150%',
+    background_color: '#000000',
+    foreground_color: '#ffffff',
+    text_color: '#333333',
+    highlight_hover_color: '#ff0',
+    highlight_keyboard_focus_color: '#f00',
+    highlight_links_color: '#00f',
+    saturation: '120%',
+    font: 'Arial',
+    line_height: 2,
+    align_text: 'center',
+    highlight_hover: true,
+    highlight_links: true,
+    highlight_keyboard_focus: true,
+    cursor_color: '#000',
+    cursor_border_color: '#fff',
+    cursor_size: 2,
+  };
+
+  beforeEach(() => {
+    document.body.className = '';
+    document.documentElement.style = '';
+  });
+
+  afterEach(() => {
+    jest.clearAllTimers();
+    jest.clearAllMocks();
+  });
+
+  test('sets custom properties and classes after settings change with timeout', async () => {
+    await act(async () => {
+      render(<App />);
+    });
+
+    await act(async () => {
+      App.setUserInfo({ id: '123', role: 'USER' });
+      App.setLoggedIn(true);
+      App.setUserConnected(true);
+      App.setSettings(customSettings);
+    });
+
+    // Fast-forward time to let the setTimeout fire
+    act(() => {
+      jest.runAllTimers();
+    });
+
+    expect(document.documentElement.style.getPropertyValue('--txtSize')).toBe('18px');
+    expect(document.documentElement.style.getPropertyValue('--letterSpacing')).toBe('2px');
+    expect(document.documentElement.style.getPropertyValue('--word-spacing')).toBe('3px');
+    expect(document.documentElement.style.getPropertyValue('--contrast')).toBe('150%');
+    expect(document.documentElement.style.getPropertyValue('--background-color')).toBe('#000000');
+    expect(document.documentElement.style.getPropertyValue('--foreground-color')).toBe('#ffffff');
+    expect(document.documentElement.style.getPropertyValue('--text-color')).toBe('#333333');
+    expect(document.documentElement.style.getPropertyValue('--highlight-hover-color')).toBe('#ff0');
+    expect(document.documentElement.style.getPropertyValue('--highlight-keyboard-focus-color')).toBe('#f00');
+    expect(document.documentElement.style.getPropertyValue('--highlight-links-color')).toBe('#00f');
+    expect(document.documentElement.style.getPropertyValue('--saturation')).toBe('120%');
+    expect(document.documentElement.style.getPropertyValue('--font')).toBe('Arial');
+    expect(document.documentElement.style.getPropertyValue('--line-height')).toBe('2');
+    expect(document.documentElement.style.getPropertyValue('--align-text')).toBe('center');
+
+    expect(document.body.classList.contains('align-center')).toBe(true);
+    expect(document.body.classList.contains('highlight-hover-enabled')).toBe(true);
+    expect(document.body.classList.contains('highlight-links-enabled')).toBe(true);
+    expect(document.body.classList.contains('highlight-keyboard-focus-enabled')).toBe(true);
+  });
+
+  test('removes highlight classes when settings are false', async () => {
+    await act(async () => {
+      render(<App />);
+    });
+  
+    await act(async () => {
+      App.setUserInfo({ id: '123', role: 'USER' });
+      App.setLoggedIn(true);
+      App.setUserConnected(true);
+      App.setSettings({
+        ...customSettings,
+        highlight_hover: false,
+        highlight_links: false,
+        highlight_keyboard_focus: false,
+      });
+    });
+  
+    act(() => {
+      jest.runAllTimers();
+    });
+  
+    expect(document.body.classList.contains('highlight-hover-enabled')).toBe(false);
+    expect(document.body.classList.contains('highlight-links-enabled')).toBe(false);
+    expect(document.body.classList.contains('highlight-keyboard-focus-enabled')).toBe(false);
+  });
+  
+});
 
 describe('Accessibility Tests', () => {
         beforeAll(() => {
@@ -168,6 +344,70 @@ describe('Dynamic tab initialization based on user role', () => {
           uin: '123456789',
           phone_number: '1234567890',
         };
+
+        test('focuses loading screen element when loading is true', async () => {
+          const focusSpy = jest.fn();
+        
+          const loadingDiv = document.createElement('div');
+          loadingDiv.className = 'loadingScreen';
+          loadingDiv.focus = focusSpy;
+          document.body.appendChild(loadingDiv);
+        
+          await act(async () => {
+            App.setLoggedIn(true);
+            App.setUserConnected(true);
+            App.setSettingsTabOpen(false);
+            App.setTabs([{ name: 'Dashboard', elem: <div>Dashboard</div> }]);
+            App.setShowAlert(false);
+            App.setUserInfo({ id: '1', role: 'USER' });
+          });
+        
+          render(<App />);
+        
+          await act(async () => {
+            App.setSettings((prev) => ({ ...prev }));
+          });
+        
+          expect(focusSpy).toHaveBeenCalled();
+        });
+
+        test('clicking tab sets it as currentTab', async () => {
+          render(<App/>);
+          await act(async () => {
+          App.setTabs([
+            { name: 'Dashboard', elem: <div>Dashboard View</div> },
+            { name: 'Accommodations', elem: <div>Accommodations View</div> },
+          ]);
+          App.setCurrentTab({ name: 'Dashboard', elem: <div>Dashboard View</div> });
+          App.setLoggedIn(true);
+          App.setUserConnected(true);
+          App.setUserInfo({ id: 1, role: 'USER' });
+          });
+      
+          const accommodationsTab = screen.getByRole('tab', { name: 'Accommodations' });
+          fireEvent.click(accommodationsTab);
+      
+          expect(App.currentTab.name).toBe('Accommodations');
+        });
+
+        test('pressing Enter triggers setCurrentTab', async() => {
+          render(<App/>);
+          await act(async () => {
+          App.setTabs([
+            { name: 'Dashboard', elem: <div>Dashboard View</div> },
+            { name: 'Accommodations', elem: <div>Accommodations View</div> },
+          ]);
+          App.setCurrentTab({ name: 'Dashboard', elem: <div>Dashboard View</div> });
+          App.setLoggedIn(true);
+          App.setUserConnected(true);
+          App.setUserInfo({ id: 1, role: 'USER' });
+        });
+      
+          const accommodationsTab = screen.getByRole('tab', { name: 'Accommodations' });
+          fireEvent.keyDown(accommodationsTab, { key: 'Enter', code: 'Enter' });
+      
+          expect(App.currentTab.name).toBe('Accommodations');
+        });
       
         test('sets USER tabs correctly', async () => {
           global.fetch = jest.fn((url) => {

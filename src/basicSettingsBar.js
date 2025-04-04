@@ -113,6 +113,7 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                         <h2
                         className="visuallyFocusedHeading"
                         tabIndex={0}
+                        data-testid="settingsTitle"
                         >
                         Settings
                         </h2>
@@ -155,7 +156,7 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                 ) : selectedCategory === "Text" ? (
                                 <>
                                         <li id="backSettingPanelOuter">
-                                                <button ref={backBtnRef} aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)}>
+                                                <button data-testid="backBtn" ref={backBtnRef} aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)}>
                                                         <FontAwesomeIcon icon={faArrowLeft} aria-hidden="true" />
                                                 </button>
                                                 <h3 tabIndex={0}>Text</h3>
@@ -355,7 +356,7 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                         )  : selectedCategory === "Visuals" ? (
                                 <>
                                         <li id="backSettingPanelOuter">
-                                                <button ref={backBtnRef} aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)} data-testid="backBtn">
+                                                <button data-testid="backBtn" ref={backBtnRef} aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)}>
                                                         <FontAwesomeIcon icon={faArrowLeft} aria-hidden="true" />
                                                 </button>
                                                 <h3 tabIndex={0}>Visuals</h3>
@@ -413,7 +414,7 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                         )  : selectedCategory === "Cursor" ? (
                                 <>
                                         <li id="backSettingPanelOuter">
-                                                <button ref={backBtnRef} aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)}>
+                                                <button data-testid="backBtn" ref={backBtnRef} aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)}>
                                                         <FontAwesomeIcon icon={faArrowLeft} aria-hidden="true" />
                                                 </button>
                                                 <h3 tabIndex={0}>Cursor</h3>
@@ -453,7 +454,7 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                         )  : selectedCategory === "Audio" ? (
                                 <>
                                         <li id="backSettingPanelOuter">
-                                                <button ref={backBtnRef} aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)}>
+                                                <button data-testid="backBtn" ref={backBtnRef} aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)}>
                                                         <FontAwesomeIcon icon={faArrowLeft} aria-hidden="true" />
                                                 </button>
                                                 <h3 tabIndex={0}>Audio</h3>
@@ -478,7 +479,7 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                         )  : selectedCategory === "Profiles" ? (
                                 <>
                                         <li id="backSettingPanelOuter">
-                                                <button ref={backBtnRef} aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)}>
+                                                <button data-testid="backBtn" ref={backBtnRef} aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)}>
                                                         <FontAwesomeIcon icon={faArrowLeft} aria-hidden="true" />
                                                 </button>
                                                 <h3 tabIndex={0}>Accessibility Profiles</h3>
@@ -553,7 +554,7 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                         )  : selectedCategory === "Interactions" ? (
                                 <>
                                         <li id="backSettingPanelOuter">
-                                                <button ref={backBtnRef} aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)}>
+                                                <button data-testid="backBtn" ref={backBtnRef} aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)}>
                                                         <FontAwesomeIcon icon={faArrowLeft} aria-hidden="true" />
                                                 </button>
                                                 <h3 tabIndex={0}>Interactions</h3>
@@ -580,7 +581,7 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                         <li>
                                                 <h3 tabIndex={0}>Highlight Keyboard Focus Color</h3>
                                                 <form onSubmit={(e) => e.preventDefault()}>
-                                                        <input type="color" name="highlight_keyboard_focus_color" value={tempVars.highlight_keyboard_focus_color} onChange={(e) => setTempVars({...tempVars, highlight_keyboard_focus_color: e.target.value})} className="colorInput"/>
+                                                        <input data-testid="highlightKeyboardFocusColorInput" type="color" name="highlight_keyboard_focus_color" value={tempVars.highlight_keyboard_focus_color} onChange={(e) => setTempVars({...tempVars, highlight_keyboard_focus_color: e.target.value})} className="colorInput"/>
                                                         <button type="button" onClick={handleButtonAction(() => updateSettings({ highlight_keyboard_focus_color: tempVars.highlight_keyboard_focus_color }))} className="setBtn" aria-label="Set Highlight Keyboard Focus Color">set</button>
                                                 </form>
                                         </li>

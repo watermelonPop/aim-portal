@@ -639,6 +639,7 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
   App.getUser = getUser;
   App.checkAccountConnected = checkAccountConnected;
   App.setSettingsDatabase = setSettingsDatabase;
+  App.setCurrentTab = setCurrentTab;
 
   return (
     <>
