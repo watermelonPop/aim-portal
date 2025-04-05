@@ -480,6 +480,7 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
         ref={(el) => {
           refs.current.tabNav = el;
         }}
+        id="mainContent"
       >
         {tabs.map((tab, index) => (
           <a

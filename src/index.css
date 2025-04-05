@@ -2318,3 +2318,18 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
   color: var(--background-color);
   border-color: var(--background-color);
 }
+
+.skip-to-content {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--foreground-color);
+  color: var(--background-color);
+  padding: 8px 16px;
+  z-index: 1000;
+  text-decoration: none;
+  font-weight: bold;
+}
+.skip-to-content:focus {
+  top: 0;
+}
