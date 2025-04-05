@@ -1,36 +1,8 @@
-
 import { useState, useEffect, useRef } from 'react';
 
-//
-/*
-Test cases:
- - cannot access if does not have global settings permission
- - cannot change your own global settings permissions
- - all advisors accounted for
- - changes to advisors are accounted for
- - bad search results in no advisors found.
-*/
-
-function GlobalSettings({displayHeaderRef, settingsTabOpen, lastIntendedFocusRef}) {
-  /* 
-  //DONE
-  step 0: create permissions in the neon
-  
-  step 1: get all advisors on mount
-    1.1: NO NEED TO DEBOUNCE
-    1.2: format: userId, Role, Name
-    1.3: maybe include a loading spinner if wait time is too long?
-  step 2: sort through all advisors based on searchquery
-  step 3: display the first 9 advisors in card view
-    3.1 no need for pagination in the query, just use a local pagination scheme
-  step 4: if you click the card view, then you open an advisor's information. MAKE QUERY CALL HERE FOR PERMISSIONS
-  step 5: if you decide to change advisor's perms, MAKE UPDATE QUERY CALL HERE FOR PERMISSIONS
-    5.1 NO NEED TO DEBOUNCE, JUST INCLUDE A SAVE BUTTON
-
-  */
-
+function GlobalSettings({ displayHeaderRef, settingsTabOpen, lastIntendedFocusRef }) {
   const [advisorList, setAdvisorList] = useState([]);
-  const [loaded, setLoaded] = useState(false)
+  const [loaded, setLoaded] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
@@ -39,66 +11,55 @@ function GlobalSettings({displayHeaderRef, settingsTabOpen, lastIntendedFocusRef
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState('');
   const localRef = useRef(null);
-          
-              // If ref is passed in (from parent), use that. Otherwise use internal.
-              const headingRef = displayHeaderRef || localRef;
-          
-              useEffect(() => {
-                  if (!headingRef.current || settingsTabOpen === true) return;
-                
-                  if (lastIntendedFocusRef?.current !== headingRef.current) {
-                      lastIntendedFocusRef.current = headingRef.current;
-                  }
-              }, [settingsTabOpen, headingRef]);
-                
-              useEffect(() => {
-                  if (!headingRef.current || settingsTabOpen === true) return;
-                
-                  const frame = requestAnimationFrame(() => {
-                    const isAlertOpen = document.querySelector('[data-testid="alert"]') !== null;
-                
-                    if (
-                      headingRef.current &&
-                      !isAlertOpen &&
-                      document.activeElement !== headingRef.current &&
-                      lastIntendedFocusRef.current === headingRef.current
-                    ) {
-                      console.log("FOCUSING DASH");
-                      console.log("Intent:", lastIntendedFocusRef.current, "Target:", headingRef.current);
-                      headingRef.current.focus();
-                      lastIntendedFocusRef.current = null;
-                    }
-                  });
-                
-                  return () => cancelAnimationFrame(frame);
-          }, [settingsTabOpen, headingRef]);
 
+  const headingRef = displayHeaderRef || localRef;
 
-  //============================================ USEFFECT STARTS HERE ============================================
-  //============================================ USEFFECT STARTS HERE ============================================
-  //============================================ USEFFECT STARTS HERE ============================================
-  
   useEffect(() => {
-    async function fetchAdv(){
+    if (!headingRef.current || settingsTabOpen === true) return;
+    if (lastIntendedFocusRef?.current !== headingRef.current) {
+      lastIntendedFocusRef.current = headingRef.current;
+    }
+  }, [settingsTabOpen, headingRef]);
+
+  useEffect(() => {
+    if (!headingRef.current || settingsTabOpen === true) return;
+    const frame = requestAnimationFrame(() => {
+      const isAlertOpen = document.querySelector('[data-testid="alert"]') !== null;
+      if (
+        headingRef.current &&
+        !isAlertOpen &&
+        document.activeElement !== headingRef.current &&
+        lastIntendedFocusRef.current === headingRef.current
+      ) {
+        console.log("FOCUSING DASH");
+        console.log("Intent:", lastIntendedFocusRef.current, "Target:", headingRef.current);
+        headingRef.current.focus();
+        lastIntendedFocusRef.current = null;
+      }
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [settingsTabOpen, headingRef]);
+
+  useEffect(() => {
+    async function fetchAdv() {
       fetch(`/api/getAdvisors`)
-      .then(response => response.json())
-      .then(data=>{ 
-        setAdvisorList(data.advisors || []);
-        setCurrentPage(0);
-        setTotalPages(Math.ceil(data.advisors.length/9));
-        setLoaded(true);
-      })
-      .catch(error => console.error('error fetching advisors',error));
+        .then(response => response.json())
+        .then(data => {
+          setAdvisorList(data.advisors || []);
+          setCurrentPage(0);
+          setTotalPages(Math.ceil((data.advisors || []).length / 9));
+          setLoaded(true);
+        })
+        .catch(error => console.error('error fetching advisors', error));
     }
-      fetchAdv();
-  },[]);
+    fetchAdv();
+  }, []);
 
-  useEffect(()=>{
-    if(loaded){
-      console.log("advisorList:",advisorList);
-
+  useEffect(() => {
+    if (loaded) {
+      console.log("advisorList:", advisorList);
     }
-  },[loaded]);
+  }, [loaded]);
 
   useEffect(() => {
     if (loaded) {
@@ -111,20 +72,16 @@ function GlobalSettings({displayHeaderRef, settingsTabOpen, lastIntendedFocusRef
     }
   }, [searchQuery, advisorList, loaded]);
 
-  //============================================ SCREEN OBJECTS STARTS HERE ============================================
-  //============================================ SCREEN OBJECTS STARTS HERE ============================================
-  //============================================ SCREEN OBJECTS STARTS HERE ============================================
-
   function CardView({ advisors, skip, take }) {
     const gridContainerStyle = {
       display: 'grid',
       gridTemplateColumns: 'repeat(3, 28vw)',
-      gridAutoRows: '20vh', 
+      gridAutoRows: '20vh',
       gap: '16px',
       padding: '16px',
       justifyContent: 'center'
     };
-    
+
     const cardStyle = {
       border: '1px solid #ccc',
       borderRadius: '8px',
@@ -136,18 +93,18 @@ function GlobalSettings({displayHeaderRef, settingsTabOpen, lastIntendedFocusRef
       textAlign: 'center',
       overflow: 'hidden'
     };
-    
+
     const nameStyle = {
       margin: '0 0 8px',
       fontSize: '1.2em'
     };
-    
+
     const emailStyle = {
       margin: 0,
       fontSize: '0.9em',
       color: '#555'
     };
-    
+
     const roleStyle = {
       margin: 0,
       fontSize: '0.7em',
@@ -161,26 +118,22 @@ function GlobalSettings({displayHeaderRef, settingsTabOpen, lastIntendedFocusRef
     const handleCardClick = (advisor) => {
       setSelectedAdvisor(advisor);
     };
-    let displayedAdvisors = [];
-    if(searchQuery == ""){
-      displayedAdvisors = advisorList.slice(skip, take);
-    } 
-    else{
-      displayedAdvisors = advisors.slice(skip, take);
-    }
-  
+
+    let displayedAdvisors = searchQuery === "" ? advisorList.slice(skip, take) : advisors.slice(skip, take);
+
     return (
       <div style={gridContainerStyle}>
         {displayedAdvisors.map(advisor => (
-          <div 
-              key={advisor.id} // Key is here
-              style={cardStyle}
-              onClick={() => handleCardClick(advisor)}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') handleCardClick(advisor);
-              }}
+          <div
+            key={advisor.id}
+            style={cardStyle}
+            onClick={() => handleCardClick(advisor)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') handleCardClick(advisor);
+            }}
+            aria-label={`Advisor card for ${advisor.account.name}, email: ${advisor.account.email}, role: ${advisor.role}`}
           >
             <h3 style={nameStyle}>{advisor.account.name}</h3>
             <p style={emailStyle}>{advisor.account.email}</p>
@@ -188,40 +141,35 @@ function GlobalSettings({displayHeaderRef, settingsTabOpen, lastIntendedFocusRef
           </div>
         ))}
       </div>
-    );  
+    );
   }
 
-  //============================================ PAGINATION BUTTONS ============================================
   function PaginationButtons() {
-    const onPageChange = (page_update) =>{
-      if(page_update < 0){
-        if(currentPage != 0){
-          setCurrentPage(currentPage-1);
+    const onPageChange = (page_update) => {
+      if (page_update < 0) {
+        if (currentPage !== 0) {
+          setCurrentPage(currentPage - 1);
+        }
+      } else {
+        if (currentPage !== totalPages - 1) {
+          setCurrentPage(currentPage + 1);
         }
       }
-      else{
-        if(currentPage != totalPages - 1){
-          setCurrentPage(currentPage+1);
-        }
-      }
+    };
 
-      // console.log("currentPage: ", currentPage);
-      // console.log("totalPages: ", totalPages);
-
-    }
-    
     return (
       <div className="pagination-buttons" style={{ display: 'flex', justifyContent: 'center', gap: '8px', padding: '16px' }}>
-        <button 
-          onClick={() => onPageChange(-1)} 
+        <button
+          onClick={() => onPageChange(-1)}
           disabled={currentPage === 0}
+          aria-label="Previous page"
         >
           Prev
         </button>
-        
-        <button 
-          onClick={() => onPageChange(1)} 
-          disabled={currentPage === totalPages-1}
+        <button
+          onClick={() => onPageChange(1)}
+          disabled={currentPage === totalPages - 1}
+          aria-label="Next page"
         >
           Next
         </button>
@@ -229,32 +177,32 @@ function GlobalSettings({displayHeaderRef, settingsTabOpen, lastIntendedFocusRef
     );
   }
 
-  //============================================ ADVISOR CARD ============================================
-  
   function AdvisorCard({ advisor, onClose }) {
-    // Assume advisor.permissions holds an array of permission strings (or set an empty array if not available)
-    //use selectedAdvisor an 
-    const temp_advisor_perms = [advisor.global_settings, advisor.accessible_testing_modules, advisor.accomodation_modules, advisor.assistive_technology_modules, advisor.note_taking_modules, advisor.student_case_information];
-    const [permissions, setPermissions] = useState( [...temp_advisor_perms] || []);
-    
-    //redo permissions
-    
-  
-    // Example available permissions; in a real app this might come from your backend or context
-    const availablePermissions = ['Global Settings', 'Accessible Testing', 'Accommodation Modules', 'Assistive Technologies', 'Note Taking Modules', 'Student Case Information'];
+    const temp_advisor_perms = [
+      advisor.global_settings,
+      advisor.accessible_testing_modules,
+      advisor.accomodation_modules,
+      advisor.assistive_technology_modules,
+      advisor.note_taking_modules,
+      advisor.student_case_information
+    ];
+    const [permissions, setPermissions] = useState([...temp_advisor_perms] || []);
 
-    //let curr_advisor_perms = [advisor.global_settings, advisor.accessible_testing_modules, advisor.accomodation_modules, advisor.assistive_technology_modules, advisor.note_taking_modules, advisor.student_case_information];
-    // const onClose = () => {};
-    // console.log("CURRADVISORPERMS:",permissions);
-
+    const availablePermissions = [
+      'Global Settings',
+      'Accessible Testing',
+      'Accommodation Modules',
+      'Assistive Technologies',
+      'Note Taking Modules',
+      'Student Case Information'
+    ];
 
     const handleCheckboxChange = (perm_no) => {
-        let new_perms = [...permissions];
-        new_perms[perm_no] = !new_perms[perm_no];
-        setPermissions(new_perms);
-        // console.log("updated permissions after checkbox change:",permissions);
+      let new_perms = [...permissions];
+      new_perms[perm_no] = !new_perms[perm_no];
+      setPermissions(new_perms);
     };
-  
+
     const handleSave = () => {
       setIsSaving(true);
       setSelectedAdvisor(prev => ({
@@ -263,11 +211,9 @@ function GlobalSettings({displayHeaderRef, settingsTabOpen, lastIntendedFocusRef
         accessible_testing_modules: permissions[1],
         accomodation_modules: permissions[2],
         assistive_technology_modules: permissions[3],
-        note_taking_modules:  permissions[4],
+        note_taking_modules: permissions[4],
         student_case_information: permissions[5],
       }));
-      //setLoaded(false);
-      // Update permissions to the database via your API endpoint
       fetch(`/api/updateAdvisors`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -275,11 +221,8 @@ function GlobalSettings({displayHeaderRef, settingsTabOpen, lastIntendedFocusRef
       })
         .then(response => response.json())
         .then(data => {
-          // console.log('Permissions updated:', data);
           setIsSaving(false);
-          // Optionally update advisor in parent state here
           setAdvisorList(prevList => {
-            // Create a new array from the previous state
             const updatedList = [...prevList];
             const index = updatedList.findIndex(item => item.userId === advisor.userId);
             if (index !== -1) {
@@ -289,28 +232,23 @@ function GlobalSettings({displayHeaderRef, settingsTabOpen, lastIntendedFocusRef
                 accessible_testing_modules: permissions[1],
                 accomodation_modules: permissions[2],
                 assistive_technology_modules: permissions[3],
-                note_taking_modules:  permissions[4],
+                note_taking_modules: permissions[4],
                 student_case_information: permissions[5],
               };
             }
             return updatedList;
           });
-
           setSaveSuccess('Settings saved successfully!');
-          // Clear the message after 3 seconds
           setTimeout(() => {
             setSaveSuccess('');
           }, 3000);
-          // const updatedAdvisor = advisorList.find(item => item.userId === advisor.userId);
-          // setSelectedAdvisor(updatedAdvisor);
-          //onClose(); // Close the detailed card view after saving
         })
         .catch(error => {
           console.error('Error updating permissions:', error);
           setIsSaving(false);
         });
     };
-  
+
     const detailCardStyle = {
       border: '2px solid #333',
       borderRadius: '8px',
@@ -318,16 +256,18 @@ function GlobalSettings({displayHeaderRef, settingsTabOpen, lastIntendedFocusRef
       margin: '20px',
       textAlign: 'center'
     };
-  
+
     return (
       <div style={detailCardStyle}>
-        <h2>{advisor.account.name}</h2>
-        <p>ID: {advisor.userId}</p>
-        <p>Email: {advisor.account.email}</p>
-        <p>Role: {advisor.role}</p>
+        <h2 tabIndex={0} aria-label={`Details for advisor ${advisor.account.name}`}>
+          {advisor.account.name}
+        </h2>
+        <p aria-label={`Advisor ID: ${advisor.userId}`}>ID: {advisor.userId}</p>
+        <p aria-label={`Advisor email: ${advisor.account.email}`}>Email: {advisor.account.email}</p>
+        <p aria-label={`Advisor role: ${advisor.role}`}>Role: {advisor.role}</p>
         <h3>Permissions</h3>
         <div style={{ textAlign: 'left', display: 'inline-block' }}>
-          {availablePermissions.map((perm) => (
+          {availablePermissions.map((perm, index) => (
             <label
               key={perm}
               style={{
@@ -342,31 +282,25 @@ function GlobalSettings({displayHeaderRef, settingsTabOpen, lastIntendedFocusRef
                   transform: 'scale(1.8)',
                   marginRight: '8px'
                 }}
-                checked={permissions[availablePermissions.indexOf(perm)]}
-                onChange={() => handleCheckboxChange(availablePermissions.indexOf(perm))}
+                checked={permissions[index]}
+                onChange={() => handleCheckboxChange(index)}
+                aria-label={`Permission ${perm}`}
               />
               {perm}
             </label>
           ))}
         </div>
-        
-
-        <div
-          style={{
-            marginTop: '20px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center'
-          }}
-        >
+        <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '8px' }}>
-            <button onClick={handleSave} disabled={isSaving} style={{ marginRight: '16px' }}>
+            <button onClick={handleSave} disabled={isSaving} style={{ marginRight: '16px' }} aria-label="Save permissions">
               {isSaving ? 'Saving...' : 'Save'}
             </button>
-            <button onClick={onClose}>Back to Results</button>
+            <button onClick={onClose} aria-label="Go back to advisor search results">
+              Back to Results
+            </button>
           </div>
           {saveSuccess && (
-            <p style={{ color: 'green', margin: 0 }}>
+            <p style={{ color: 'green', margin: 0 }} aria-live="polite">
               {saveSuccess}
             </p>
           )}
@@ -375,36 +309,30 @@ function GlobalSettings({displayHeaderRef, settingsTabOpen, lastIntendedFocusRef
     );
   }
 
-  //============================================ RETURN STARTS HERE ============================================
-  //============================================ RETURN STARTS HERE ============================================
-  //============================================ RETURN STARTS HERE ============================================
-  
-
   return (
     <div className="global-settings">
-      <div> {/* Title */}
-        <h2 ref={headingRef}
-                        tabIndex={0}>Advisor Lookup and Access Control </h2>
+      <div>
+        <h2 ref={headingRef} tabIndex={0} aria-label="Advisor Lookup and Access Control">
+          Advisor Lookup and Access Control
+        </h2>
       </div>
-
-      <div> {/* Searchbar */}
-          <input 
-            type="text"
-            placeholder="Enter Advisor Name..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
+      <div>
+        <input 
+          type="text"
+          placeholder="Enter Advisor Name..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          aria-label="Search for an advisor by name"
+        />
       </div>
-
-      <div> {/* Card View Title */}
-      {selectedAdvisor ? (
-        <h2>Edit Advisor Permissions:</h2>  
-      ):(
-        <h2>Search Results:</h2>  
-      )}
+      <div>
+        {selectedAdvisor ? (
+          <h2 tabIndex={0} aria-label="Edit Advisor Permissions">Edit Advisor Permissions:</h2>
+        ) : (
+          <h2 tabIndex={0} aria-label="Advisor Search Results">Search Results:</h2>
+        )}
       </div>
-
-      <div> {/* Card View */}
+      <div>
         {selectedAdvisor ? (
           <AdvisorCard 
             advisor={selectedAdvisor} 
@@ -412,21 +340,19 @@ function GlobalSettings({displayHeaderRef, settingsTabOpen, lastIntendedFocusRef
           />
         ) : (
           <CardView 
-            advisors = {searchResults}
-            skip = {currentPage * 9}
-            take = {(currentPage + 1) * 9}
+            advisors={searchResults}
+            skip={currentPage * 9}
+            take={(currentPage + 1) * 9}
           />
         )}
       </div>
-
       <div>
-      {selectedAdvisor ? null : (
-        <PaginationButtons/>
-      )}
+        {selectedAdvisor ? null : (
+          <PaginationButtons/>
+        )}
       </div>
     </div>
   );
-
 }
 
 export default GlobalSettings;
