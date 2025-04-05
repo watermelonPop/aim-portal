@@ -4,14 +4,12 @@ import StudentTesting from './student/studentTesting';
 import ProfessorTesting from './professor/professorTesting';
 import StaffTesting from './staff/staffTesting';
 
-import StaffTesting from "./staff/staffTesting.js"
-
-function Testing({userInfo}) {
+function Testing({userInfo, displayHeaderRef, settingsTabOpen, lastIntendedFocusRef }) {
         return (
             <main className='dashboardOuter'>
                 {userInfo.role === "STUDENT" && <p className='dashboardTitle'>STUDENT TESTING</p>}
                 {userInfo.role === "PROFESSOR" && <p className='dashboardTitle'>PROFESSOR TESTING</p>}
-                {userInfo.role === "ADVISOR" && <StaffTesting userId={userInfo.userId}/>}
+                {userInfo.role === "ADVISOR" && <StaffTesting userInfo={userInfo}displayHeaderRef={displayHeaderRef} settingsTabOpen={settingsTabOpen} lastIntendedFocusRef={lastIntendedFocusRef}/>}
             </main>
         );
 }
