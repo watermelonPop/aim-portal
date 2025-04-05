@@ -210,6 +210,8 @@ export default function StudentDashboard({ userInfo, displayHeaderRef, settingsT
                   href={`mailto:${selectedCourse.professor?.account?.email}?subject=${selectedCourse.name} Inquiry`}
                   className="emailButton"
                   tabIndex={0}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Contact
                 </a>
