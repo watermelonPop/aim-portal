@@ -1,8 +1,7 @@
-// StudentDashboard.jsx
 import React, { useEffect, useState, useRef } from 'react';
 import AlertsArea from '../AlertsArea'; // Import the alerts component
 
-export default function StudentDashboard({userInfo, displayHeaderRef, settingsTabOpen, lastIntendedFocusRef }) {
+export default function StudentDashboard({ userInfo, displayHeaderRef, settingsTabOpen, lastIntendedFocusRef }) {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(false);
   const [viewMode, setViewMode] = useState('card');
@@ -10,39 +9,34 @@ export default function StudentDashboard({userInfo, displayHeaderRef, settingsTa
   const [selectedCourse, setSelectedCourse] = useState(null);
 
   const localRef = useRef(null);
-          
-              // If ref is passed in (from parent), use that. Otherwise use internal.
-              const headingRef = displayHeaderRef || localRef;
-          
-              useEffect(() => {
-                  if (!headingRef.current || settingsTabOpen === true) return;
-                
-                  if (lastIntendedFocusRef?.current !== headingRef.current) {
-                      lastIntendedFocusRef.current = headingRef.current;
-                  }
-              }, [settingsTabOpen, headingRef]);
-                
-              useEffect(() => {
-                  if (!headingRef.current || settingsTabOpen === true) return;
-                
-                  const frame = requestAnimationFrame(() => {
-                    const isAlertOpen = document.querySelector('[data-testid="alert"]') !== null;
-                
-                    if (
-                      headingRef.current &&
-                      !isAlertOpen &&
-                      document.activeElement !== headingRef.current &&
-                      lastIntendedFocusRef.current === headingRef.current
-                    ) {
-                      console.log("FOCUSING DASH");
-                      console.log("Intent:", lastIntendedFocusRef.current, "Target:", headingRef.current);
-                      headingRef.current.focus();
-                      lastIntendedFocusRef.current = null;
-                    }
-                  });
-                
-                  return () => cancelAnimationFrame(frame);
-    }, [settingsTabOpen, headingRef]);
+  // If ref is passed in (from parent), use that. Otherwise use internal.
+  const headingRef = displayHeaderRef || localRef;
+
+  useEffect(() => {
+    if (!headingRef.current || settingsTabOpen === true) return;
+    if (lastIntendedFocusRef?.current !== headingRef.current) {
+      lastIntendedFocusRef.current = headingRef.current;
+    }
+  }, [settingsTabOpen, headingRef]);
+
+  useEffect(() => {
+    if (!headingRef.current || settingsTabOpen === true) return;
+    const frame = requestAnimationFrame(() => {
+      const isAlertOpen = document.querySelector('[data-testid="alert"]') !== null;
+      if (
+        headingRef.current &&
+        !isAlertOpen &&
+        document.activeElement !== headingRef.current &&
+        lastIntendedFocusRef.current === headingRef.current
+      ) {
+        console.log("FOCUSING DASH");
+        console.log("Intent:", lastIntendedFocusRef.current, "Target:", headingRef.current);
+        headingRef.current.focus();
+        lastIntendedFocusRef.current = null;
+      }
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [settingsTabOpen, headingRef]);
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -68,11 +62,20 @@ export default function StudentDashboard({userInfo, displayHeaderRef, settingsTa
   return (
     <div className="studentDashboard">
       <div className="leftColumn">
-        <h2 ref={headingRef}
-                        tabIndex={0}>Welcome, {userInfo?.name || 'Student'}</h2>
+        <h2 ref={headingRef} tabIndex={0}>Welcome, {userInfo?.name || 'Student'}</h2>
         <div className="viewToggle">
-          <button onClick={() => setViewMode('card')}>Card View</button>
-          <button onClick={() => setViewMode('list')}>List View</button>
+          <button
+            className={`toggleBtn ${viewMode === 'card' ? 'active' : ''}`}
+            onClick={() => setViewMode('card')}
+          >
+            Card View
+          </button>
+          <button
+            className={`toggleBtn ${viewMode === 'list' ? 'active' : ''}`}
+            onClick={() => setViewMode('list')}
+          >
+            List View
+          </button>
         </div>
         {loading ? (
           <p>Loading courses...</p>
@@ -85,9 +88,7 @@ export default function StudentDashboard({userInfo, displayHeaderRef, settingsTa
             {courses.map((course) => {
               const latestExam = course.exams?.reduce((latest, exam) => {
                 if (!exam.date) return latest;
-                return new Date(exam.date) > new Date(latest?.date || 0)
-                  ? exam
-                  : latest;
+                return new Date(exam.date) > new Date(latest?.date || 0) ? exam : latest;
               }, null);
               return (
                 <div
@@ -127,7 +128,6 @@ export default function StudentDashboard({userInfo, displayHeaderRef, settingsTa
               data-testid="course-modal"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Add a data-testid to the modal header for unambiguous selection */}
               <h2 data-testid="course-modal-heading">{selectedCourse.name}</h2>
               <p className="infoRow">
                 <strong>Professor:</strong> {selectedCourse.professor?.account?.name || 'N/A'}
