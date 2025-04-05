@@ -62,6 +62,33 @@ describe('SignUp Component', () => {
   
     consoleErrorSpy.mockRestore();
   });
+
+  test('changes role to STAFF when Enter key is pressed on STAFF tab', async () => {
+    render(<SignUp {...baseProps} />);
+  
+    const staffTab = screen.getByTestId('STAFF');
+  
+    // Simulate pressing Enter key
+    fireEvent.keyDown(staffTab, { key: 'Enter', code: 'Enter', charCode: 13 });
+  
+    await waitFor(() => {
+      expect(screen.getByTestId('staffRole')).toBeInTheDocument();
+    });
+  });
+  
+  test('changes role to STAFF when Space key is pressed on STAFF tab', async () => {
+    render(<SignUp {...baseProps} />);
+  
+    const staffTab = screen.getByTestId('STAFF');
+  
+    // Simulate pressing Space key
+    fireEvent.keyDown(staffTab, { key: ' ', code: 'Space', charCode: 32 });
+  
+    await waitFor(() => {
+      expect(screen.getByTestId('staffRole')).toBeInTheDocument();
+    });
+  });
+  
   
 
   test('displays alert when fetch throws an error during USER signup', async () => {

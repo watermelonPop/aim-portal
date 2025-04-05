@@ -10,10 +10,13 @@
   --foreground-color: #4F0000;
   --text-color: #000000;
   --highlight-hover-color: #BD180F;
+  --highlight-keyboard-focus-color: #BD180F;
+  --highlight-links-color: #335CFF;
   --align-text: center;
   --align-items: center;
   --font: "Mitr";
   --line-height: 1.5;
+  --word-spacing: 0px;
 }
 
 body.align-left{
@@ -24,6 +27,27 @@ body.align-center{
 }
 body.align-right{
   --align-items: flex-end;
+}
+
+body.highlight-keyboard-focus-enabled .basicHeader svg:focus{
+  border: 2px solid var(--highlight-keyboard-focus-color) !important;
+  background-color: var(--highlight-keyboard-focus-color) !important;
+  border-radius: 1rem;
+}
+
+body.highlight-keyboard-focus-enabled input:focus{
+  border: 2px solid var(--highlight-keyboard-focus-color) !important;
+  background-color: var(--highlight-keyboard-focus-color) !important;
+}
+
+body.highlight-links-enabled a {
+  color: var(--highlight-links-color) !important;
+}
+
+body.highlight-keyboard-focus-enabled a:focus{
+  background-color: var(--highlight-keyboard-focus-color) !important;
+  padding: 1rem;
+  border-radius: 1rem;
 }
 
 
@@ -38,8 +62,17 @@ a{
   line-height: var(--line-height) !important;
 }
 
+body.highlight-keyboard-focus-enabled button:focus{
+  background-color: var(--highlight-keyboard-focus-color) !important;
+}
+
 body.highlight-hover-enabled button:hover{
   background-color: var(--highlight-hover-color) !important;
+}
+
+body.highlight-keyboard-focus-enabled h1:focus{
+  background-color: var(--highlight-keyboard-focus-color) !important;
+  border-radius: 1rem;
 }
 
 body.highlight-hover-enabled h1:hover{
@@ -47,8 +80,21 @@ body.highlight-hover-enabled h1:hover{
   border-radius: 1rem;
 }
 
+body.highlight-keyboard-focus-enabled h2:focus{
+  background-color: var(--highlight-keyboard-focus-color) !important;
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+
 body.highlight-hover-enabled h2:hover{
   background-color: var(--highlight-hover-color);
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+body.highlight-keyboard-focus-enabled h3:focus{
+  background-color: var(--highlight-keyboard-focus-color) !important;
   border-radius: 1rem;
   padding: 1rem;
 }
@@ -59,7 +105,11 @@ body.highlight-hover-enabled h3:hover{
   padding: 1rem;
 }
 
-
+body.highlight-keyboard-focus-enabled h4:focus{
+  background-color: var(--highlight-keyboard-focus-color) !important;
+  border-radius: 1rem;
+  padding: 1rem;
+}
 
 body.highlight-hover-enabled h4:hover{
   background-color: var(--highlight-hover-color);
@@ -67,9 +117,20 @@ body.highlight-hover-enabled h4:hover{
   padding: 1rem;
 }
 
+body.highlight-keyboard-focus-enabled .basicLogoImg:focus{
+  background-color: var(--highlight-keyboard-focus-color) !important;
+  border-radius: 1rem;
+}
+
 body.highlight-hover-enabled .basicLogoImg:hover{
   background-color: var(--highlight-hover-color);
   border-radius: 1rem;
+}
+
+body.highlight-keyboard-focus-enabled label:focus{
+  background-color: var(--highlight-keyboard-focus-color) !important;
+  border-radius: 1rem;
+  padding: 1rem;
 }
 
 body.highlight-hover-enabled label:hover{
@@ -78,8 +139,18 @@ body.highlight-hover-enabled label:hover{
   padding: 1rem;
 }
 
+body.highlight-keyboard-focus-enabled .colorInput:focus{
+  background-color: var(--highlight-keyboard-focus-color) !important;
+}
+
 body.highlight-hover-enabled .colorInput:hover{
   background-color: var(--highlight-hover-color);
+}
+
+body.highlight-keyboard-focus-enabled p:focus{
+  background-color: var(--highlight-keyboard-focus-color) !important;
+  padding: 1rem;
+  border-radius: 1rem;
 }
 
 body.highlight-hover-enabled p:hover{
@@ -92,8 +163,16 @@ body.highlight-hover-enabled input:hover{
   background-color: var(--highlight-hover-color);
 }
 
+body.highlight-keyboard-focus-enabled textarea:focus{
+  background-color: var(--highlight-keyboard-focus-color) !important;
+}
+
 body.highlight-hover-enabled textarea:hover{
   background-color: var(--highlight-hover-color);
+}
+
+body.highlight-keyboard-focus-enabled .newStudentApp > div > label:focus{
+  background-color: var(--highlight-keyboard-focus-color) !important;
 }
 
 body.highlight-hover-enabled .newStudentApp > div > label:hover{
@@ -119,6 +198,10 @@ body.highlight-hover-enabled .settingsNav ul > li > ul > li:hover{
 body.highlight-hover-enabled .settingsNav ul > li > form > select:hover{
   background-color: var(--highlight-hover-color);
   border-radius: 1rem;
+}
+
+body.highlight-keyboard-focus-enabled .settingsNav ul > li > form > select:focus{
+  background-color: var(--highlight-keyboard-focus-color) !important;
 }
 
 body.highlight-hover-enabled .settingsNav ul > li:hover{
@@ -169,7 +252,7 @@ body.modal-open {
 #root{
   background-color: var(--background-color);
   width: 100%;
-  height: 51rem;
+  height: fit-content;
   display: flex;
   margin: 0;
   row-gap: 5rem;
@@ -177,11 +260,12 @@ body.modal-open {
   justify-content: center;
   align-items: center;
   filter: contrast(var(--contrast)) saturate(var(--saturation));
+  word-spacing: var(--word-spacing);
 }
 
 .loginScreen{
   width: 100%;
-  height: 100%;
+  height: 100vh;
   display: flex;
   margin: 0;
   row-gap: 5rem;
@@ -329,8 +413,8 @@ button{
 }
 
 .loginLogoImg{
-  width: auto;
-  height: 20%;
+  width: 20%;
+  height: auto;
   margin: 0;
   fill: var(--foreground-color);
 }
@@ -591,7 +675,7 @@ body.highlight-hover-enabled #search:hover{
   float: left;
   display: block;
   text-align: var(--align-text);
-  padding: 0.5rem;
+  padding: 0.5rem !important;
   text-decoration: none;
   color:var(--background-color);
   font-weight: 400;
@@ -599,6 +683,11 @@ body.highlight-hover-enabled #search:hover{
   letter-spacing: var(--letterSpacing);
   height: 80%;
   border: 2px solid transparent;
+}
+
+body.highlight_keyboard_focus .tabNav a:hover{
+  background-color: var(--highlight-keyboard-focus_-olor);
+  padding: 0.5rem;
 }
 
 body.highlight-hover-enabled .tabNav a:hover{
@@ -665,6 +754,19 @@ body.highlight-hover-enabled .activeTab:hover{
 
 .basicFooter div > div > p > a{
   text-decoration: underline !important;
+  color: var(--background-color);
+}
+
+body.highlight-keyboard-focus-enabled .studentCard:focus{
+  background-color: var(--highlight-keyboard-focus-color) !important;
+}
+
+body.highlight-keyboard-focus-enabled .classItem:focus{
+  background-color: var(--highlight-keyboard-focus-color) !important;
+}
+
+body.highlight-hover-enabled .classItem:hover{
+  background-color: var(--highlight-hover-color) !important;
 }
 
 body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
@@ -778,7 +880,9 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 2px black solid;
 }
+
 
 .spinner {
   display: flex;
@@ -786,9 +890,31 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
   align-items: center;
   padding: 20px;
   border-radius: 10px;
+  width: 100%;
+  height: fit-content;
+  margin-top: 100vh;
+}
+
+.spinnerClassItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+  height: fit-content;
 }
 
 .spinner-icon {
+  width: 2rem;
+  height: 2rem;
+  border: 1rem solid #ccc;
+  border-top: 1rem solid var(--foreground-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+}
+.spinner-iconClassItem {
   width: 5rem;
   height: 5rem;
   border: 1rem solid #ccc;
@@ -799,6 +925,10 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
 }
 
 .spinner-text {
+  color: var(--foreground-color);
+}
+
+.spinner-textClassItem {
   color: var(--foreground-color);
 }
 
@@ -1650,7 +1780,7 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 1.5rem;
-  padding: 1rem 0;
+  padding: 2rem 0;
   max-width: 1000px;      /* ⬅️ allow for more columns */
   margin-left: 0;
   margin-right: auto;
@@ -1660,18 +1790,18 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
 .courseCard {
   background-color: #fff;
   border: 2px solid #4F0000;
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 1.25rem;
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  height: 100%;
+  /* height: 100%; */
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
 .courseCard:hover {
-  transform: translateY(-5px);
+  transform: translateY(-10px);
   box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.2);
 }
 
@@ -1774,7 +1904,7 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
 }
 
 .modalCloseBtn:hover {
-  background-color: #750000;
+  background-color: #693535;
 }
 
 .emailButton {
@@ -1782,7 +1912,7 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
   background-color: #4F0000;
   color: white;
   font-size: 0.8rem;
-  padding: 4px 8px;
+  padding: 10px 8px;
   border: none;
   border-radius: 4px;
   text-decoration: none;
@@ -1791,7 +1921,7 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
 }
 
 .emailButton:hover {
-  background-color: #6a0000;
+  background-color: #693535;
 }
 
 .emailContainer {
@@ -1813,16 +1943,22 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
   margin-bottom: 1rem;
 }
 
-.viewToggle button {
-  background-color: #4F0000;
-  color: white;
+.viewToggle button.toggleBtn {
+  background-color: #4F0000; /* Default background color */
+  color: white;              /* Default text color */
   border: none;
   padding: 8px 16px;
   border-radius: 4px;
   margin-right: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
   font-size: 1rem;
+}
+
+/* Active state styling */
+.viewToggle button.toggleBtn.active {
+  background-color: #b72222; /* Change to a different color to indicate active view */
+  color: var(--background-color);
 }
 
 /* Optional: Add focus styling for accessibility */
@@ -1939,4 +2075,267 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
 
 .modalCloseBtn:hover {
   background-color: #6a0000;
+}
+
+.tabControls{
+  width: 100vw;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: var(--align-items);
+  column-gap: 5%;
+}
+
+.tabControls button{
+  float: left;
+  display: block;
+  text-align: var(--align-text);
+  padding: 0.5rem !important;
+  text-decoration: none;
+  color:var(--foreground-color);
+  font-weight: 400;
+  font-size: calc(var(--txtSize) + 5px);
+  letter-spacing: var(--letterSpacing);
+  height: 100%;
+  border: 2px solid transparent;
+  background-color: var(--background-color);
+  border: 2px solid var(--foreground-color);
+}
+
+.tabControls .activeTab{
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+}
+
+.professorDashOuter{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: var(--align-items);
+  min-height: 100%; /* Changed from height to min-height */
+  width: 100%;
+  padding: 20px 0; /* Add some vertical padding */
+  row-gap: 1rem;
+  column-gap: 5%;
+}
+
+.tabContent{
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: var(--align-items);
+}
+
+.tabContent > div{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: var(--align-items);
+  row-gap: 1rem;
+}
+
+
+.tabContent > div > div{
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  justify-content: var(--align-items);
+  align-items: var(--align-items);
+  column-gap: 5%;
+  row-gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.classItem{
+  border: 2px var(--foreground-color) solid;
+  height: 100%;
+  width: 20%;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: var(--align-items);
+  justify-content: center;
+  cursor: var(--custom-hover-cursor);
+}
+
+.classItem:hover{
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+}
+
+.classItem div{
+  width: 95%;
+  justify-content: right;
+  display: flex;
+  margin: 0;
+  margin-top: 3%;
+}
+
+.classItem p{
+  margin: 0;
+}
+
+.classAlertCheck{
+  border: 2px black solid;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  font-size: calc(var(--txtSize) + 10px);
+  width: 1rem;
+  height: 1rem;
+  border-radius: 10rem;
+  margin: 0;
+  background-color: green;
+}
+
+.classAlertNum{
+  background-color: red;
+  border: 2px black solid;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  font-size: calc(var(--txtSize) + 10px);
+  width: 1rem;
+  height: 1rem;
+  border-radius: 10rem;
+  margin: 0;
+}
+
+.outerInnerClass{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: fit-content;
+}
+
+.outerInnerClass a{
+  color: var(--text-color) !important;
+}
+
+.studentCards{
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 1rem;
+}
+
+.studentCard{
+  background-color: var(--foreground-color);
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: var(--align-items);
+  padding: 1rem;
+  color: var(--background-color);
+  font-size: var(--txtSize);
+  border: 2px solid var(--foreground-color);
+}
+
+
+
+.studentCard div{
+  display: flex;
+  justify-content: var(--align-items);
+  align-items: center;
+  padding: 1rem;
+  width: 100%;
+  height: fit-content;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.studentCard div > label{
+  font-weight: 600;
+  text-align: var(--align-text);
+  width: 20%;
+  height: 100% !important;
+}
+
+.studentCard div > p, .studentCard div > a{
+  height: 100%;
+  width: 80%;
+  text-align: var(--align-text);
+}
+
+.studentCard div > a{
+  text-decoration: underline;
+  color: var(--text-color) !important;
+}
+
+.studentCard p{
+  margin: 0;
+}
+
+.studentCard button{
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+  font-weight: 650;
+  font-size: calc(var(--txtSize) + 5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 1rem;
+  line-height: var(--line-height); 
+  border: 2px solid var(--background-color);
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.studentCard button:hover{
+  background-color: var(--background-color);
+  color: var(--foreground-color);
+  border-color: var(--background-color);
+}
+
+.backBtnClasses{
+  width: 80%;
+  height: 4rem;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+.backBtnClasses button{
+  background-color: var(--background-color);
+  color: var(--foreground-color);
+  font-weight: 650;
+  font-size: calc(var(--txtSize) + 15px);
+  width: 3rem;
+  height: 3rem; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  line-height: var(--line-height); 
+  border: 2px solid var(--foreground-color);
+}
+
+.backBtnClasses button:hover{
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+  border-color: var(--background-color);
+}
+
+.skip-to-content {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--foreground-color);
+  color: var(--background-color);
+  padding: 8px 16px;
+  z-index: 1000;
+  text-decoration: none;
+  font-weight: bold;
+}
+.skip-to-content:focus {
+  top: 0;
 }

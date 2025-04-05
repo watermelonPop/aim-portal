@@ -5,7 +5,7 @@ import UserDashboard from './user/userDashboard';
 import ProfessorDashboard from './professor/professorDashboard';
 import StaffDashboard from './staff/staffDashboard';
 
-function Dash({ userInfo, displayHeaderRef, settingsTabOpen, lastIntendedFocusRef }) {
+function Dash({ userInfo, setAlertMessage, setShowAlert, displayHeaderRef, settingsTabOpen, lastIntendedFocusRef }) {
 
     return (
         <main className='dashboardOuter'>
@@ -13,8 +13,8 @@ function Dash({ userInfo, displayHeaderRef, settingsTabOpen, lastIntendedFocusRe
                 <UserDashboard userInfo={userInfo} displayHeaderRef={displayHeaderRef} settingsTabOpen={settingsTabOpen} lastIntendedFocusRef={lastIntendedFocusRef}/>
             )}
             {userInfo?.role === "STUDENT" && <StudentDashboard userInfo={userInfo} displayHeaderRef={displayHeaderRef} settingsTabOpen={settingsTabOpen} lastIntendedFocusRef={lastIntendedFocusRef}/>}
-            {userInfo?.role === "PROFESSOR" && <ProfessorDashboard userInfo={userInfo} displayHeaderRef={displayHeaderRef} settingsTabOpen={settingsTabOpen} lastIntendedFocusRef={lastIntendedFocusRef}/>}
-            {userInfo?.role === "ADVISOR" && <ProfessorDashboard userInfo={userInfo} displayHeaderRef={displayHeaderRef} settingsTabOpen={settingsTabOpen} lastIntendedFocusRef={lastIntendedFocusRef}/>}
+            {userInfo?.role === "PROFESSOR" && <ProfessorDashboard userInfo={userInfo} displayHeaderRef={displayHeaderRef} settingsTabOpen={settingsTabOpen} lastIntendedFocusRef={lastIntendedFocusRef} setAlertMessage={setAlertMessage} setShowAlert={setShowAlert}/>}
+            {userInfo?.role === "ADVISOR" && <StaffDashboard userInfo={userInfo} displayHeaderRef={displayHeaderRef} settingsTabOpen={settingsTabOpen} lastIntendedFocusRef={lastIntendedFocusRef}/>}
         </main>
     );
 }
