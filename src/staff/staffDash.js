@@ -80,6 +80,8 @@ function StaffDash() {
   const [refreshingRequests, setRefreshingRequests] = useState(false);
   const [activeModal, setActiveModal] = useState(null); // 'forms', 'accommodations', 'tech'
   const [formEdits, setFormEdits] = useState({}); // { formId: newStatus }
+  const [isUpdatingFormStatus, setIsUpdatingFormStatus] = useState(false);
+
 
 
 
@@ -125,15 +127,18 @@ function StaffDash() {
   };
 
   const handleFormStatusChange = async (formId, newStatus) => {
+    // Prompt user
     const confirmed = window.confirm("Are you sure you want to change the form status?");
     if (!confirmed) return;
   
+    // Show spinner
+    setIsUpdatingFormStatus(true);
+  
     try {
+      // Call your API
       const response = await fetch("/api/updateFormStatus", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ formId, status: newStatus }),
       });
   
@@ -141,13 +146,32 @@ function StaffDash() {
         throw new Error(`Failed to update form status: ${response.status}`);
       }
   
-      setFormEdits((prev) => ({ ...prev, [formId]: newStatus }));
+      // (Optional) Show a success alert, or handle success differently:
       alert("Form status updated successfully.");
+  
+      // === Re-fetch forms so the page has the updated data:
+      // await fetchForms(); // <--- Make sure you define a fetchForms() function that calls your /api/getForms
     } catch (err) {
-      console.error("Error updating form status:", err);
+      console.error("Form status update error:", err);
       alert("An error occurred while updating the status. Please try again.");
+    } finally {
+      // Hide spinner
+      setIsUpdatingFormStatus(false);
     }
   };
+  
+
+
+async function fetchForms() {
+  try {
+    const res = await fetch("/api/getForms");
+    const data = await res.json();
+    setSubmittedForms(data.forms || []);
+  } catch (error) {
+    console.error("Error fetching forms:", error);
+  }
+}
+
   
   
   
@@ -236,7 +260,7 @@ function StaffDash() {
       accommodations: student.accommodations || [],
       assistive_technologies: student.assistive_technologies || [],
     });
-  
+    setIsEditing(false);
     setEditedStudent({ ...student });
     setView('studentDetails');
   
@@ -267,7 +291,6 @@ function StaffDash() {
   
     if (!hasChanges()) {
       setInfoMessage('⚠️ No changes to save.');
-      setTimeout(() => setInfoMessage('fade-out'), 3000);
       setTimeout(() => setInfoMessage(''), 4000);
       return;
     }
@@ -331,8 +354,7 @@ function StaffDash() {
       setSuccessMessage('✅ Changes saved successfully!');
     setStudentNeedsRefresh(true); // mark that changes were made
 
-      setTimeout(() => setSuccessMessage('fade-out'), 3000);
-      setTimeout(() => setSuccessMessage(''), 4000);
+      setTimeout(() => setSuccessMessage(''), 2500);
   
     } catch (err) {
       console.error("❌ Update error:", err);
@@ -370,6 +392,15 @@ function StaffDash() {
   };
 
   const resetToMainMenu = async () => {
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    document.body.style.overflow = '';
+    document.body.style.width = '';
+    
+    // Now scroll to top
+    window.scrollTo(0, 0);
     if (isEditing && hasChanges()) {
       const confirmLeave = window.confirm(
         "⚠️ Are you sure you want to leave? Unsaved changes will be discarded."
@@ -388,7 +419,27 @@ function StaffDash() {
     setSelectedRequest(null);
     setShowAccommodations(false);
     setShowAssistiveTech(false);
+    setShowStudentInfo(false);
   };
+  const [savedScrollY, setSavedScrollY] = useState(0);
+
+function openModal() {
+  const scrollY = window.scrollY;
+
+  // Keep track of where we were scrolled to
+  setSavedScrollY(scrollY);
+
+  // Lock the body
+  document.body.style.position = 'fixed';
+  document.body.style.top = `-${scrollY}px`;
+  document.body.style.left = '0';
+  document.body.style.right = '0';
+  document.body.style.overflow = 'hidden';
+  document.body.style.width = '100%';
+
+  // Now show the modal:
+  setActiveModal(true);
+}
 
   const resetToStudentSearch = async () => {
     if (isEditing && hasChanges()) {
@@ -501,6 +552,19 @@ function StaffDash() {
   
     fetchRequests();
   }, []);
+
+  useEffect(() => {
+    if (activeModal) {
+      // Add modal-open class to lock background scroll
+      document.body.classList.add('modal-open');
+      
+      // Immediately scroll to the top of the page
+      window.scrollTo(0, 0);
+    } else {
+      document.body.classList.remove('modal-open');
+    }
+  }, [activeModal]);
+  
   
   
   useEffect(() => {
@@ -519,15 +583,29 @@ function StaffDash() {
 
   // ADDED FOR REQUESTS: Fetch requests when view is 'requests'
   useEffect(() => {
+    // Only fetch when the view is set to 'requests'
     if (view === 'requests') {
-      fetch('/api/getRequests')
-        .then(res => res.json())
-        .then(data => {
-          setRequestsData(data.requests);
-        })
-        .catch(err => console.error('Error fetching requests:', err));
+      const fetchRequests = async () => {
+        try {
+          // If not already true, ensure we show the spinner while fetching
+          setLoadingRequests(true);
+  
+          const response = await fetch('/api/getRequests');
+          const data = await response.json();
+  
+          setRequestsData(data.requests || []);
+        } catch (error) {
+          console.error('Error fetching requests:', error);
+        } finally {
+          // Stop the spinner once we have the data (or on error)
+          setLoadingRequests(false);
+        }
+      };
+  
+      fetchRequests();
     }
   }, [view]);
+  
 
   useEffect(() => {
     // Filter results based on search
@@ -570,7 +648,14 @@ function StaffDash() {
             <h2>Select an action:</h2>
             <div className="staff-menu-buttons">
               <button onClick={() => setView('students')}>🔍 Student Profiles</button>
-              <button onClick={() => setView('requests')}>📌 Manage Requests</button>
+              <button
+                  onClick={() => {
+                    setLoadingRequests(true);
+                    setView('requests');
+                  }}
+                >
+                  📌 Manage Requests
+                </button>
               <button onClick={() => setView('forms')}>📄 Review Submitted Forms</button>
             </div>
           </div>
@@ -588,7 +673,7 @@ function StaffDash() {
       </div>
     ) : selectedRequest ? (
       <div className="request-details-card">
-  <h2 className="card-title">📌 Request Details</h2>
+  <h2 className="card-title">📌 {selectedRequest.student_name}'s Request Details</h2>
 
   {/* Dropdown for Advisor Info */}
   <details className="request-meta-dropdown">
@@ -773,14 +858,24 @@ function StaffDash() {
   <h2 className="student-profile-heading">{selectedStudent.student_name}'s Profile</h2>
 
   <button 
-    className="dropdown-button" 
-    onClick={() => setShowStudentInfo(prev => !prev)}
-  >
-    {showStudentInfo ? 'Hide Information' : 'Show Information'}
-  </button>
+  onClick={() => setActiveModal({ type: 'studentInfo' })}
+>
+  View / Edit Student Info
+</button>
+{activeModal?.type === 'studentInfo' && (
+  <div className="modalOverlay">
+    <div className="modalContent">
+      <div className="modalHeader">
+        <h2>{selectedStudent?.student_name}'s Information</h2>
+        <button 
+          className="modalHeaderCloseBtn"
+          onClick={() => setActiveModal(null)}
+        >
+          ✕
+        </button>
+      </div>
 
-  {showStudentInfo && (
-    <div className={`student-info-box ${refreshingStudent ? "blurred" : ""}`}>
+      {/* Show "refreshing" spinner if needed */}
       {refreshingStudent && (
         <div className="overlay-spinner">
           <div className="loading-spinner"></div>
@@ -788,65 +883,60 @@ function StaffDash() {
         </div>
       )}
 
+      {/* Info / Edit UI EXACTLY like your old "student-info-box" */}
       {isEditing ? (
         <>
           {infoMessage && <div className="form-warning">{infoMessage}</div>}
           {successMessage && <div className="form-success">{successMessage}</div>}
 
           <div className="edit-student-form">
-            {/* Editable fields (name, UIN, DOB, etc) */}
-            {/* KEEP ALL YOUR EXISTING EDIT FORM HERE */}
             <div className="staff-form-group">
               <label htmlFor="name">Full Name:</label>
               <input
                 id="name"
                 type="text"
                 name="student_name"
-                value={editedStudent.student_name || ""}
+                value={editedStudent?.student_name || ""}
                 onChange={handleEditChange}
               />
             </div>
-
             <div className="staff-form-group">
               <label htmlFor="uin">UIN:</label>
               <input
                 id="uin"
                 type="text"
                 name="UIN"
-                value={editedStudent.UIN || ""}
+                value={editedStudent?.UIN || ""}
                 onChange={handleEditChange}
               />
             </div>
-
             <div className="staff-form-group">
               <label htmlFor="dob">Date of Birth:</label>
               <input
                 id="dob"
                 type="date"
                 name="dob"
-                value={editedStudent.dob ? editedStudent.dob.split("T")[0] : ""}
+                value={editedStudent?.dob ? editedStudent.dob.split("T")[0] : ""}
                 onChange={handleEditChange}
               />
             </div>
-
             <div className="staff-form-group">
               <label htmlFor="email">Email:</label>
               <input
                 id="email"
                 type="email"
                 name="email"
-                value={editedStudent.email || ""}
+                value={editedStudent?.email || ""}
                 onChange={handleEditChange}
               />
             </div>
-
             <div className="staff-form-group">
               <label htmlFor="phone_number">Phone Number:</label>
               <input
                 id="phone_number"
                 type="text"
                 name="phone_number"
-                value={editedStudent.phone_number || ""}
+                value={editedStudent?.phone_number || ""}
                 onChange={handleEditChange}
               />
             </div>
@@ -860,10 +950,10 @@ function StaffDash() {
               className="staff-backtoprofile-btn"
               onClick={() => {
                 setIsEditing(false);
-                refreshStudentData(editedStudent.userId);
+                refreshStudentData(editedStudent?.userId);
               }}
             >
-              Back to Profile View
+              Cancel Edit
             </button>
           </div>
         </>
@@ -871,19 +961,30 @@ function StaffDash() {
         <>
           <p><strong>Name:</strong> {selectedStudent?.student_name || "N/A"}</p>
           <p><strong>UIN:</strong> {selectedStudent?.UIN || "N/A"}</p>
-          <p><strong>DOB:</strong> {selectedStudent?.dob ? new Date(selectedStudent.dob).toLocaleDateString() : "N/A"}</p>
+          <p><strong>DOB:</strong> {selectedStudent?.dob
+            ? new Date(selectedStudent.dob).toLocaleDateString()
+            : "N/A"}</p>
           <p><strong>Email:</strong> {selectedStudent?.email || "N/A"}</p>
           <p><strong>Phone Number:</strong> {selectedStudent?.phone_number || "N/A"}</p>
-          <button className="edit-profile-button" onClick={() => setIsEditing(true)}>✏️ Edit Profile</button>
+
+          <button 
+            className="edit-profile-button"
+            onClick={() => setIsEditing(true)}
+          >
+            ✏️ Edit Profile
+          </button>
         </>
       )}
     </div>
-  )}
+  </div>
+)}
+
 
   <button className="staff-cancel-btn" onClick={() => resetToStudentSearch()}>
     Back to Search
   </button>
 </div>
+
 
 {/* RIGHT COLUMN – Dropdowns */}
 <div className="student-modal-buttons">
@@ -940,10 +1041,17 @@ function StaffDash() {
           }))
         }
       >
+        <option value="APPROVED">Approve</option>
+        <option value="DENIED">Deny</option>
+        <option value="OVERDUE">Overdue</option>
         <option value="PENDING">Pending</option>
-        <option value="APPROVED">Approved</option>
-        <option value="DENIED">Denied</option>
       </select>
+      {isUpdatingFormStatus && (
+      <div className="overlay-spinner">
+        <div className="loading-spinner"></div>
+        <p>Updating Form Status...</p>
+      </div>
+    )}
 
       <div className="viewToggle" style={{ marginTop: '1rem' }}>
         <button onClick={() => handleFormStatusChange(activeModal.form.id, formEdits[activeModal.form.id] || activeModal.form.status)}>
@@ -952,6 +1060,7 @@ function StaffDash() {
         <button onClick={() => setActiveModal(null)}>Cancel</button>
       </div>
     </div>
+    
   </div>
 )}
 {activeModal?.type === 'forms' && (
@@ -982,9 +1091,10 @@ function StaffDash() {
                 }))
               }
             >
+              <option value="APPROVED">Approve</option>
+              <option value="DENIED">Deny</option>
+              <option value="OVERDUE">Overdue</option>
               <option value="PENDING">Pending</option>
-              <option value="APPROVED">Approved</option>
-              <option value="DENIED">Denied</option>
             </select>
             <button onClick={() => handleFormStatusChange(form.id, formEdits[form.id] || form.status)}>💾 Save</button>
           </div>
@@ -1038,6 +1148,8 @@ function StaffDash() {
     </div>
   </div>
 )}
+
+
 
     </div>
   );

@@ -11,12 +11,12 @@ module.exports = async (req, res) => {
       return res.status(400).json({ error: "Missing required parameters: formId or status" });
     }
 
-    if (!["PENDING", "APPROVED", "DENIED"].includes(status)) {
+    if (!["SUBMITTED", "PENDING", "REJECTED", "OVERDUE", "APPROVED"].includes(status)) {
       return res.status(400).json({ error: "Invalid status value" });
     }
 
     try {
-      await prisma.submittedForm.update({
+      await prisma.form.update({
         where: { id: Number(formId) },
         data: { status },
       });
