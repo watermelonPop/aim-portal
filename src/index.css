@@ -2339,3 +2339,35 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
 .skip-to-content:focus {
   top: 0;
 }
+
+.global-settings {
+  font-size: var(--txtSize);
+  letter-spacing: var(--letterSpacing);
+  text-align: var(--align-text);
+  color: var(--text-color);
+  background-color: var(--background-color);
+  line-height: var(--line-height);
+  padding: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.global-settings h2 {
+  margin-bottom: 1rem;
+  font-size: calc(var(--txtSize) + 20px);
+  text-align: var(--align-text);
+}
+
+.global-settings input[type="text"] {
+  padding: 0.5rem;
+  border: 2px solid var(--foreground-color);
+  border-radius: 4px;
+  font-size: var(--txtSize);
+  margin-bottom: 1rem;
+}
+
+.global-settings input[type="text"]:focus {
+  outline: none;
+  border-color: var(--highlight-keyboard-focus-color);
+  box-shadow: 0 0 0 3px rgba(189, 24, 15, 0.5);
+}

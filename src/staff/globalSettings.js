@@ -12,8 +12,6 @@ Test cases:
 */
 
 function GlobalSettings({displayHeaderRef, settingsTabOpen, lastIntendedFocusRef}) {
-  
-  
   /* 
   //DONE
   step 0: create permissions in the neon
@@ -98,45 +96,20 @@ function GlobalSettings({displayHeaderRef, settingsTabOpen, lastIntendedFocusRef
   useEffect(()=>{
     if(loaded){
       console.log("advisorList:",advisorList);
-      // console.log("currentPages: ", currentPage);
-      // console.log("totalPages: ", totalPages);
 
     }
   },[loaded]);
 
-  useEffect(()=>{
-    if(loaded){
-        // setLoaded(false);
-        //console.log("advisorList",advisorList)
-        let updatedSearchResults = []
-        for(let i = 0; i<advisorList.length; i ++){
-          if(advisorList[i].account.name.toLowerCase().includes(searchQuery.toLowerCase())){
-            updatedSearchResults.push(advisorList[i]);
-          }
-        }
-        setSearchResults(updatedSearchResults);
-        //set current page to 0
-        setCurrentPage(0);
-        setTotalPages(Math.ceil(updatedSearchResults.length/9));
-
-        // setLoaded(true);
-        // console.log("searchResults:",updatedSearchResults);
-        // console.log("DONE");
+  useEffect(() => {
+    if (loaded) {
+      const updatedSearchResults = advisorList.filter((advisor) =>
+        advisor.account.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setSearchResults(updatedSearchResults);
+      setCurrentPage(0);
+      setTotalPages(Math.ceil(updatedSearchResults.length / 9));
     }
-  },[searchQuery]);
-
-  // useEffect(()=>{
-  //   if(loaded){
-  //     const current_page_index = currentPage * 9
-  //     const next_page_index = (currentPage + 1) * 9
-  //     setSlicedSearchResults(searchResults.slice(current_page_index, next_page_index));
-  //   }
-  // },[s,currentPage]);
-
-
-
-
-  // },[searchQuery]);
+  }, [searchQuery, advisorList, loaded]);
 
   //============================================ SCREEN OBJECTS STARTS HERE ============================================
   //============================================ SCREEN OBJECTS STARTS HERE ============================================
@@ -186,13 +159,9 @@ function GlobalSettings({displayHeaderRef, settingsTabOpen, lastIntendedFocusRef
     }
 
     const handleCardClick = (advisor) => {
-      // Replace with your own behavior, e.g., navigate or open a modal
-      // console.log('Advisor clicked:', advisor);
       setSelectedAdvisor(advisor);
-      // console.log("advisor selected!");
     };
     let displayedAdvisors = [];
-    //TODO: ADD SKIP AND TAKE
     if(searchQuery == ""){
       displayedAdvisors = advisorList.slice(skip, take);
     } 
@@ -225,8 +194,6 @@ function GlobalSettings({displayHeaderRef, settingsTabOpen, lastIntendedFocusRef
   //============================================ PAGINATION BUTTONS ============================================
   function PaginationButtons() {
     const onPageChange = (page_update) =>{
-      // console.log("onPageChange with page: ", page_update);
-
       if(page_update < 0){
         if(currentPage != 0){
           setCurrentPage(currentPage-1);
@@ -414,7 +381,7 @@ function GlobalSettings({displayHeaderRef, settingsTabOpen, lastIntendedFocusRef
   
 
   return (
-    <>
+    <div className="global-settings">
       <div> {/* Title */}
         <h2 ref={headingRef}
                         tabIndex={0}>Advisor Lookup and Access Control </h2>
@@ -457,7 +424,7 @@ function GlobalSettings({displayHeaderRef, settingsTabOpen, lastIntendedFocusRef
         <PaginationButtons/>
       )}
       </div>
-    </>
+    </div>
   );
 
 }
