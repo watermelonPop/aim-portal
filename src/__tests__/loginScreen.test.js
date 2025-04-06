@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { LoginScreen } from '../loginScreen';
+import { axe, toHaveNoViolations } from 'jest-axe';
 
+expect.extend(toHaveNoViolations);
 // Mock the fetch function
 global.fetch = jest.fn();
 
@@ -20,6 +22,31 @@ describe('LoginScreen', () => {
 
         beforeEach(() => {
                 jest.clearAllMocks();
+        });
+
+        test('Login Screen should have no accessibility violations', async () => {
+                        let mockUserInfo = {
+                                id: "mockId",
+                                name: "Mock User",
+                                email: "test@gmail.com",
+                                role: "USER",
+                                picture: null,
+                                dob: "2000-01-01",
+                                uin: 123456789,
+                                phone_number: 1001001001,
+                        };
+                        const { container } = render(<LoginScreen 
+                                    userInfo={mockUserInfo} 
+                                    setSettings={mockSetSettings} 
+                                    loggedIn={false} 
+                                    setLoggedIn={mockSetLoggedIn} 
+                                    staffAccess={null}
+                                    setStaffAccess={mockSetStaffAccess} 
+                                    setUserInfo={mockSetUserInfo}
+                                    setLoading={mockSetLoading}
+                                  />);
+                        const results = await axe(container);
+                        expect(results).toHaveNoViolations();
         });
 
         test('renders login button', () => {

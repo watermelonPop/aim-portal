@@ -1,8 +1,7 @@
 
-import './App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faMagnifyingGlass, faBars} from '@fortawesome/free-solid-svg-icons';
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useRef, useCallback, useLayoutEffect, cloneElement} from 'react';
 import Dash from './dash';
 import Profile from './profile';
 import LoginScreen from './loginScreen';
@@ -10,9 +9,9 @@ import Forms from './forms';
 import GlobalSettings from './staff/globalSettings';
 import Accommodations from './accommodations';
 import NoteTaking from './noteTaking';
-import AssistiveTech from './assistiveTech';
+import AssistiveTech from './staff/assistiveTech';
 import Testing from './testing';
-import StudentCases from './studentCases';
+import StudentCases from './staff/studentCases';
 import Alert from './alert';
 import BasicSettingsBar from './basicSettingsBar';
 import SignUp from './signUp';
@@ -21,6 +20,8 @@ import BlobTest from './blobtest';
 
 
 export function App() {
+  const hasManuallyChangedTab = useRef(false);
+  const hasManuallyOpenedSettings = useRef(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
@@ -77,20 +78,20 @@ export function App() {
   ]);
   const [settingsTabOpen, setSettingsTabOpen] = useState(false);
   const [settings, setSettings] = useState({
-      content_size: 100,
-      highlight_tiles: false,
       highlight_links: false,
+      highlight_links_color: "#335CFF",
       text_magnifier: false,
       align_text: "center",
       font_size: "14px",
-      line_height: 5000,
+      line_height: 1.5,
       letter_spacing: "0px",
+      word_spacing: "0px",
       contrast: "100%",
       saturation: "100%",
       mute_sounds: false,
-      hide_images: false,
-      reading_mask: false,
       highlight_hover: false,
+      highlight_keyboard_focus: false,
+      highlight_keyboard_focus_color: "#BD180F",
       highlight_hover_color: "#BD180F",
       cursor_size: 3,
     cursor_color: "#000000",
@@ -100,6 +101,16 @@ export function App() {
     text_color: "#000000",
     font: "Mitr",
 });
+
+const refs = useRef({
+  header: null,
+  tabNav: null,
+  mainContent: null,
+  footer: null,
+});
+
+const headerShouldFocus = useRef(true);
+const lastIntendedFocusRef = useRef(null);
 
 const encodeCursorSVG = (svg, type) => {
   return `url("data:image/svg+xml;utf8,${encodeURIComponent(svg)
@@ -145,6 +156,11 @@ document.documentElement.style.setProperty('--custom-cursor', svgCursors.default
 document.documentElement.style.setProperty('--custom-hover-cursor', svgCursors.pointer);
 document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.text);
 
+
+  useEffect(() => {
+    const loadingEl = document.querySelector('.loadingScreen');
+    if (loadingEl) loadingEl.focus();
+  }, [loading]);
 
 
   useEffect(() => {
@@ -200,7 +216,7 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
       ];
 
       updatedProfessorTabs = [
-        {name: 'Dashboard', elem: <Dash userInfo={userInfo}/>},
+        {name: 'Dashboard', elem: <Dash userInfo={userInfo} setAlertMessage={setAlertMessage} setShowAlert={setShowAlert}/>},
         {name: 'Accommodations', elem: <Accommodations userInfo={userInfo} setAlertMessage={setAlertMessage} setShowAlert={setShowAlert}/>},
         {name: 'Testing', elem: <Testing userInfo={userInfo}/>},
         {name: 'Note Taking',elem: <NoteTaking userInfo={userInfo}/>},
@@ -262,13 +278,17 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
       const updateSettings = async () => {
         document.documentElement.style.setProperty("--txtSize", `${settings.font_size}`);
         document.documentElement.style.setProperty("--letterSpacing", `${settings.letter_spacing}`);
+        document.documentElement.style.setProperty("--word-spacing", `${settings.word_spacing}`);
         document.documentElement.style.setProperty("--contrast", `${settings.contrast}`);
         document.documentElement.style.setProperty("--background-color", `${settings.background_color}`);
         document.documentElement.style.setProperty("--foreground-color", `${settings.foreground_color}`);
         document.documentElement.style.setProperty("--text-color", `${settings.text_color}`);
         document.documentElement.style.setProperty("--highlight-hover-color", `${settings.highlight_hover_color}`);
+        document.documentElement.style.setProperty("--highlight-keyboard-focus-color", `${settings.highlight_keyboard_focus_color}`);
+        document.documentElement.style.setProperty("--highlight-links-color", `${settings.highlight_links_color}`);
         document.documentElement.style.setProperty("--saturation", `${settings.saturation}`);
         document.documentElement.style.setProperty("--font", `${settings.font}`);
+        document.documentElement.style.setProperty("--line-height", `${settings.line_height}`);
         document.documentElement.style.setProperty("--align-text", `${settings.align_text}`);
         document.body.classList.remove('align-left', 'align-center', 'align-right');
         document.body.classList.add(`align-${settings.align_text}`);
@@ -276,6 +296,16 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
           document.body.classList.add('highlight-hover-enabled');
         } else {
           document.body.classList.remove('highlight-hover-enabled');
+        }
+        if (settings.highlight_links) {
+          document.body.classList.add('highlight-links-enabled');
+        } else {
+          document.body.classList.remove('highlight-links-enabled');
+        }
+        if (settings.highlight_keyboard_focus) {
+          document.body.classList.add('highlight-keyboard-focus-enabled');
+        } else {
+          document.body.classList.remove('highlight-keyboard-focus-enabled');
         }
         const newSvgCursors = {
           default: encodeCursorSVG(
@@ -385,6 +415,7 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
       let deformattedSettings = {...setts};
       deformattedSettings.font_size = parseInt(deformattedSettings.font_size.replace("px", ""));
       deformattedSettings.letter_spacing = parseInt(deformattedSettings.letter_spacing.replace("px", ""));
+      deformattedSettings.word_spacing = parseInt(deformattedSettings.word_spacing.replace("px", ""));
       const response = await fetch('/api/setSettings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -402,62 +433,134 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
     }
   };
 
-  function BasicView({ currentTab, setCurrentTab, userType, tabs }) {
+  function BasicView({ currentTab, setCurrentTab, userType, tabs, refs }) {
+    const displayHeaderRef = useRef(null);
+
     return (
         <main className='basicScreen' data-testid="basicScreen" id='basicScreen'>
-          <BasicSettingsBar isOpen={settingsTabOpen} onClose={() => setSettingsTabOpen(false)} settings={settings} setSettings={setSettings} logout={logout} setLoggedIn={setLoggedIn}/>
+        <BasicSettingsBar 
+          isOpen={settingsTabOpen} 
+          onClose={() => {
+            setSettingsTabOpen(false);
+          }} 
+          settings={settings} 
+          setSettings={setSettings} 
+          logout={logout} 
+          setLoggedIn={setLoggedIn} 
+          displayHeaderRef={displayHeaderRef} 
+          lastIntendedFocusRef={lastIntendedFocusRef}
+        />
+
           <div className='stickyContainer'>
-            <BasicHeader />
-            <BasicTabNav tabs={tabs} setCurrentTab={setCurrentTab} />
+            <BasicHeader refs={refs} headerShouldFocus={headerShouldFocus} lastIntendedFocusRef={lastIntendedFocusRef}/>
+            <BasicTabNav tabs={tabs} setCurrentTab={setCurrentTab} refs={refs} headerShouldFocus={headerShouldFocus} currentTab={currentTab} />
           </div>
-          <Display currentTab={currentTab} />
-          <BasicFooter/>
+          <Display currentTab={currentTab} displayHeaderRef={displayHeaderRef} settingsTabOpen={settingsTabOpen} lastIntendedFocusRef={lastIntendedFocusRef}/>
+          <BasicFooter refs={refs}/>
         </main>
     );
   }
 
-  function Display({ currentTab }) {
-    return currentTab ? currentTab.elem : null;
+  function Display({ currentTab, displayHeaderRef, settingsTabOpen, lastIntendedFocusRef }) {
+    return currentTab ? cloneElement(currentTab.elem, { displayHeaderRef, settingsTabOpen, lastIntendedFocusRef }) : null;
   }
 
-  function BasicTabNav({tabs, setCurrentTab}){
-    const tabRefs = useRef([]);
+  function BasicTabNav({ tabs, currentTab, setCurrentTab, refs }) {
     useEffect(() => {
-      if (tabRefs.current[0]) {
-        tabRefs.current[0].focus();  // Focus on the first tab when it is set initially
+      if(currentTab !== null){
+        console.log("CURRENT TAB: ", currentTab);
       }
-    }, [currentTab]);
+    }, [currentTab, setCurrentTab]);
+
     return (
-      <nav role="navigation" className='tabNav' data-testid="basicTabNav">
-        <ul role="menubar">
-          {Array.isArray(tabs) ? tabs.map((tab, index) => (
-            <li key={index} role="none">
-              <a
-                href="#"
-                role="menuitem"
-                id={tab === currentTab ? "activeTab" : undefined}
-                ref={(el) => (tabRefs.current[index] = el)}
-                tabIndex={0}
-                onClick={(e) => {
-                  e.preventDefault();
-                  setCurrentTab(tab);
-                }}
-              >
-                {tab.name}
-              </a>
-            </li>
-          )) : <li>No tabs available</li>}
-        </ul>
-      </nav>
+      <div
+        role="tablist"
+        className="tabNav"
+        data-testid="basicTabNav"
+        ref={(el) => {
+          refs.current.tabNav = el;
+        }}
+        id="mainContent"
+      >
+        {tabs.map((tab, index) => (
+          <a
+            key={tab.name}
+            role="tab"
+            aria-selected={currentTab?.name === tab.name}
+            aria-controls={`tabpanel-${index}`}
+            id={`tab-${index}`}
+            tabIndex={0}
+            href="#"
+            className={currentTab?.name === tab?.name ? 'activeTab' : ''}
+            onClick={(e) => {
+              e.preventDefault();
+              hasManuallyChangedTab.current = true;
+              headerShouldFocus.current = false;
+              setCurrentTab(tab);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                hasManuallyChangedTab.current = true;
+                headerShouldFocus.current = false;
+                setCurrentTab(tab);
+              }
+            }}
+          >
+            {tab.name}
+          </a>
+        ))}
+      </div>
     );
   }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 
-  function BasicHeader(){
+  function BasicHeader({refs, headerShouldFocus, lastIntendedFocusRef }){
+    const titleRef = useRef(null);
+    const hasFocused = useRef(false);
+
+    useEffect(() => {
+      const timeout = setTimeout(() => {
+        if (
+          !hasFocused.current &&
+          titleRef.current &&
+          headerShouldFocus.current &&
+          !hasManuallyOpenedSettings.current &&
+          !hasManuallyChangedTab.current &&
+          document.querySelector('[data-testid="alert"]') === null &&
+          !document.body.classList.contains("modal-open") &&
+          lastIntendedFocusRef.current !== titleRef.current
+        ) {
+          console.log("BASIC HEADING FOCUS");
+          titleRef.current.focus();
+          hasFocused.current = true;
+          lastIntendedFocusRef.current = null;
+        }
+        headerShouldFocus.current = true;
+      }, 100);
+    
+      return () => clearTimeout(timeout);
+    }, []);
+
     return (
       <>
           <header className='basicHeader' data-testid="basicHeader">
-            <svg alt="Texas A&M University Logo" aria-label='TAMU' className='basicLogoImg' xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 216 216"><defs></defs><title>Artboard 1</title><polygon className="cls-1" points="190.36 84.32 173.7 84.32 172.73 84.32 172.31 85.19 160.22 110.34 148.1 85.19 147.69 84.32 146.72 84.32 130.63 84.32 129.09 84.32 129.09 85.85 129.09 94.43 129.09 95.96 130.63 95.96 133.38 95.96 133.38 131.97 130.4 131.97 128.86 131.97 128.86 133.51 128.86 142.08 128.86 143.62 130.4 143.62 148.48 143.62 150.02 143.62 150.02 142.08 150.02 133.51 150.02 131.97 148.48 131.97 145.35 131.97 145.35 106.42 158.86 134.28 160.23 137.12 161.62 134.28 175.27 106.36 175.27 131.97 172.28 131.97 170.74 131.97 170.74 133.51 170.74 142.08 170.74 143.62 172.28 143.62 190.36 143.62 191.9 143.62 191.9 142.08 191.9 133.51 191.9 131.97 190.36 131.97 187.25 131.97 187.25 95.96 190.36 95.96 191.9 95.96 191.9 94.43 191.9 85.85 191.9 84.32 190.36 84.32"></polygon><path className="cls-1" d="M85.37,131.94h-4.8L64.91,95.77h3V84.11H42.78V95.77h3.46L30.6,131.94H24.1v11.64H46.91V131.94H43.58l2.6-6H65l2.6,6H64.08v11.64H86.91V131.94ZM60,114.27H51.21l4.37-10.11Z"></path><path className="cls-1" d="M171.23,39.11H42.6v37.4H68V62.16H95.08v89.33H80.74v25.4h54.1v-25.4H120.51V62.16h26.9V76.35H173V39.11h-1.75ZM124.15,162l5.36-5.51v15.15l-5.36-5.13Zm-8.95-5.12-5.36,5.29V51.63L115.2,57Zm-62-107.21-5.53-5.37H165l-6.94,5.37Zm114.7,21.78-5.36-5.12V52.68l5.36-5.52Z"></path><path className="cls-1" d="M140.77,171.62a5.2,5.2,0,1,1,5.2,5.2A5.21,5.21,0,0,1,140.77,171.62Zm9.14,0a3.94,3.94,0,1,0-3.94,4.19A4,4,0,0,0,149.91,171.62Zm-5.94-3h2.19c1.41,0,2.17.5,2.17,1.73a1.47,1.47,0,0,1-1.54,1.59l1.58,2.58h-1.12L145.72,172h-.66v2.54H144Zm1.1,2.52h1c.65,0,1.21-.08,1.21-.87s-.63-.81-1.19-.81h-1v1.68Z"></path></svg> 
-            <h1 className='basicTitle'>AIM Portal</h1>
+            <svg tabIndex={0} alt="Texas A&M University Logo" aria-label='TAMU' className='basicLogoImg' xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 216 216"><defs></defs><title>Artboard 1</title><polygon className="cls-1" points="190.36 84.32 173.7 84.32 172.73 84.32 172.31 85.19 160.22 110.34 148.1 85.19 147.69 84.32 146.72 84.32 130.63 84.32 129.09 84.32 129.09 85.85 129.09 94.43 129.09 95.96 130.63 95.96 133.38 95.96 133.38 131.97 130.4 131.97 128.86 131.97 128.86 133.51 128.86 142.08 128.86 143.62 130.4 143.62 148.48 143.62 150.02 143.62 150.02 142.08 150.02 133.51 150.02 131.97 148.48 131.97 145.35 131.97 145.35 106.42 158.86 134.28 160.23 137.12 161.62 134.28 175.27 106.36 175.27 131.97 172.28 131.97 170.74 131.97 170.74 133.51 170.74 142.08 170.74 143.62 172.28 143.62 190.36 143.62 191.9 143.62 191.9 142.08 191.9 133.51 191.9 131.97 190.36 131.97 187.25 131.97 187.25 95.96 190.36 95.96 191.9 95.96 191.9 94.43 191.9 85.85 191.9 84.32 190.36 84.32"></polygon><path className="cls-1" d="M85.37,131.94h-4.8L64.91,95.77h3V84.11H42.78V95.77h3.46L30.6,131.94H24.1v11.64H46.91V131.94H43.58l2.6-6H65l2.6,6H64.08v11.64H86.91V131.94ZM60,114.27H51.21l4.37-10.11Z"></path><path className="cls-1" d="M171.23,39.11H42.6v37.4H68V62.16H95.08v89.33H80.74v25.4h54.1v-25.4H120.51V62.16h26.9V76.35H173V39.11h-1.75ZM124.15,162l5.36-5.51v15.15l-5.36-5.13Zm-8.95-5.12-5.36,5.29V51.63L115.2,57Zm-62-107.21-5.53-5.37H165l-6.94,5.37Zm114.7,21.78-5.36-5.12V52.68l5.36-5.52Z"></path><path className="cls-1" d="M140.77,171.62a5.2,5.2,0,1,1,5.2,5.2A5.21,5.21,0,0,1,140.77,171.62Zm9.14,0a3.94,3.94,0,1,0-3.94,4.19A4,4,0,0,0,149.91,171.62Zm-5.94-3h2.19c1.41,0,2.17.5,2.17,1.73a1.47,1.47,0,0,1-1.54,1.59l1.58,2.58h-1.12L145.72,172h-.66v2.54H144Zm1.1,2.52h1c.65,0,1.21-.08,1.21-.87s-.63-.81-1.19-.81h-1v1.68Z"></path></svg> 
+            <h1 className='basicTitle' tabIndex={0}
+              ref={(el) => {
+                titleRef.current = el;
+                refs.current.header = el;
+              }}>AIM Portal</h1>
             <form role="search" className='searchForm' onSubmit={(e) => e.preventDefault()}>
               <input type="search" placeholder="Search.." role="searchbox" id="search"></input>
               <button className="searchBtn" aria-label="Submit Search">
@@ -466,6 +569,7 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
             </form>
             <button className='profileBtn' aria-label="Settings" onClick={
                 () => {
+                  hasManuallyOpenedSettings.current = true;
                   setSettingsTabOpen(true);
                 }
               } data-testid="settingsBtn">
@@ -476,14 +580,18 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
     );
   }
 
-  function BasicFooter(){
+  function BasicFooter({refs}){
     return (
       <>
           <footer className='basicFooter'>
-            <h4 className='footerTitle'>Disability Resources & Contact</h4>
+            <h4 className='footerTitle'
+            tabIndex={0}
+            ref={(el) => {
+              refs.current.footer = el;
+            }}>Disability Resources & Contact</h4>
             <div>
               <div aria-label='Address'>
-                <label>Address</label>
+                <label tabIndex={0}>Address</label>
                 <a href="https://www.google.com/maps?q=Texas+A%26M+University+471+Houston+Street,+SSB+Ste+122,+College+Station,+TX+77843-1224" target="_blank" rel="noopener noreferrer">
                   Texas A&M University<br/>
                   471 Houston Street, SSB Ste 122<br/>
@@ -491,9 +599,24 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
                 </a>
               </div>
               <div aria-label='Contact & Help'>
-                <p>Website: <a>https://disability.tamu.edu/</a></p>
-                <p>Email: <a>disability@tamu.edu</a></p>
-                <p>Phone: <a>(979)-845-1637</a></p>
+                <p tabIndex={0} onKeyDown={(e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      e.currentTarget.querySelector('a')?.click();
+    }
+  }}>Website: <a href="https://disability.tamu.edu/" target="_blank" rel="noopener noreferrer">https://disability.tamu.edu/</a></p>
+                <p tabIndex={0} onKeyDown={(e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      e.currentTarget.querySelector('a')?.click();
+    }
+  }}>Email: <a href="mailto:disability@tamu.edu" target="_blank" rel="noopener noreferrer">disability@tamu.edu</a></p>
+                <p tabIndex={0} onKeyDown={(e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      e.currentTarget.querySelector('a')?.click();
+    }
+  }}>Phone: <a href="tel:(979)-845-1637" target="_blank" rel="noopener noreferrer">(979)-845-1637</a></p>
               </div>
             </div>
           </footer>
@@ -510,17 +633,31 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
   App.setAlertMessage = setAlertMessage;
   App.setUserConnected = setUserConnected;
   App.setTabs = setTabs;
+  App.setSettingsTabOpen = setSettingsTabOpen;
+  App.tabs = tabs;
+  App.currentTab = currentTab;
+  App.encodeCursorSVG = encodeCursorSVG;
+  App.getUser = getUser;
+  App.checkAccountConnected = checkAccountConnected;
+  App.setSettingsDatabase = setSettingsDatabase;
+  App.setCurrentTab = setCurrentTab;
 
   return (
     <>
       {showAlert && <Alert message={alertMessage} setShowAlert={setShowAlert} />}
       {loading ? ( // Wrap `loading` in curly braces
-        <div className="loadingScreen" aria-hidden="true" tabIndex="-1">
-          <div className="spinner" role="alert">
-            <div className="spinner-icon"></div>
-            <h1 className="spinner-text">Loading...</h1>
-          </div>
+        <div
+        className="loadingScreen"
+        role="alert"
+        aria-live="assertive"
+        aria-busy="true"
+        tabIndex={0}
+        >
+        <div className="spinner" role="status" aria-label="Loading, please wait">
+          <div className="spinner-icon" aria-hidden="true"></div>
+          <h1 className="spinner-text">Loading...</h1>
         </div>
+      </div>
       ) : (
         !loggedIn ? (
           <LoginScreen 
@@ -548,6 +685,8 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
             setCurrentTab={setCurrentTab}
             userInfo={userInfo}
             tabs={tabs}
+            refs={refs}
+            headerShouldFocus={headerShouldFocus}
           />
         )
       )}

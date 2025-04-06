@@ -10,9 +10,13 @@
   --foreground-color: #4F0000;
   --text-color: #000000;
   --highlight-hover-color: #BD180F;
+  --highlight-keyboard-focus-color: #BD180F;
+  --highlight-links-color: #335CFF;
   --align-text: center;
   --align-items: center;
   --font: "Mitr";
+  --line-height: 1.5;
+  --word-spacing: 0px;
 }
 
 body.align-left{
@@ -25,6 +29,27 @@ body.align-right{
   --align-items: flex-end;
 }
 
+body.highlight-keyboard-focus-enabled .basicHeader svg:focus{
+  border: 2px solid var(--highlight-keyboard-focus-color) !important;
+  background-color: var(--highlight-keyboard-focus-color) !important;
+  border-radius: 1rem;
+}
+
+body.highlight-keyboard-focus-enabled input:focus{
+  border: 2px solid var(--highlight-keyboard-focus-color) !important;
+  background-color: var(--highlight-keyboard-focus-color) !important;
+}
+
+body.highlight-links-enabled a {
+  color: var(--highlight-links-color) !important;
+}
+
+body.highlight-keyboard-focus-enabled a:focus{
+  background-color: var(--highlight-keyboard-focus-color) !important;
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
 
 body.highlight-hover-enabled a:hover {
     background-color: var(--highlight-hover-color);
@@ -34,10 +59,20 @@ body.highlight-hover-enabled a:hover {
 
 a{
   padding: 1rem;
+  line-height: var(--line-height) !important;
+}
+
+body.highlight-keyboard-focus-enabled button:focus{
+  background-color: var(--highlight-keyboard-focus-color) !important;
 }
 
 body.highlight-hover-enabled button:hover{
   background-color: var(--highlight-hover-color) !important;
+}
+
+body.highlight-keyboard-focus-enabled h1:focus{
+  background-color: var(--highlight-keyboard-focus-color) !important;
+  border-radius: 1rem;
 }
 
 body.highlight-hover-enabled h1:hover{
@@ -45,8 +80,21 @@ body.highlight-hover-enabled h1:hover{
   border-radius: 1rem;
 }
 
+body.highlight-keyboard-focus-enabled h2:focus{
+  background-color: var(--highlight-keyboard-focus-color) !important;
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+
 body.highlight-hover-enabled h2:hover{
   background-color: var(--highlight-hover-color);
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+body.highlight-keyboard-focus-enabled h3:focus{
+  background-color: var(--highlight-keyboard-focus-color) !important;
   border-radius: 1rem;
   padding: 1rem;
 }
@@ -57,7 +105,11 @@ body.highlight-hover-enabled h3:hover{
   padding: 1rem;
 }
 
-
+body.highlight-keyboard-focus-enabled h4:focus{
+  background-color: var(--highlight-keyboard-focus-color) !important;
+  border-radius: 1rem;
+  padding: 1rem;
+}
 
 body.highlight-hover-enabled h4:hover{
   background-color: var(--highlight-hover-color);
@@ -65,9 +117,20 @@ body.highlight-hover-enabled h4:hover{
   padding: 1rem;
 }
 
+body.highlight-keyboard-focus-enabled .basicLogoImg:focus{
+  background-color: var(--highlight-keyboard-focus-color) !important;
+  border-radius: 1rem;
+}
+
 body.highlight-hover-enabled .basicLogoImg:hover{
   background-color: var(--highlight-hover-color);
   border-radius: 1rem;
+}
+
+body.highlight-keyboard-focus-enabled label:focus{
+  background-color: var(--highlight-keyboard-focus-color) !important;
+  border-radius: 1rem;
+  padding: 1rem;
 }
 
 body.highlight-hover-enabled label:hover{
@@ -76,8 +139,18 @@ body.highlight-hover-enabled label:hover{
   padding: 1rem;
 }
 
+body.highlight-keyboard-focus-enabled .colorInput:focus{
+  background-color: var(--highlight-keyboard-focus-color) !important;
+}
+
 body.highlight-hover-enabled .colorInput:hover{
   background-color: var(--highlight-hover-color);
+}
+
+body.highlight-keyboard-focus-enabled p:focus{
+  background-color: var(--highlight-keyboard-focus-color) !important;
+  padding: 1rem;
+  border-radius: 1rem;
 }
 
 body.highlight-hover-enabled p:hover{
@@ -90,8 +163,16 @@ body.highlight-hover-enabled input:hover{
   background-color: var(--highlight-hover-color);
 }
 
+body.highlight-keyboard-focus-enabled textarea:focus{
+  background-color: var(--highlight-keyboard-focus-color) !important;
+}
+
 body.highlight-hover-enabled textarea:hover{
   background-color: var(--highlight-hover-color);
+}
+
+body.highlight-keyboard-focus-enabled .newStudentApp > div > label:focus{
+  background-color: var(--highlight-keyboard-focus-color) !important;
 }
 
 body.highlight-hover-enabled .newStudentApp > div > label:hover{
@@ -119,6 +200,10 @@ body.highlight-hover-enabled .settingsNav ul > li > form > select:hover{
   border-radius: 1rem;
 }
 
+body.highlight-keyboard-focus-enabled .settingsNav ul > li > form > select:focus{
+  background-color: var(--highlight-keyboard-focus-color) !important;
+}
+
 body.highlight-hover-enabled .settingsNav ul > li:hover{
   background-color: var(--highlight-hover-color);
   border-radius: 1rem;
@@ -127,6 +212,7 @@ body.highlight-hover-enabled .settingsNav ul > li:hover{
 
 label, p{
   padding: 1rem;
+  line-height: var(--line-height) !important;
 }
 
 
@@ -152,6 +238,7 @@ button, a{
 
 input, textarea{
   cursor: var(--custom-text-cursor);
+  line-height: var(--line-height) !important;
 }
 
 label{
@@ -165,7 +252,7 @@ body.modal-open {
 #root{
   background-color: var(--background-color);
   width: 100%;
-  height: 51rem;
+  height: fit-content;
   display: flex;
   margin: 0;
   row-gap: 5rem;
@@ -173,11 +260,12 @@ body.modal-open {
   justify-content: center;
   align-items: center;
   filter: contrast(var(--contrast)) saturate(var(--saturation));
+  word-spacing: var(--word-spacing);
 }
 
 .loginScreen{
   width: 100%;
-  height: 100%;
+  height: 100vh;
   display: flex;
   margin: 0;
   row-gap: 5rem;
@@ -325,8 +413,8 @@ button{
 }
 
 .loginLogoImg{
-  width: auto;
-  height: 20%;
+  width: 20%;
+  height: auto;
   margin: 0;
   fill: var(--foreground-color);
 }
@@ -529,6 +617,10 @@ body.highlight-hover-enabled #search:hover{
   color: var(--background-color);
 }
 
+.settingsHeading:focus{
+  background-color: blue;
+}
+
 .disProfilesList{
   display: flex !important;
   flex-direction: column !important;
@@ -579,36 +671,31 @@ body.highlight-hover-enabled #search:hover{
   z-index: 1000;
 }
 
-
-.tabNav ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  height: 100%;
-}
-
-.tabNav ul > li {
+.tabNav a {
   float: left;
   display: block;
   text-align: var(--align-text);
-  padding: 14px 16px;
+  padding: 0.5rem !important;
   text-decoration: none;
   color:var(--background-color);
   font-weight: 400;
   font-size: calc(var(--txtSize) + 5px);
   letter-spacing: var(--letterSpacing);
   height: 80%;
+  border: 2px solid transparent;
 }
 
-.tabNav ul > li > a{
-  text-decoration: none;
-  color: var(--background-color);
-  background-color: none;
+body.highlight_keyboard_focus .tabNav a:hover{
+  background-color: var(--highlight-keyboard-focus_-olor);
   padding: 0.5rem;
 }
 
-.tabNav ul > li > a:hover{
+body.highlight-hover-enabled .tabNav a:hover{
+  background-color: var(--highlight-hover-color);
+  padding: 0.5rem;
+}
+
+.tabNav a:hover{
   color: var(--background-color);
   border-color: var(--background-color);
   border-radius: 1rem;
@@ -617,17 +704,18 @@ body.highlight-hover-enabled #search:hover{
 }
 
 
-#activeTab{
+.tabNav a.activeTab{
   background-color: var(--background-color);
   color: var(--foreground-color);
   border-radius: 1rem;
   padding: 0.5rem;
 }
 
-body.highlight-hover-enabled #activeTab:hover{
+body.highlight-hover-enabled .activeTab:hover{
   background-color: var(--highlight-hover-color) !important;
   border-style: none !important;
   border-color: var(--foreground-color)!important;
+  padding: 0.5rem;
 }
 
 .footerTitle{
@@ -666,6 +754,19 @@ body.highlight-hover-enabled #activeTab:hover{
 
 .basicFooter div > div > p > a{
   text-decoration: underline !important;
+  color: var(--background-color);
+}
+
+body.highlight-keyboard-focus-enabled .studentCard:focus{
+  background-color: var(--highlight-keyboard-focus-color) !important;
+}
+
+body.highlight-keyboard-focus-enabled .classItem:focus{
+  background-color: var(--highlight-keyboard-focus-color) !important;
+}
+
+body.highlight-hover-enabled .classItem:hover{
+  background-color: var(--highlight-hover-color) !important;
 }
 
 body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
@@ -712,7 +813,7 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
   align-items: center;
   margin: 0;
   padding: 0;
-  line-height: 1; 
+  line-height: var(--line-height); 
   border: 2px solid var(--foreground-color);
 }
 
@@ -734,7 +835,7 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
   align-items: center;
   margin: 0;
   padding: 0;
-  line-height: 1; 
+  line-height: var(--line-height); 
   border: 2px solid var(--foreground-color);
 }
 
@@ -757,7 +858,7 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
   align-items: center;
   margin: 0;
   padding: 0;
-  line-height: 1; 
+  line-height: var(--line-height); 
   border: 2px solid var(--foreground-color);
 }
 
@@ -779,7 +880,9 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 2px black solid;
 }
+
 
 .spinner {
   display: flex;
@@ -787,9 +890,31 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
   align-items: center;
   padding: 20px;
   border-radius: 10px;
+  width: 100%;
+  height: fit-content;
+  margin-top: 100vh;
+}
+
+.spinnerClassItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+  height: fit-content;
 }
 
 .spinner-icon {
+  width: 2rem;
+  height: 2rem;
+  border: 1rem solid #ccc;
+  border-top: 1rem solid var(--foreground-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+}
+.spinner-iconClassItem {
   width: 5rem;
   height: 5rem;
   border: 1rem solid #ccc;
@@ -800,6 +925,10 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
 }
 
 .spinner-text {
+  color: var(--foreground-color);
+}
+
+.spinner-textClassItem {
   color: var(--foreground-color);
 }
 
@@ -825,7 +954,7 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
   align-items: center;
   margin: 0;
   padding: 0;
-  line-height: 1; 
+  line-height: var(--line-height); 
   border: 2px solid var(--foreground-color);
 }
 
@@ -921,7 +1050,7 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
   align-items: center;
   margin: 0;
   padding: 0;
-  line-height: 1; 
+  line-height: var(--line-height); 
   border: 2px solid var(--foreground-color);
 }
 
@@ -966,7 +1095,7 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
   align-items: center;
   margin: 0;
   padding: 0;
-  line-height: 1; 
+  line-height: var(--line-height); 
   border: 2px solid var(--foreground-color);
 }
 
@@ -1113,4 +1242,1100 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
 .categoryTabBtn:hover{
   background-color: var(--foreground-color);
   color: var(--background-color);
+}
+
+.content-container{
+  padding-top: 1rem;
+  padding-bottom: 5rem;
+}
+
+.content-container h2{
+  font-size: calc(var(--txtSize) + 20px);
+}
+
+
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* --- General Layout Styling --- */
+
+/* --- General Layout Styling --- */
+
+/*USER FORMS////////////////////////////////////////////////////////////////////////////////////////////////////*/
+/* Ensures the entire app layout remains within the header and footer */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 150px); /* Adjusted to ensure header & footer remain fixed */
+  padding: 20px;
+  text-align: center;
+}
+
+/* --- Selection Menu --- */
+
+/* Center the menu layout */
+.selection-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  text-align: center;
+}
+
+/* Heading Text for Selection */
+.selection-container h2 {
+  /* font-weight: bold; */
+  color: black;
+  margin-bottom: 20px;
+  background-color: transparent;
+}
+
+/* Layout Buttons for Upload & Manage */
+.selection-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+}
+
+/* Style for Large Buttons */
+.selection-buttons button {
+  width: 300px;
+  padding: 1rem;
+  border: 2px solid var(--foreground-color);
+  border-radius: 1rem;
+  cursor: pointer;
+  background-color: var(--background-color);
+}
+
+.selection-buttons button:hover {
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+}
+
+/* --- Forms Page (No White Box) --- */
+
+/* Centers content naturally within available space */
+.forms-content {
+  width: 80%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Back Button - Always Visible */
+.back-btn {
+  top: 20px;
+  left: 20px;
+  background-color: #4F0000;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 14px;
+  z-index: 1000; /* Ensures it stays on top */
+  margin-top:10px;
+}
+
+/* Disability Selection */
+.disability-selection {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Forms List: Display Forms in a Row */
+.forms-list {
+  display: flex;
+  flex-wrap: wrap; /* Allows wrapping to next line if needed */
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  padding: 15px;
+  background: #f8f8f8;
+  border-radius: 8px;
+}
+
+.form-header {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Individual Form Item: Display Side by Side */
+.form-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  padding: 12px;
+  border-radius: 5px;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+  min-width: 250px; /* Ensure forms are not too small */
+  max-width: 300px;
+  text-align: center;
+}
+
+
+/* Form Label */
+.form-item label {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+/* Align Download and Upload Buttons */
+.file-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Download Button */
+.download-btn {
+  background-color: #4F0000;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding:3px;
+  margin:10px;
+  cursor: pointer;
+}
+
+.download-btn:hover {
+  background-color: #1a0000;
+}
+
+/* Submit Button */
+.submit-btn {
+  width: 100%;
+  text-align: center;
+  background-color: #4F0000;
+  color: white;
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  margin: 15px;
+}
+
+/* --- Manage Forms Section --- */
+/* Scrollable Manage Forms Section */
+.manage-forms-list {
+  display: flex;
+  overflow-x: auto; /* Enable horizontal scrolling */
+  gap: 20px;
+  padding: 15px;
+  white-space: nowrap;
+  scroll-snap-type: x mandatory;
+  max-width: 90%; /* Ensure it fits within the container */
+  margin: auto;
+  border-radius: 8px;
+  background: white;
+}
+
+/* Individual Form Card */
+.manage-form-item {
+  flex: 0 0 auto;
+  width: 280px; /* Set a fixed width for each card */
+  background: #f8f8f8;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  scroll-snap-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Title of Form */
+.manage-form-item h3 {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* File Information */
+.form-file-info {
+  font-size: 0.9rem;
+  color: #333;
+  margin-bottom: 10px;
+  word-wrap: break-word; /* Prevents text from overflowing */
+  text-align: center;
+  max-width: 90%;
+}
+
+/* Scrollbar Styling */
+.manage-forms-list::-webkit-scrollbar {
+  height: 8px;
+}
+
+.manage-forms-list::-webkit-scrollbar-thumb {
+  background-color: #4F0000;
+  border-radius: 4px;
+}
+
+.manage-forms-list::-webkit-scrollbar-track {
+  background-color: #ddd;
+}
+
+/* Hide scrollbar for a cleaner look */
+.manage-forms-list {
+  scrollbar-width: thin;
+  scrollbar-color: #4F0000 #ddd;
+}
+
+/* Status Section */
+.status {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+/* Different Status Colors */
+.status.pending {
+  background-color: orange;
+  color: white;
+}
+
+.status.approved {
+  background-color: green;
+  color: white;
+}
+
+/* Settings & Remove Buttons */
+.settings-btn, .remove-btn {
+  background-color: #4F0000;
+  color: white;
+  padding: 5px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin: 5px;
+}
+
+.settings-btn:hover, .remove-btn:hover {
+  opacity: 0.8;
+}
+
+/*STAFF DASHBOARD/////////////////////////////////////////////////////////////////*/
+/* STAFF DASHBOARD LAYOUT */
+.staff-dashboard-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  padding: 20px;
+}
+
+/* Centering the main content */
+.staff-main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;  /* Centers all content */
+  text-align: center;   /* Centers text */
+  padding: 20px;
+}
+
+/* Bigger and More Accessible Staff Menu Buttons */
+.staff-menu-buttons button {
+  width: 300px; /* Increase width */
+  height: 50px; /* Increase height */
+  font-size: 1rem; /* Bigger text */
+  padding: 15px; /* More padding for better clickability */
+  background-color: #5a0000; /* Same color as before */
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  margin-bottom:5vh;
+}
+
+/* Hover effect for better UI */
+.staff-menu-buttons button:hover {
+  background-color: #6a0000;
+  transform: scale(1.05); /* Slightly enlarges on hover */
+}
+
+
+/* Center the dashboard title */
+.staff-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Alerts Box */
+.staff-alerts {
+  width: 300px; /* Fixed width for alert section */
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Alerts Box */
+.staff-alerts {
+  width: 300px; /* Fixed width for alert section */
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.alert-box {
+  border-top: 2px solid #4F0000;
+  padding-top: 10px;
+}
+
+.alert-item {
+  background: #f8f8f8;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border-left: 4px solid #4F0000;
+}
+
+.alert-date {
+  font-size: 12px;
+  font-weight: bold;
+  color: #777;
+}
+
+.alert-message {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.alert-notes {
+  font-size: 12px;
+  color: #555;
+}
+/*//////////////////////////////////////////////////////////////////////////////////////////*/
+
+
+.accommodationsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* 👈 Left-align the content */
+  gap: 1.5rem;
+  width: 90%;
+  max-width: 800px;
+  margin-top: 1rem;
+}
+
+.accommodationCard {
+  background-color: #fff4f4;
+  border: 2px solid #4F0000;
+  border-radius: 1rem;
+  padding: 1rem 1.5rem;
+  font-family: "Mitr", serif;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.accommodationCard div {
+  margin-bottom: 0.5rem;
+  font-size: calc(var(--txtSize) + 2px);
+}
+
+.accommodationCard strong {
+  color: #4F0000;
+}
+
+.accommodationCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease-in-out;
+}
+
+.studentAccommodationsWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-left: 5vw;
+}
+
+.studentDashboard {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+  padding: 1rem 2rem;
+}
+
+.leftColumn {
+  flex: 3;
+  min-width: 0;
+}
+
+.rightColumn {
+  flex: 1;
+  min-width: 300px;
+  /* Optional: Add styling here to see the space */
+  padding: 1rem;
+}
+
+.studentAccommodationsWrapper .dashboardTitle {
+  text-align: left;
+  width: 100%;
+}
+
+.profileContainer {
+  background-color: #fff5f5;
+  padding: 1.5rem;
+  border-radius: 8px;
+  max-width: 600px;
+  margin: 1rem auto;
+  box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+}
+
+.profileField {
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+  display: flex;
+  gap: 0.5rem;
+  line-height: 1.5;
+}
+
+.label {
+  font-weight: bold;
+  color: #5c0a0a;
+  min-width: 130px;
+  text-align: right;
+}
+
+.profileBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+.profileContainer {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: fit-content;
+}
+
+.viewToggle {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.courseGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem 0;
+  max-width: 1000px;      /* ⬅️ allow for more columns */
+  margin-left: 0;
+  margin-right: auto;
+  width: 100%;
+}
+
+.courseCard {
+  background-color: #fff;
+  border: 2px solid #4F0000;
+  border-radius: 10px;
+  padding: 1.25rem;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  /* height: 100%; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.courseCard:hover {
+  transform: translateY(-10px);
+  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.courseTitle {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.examDate {
+  font-size: 0.95rem;
+  color: #555;
+  margin-top: 0.25rem;
+  font-style: italic;
+}
+
+.examDate--none {
+  font-style: italic;
+  color: #999;
+}
+
+.courseList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 1000px; /* or any width you prefer */
+  margin-left: 0;
+  margin-right: auto;
+  padding: 1rem 0;
+}
+
+.courseListItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  border: 2px solid #4F0000;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  margin: 0 auto; /* center the item if there's extra width */
+  width: 100%;    /* let it fill the parent container's width */
+  max-width: 600px; /* or 700px if you prefer */
+}
+
+.courseListItem:hover {
+  transform: translateY(-5px);
+  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.courseListName {
+  font-weight: bold;
+  color: #4F0000;
+  font-size: 1.05rem;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modalContent {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  max-width: 600px;
+  width: 90%;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  position: relative;
+}
+
+.modalContent h2 {
+  margin-top: 0;
+  color: #4F0000;
+}
+
+.modalContent ul {
+  margin: 0.5rem 0 0;
+  padding-left: 1.2rem;
+}
+
+.modalCloseBtn {
+  margin-top: 1.5rem;
+  background-color: #4F0000;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.modalCloseBtn:hover {
+  background-color: #693535;
+}
+
+.emailButton {
+  margin-left: 10px;
+  background-color: #4F0000;
+  color: white;
+  font-size: 0.8rem;
+  padding: 10px 8px;
+  border: none;
+  border-radius: 4px;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.emailButton:hover {
+  background-color: #693535;
+}
+
+.emailContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.infoRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+  white-space: nowrap;
+}
+
+.viewToggle {
+  margin-bottom: 1rem;
+}
+
+.viewToggle button.toggleBtn {
+  background-color: #4F0000; /* Default background color */
+  color: white;              /* Default text color */
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  margin-right: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-size: 1rem;
+}
+
+/* Active state styling */
+.viewToggle button.toggleBtn.active {
+  background-color: #b72222; /* Change to a different color to indicate active view */
+  color: var(--background-color);
+}
+
+/* Optional: Add focus styling for accessibility */
+.viewToggle button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(79, 0, 0, 0.5);
+}
+
+.viewToggle button:hover {
+  background-color: #6a0000;
+}
+
+/* ===== Alerts Area Styles ===== */
+
+/* Alerts Area Container */
+.alertsArea {
+  background-color: #fff4f4;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin: 1rem;
+}
+
+/* Alerts Area Header */
+.alertsArea h3 {
+  margin-top: 0;
+  color: #4F0000;
+}
+
+/* Alerts List Styling */
+.alertsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.alertItem {
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  border-bottom: 1px solid #ccc;
+  display: flex;
+  justify-content: space-between;
+}
+
+.alertName {
+  font-weight: bold;
+}
+
+.alertDate {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* View All Button */
+.viewAllBtn {
+  background-color: #4F0000;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.viewAllBtn:hover {
+  background-color: #6a0000;
+}
+
+/* ===== Improved Modal Styling for Alerts ===== */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 6rem;  /* Adjust based on your nav bar's height */
+  z-index: 2000;
+}
+
+.modalContent.alertsModal {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  max-width: 500px;  /* Smaller modal width */
+  width: 90%;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  margin: 0 auto;
+}
+
+/* Scrollable container inside the modal for alerts */
+.alertsListContainer {
+  max-height: 300px;  /* Set a fixed height for the container */
+  overflow-y: auto;
+  margin-top: 1rem;
+}
+
+/* Modal Close Button */
+.modalCloseBtn {
+  margin-top: 1rem;
+  background-color: #4F0000;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modalCloseBtn:hover {
+  background-color: #6a0000;
+}
+
+.tabControls{
+  width: 100vw;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: var(--align-items);
+  column-gap: 5%;
+}
+
+.tabControls button{
+  float: left;
+  display: block;
+  text-align: var(--align-text);
+  padding: 0.5rem !important;
+  text-decoration: none;
+  color:var(--foreground-color);
+  font-weight: 400;
+  font-size: calc(var(--txtSize) + 5px);
+  letter-spacing: var(--letterSpacing);
+  height: 100%;
+  border: 2px solid transparent;
+  background-color: var(--background-color);
+  border: 2px solid var(--foreground-color);
+}
+
+.tabControls .activeTab{
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+}
+
+.professorDashOuter{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: var(--align-items);
+  min-height: 100%; /* Changed from height to min-height */
+  width: 100%;
+  padding: 20px 0; /* Add some vertical padding */
+  row-gap: 1rem;
+  column-gap: 5%;
+}
+
+.tabContent{
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: var(--align-items);
+}
+
+.tabContent > div{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: var(--align-items);
+  row-gap: 1rem;
+}
+
+
+.tabContent > div > div{
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  justify-content: var(--align-items);
+  align-items: var(--align-items);
+  column-gap: 5%;
+  row-gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.classItem{
+  border: 2px var(--foreground-color) solid;
+  height: 100%;
+  width: 20%;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: var(--align-items);
+  justify-content: center;
+  cursor: var(--custom-hover-cursor);
+}
+
+.classItem:hover{
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+}
+
+.classItem div{
+  width: 95%;
+  justify-content: right;
+  display: flex;
+  margin: 0;
+  margin-top: 3%;
+}
+
+.classItem p{
+  margin: 0;
+}
+
+.classAlertCheck{
+  border: 2px black solid;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  font-size: calc(var(--txtSize) + 10px);
+  width: 1rem;
+  height: 1rem;
+  border-radius: 10rem;
+  margin: 0;
+  background-color: green;
+}
+
+.classAlertNum{
+  background-color: red;
+  border: 2px black solid;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  font-size: calc(var(--txtSize) + 10px);
+  width: 1rem;
+  height: 1rem;
+  border-radius: 10rem;
+  margin: 0;
+}
+
+.outerInnerClass{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: fit-content;
+}
+
+.outerInnerClass a{
+  color: var(--text-color) !important;
+}
+
+.studentCards{
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 1rem;
+}
+
+.studentCard{
+  background-color: var(--foreground-color);
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: var(--align-items);
+  padding: 1rem;
+  color: var(--background-color);
+  font-size: var(--txtSize);
+  border: 2px solid var(--foreground-color);
+}
+
+
+
+.studentCard div{
+  display: flex;
+  justify-content: var(--align-items);
+  align-items: center;
+  padding: 1rem;
+  width: 100%;
+  height: fit-content;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.studentCard div > label{
+  font-weight: 600;
+  text-align: var(--align-text);
+  width: 20%;
+  height: 100% !important;
+}
+
+.studentCard div > p, .studentCard div > a{
+  height: 100%;
+  width: 80%;
+  text-align: var(--align-text);
+}
+
+.studentCard div > a{
+  text-decoration: underline;
+  color: var(--text-color) !important;
+}
+
+.studentCard p{
+  margin: 0;
+}
+
+.studentCard button{
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+  font-weight: 650;
+  font-size: calc(var(--txtSize) + 5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 1rem;
+  line-height: var(--line-height); 
+  border: 2px solid var(--background-color);
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.studentCard button:hover{
+  background-color: var(--background-color);
+  color: var(--foreground-color);
+  border-color: var(--background-color);
+}
+
+.backBtnClasses{
+  width: 80%;
+  height: 4rem;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+.backBtnClasses button{
+  background-color: var(--background-color);
+  color: var(--foreground-color);
+  font-weight: 650;
+  font-size: calc(var(--txtSize) + 15px);
+  width: 3rem;
+  height: 3rem; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  line-height: var(--line-height); 
+  border: 2px solid var(--foreground-color);
+}
+
+.backBtnClasses button:hover{
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+  border-color: var(--background-color);
+}
+
+.skip-to-content {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--foreground-color);
+  color: var(--background-color);
+  padding: 8px 16px;
+  z-index: 1000;
+  text-decoration: none;
+  font-weight: bold;
+}
+.skip-to-content:focus {
+  top: 0;
 }

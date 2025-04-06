@@ -68,30 +68,30 @@ model Advisor {
 }
 
 model Settings {
-  userId                Int     @id @unique
-  content_size          Int     @default(100)
-  highlight_tiles       Boolean @default(false)
-  highlight_links       Boolean @default(false)
-  text_magnifier        Boolean @default(false)
-  align_text            String  @default("center")
-  font_size             Int     @default(14)
-  line_height           Int     @default(5000)
-  letter_spacing        Int     @default(0)
-  mute_sounds           Boolean @default(false)
-  hide_images           Boolean @default(false)
-  reading_mask          Boolean @default(false)
-  highlight_hover       Boolean @default(false)
-  contrast              String  @default("100%")
-  cursor_color          String  @default("#000000")
-  cursor_border_color   String  @default("#FFFFFF")
-  cursor_size           Int     @default(2)
-  background_color      String  @default("#FFEDED")
-  foreground_color      String  @default("#4F0000")
-  text_color            String  @default("#000000")
-  highlight_hover_color String  @default("#BD180F")
-  saturation            String  @default("100%")
-  font                  Font    @default(Mitr)
-  account               Account @relation(fields: [userId], references: [id])
+  userId                         Int     @id @unique
+  highlight_links                Boolean @default(false)
+  highlight_links_color          String  @default("#335CFF")
+  text_magnifier                 Boolean @default(false)
+  align_text                     String  @default("center")
+  font_size                      Int     @default(14)
+  line_height                    Float   @default(1.5)
+  word_spacing                   Int     @default(0)
+  letter_spacing                 Int     @default(0)
+  mute_sounds                    Boolean @default(false)
+  highlight_hover                Boolean @default(false)
+  highlight_keyboard_focus       Boolean @default(false)
+  contrast                       String  @default("100%")
+  cursor_color                   String  @default("#000000")
+  cursor_border_color            String  @default("#FFFFFF")
+  cursor_size                    Int     @default(2)
+  background_color               String  @default("#FFEDED")
+  foreground_color               String  @default("#4F0000")
+  text_color                     String  @default("#000000")
+  highlight_hover_color          String  @default("#BD180F")
+  highlight_keyboard_focus_color String  @default("#BD180F")
+  saturation                     String  @default("100%")
+  font                           Font    @default(Mitr)
+  account                        Account @relation(fields: [userId], references: [id])
 }
 
 model Form {
@@ -144,14 +144,14 @@ model Accommodations {
 }
 
 model Request {
-  id                    Int     @id @default(autoincrement())
+  id                    Int           @id @default(autoincrement())
   advisorId             Int
   notes                 String?
   documentation         Boolean
   non_registered_userId Int
-  advisor               Advisor @relation(fields: [advisorId], references: [userId])
-  user                  User    @relation(fields: [non_registered_userId], references: [userId])
-  status                RequestStatus   @default(PENDING)
+  status                RequestStatus @default(PENDING)
+  advisor               Advisor       @relation(fields: [advisorId], references: [userId])
+  user                  User          @relation(fields: [non_registered_userId], references: [userId])
 }
 
 model Course {
@@ -166,13 +166,18 @@ model Course {
 }
 
 model Exam {
-  id        Int       @id @default(autoincrement())
-  courseId  Int
-  date      DateTime?
-  location  String
-  advisorId Int
-  advisor   Advisor   @relation(fields: [advisorId], references: [userId])
-  course    Course    @relation(fields: [courseId], references: [id])
+  id               Int       @id @default(autoincrement())
+  courseId         Int
+  date             DateTime?
+  location         String
+  advisorId        Int
+  examUrl          String?
+  studentIds       Int[]
+  accommodations   String[]
+  completedExamURL String?
+  name             String
+  advisor          Advisor   @relation(fields: [advisorId], references: [userId])
+  course           Course    @relation(fields: [courseId], references: [id])
 }
 
 enum FormStatus {
@@ -222,4 +227,5 @@ enum Font {
   Montserrat
   Lato
   Nunito
+  Arimo
 }
