@@ -420,12 +420,13 @@ function GlobalSettings({displayHeaderRef, settingsTabOpen, lastIntendedFocusRef
                         tabIndex={0}>Advisor Lookup and Access Control </h2>
       </div>
 
-      <div> {/* Searchbar */}
+      <div className='globalSettingsInputDiv'> {/* Searchbar */}
           <input 
             type="text"
             placeholder="Enter Advisor Name..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            className='globalSettingsInput'
           />
       </div>
 

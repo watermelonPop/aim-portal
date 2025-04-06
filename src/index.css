@@ -663,44 +663,49 @@ body.highlight-hover-enabled #search:hover{
 .tabNav {
   width: 100vw;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   background-color: var(--foreground-color);
   justify-content: space-evenly;
   position: sticky;
   top: 16vh;
   z-index: 1000;
+  height: 3rem;
+  margin-bottom: 1rem;
 }
 
 .tabNav a {
   float: left;
   display: block;
   text-align: var(--align-text);
-  padding: 0.5rem !important;
   text-decoration: none;
   color:var(--background-color);
   font-weight: 400;
   font-size: calc(var(--txtSize) + 5px);
   letter-spacing: var(--letterSpacing);
-  height: 80%;
+  height: 100% !important;
   border: 2px solid transparent;
 }
 
 body.highlight_keyboard_focus .tabNav a:hover{
   background-color: var(--highlight-keyboard-focus_-olor);
-  padding: 0.5rem;
 }
 
 body.highlight-hover-enabled .tabNav a:hover{
   background-color: var(--highlight-hover-color);
-  padding: 0.5rem;
 }
 
 .tabNav a:hover{
-  color: var(--background-color);
-  border-color: var(--background-color);
+  float: left;
+  display: block;
+  text-align: var(--align-text);
+  text-decoration: none;
+  color:var(--background-color);
+  font-weight: 400;
+  font-size: calc(var(--txtSize) + 5px);
+  letter-spacing: var(--letterSpacing);
+  height: 90% !important;
+  border: 2px solid var(--background-color);
   border-radius: 1rem;
-  border: 2px solid;
-  padding: 0.5rem;
 }
 
 
@@ -708,7 +713,6 @@ body.highlight-hover-enabled .tabNav a:hover{
   background-color: var(--background-color);
   color: var(--foreground-color);
   border-radius: 1rem;
-  padding: 0.5rem;
 }
 
 body.highlight-hover-enabled .activeTab:hover{
@@ -737,8 +741,9 @@ body.highlight-hover-enabled .activeTab:hover{
 
 .basicFooter div{
   display: flex;
+  flex-direction: column;
   column-gap: 5%;
-  width: 75%;
+  width: 50%;
   color:var(--background-color);
   font-weight: 400;
   font-size: var(--txtSize);
@@ -747,12 +752,7 @@ body.highlight-hover-enabled .activeTab:hover{
   text-align: var(--align-text);
 }
 
-.basicFooter div > div{
-  display: flex;
-  flex-direction: column;
-}
-
-.basicFooter div > div > p > a{
+.basicFooter div > p > a{
   text-decoration: underline !important;
   color: var(--background-color);
 }
@@ -769,11 +769,11 @@ body.highlight-hover-enabled .classItem:hover{
   background-color: var(--highlight-hover-color) !important;
 }
 
-body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
+body.highlight-hover-enabled .basicFooter div > p > a:hover{
   background-color: transparent !important;
 }
 
-.basicFooter div > div > a{
+.basicFooter div > a{
   text-decoration: underline !important;
   color: var(--background-color);
 }
@@ -1030,6 +1030,25 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
   text-align: var(--align-text);
 }
 
+.globalSettingsInputDiv{
+  width: 50%;
+}
+
+.globalSettingsInput{
+  margin-bottom: 15px;
+  border-radius: 1rem;
+  min-height: 2rem;
+  padding: 1%;
+  font-weight: 400;
+  font-size: var(--txtSize);
+  letter-spacing: var(--letterSpacing);
+  background-color: var(--background-color);
+  border-color: var(--text-color);
+  color: var(--text-color);
+  width: 100%;
+  text-align: var(--align-text);
+}
+
 
 #uploadFile{
   width: fit-content !important;
@@ -1117,7 +1136,6 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
 }
 
 .stickyContainer{
-  border: 1px black solid;
   height: fit-content;
 }
 
@@ -2317,6 +2335,28 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
   padding: 0;
   line-height: var(--line-height); 
   border: 2px solid var(--foreground-color);
+}
+
+.pagination-buttons button{
+  background-color: var(--background-color);
+  color: var(--foreground-color);
+  font-weight: 650;
+  font-size: calc(var(--txtSize) + 5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  line-height: var(--line-height); 
+  border: 2px solid var(--foreground-color);
+}
+
+.pagination-buttons button:hover{
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+  border-color: var(--background-color);
 }
 
 .backBtnClasses button:hover{
