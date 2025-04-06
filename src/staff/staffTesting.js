@@ -1,177 +1,227 @@
-import { useEffect, useRef, useState } from 'react';
+import { fa } from '@faker-js/faker';
+import { useState, useEffect, useRef, useMemo } from 'react';
 
-function StaffTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastIntendedFocusRef }) {
-        //====================================================== DONT TOUCH ======================================================
+function StaffExamView({ userInfo, displayHeaderRef, settingsTabOpen, lastIntendedFocusRef }) {
+        const [exams, setExams] = useState([]);
+        const [student, setStudent] = useState([]);
+        const   [loadingStudent, setLoadingStudent] = useState(false);
+        const [loading, setLoading] = useState(false);
+        const [expandedExam, setExpandedExam] = useState(null);
+        const [selectedExam, setSelectedExam] = useState([]);
+        const [selectedFile, setSelectedFile] = useState(null);
+        const [uploading, setUploading] = useState(false);
+        const [errorMessage, setErrorMessage] = useState(null);
+        const [fileUrl, setFileUrl] = useState(null);
+
         const localRef = useRef(null);
-        
-        // If ref is passed in (from parent), use that. Otherwise use internal.
         const headingRef = displayHeaderRef || localRef;
 
+  // ========================================== DO NOT TOUCH ==========================================
         useEffect(() => {
                 if (!headingRef.current || settingsTabOpen === true) return;
-                
                 if (lastIntendedFocusRef?.current !== headingRef.current) {
-                        lastIntendedFocusRef.current = headingRef.current;
+                lastIntendedFocusRef.current = headingRef.current;
                 }
         }, [settingsTabOpen, headingRef]);
         
         useEffect(() => {
                 if (!headingRef.current || settingsTabOpen === true) return;
-                
                 const frame = requestAnimationFrame(() => {
-                        const isAlertOpen = document.querySelector('[data-testid="alert"]') !== null;
-                
-                        if (
-                        headingRef.current &&
-                        !isAlertOpen &&
-                        document.activeElement !== headingRef.current &&
-                        lastIntendedFocusRef.current === headingRef.current
-                        ) {
-                        console.log("FOCUSING DASH");
-                        console.log("Intent:", lastIntendedFocusRef.current, "Target:", headingRef.current);
-                        headingRef.current.focus();
-                        lastIntendedFocusRef.current = null;
-                        }
+                const isAlertOpen = document.querySelector('[data-testid="alert"]') !== null;
+                if (
+                headingRef.current &&
+                !isAlertOpen &&
+                document.activeElement !== headingRef.current &&
+                lastIntendedFocusRef.current === headingRef.current
+                ) {
+                console.log("FOCUSING DASH");
+                console.log("Intent:", lastIntendedFocusRef.current, "Target:", headingRef.current);
+                headingRef.current.focus();
+                lastIntendedFocusRef.current = null;
+                }
                 });
-                
                 return () => cancelAnimationFrame(frame);
         }, [settingsTabOpen, headingRef]);
 
+      // ========================================== USE EFFECT LOGIC ==========================================
+        useEffect(() => {
+        if (userInfo?.id) {
+        setLoading(true);
+        fetch(`/api/getExamFromAdvisor?userId=${userInfo.id}`)
+                .then((res) => {
+                if (!res.ok) throw new Error("Failed to fetch exams");
+                return res.json();
+                })
+                .then((data) => {
+                setExams(data.exams);
+                })
+                .catch((error) => {
+                console.error("Error fetching exams:", error);
+                })
+                .finally(() => {
+                setLoading(false);
+                
+                });
+        }
+        }, [userInfo]);
+
+
+        //FOR PRINTING ONLY
         useEffect(()=>{
-                console.log("last intended focus ref");
-        },[lastIntendedFocusRef]);
-
-        //====================================================== USE EFFECT ======================================================
-        
-        /*
-        1. should only be viewable to those with testing access.
-                1.1 go into loginscreen and make sure that it is sorted by role.
-        2. exams should be in list view with click to expand portions for each exam.
-                2.2:the expanded form of the list should include: 
-                - name of the student
-                - date of the exam
-                - course of the exam
-                - any accomodations regarding the taking of the exam
-                - pdf of the exam
-        3. include pagination
-        4. maybe include a sort by date/class?
-        5. ability to upload a completed exam.
-        
-        sort exams by the userID?
-                -exams are already sorted to advisors
-        */
-
-        const [exams, setExams] = useState([]);
-        const [loading, setLoading] = useState(false);
+                if(loading === false && exams.length != 0){
+                        console.log("EXAMS HERE:",exams);
+                }
+        },[exams]);
 
         useEffect(()=>{
-                const fetchExamsByAdvisor = async() => {
-                        setLoading(true);
-                        try{
-                                const res = await fetch(`/api/getExamFromAdvisor?userId=${userInfo?.id}`);
-                                if(!res.ok) throw new Error('Failed to fetch courses');
-                                const data = await res.json();
-                                setExams(data);
-                                //console.log("EXAMS RELATED TO ADVISOR",data);
-                        }
-                        catch(error){
-                                console.error("error fetching exams:",error);
-                        }
-                        finally{
-                                setLoading(false);
-                        }
+                if(loadingStudent === false && student.length != 0){
+                        console.log("STUDENT HERE:",student);
+                }
+        },[student]);
+
+
+//   // Handle file selection
+
+//   const handleFileChange = (event) => {
+//     const file = event.target.files[0];
+//     if (file) {
+//       setSelectedFile(file);
+//       setErrorMessage(null);
+//       setFileUrl(null);
+//     }
+//   };
+
+//   // Handle file upload using .then to ensure order
+//   const handleFileUpload = (examId) => {
+//     if (!selectedFile) {
+//       setErrorMessage("Please select a file first.");
+//       return;
+//     }
+//     setUploading(true);
+//     const formData = new FormData();
+//     formData.append("file", selectedFile);
+//     formData.append("examId", examId);
+
+//     fetch("/api/submitCompletedExam", {
+//       method: "POST",
+//       body: formData,
+//     })
+//       .then((response) => {
+//         if (!response.ok) throw new Error("Upload failed.");
+//         return response.json();
+//       })
+//       .then((result) => {
+//         setFileUrl(result.url);
+//       })
+//       .catch((error) => {
+//         console.error("File upload error:", error);
+//         setErrorMessage("Upload failed.");
+//       })
+//       .finally(() => {
+//         setUploading(false);
+//       });
+//   };
+
+        // ========================================== JSX ELEMENT FUNCTIONS ==========================================
+        function ExamListView({ exams, loading, setSelectedExam }) {
+                // Define container styles for a list view
+                const listContainerStyle = {
+                padding: '16px',
+                maxWidth: '600px',
+                margin: '0 auto'
                 };
-
-                if(userInfo?.id){
-                        console.log("fetching exams");
-                        fetchExamsByAdvisor();
+        
+                // Define styles for each exam list item
+                const listItemStyle = {
+                border: '1px solid #ccc',
+                borderRadius: '8px',
+                padding: '16px',
+                marginBottom: '12px',
+                cursor: 'pointer',
+                display: 'flex',
+                flexDirection: 'column'
+                };
+        
+                const titleStyle = {
+                margin: '0 0 8px',
+                fontSize: '1.2em'
+                };
+        
+                const detailStyle = {
+                margin: 0,
+                fontSize: '0.9em',
+                color: '#555'
+                };
+        
+                // Display a loading message if data hasn't loaded yet
+                if (loading) {
+                return <div style={{ padding: '16px', textAlign: 'center' }}>Loading exams...</div>;
                 }
-        },[userInfo]);
-
-        const [selectedFile, setSelectedFile] = useState(null);
-        const [uploading, setUploading] = useState(false);
-        const [fileUrl, setFileUrl] = useState(null);
-        const [errorMessage, setErrorMessage] = useState(null);
         
+                // Function to handle click on an exam list item
+                const handleExamClick = (exam) => {
+                setSelectedExam(exam);
+                console.log("SELECTED EXAM:",exam)
+                setLoadingStudent(true);
+                fetch(`/api/getStudentData?userId=${exam.studentIds[0]}`)
+                        .then((res) => {
+                        if (!res.ok) throw new Error("Failed to fetch student");
+                        return res.json();
+                        })
+                        .then((data) => {
+                        setStudent(data);
+                        })
+                        .catch((error) => {
+                        console.error("Error fetching student:", error);
+                        })
+                        .finally(() => {
+                        setLoadingStudent(false);
+                        });
+                };      
         
-        // This function handles the change event on the file input
-        const handleFileChange = (event) => {
-                const file = event.target.files[0];
-                if (file) {
-                    setSelectedFile(file);
-                    setErrorMessage(null);
-                    setFileUrl(null);
-                }
-            };
-        
-        // Component for file upload button and input
-        function ExamSubmissionButton() {
+                // Determine which array to slice based on the search query
+                const displayedExams = exams.length === 0 ? [] : exams;
+                console.log("displayedExams:", displayedExams);
                 return (
-                    <div id="uploadFileOuter">
-                        <label htmlFor="uploadFile">Upload Exam Here</label>
-                        <input
-                            type="file"
-                            onChange={handleFileChange}
-                            data-testid="uploadFile"
-                            id="uploadFile"
-                            name="uploadFile"
-                        />
-                        <button onClick={handleSubmitUpload} disabled={!selectedFile || uploading}>
-                            Submit
-                        </button>
-                    </div>
+                <div style={listContainerStyle}>
+                {displayedExams?.map((exam) => (
+                <div
+                        key={exam.id}
+                        style={listItemStyle}
+                        onClick={() => handleExamClick(exam)}
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(e) => {
+                        if (e.key === 'Enter') handleExamClick(exam);
+                        }}
+                        //TODO: FIX THESE
+                        aria-label={`Exam titled ${exam.name}, subject: ${exam.courseId}, date: ${exam.date}`}
+                >
+                        <h3 style={titleStyle}>{exam.course.name}</h3>
+                        <p style={detailStyle}>Subject: {exam.courseId}</p>
+                        <p style={detailStyle}>Date: {exam.date}</p>
+                </div>
+                ))}
+                </div>
                 );
-            }
-            
+        }
 
-        const handleSubmitUpload = async () => {
-                if (!selectedFile) {
-                    setErrorMessage("Please select a file first.");
-                    return;
-                }
-            
-                setUploading(true);
-                try {
-                    const formData = new FormData();
-                    formData.append("file", selectedFile);
-            
-                    const response = await fetch("/api/submitDocumentation", {
-                        method: "POST",
-                        body: formData,
-                    });
-            
-                    if (!response.ok) throw new Error("Failed to upload file");
-            
-                    const result = await response.json();
-                    setFileUrl(result.url);
-                    console.log("Uploaded URL:", result.url);
-                } catch (error) {
-                    console.error("Upload error:", error);
-                    setErrorMessage("Upload failed.");
-                } finally {
-                    setUploading(false);
-                }
-            };
 
-        
+  //========================================== RETURN LOGIC ==========================================
         return (
-            <div className="staffTesting">
-                <h2 ref={headingRef} tabIndex={0} className="dashboardTitle">
-                    STAFF TESTING
+        <div className="staffExamView">
+                <h2 ref={headingRef} tabIndex={0} aria-label="Exams Assigned to You">
+                        Exams Assigned to You
                 </h2>
-                {ExamSubmissionButton()}
-                {uploading && <p>Uploading file...</p>}
-                {fileUrl && (
-                <p>
-                        File uploaded! View it here:{" "}
-                        <a href={fileUrl} target="_blank" rel="noopener noreferrer">
-                        {fileUrl}
-                        </a>
-                </p>
-                )}
-                {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
-            </div>
+                <div>
+                        <ExamListView
+                        exams={exams}
+                        loading={loading}
+                        setSelectedExam={setSelectedExam}
+                        />
+                </div>
+        </div>
         );
 }
 
-export default StaffTesting;
+export default StaffExamView;

@@ -23,6 +23,9 @@ module.exports = async (req, res) => {
                 where : {
                     advisorId : Number(userId),
                 },
+                include : {
+                    course:true,
+                },
             });
 
             //const 
