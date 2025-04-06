@@ -1,5 +1,5 @@
 import React from "react";
-import "./App.css";
+import "./index.css";
 
 export default function PopupModal({ title, onClose, children }) {
   return (

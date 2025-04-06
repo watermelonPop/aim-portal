@@ -1622,6 +1622,26 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
   border-radius: 8px;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
 }
+.staff-alerts {
+  max-height: 400px; /* Adjust this height based on your preference */
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-radius: 10px;
+}
+
+.staff-alerts::-webkit-scrollbar {
+  width: 8px;
+}
+
+.staff-alerts::-webkit-scrollbar-thumb {
+  background-color: #c4c4c4;
+  border-radius: 4px;
+}
+
+.staff-alerts::-webkit-scrollbar-thumb:hover {
+  background-color: #999;
+}
+
 
 
 /* Alerts Box */
@@ -2339,3 +2359,355 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
 .skip-to-content:focus {
   top: 0;
 }
+
+/* Staff Dashboard Specific Styles */
+.staffDash-search-bar {
+  width: 60%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 2px solid var(--foreground-color);
+  font-size: 1rem;
+}
+
+.staffDash-search-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* centers horizontally */
+  justify-content: flex-start;
+  text-align: center; /* ensures the text itself is centered */
+  padding: 1rem;
+  max-height: 400px;
+  overflow-y: auto;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  margin-top:10px;
+}
+
+.staffDash-search-item {
+  width: 100%; /* ensures the item takes full width and keeps the text aligned center */
+  padding: 1rem;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+.staffDash-search-item:hover {
+  background-color: #f4f4f4;
+}
+
+.staffDash-cancel-btn, .staffDash-backtoprofile-btn {
+  margin-top: 15px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  background-color: var(--foreground-color);
+  color: white;
+  cursor: pointer;
+}
+
+.staffDash-cancel-btn:hover, .staffDash-backtoprofile-btn:hover {
+  background-color: #6a0000;
+}
+
+.staffDash-edit-profile-button {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background-color: var(--foreground-color);
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+}
+
+.staffDash-edit-profile-button:hover {
+  background-color: #6a0000;
+}
+
+.staffDash-modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.staffDash-modalContent {
+  background: white;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh; /* Prevent overflow */
+  overflow-y: auto;  /* Enable scrolling */
+  padding: 1.5rem;
+  border-radius: 12px;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.staffDash-modalContent::-webkit-scrollbar {
+  width: 8px;
+}
+
+.staffDash-modalContent::-webkit-scrollbar-thumb {
+  background-color: #c4c4c4;
+  border-radius: 4px;
+}
+
+.staffDash-modalContent::-webkit-scrollbar-thumb:hover {
+  background-color: #999;
+}
+
+.staffDash-modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.staffDash-modalHeaderCloseBtn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.staffDash-overlay-spinner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255,255,255,0.7);
+}
+
+.staffDash-loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 5px solid #ccc;
+  border-top: 5px solid var(--foreground-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.staffDash-form-warning {
+  color: #D8000C;
+  background-color: #FFD2D2;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
+
+.staffDash-form-success {
+  color: #4F8A10;
+  background-color: #DFF2BF;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
+
+.staffDash-edit-student-form .staffDash-form-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.staffDash-form-group label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.staffDash-form-group input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.staffDash-student-modal-buttons button {
+  margin: 5px;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background-color: var(--foreground-color);
+  color: white;
+  cursor: pointer;
+}
+
+.staffDash-student-modal-buttons button:hover {
+  background-color: #6a0000;
+}
+
+.staffDash-form-entry, .staffDash-accommodation-entry, .staffDash-assistive-tech-entry {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.two-column-layout {
+  display: flex;
+  gap: 40px;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.student-left-column {
+  flex: 1;
+  min-width: 300px;
+}
+
+.student-right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 250px;
+}
+
+.student-profile-heading {
+  font-size: 2rem;
+  color: #4F0000;
+  margin-bottom: 10px;
+}
+
+.student-info-box {
+  background: #f3f3f3;
+  padding: 15px 20px;
+  border-radius: 8px;
+  margin-top: 10px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  font-size: 0.95rem;
+}
+
+.student-profile-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 500px;
+}
+
+.student-dropdown-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  flex: 1;
+}
+
+/* Full-screen Modal Styles for Messages/Confirmations */
+.fullscreen-message-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.fullscreen-message-content {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 30px;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  position: relative;
+}
+
+.fullscreen-message-content h2 {
+  color: var(--foreground-color);
+  margin-bottom: 1rem;
+}
+
+.fullscreen-message-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: var(--foreground-color);
+}
+
+.fullscreen-message-button {
+  padding: 10px 20px;
+  background-color: var(--foreground-color);
+  color: #fff;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.fullscreen-message-button:hover {
+  background-color: #6a0000;
+}
+
+.fullscreen-message-button:focus,
+.fullscreen-message-close-btn:focus {
+  outline: 2px solid #0066ff;
+  outline-offset: 3px;
+}
+
+.staff-student-details-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem; /* adjust the gap between columns as needed */
+  flex-wrap: wrap; /* Allows responsiveness */
+  margin-top: 2rem;
+}
+
+.student-profile-card {
+  flex: 1 1 400px; /* minimum width, expands flexibly */
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.staffDash-student-modal-buttons {
+  flex: 0 1 200px; /* narrower column */
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.staffDash-student-modal-buttons button {
+  padding: 0.8rem 1rem;
+  background-color: var(--foreground-color);
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+}
+
+.staffDash-student-modal-buttons button:hover {
+  background-color: #6a0000;
+}
+
+
+
