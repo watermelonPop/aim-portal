@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-function CreateExamModal({ course, students, isOpen, onClose }) {
+function CreateExamModal({ course, students, isOpen, onClose, returnFocusRef, addExamToStudent }) {
   const [examName, setExamName] = useState('');
   const [examDate, setExamDate] = useState('');
   const [examLocation, setExamLocation] = useState('');
@@ -10,8 +10,11 @@ function CreateExamModal({ course, students, isOpen, onClose }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [accommodationDropdownOpen, setAccommodationDropdownOpen] = useState(false);
 
+  const modalRef = useRef(null);
+  const headingRef = useRef(null);
+
   const accommodationsList = [
-    "Extended Time", 
+    "Extended Time",
     "Alternative Format Materials",
     "Accessible Seating",
     "Reduced Distraction Testing Environment",
@@ -25,16 +28,16 @@ function CreateExamModal({ course, students, isOpen, onClose }) {
   };
 
   const handleStudentSelection = (e) => {
-    const selectedOptions = Array.from(e.target.selectedOptions, (option) => option.value);
+    const selectedOptions = Array.from(e.target.selectedOptions, (option) => Number(option.value));
     setSelectedStudents(selectedOptions);
   };
 
   const handleDropdownToggle = () => {
-    setDropdownOpen((prev) => !prev);
+    setDropdownOpen(prev => !prev);
   };
 
   const handleAccommodationDropdownToggle = () => {
-    setAccommodationDropdownOpen((prev) => !prev);
+    setAccommodationDropdownOpen(prev => !prev);
   };
 
   const handleAccommodationSelection = (e) => {
@@ -45,15 +48,12 @@ function CreateExamModal({ course, students, isOpen, onClose }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("Submitted form");
-
     const formData = new FormData();
     formData.append("name", examName);
     formData.append("date", examDate);
     formData.append("location", examLocation);
     formData.append("file", examFile);
     formData.append("accommodations", JSON.stringify(selectedAccommodations));
-    console.log("Selected Students: ", selectedStudents);
     formData.append("studentIds", selectedStudents);
     formData.append("courseId", course.id);
 
@@ -64,23 +64,82 @@ function CreateExamModal({ course, students, isOpen, onClose }) {
       });
 
       if (response.ok) {
-        console.log("Exam created successfully");
+        const newExams = await response.json();
+
+        newExams.forEach((exam) => {
+          addExamToStudent(course.id, exam);
+        });
+
         onClose();
       } else {
         console.error("Failed to create exam");
       }
-      console.log(response);
     } catch (error) {
       console.error("Error submitting exam:", error);
     }
   };
 
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => {
+        headingRef.current?.focus();
+      }, 0);
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const modalEl = modalRef.current;
+    const focusableEls = modalEl.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    const firstEl = focusableEls[0];
+    const lastEl = focusableEls[focusableEls.length - 1];
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Tab') {
+        if (e.shiftKey && document.activeElement === firstEl) {
+          e.preventDefault();
+          lastEl.focus();
+        } else if (!e.shiftKey && document.activeElement === lastEl) {
+          e.preventDefault();
+          firstEl.focus();
+        }
+      }
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    modalEl.addEventListener('keydown', handleKeyDown);
+    return () => modalEl.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
+  useEffect(() => {
+    if (!isOpen && returnFocusRef?.current) {
+      try {
+        returnFocusRef.current.focus();
+      } catch (e) {
+        console.warn("returnFocusRef not available:", e);
+      }
+    }
+  }, [isOpen, returnFocusRef]);
+
   if (!isOpen) return null;
 
   return (
     <div className="examModalBackdrop">
-      <div className="examModalContent">
-        <h2>Create New Exam for {course.name}</h2>
+      <div
+        className="examModalContent"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-heading"
+        ref={modalRef}
+      >
+        <h2 id="modal-heading" tabIndex={-1} ref={headingRef}>
+          Create New Exam for {course.name}
+        </h2>
         <form onSubmit={handleSubmit}>
           <div>
             <label>Exam Name:</label>
@@ -102,30 +161,49 @@ function CreateExamModal({ course, students, isOpen, onClose }) {
           <div>
             <label>Select Accommodations:</label>
             <div className="student-dropdown">
-              <button type="button" className="examDropdownButton" onClick={handleAccommodationDropdownToggle}>
-                {selectedAccommodations.length > 0 ? `Selected ${selectedAccommodations.length} accommodation(s)` : 'Select Accommodations'}
+              <button
+                type="button"
+                className="examDropdownButton"
+                onClick={handleAccommodationDropdownToggle}
+              >
+                {selectedAccommodations.length > 0
+                  ? `Selected ${selectedAccommodations.length} accommodation(s)`
+                  : 'Select Accommodations'}
               </button>
               {accommodationDropdownOpen && (
-                <select multiple value={selectedAccommodations} onChange={handleAccommodationSelection} className="student-dropdown-list">
-                  {accommodationsList.map((accommodation, index) => (
-                    <option key={index} value={accommodation}>
-                      {accommodation}
-                    </option>
+                <select
+                  multiple
+                  value={selectedAccommodations}
+                  onChange={handleAccommodationSelection}
+                  className="student-dropdown-list"
+                >
+                  {accommodationsList.map((acc, i) => (
+                    <option key={i} value={acc}>{acc}</option>
                   ))}
                 </select>
               )}
             </div>
           </div>
 
-          {/* Students Dropdown */}
           <div>
             <label>Select Students:</label>
             <div className="student-dropdown">
-              <button type="button" className="examDropdownButton" onClick={handleDropdownToggle}>
-                {selectedStudents.length > 0 ? `Selected ${selectedStudents.length} student(s)` : 'Select Students'}
+              <button
+                type="button"
+                className="examDropdownButton"
+                onClick={handleDropdownToggle}
+              >
+                {selectedStudents.length > 0
+                  ? `Selected ${selectedStudents.length} student(s)`
+                  : 'Select Students'}
               </button>
               {dropdownOpen && (
-                <select multiple value={selectedStudents} onChange={handleStudentSelection} className="student-dropdown-list">
+                <select
+                  multiple
+                  value={selectedStudents}
+                  onChange={handleStudentSelection}
+                  className="student-dropdown-list"
+                >
                   {students.map((student) => (
                     <option key={student.userId} value={student.userId}>
                       {student.account.name}
@@ -137,7 +215,7 @@ function CreateExamModal({ course, students, isOpen, onClose }) {
           </div>
 
           <div className="modalButtons">
-            <button className="examModalButton" type="submit" onClick={handleSubmit}>Create Exam</button>
+            <button className="examModalButton" type="submit">Create Exam</button>
             <button type="button" onClick={onClose}>Cancel</button>
           </div>
         </form>
