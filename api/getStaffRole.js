@@ -14,9 +14,10 @@ module.exports = async (req, res) => {
 
     try {
       // Fetch advisor data using Prisma
-      const advisor = await prisma.advisor.findFirst({
+      const advisor = await prisma.advisor.findUnique({
         where: { userId: parseInt(userId, 10) },
       });
+      console.log("ADVISOR HERE: ", advisor);
       res.status(200).json({ res: advisor });
     } catch (error) {
       console.error('Error fetching advisors:', error.message);
