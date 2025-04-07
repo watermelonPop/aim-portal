@@ -1,7 +1,7 @@
 // StudentDashboard.test.jsx
 import React from 'react';
 import { render, screen, waitFor, fireEvent, within } from '@testing-library/react';
-import StudentDashboard from '../studentDashboard.js';
+import StudentDashboard from '../student/studentDashboard.js';
 
 describe('StudentDashboard', () => {
   const mockUser = { id: 1, name: 'Test Student' };
@@ -48,14 +48,24 @@ describe('StudentDashboard', () => {
   });
 
   test('renders welcome message with user name', async () => {
-    render(<StudentDashboard userInfo={mockUser} />);
+    const mockDisplayHeaderRef = { current: null };
+    const mockLastIntendedFocusRef = { current: null };
+
+    render(<StudentDashboard userInfo={mockUser} displayHeaderRef={mockDisplayHeaderRef}
+      lastIntendedFocusRef={mockLastIntendedFocusRef}
+      settingsTabOpen={false}/>);
     expect(screen.getByText(/Welcome, Test Student/)).toBeInTheDocument();
     // Expect 2 fetch calls (courses and alerts)
     await waitFor(() => expect(global.fetch).toHaveBeenCalledTimes(2));
   });
 
   test('displays courses in card view by default', async () => {
-    render(<StudentDashboard userInfo={mockUser} />);
+    const mockDisplayHeaderRef = { current: null };
+    const mockLastIntendedFocusRef = { current: null };
+
+    render(<StudentDashboard userInfo={mockUser} displayHeaderRef={mockDisplayHeaderRef}
+      lastIntendedFocusRef={mockLastIntendedFocusRef}
+      settingsTabOpen={false}/>);
     await waitFor(() => {
       expect(screen.getByText('Course 1')).toBeInTheDocument();
       expect(screen.getByText('Course 2')).toBeInTheDocument();
@@ -64,7 +74,12 @@ describe('StudentDashboard', () => {
   });
 
   test('toggles view mode to list view', async () => {
-    render(<StudentDashboard userInfo={mockUser} />);
+    const mockDisplayHeaderRef = { current: null };
+    const mockLastIntendedFocusRef = { current: null };
+
+    render(<StudentDashboard userInfo={mockUser} displayHeaderRef={mockDisplayHeaderRef}
+      lastIntendedFocusRef={mockLastIntendedFocusRef}
+      settingsTabOpen={false}/>);
     await waitFor(() => {
       expect(screen.getByText('Course 1')).toBeInTheDocument();
     });
@@ -75,7 +90,12 @@ describe('StudentDashboard', () => {
   });
 
   test('opens and closes modal when a course is clicked', async () => {
-    render(<StudentDashboard userInfo={mockUser} />);
+    const mockDisplayHeaderRef = { current: null };
+    const mockLastIntendedFocusRef = { current: null };
+
+    render(<StudentDashboard userInfo={mockUser} displayHeaderRef={mockDisplayHeaderRef}
+      lastIntendedFocusRef={mockLastIntendedFocusRef}
+      settingsTabOpen={false}/>);
     await waitFor(() => {
       expect(screen.getByText('Course 1')).toBeInTheDocument();
     });
