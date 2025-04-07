@@ -66,8 +66,8 @@ function ProfessorProfile({ userInfo, displayHeaderRef, settingsTabOpen, lastInt
           ) : (
             professorData && (
               <div className="profileContainer">
-                <div className="profileField"><span className="label">Name:</span> {professorData.account.name || "N/A"}</div>
-                <div className="profileField"><span className="label">Email:</span> {professorData.account.email || "N/A"}</div>
+                <div className="profileField"><span className="label">Name:</span> {professorData?.account?.name || "N/A"}</div>
+                <div className="profileField"><span className="label">Email:</span> {professorData?.account?.email || "N/A"}</div>
                 <div className="profileField"><span className="label">Department:</span> {professorData.department || "N/A"}</div>
               </div>
             )
