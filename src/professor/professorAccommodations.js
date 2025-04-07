@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import './Professor.css';
 
 function ProfessorAccommodations({ userInfo, setAlertMessage, setShowAlert, displayHeaderRef, settingsTabOpen, lastIntendedFocusRef }) {
   const [loading, setLoading] = useState(false);
@@ -80,7 +81,7 @@ function ProfessorAccommodations({ userInfo, setAlertMessage, setShowAlert, disp
           </div>
         </div>
       ) : (
-        <div className="accommodationsContainer" role="region" aria-labelledby="professor-accommodations-heading">
+        <div role="region" aria-labelledby="professor-accommodations-heading">
           <h2 id="professor-accommodations-heading" ref={headingRef} tabIndex={0}>
             PROFESSOR ACCOMMODATIONS
           </h2>

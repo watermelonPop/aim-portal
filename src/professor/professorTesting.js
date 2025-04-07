@@ -139,7 +139,7 @@ function ProfessorTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastInt
           </div>
         </div>
       ) : (
-        <div className="accommodationsContainer">
+        <div >
           <h2 ref={headingRef} tabIndex={0} id="professor-testing-heading">PROFESSOR TESTING</h2>
   
           <div className="filterButtonContainer">
