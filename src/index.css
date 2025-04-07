@@ -3593,4 +3593,232 @@ p:focus-visible  {
 }
 
 
+/* --------------------------------------------- USER AUDIT ------------------------------------------------------------------------------------- */
 
+
+/* === AUDIT VIEW STYLING === */
+
+.auditViewContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+  padding: 3rem;
+  text-align: center;
+  animation: fadeIn 0.8s ease-out;
+  background-color: var(--background-color);
+}
+
+.auditTitle {
+  font-size: calc(var(--txtSize) + 40px);
+  font-weight: 700;
+  color: var(--foreground-color);
+  margin-bottom: 1rem;
+}
+
+.auditPrompt {
+  font-size: calc(var(--txtSize) + 10px);
+  color: var(--text-color);
+  margin-bottom: 2rem;
+}
+
+.auditButtonGroup {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.auditButton {
+  padding: 1rem 2rem;
+  font-size: calc(var(--txtSize) + 10px);
+  font-weight: 600;
+  background-color: var(--background-color);
+  color: var(--foreground-color);
+  border: 3px solid var(--foreground-color);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 250px;
+}
+
+.auditButton:hover,
+.auditButton:focus {
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+  transform: scale(1.05);
+  outline: none;
+}
+
+.formSkeletonList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+  width: 100%;
+  max-width: 500px;
+  padding: 1rem;
+  background-color: #fff7f7;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.formSkeletonList button {
+  background-color: transparent;
+  border: 2px solid var(--foreground-color);
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  font-size: calc(var(--txtSize) + 4px);
+  font-weight: 500;
+  color: var(--foreground-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.formSkeletonList button:hover {
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+}
+
+.auditBackBtn {
+  margin-top: 2rem;
+  padding: 0.75rem 1.5rem;
+  font-size: calc(var(--txtSize) + 5px);
+  background-color: transparent;
+  color: var(--foreground-color);
+  border: 2px solid var(--foreground-color);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.auditBackBtn:hover {
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.studentFormsContainer {
+  text-align: center;
+  padding: 3rem 2rem;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.studentFormsTitle {
+  font-size: calc(var(--txtSize) + 36px);
+  font-weight: 800;
+  color: var(--foreground-color);
+  margin-bottom: 2.5rem;
+}
+
+.studentFormsAccordion {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+/* Accordion Group */
+.studentFormGroup {
+  position: relative;
+}
+
+.studentFormToggle {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  font-size: calc(var(--txtSize) + 6px);
+  font-weight: 600;
+  color: var(--foreground-color);
+  background-color: #f9f9f9;
+  border: 3px solid var(--foreground-color);
+  border-radius: 20px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.2s ease;
+}
+
+.studentFormToggle:focus,
+.studentFormToggle:hover {
+  outline: 3px solid var(--highlight-links-color);
+  background-color: #fff3f3;
+}
+
+/* Forms inside a group */
+.studentFormsList {
+  list-style: none;
+  padding-left: 2rem;
+  margin-top: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+  border-left: 3px solid var(--foreground-color);
+  margin-left: 1.5rem;
+  padding-left: 1.5rem;
+  animation: fadeSlide 0.3s ease-out;
+}
+
+.studentFormItem {
+  font-size: calc(var(--txtSize) + 3px);
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--foreground-color);
+}
+
+.studentFormItem a {
+  color: var(--foreground-color);
+  text-decoration: none;
+}
+
+.studentFormItem a:hover,
+.studentFormItem a:focus {
+  color: var(--highlight-links-color);
+  text-decoration: underline;
+  outline: none;
+}
+
+.studentFormTag {
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  margin-left: 1rem;
+}
+
+.studentFormsBackBtn {
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
+  font-size: calc(var(--txtSize) + 4px);
+  background-color: transparent;
+  color: var(--foreground-color);
+  border: 2px solid var(--foreground-color);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.studentFormsBackBtn:hover {
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+}
+
+/* Transitions */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
