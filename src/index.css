@@ -892,6 +892,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   border-radius: 10px;
   width: 100%;
   height: fit-content;
+  /* animation: staffStudentProfile-spin 1s linear infinite; */
   margin-top: 100vh;
 }
 
@@ -902,6 +903,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   padding: 20px;
   border-radius: 10px;
   width: 100%;
+  animation: spin 1s linear infinite;
   height: fit-content;
 }
 
@@ -1806,12 +1808,12 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
 }
 
 /* Bigger and More Accessible Staff Menu Buttons */
-.staff-menu-buttons button {
-  width: 300px; /* Increase width */
-  height: 50px; /* Increase height */
-  font-size: 1rem; /* Bigger text */
-  padding: 15px; /* More padding for better clickability */
-  background-color: #5a0000; /* Same color as before */
+/* .staff-menu-buttons button {
+  width: 300px; 
+  height: 50px; 
+  font-size: 1rem; 
+  padding: 15px; 
+  background-color: #5a0000; 
   color: white;
   border: none;
   border-radius: 10px;
@@ -1820,11 +1822,10 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   margin-bottom:5vh;
 }
 
-/* Hover effect for better UI */
 .staff-menu-buttons button:hover {
   background-color: #6a0000;
-  transform: scale(1.05); /* Slightly enlarges on hover */
-}
+  transform: scale(1.05); 
+} */
 
 
 /* Center the dashboard title */
@@ -1842,6 +1843,26 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   border-radius: 8px;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
 }
+.staff-alerts {
+  max-height: 400px; /* Adjust this height based on your preference */
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-radius: 10px;
+}
+
+.staff-alerts::-webkit-scrollbar {
+  width: 8px;
+}
+
+.staff-alerts::-webkit-scrollbar-thumb {
+  background-color: #c4c4c4;
+  border-radius: 4px;
+}
+
+.staff-alerts::-webkit-scrollbar-thumb:hover {
+  background-color: #999;
+}
+
 
 
 /* Alerts Box */
@@ -2584,6 +2605,762 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   top: 0;
 }
 
+/* Staff Dashboard Specific Styles */
+.staffDash-search-bar {
+  width: 60%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 2px solid var(--foreground-color);
+  font-size: 1rem;
+}
+
+.staffDash-search-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* centers horizontally */
+  justify-content: flex-start;
+  text-align: center; /* ensures the text itself is centered */
+  padding: 1rem;
+  max-height: 400px;
+  overflow-y: auto;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  margin-top:10px;
+}
+
+.staffDash-search-item {
+  width: 100%; /* ensures the item takes full width and keeps the text aligned center */
+  padding: 1rem;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+.staffDash-search-item:hover {
+  background-color: #f4f4f4;
+}
+
+.staffDash-cancel-btn, .staffDash-backtoprofile-btn {
+  margin-top: 15px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  background-color: var(--foreground-color);
+  color: white;
+  cursor: pointer;
+}
+
+.staffDash-cancel-btn:hover, .staffDash-backtoprofile-btn:hover {
+  background-color: #6a0000;
+}
+
+.staffDash-edit-profile-button {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background-color: var(--foreground-color);
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+}
+
+.staffDash-edit-profile-button:hover {
+  background-color: #6a0000;
+}
+
+.staffDash-modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.staffDash-modalContent {
+  background: white;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh; /* Prevent overflow */
+  overflow-y: auto;  /* Enable scrolling */
+  padding: 1.5rem;
+  border-radius: 12px;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.staffDash-modalContent::-webkit-scrollbar {
+  width: 8px;
+}
+
+.staffDash-modalContent::-webkit-scrollbar-thumb {
+  background-color: #c4c4c4;
+  border-radius: 4px;
+}
+
+.staffDash-modalContent::-webkit-scrollbar-thumb:hover {
+  background-color: #999;
+}
+
+.staffDash-modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.staffDash-modalHeaderCloseBtn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.staffDash-overlay-spinner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255,255,255,0.7);
+}
+
+.staffDash-loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 5px solid #ccc;
+  border-top: 5px solid var(--foreground-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.staffDash-form-warning {
+  color: #D8000C;
+  background-color: #FFD2D2;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
+
+.staffDash-form-success {
+  color: #4F8A10;
+  background-color: #DFF2BF;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
+
+.staffDash-edit-student-form .staffDash-form-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.staffDash-form-group label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.staffDash-form-group input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.staffDash-student-modal-buttons button {
+  margin: 5px;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background-color: var(--foreground-color);
+  color: white;
+  cursor: pointer;
+}
+
+.staffDash-student-modal-buttons button:hover {
+  background-color: #6a0000;
+}
+
+.staffDash-form-entry, .staffDash-accommodation-entry, .staffDash-assistive-tech-entry {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+/* Individual form entry */
+.staffDash-form-entry {
+  background-color: #fcdad8;
+  border: 2px solid #7c0a02;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s ease;
+}
+.staffDash-accommodation-entry{
+  background-color: #fcdad8;
+  border: 2px solid #7c0a02;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s ease;
+
+}
+
+.staffDash-notes-textarea {
+  width: 100%;
+  padding: 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  resize: vertical;
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+}
+.visually-hidden {
+  position: absolute !important;
+  height: 1px; width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
+}
+
+.sr-only {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
+}
+
+.staffDash-notes-label {
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.staffDash-previous-notes {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 0.6rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  color: #333;
+  font-size: 0.95rem;
+  white-space: pre-wrap;
+}
+
+.staffDash-notes-input-label {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  display: block;
+}
+
+.staffDash-notes-textarea {
+  width: 100%;
+  padding: 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  font-size: 0.95rem;
+  resize: vertical;
+}
+
+
+.staffDash-form-entry:hover {
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+/* Headings inside form */
+.staffDash-form-entry h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+/* Form details */
+.staffDash-form-entry p {
+  margin: 0.4rem 0;
+  font-size: 0.95rem;
+}
+
+/* Form link */
+.staffDash-form-entry a {
+  color: var(--highlight-links-color);
+  font-weight: 500;
+}
+
+.staffDash-form-entry a:hover {
+  text-decoration: underline;
+}
+
+/* Form status select + button */
+.staffDash-form-entry select {
+  margin-top: 0.75rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #aaa;
+  font-size: 0.95rem;
+}
+
+.staffDash-form-entry button {
+  margin-top: 0.75rem;
+  margin-left: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #6a0000;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.staffDash-form-entry button:hover {
+  background-color: #4d0000;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.two-column-layout {
+  display: flex;
+  gap: 40px;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.student-left-column {
+  flex: 1;
+  min-width: 300px;
+}
+
+.student-right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 250px;
+}
+
+.student-profile-heading {
+  font-size: 2rem;
+  color: #4F0000;
+  margin-bottom: 10px;
+}
+
+.student-info-box {
+  background: #f3f3f3;
+  padding: 15px 20px;
+  border-radius: 8px;
+  margin-top: 10px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  font-size: 0.95rem;
+}
+
+.student-profile-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 500px;
+}
+
+.student-dropdown-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  flex: 1;
+}
+
+/* Full-screen Modal Styles for Messages/Confirmations */
+.fullscreen-message-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.fullscreen-message-content {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 30px;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  position: relative;
+}
+
+.fullscreen-message-content h2 {
+  color: var(--foreground-color);
+  margin-bottom: 1rem;
+}
+
+.fullscreen-message-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: var(--foreground-color);
+}
+
+.fullscreen-message-button {
+  padding: 10px 20px;
+  background-color: var(--foreground-color);
+  color: #fff;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.fullscreen-message-button:hover {
+  background-color: #6a0000;
+}
+
+.fullscreen-message-button:focus,
+.fullscreen-message-close-btn:focus {
+  outline: 2px solid #0066ff;
+  outline-offset: 3px;
+}
+
+.staff-student-details-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem; /* adjust the gap between columns as needed */
+  flex-wrap: wrap; /* Allows responsiveness */
+  margin-top: 2rem;
+}
+
+.student-profile-card {
+  flex: 1 1 400px; /* minimum width, expands flexibly */
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.staffDash-student-modal-buttons {
+  flex: 0 1 200px; /* narrower column */
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.staffDash-student-modal-buttons button {
+  padding: 0.8rem 1rem;
+  background-color: var(--foreground-color);
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+}
+
+.staffDash-student-modal-buttons button:hover {
+  background-color: #6a0000;
+}
+
+/* ==== Staff Requests Styles ==== */
+
+.staff-requests-wrapper {
+  padding: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.staffDash-loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #ccc;
+  border-top-color: #1976d2;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.staffDash-search-bar {
+  width: 100%;
+  max-width: 400px;
+  padding: 0.6rem 1rem;
+  margin: 1rem 0;
+  font-size: 1rem;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+}
+
+.staff-requests-wrapper {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.request-details-card {
+  background-color: white;
+  border: 2px solid var(--foreground-color);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.request-details-card h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--foreground-color);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.request-meta-dropdown summary {
+  font-weight: bold;
+  color: var(--foreground-color);
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.request-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.status-control-centered {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.status-control-centered select {
+  font-size: 1rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 2px solid var(--foreground-color);
+}
+
+.save-icon-button {
+  background-color: var(--foreground-color);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.save-icon-button:hover {
+  background-color: #6a0000;
+}
+
+.request-notes,
+.request-docs,
+.student-info-box {
+  background-color: #fff9f9;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--foreground-color);
+}
+
+.doc-badge.yes {
+  color: green;
+  font-weight: bold;
+}
+
+.doc-badge.no {
+  color: red;
+  font-weight: bold;
+}
+
+.expand-button {
+  background-color: var(--background-color);
+  color: var(--foreground-color);
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--foreground-color);
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.expand-button:hover {
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+}
+
+.requests-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 15rem;
+  overflow-y: auto;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 10px;
+  border: 2px solid var(--foreground-color);
+}
+
+.request-tile {
+  border: 1px solid var(--foreground-color);
+  padding:1rem;
+  border-radius: 8px;
+  background-color: #fff;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.request-tile:hover,
+.request-tile:focus {
+  background-color: #f9e6e6;
+  outline: 2px solid var(--foreground-color);
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.pagination-btn {
+  background-color: var(--foreground-color);
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.pagination-btn[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+.back-to-top-button {
+  margin-top: 2rem;
+  background-color: #5e0000;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  font-weight: bold;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  transition: background-color 0.3s ease;
+}
+
+.back-to-top-button:hover,
+.back-to-top-button:focus {
+  background-color: #7f0e0e;
+  outline: 2px solid #fff;
+}
+
+.fullscreen-loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 9999;
+  background-color: rgba(255, 255, 255, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.loading-spinner {
+  width: 64px;
+  height: 64px;
+  border: 8px solid #ddd;
+  border-top-color: var(--maroon, #500000);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.visually-hidden {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
+}
+
+button:focus-visible  {
+  outline: 4px solid #0066ff; /* Bright blue for high contrast */
+  outline-offset: 4px;
+  border-radius: 12px; /* Rounded outline for visibility */
+}
+
+div:focus-visible  {
+  outline: 4px solid #0066ff; /* Bright blue for high contrast */
+  outline-offset: 4px;
+  border-radius: 12px; /* Rounded outline for visibility */
+}
+
+p:focus-visible  {
+  outline: 4px solid #0066ff; /* Bright blue for high contrast */
+  outline-offset: 4px;
+  border-radius: 12px; /* Rounded outline for visibility */
+}
+
 .studentForms-custom-file-input {
   position: relative;
   border: 2px dashed var(--foreground-color);
@@ -2632,4 +3409,418 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   outline: 3px solid #ff3366; /* vibrant focus outline */
   outline-offset: 2px;
 }
+.staffStudentProfile-spinner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(153, 153, 153, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
 
+.staffStudentProfile-spinner {
+  width: 60px;
+  height: 60px;
+  border: 6px solid #ccc;
+  border-top: 6px solid var(--foreground-color);
+  border-radius: 50%;
+  animation: staffStudentProfile-spin 1s linear infinite;
+}
+
+@keyframes staffStudentProfile-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.staffDash-accommodation-entry {
+  padding: 1rem;
+  border: 2px solid #4F0000;
+  border-radius: 10px;
+  background-color: #fffaf8;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.staffDash-accommodation-entry label {
+  display: block;
+  margin-top: 0.75rem;
+  font-weight: 600;
+}
+
+.staffDash-accommodation-entry input,
+.staffDash-accommodation-entry select {
+  margin-top: 0.25rem;
+  padding: 0.5rem;
+  width: 90%;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.staffDash-save-btn {
+  margin-top: 1rem;
+  background-color: #4F0000;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.staffDash-save-btn:hover {
+  background-color: #750000;
+}
+
+.staffDash-notes-toggle {
+  margin-top: 1rem;
+  background-color: transparent;
+  color: #4f0000;
+  border: 2px solid #4f0000;
+  border-radius: 6px;
+  padding: 0.4rem 0.8rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.staffDash-notes-toggle:hover {
+  background-color: #4f0000;
+  color: white;
+}
+
+.staffDash-notes-box {
+  background-color: #fff3f1;
+  padding: 0.75rem 1rem;
+  border-left: 4px solid #4f0000;
+  border-radius: 6px;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  white-space: pre-wrap;
+}
+
+.staffDash-assistive-tech-entry {
+  background-color: #fff6f6;
+  border: 2px solid #4F0000;
+  padding: 1rem;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.staffDash-assistive-tech-entry:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.staffDash-save-btn {
+  margin-top: 0.75rem;
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+}
+
+.staffDash-save-btn:hover {
+  background-color: #6a0000;
+}
+
+.staff-button-wrapper {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+.staff-action-btn {
+  background-color: #5c0000;
+  color: white;
+  font-weight: bold;
+  padding: 2.0rem 3.0rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.staff-action-btn:hover {
+  background-color: rgb(124, 27, 27);
+}
+
+
+.question-icon-btn {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  min-height: 28px;
+  border-radius: 50%;
+  background-color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.5rem;
+}
+
+.question-icon-btn:hover,
+.question-icon-btn:focus {
+  background-color: #f3e3e3;
+  outline: none;
+  box-shadow: 0 0 0 2px #50000033;
+}
+
+.tooltip-box {
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  padding: 0.75rem;
+  border-radius: 8px;
+  position: absolute;
+  left: 100%;
+  margin-left: 0.5rem;
+  width: 280px;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+
+/* --------------------------------------------- USER AUDIT ------------------------------------------------------------------------------------- */
+
+
+/* === AUDIT VIEW STYLING === */
+
+.auditViewContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+  padding: 3rem;
+  text-align: center;
+  animation: fadeIn 0.8s ease-out;
+  background-color: var(--background-color);
+}
+
+.auditTitle {
+  font-size: calc(var(--txtSize) + 40px);
+  font-weight: 700;
+  color: var(--foreground-color);
+  margin-bottom: 1rem;
+}
+
+.auditPrompt {
+  font-size: calc(var(--txtSize) + 10px);
+  color: var(--text-color);
+  margin-bottom: 2rem;
+}
+
+.auditButtonGroup {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.auditButton {
+  padding: 1rem 2rem;
+  font-size: calc(var(--txtSize) + 10px);
+  font-weight: 600;
+  background-color: var(--background-color);
+  color: var(--foreground-color);
+  border: 3px solid var(--foreground-color);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 250px;
+}
+
+.auditButton:hover,
+.auditButton:focus {
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+  transform: scale(1.05);
+  outline: none;
+}
+
+.formSkeletonList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+  width: 100%;
+  max-width: 500px;
+  padding: 1rem;
+  background-color: #fff7f7;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.formSkeletonList button {
+  background-color: transparent;
+  border: 2px solid var(--foreground-color);
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  font-size: calc(var(--txtSize) + 4px);
+  font-weight: 500;
+  color: var(--foreground-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.formSkeletonList button:hover {
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+}
+
+.auditBackBtn {
+  margin-top: 2rem;
+  padding: 0.75rem 1.5rem;
+  font-size: calc(var(--txtSize) + 5px);
+  background-color: transparent;
+  color: var(--foreground-color);
+  border: 2px solid var(--foreground-color);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.auditBackBtn:hover {
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.studentFormsContainer {
+  text-align: center;
+  padding: 3rem 2rem;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.studentFormsTitle {
+  font-size: calc(var(--txtSize) + 36px);
+  font-weight: 800;
+  color: var(--foreground-color);
+  margin-bottom: 2.5rem;
+}
+
+.studentFormsAccordion {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+/* Accordion Group */
+.studentFormGroup {
+  position: relative;
+}
+
+.studentFormToggle {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  font-size: calc(var(--txtSize) + 6px);
+  font-weight: 600;
+  color: var(--foreground-color);
+  background-color: #f9f9f9;
+  border: 3px solid var(--foreground-color);
+  border-radius: 20px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.2s ease;
+}
+
+.studentFormToggle:focus,
+.studentFormToggle:hover {
+  outline: 3px solid var(--highlight-links-color);
+  background-color: #fff3f3;
+}
+
+/* Forms inside a group */
+.studentFormsList {
+  list-style: none;
+  padding-left: 2rem;
+  margin-top: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+  border-left: 3px solid var(--foreground-color);
+  margin-left: 1.5rem;
+  padding-left: 1.5rem;
+  animation: fadeSlide 0.3s ease-out;
+}
+
+.studentFormItem {
+  font-size: calc(var(--txtSize) + 3px);
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--foreground-color);
+}
+
+.studentFormItem a {
+  color: var(--foreground-color);
+  text-decoration: none;
+}
+
+.studentFormItem a:hover,
+.studentFormItem a:focus {
+  color: var(--highlight-links-color);
+  text-decoration: underline;
+  outline: none;
+}
+
+.studentFormTag {
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  margin-left: 1rem;
+}
+
+.studentFormsBackBtn {
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
+  font-size: calc(var(--txtSize) + 4px);
+  background-color: transparent;
+  color: var(--foreground-color);
+  border: 2px solid var(--foreground-color);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.studentFormsBackBtn:hover {
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+}
+
+/* Transitions */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
