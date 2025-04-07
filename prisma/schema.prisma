@@ -173,6 +173,8 @@ model Exam {
   advisorId        Int
   examUrl          String?
   studentIds       Int[]
+  studentName      String?
+  studentEmail     String?
   accommodations   String[]
   completedExamURL String?
   name             String

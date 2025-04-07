@@ -589,15 +589,6 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
             ref={(el) => {
               refs.current.footer = el;
             }}>Disability Resources & Contact</h4>
-            <div>
-              <div aria-label='Address'>
-                <label tabIndex={0}>Address</label>
-                <a href="https://www.google.com/maps?q=Texas+A%26M+University+471+Houston+Street,+SSB+Ste+122,+College+Station,+TX+77843-1224" target="_blank" rel="noopener noreferrer">
-                  Texas A&M University<br/>
-                  471 Houston Street, SSB Ste 122<br/>
-                  College Station, TX 77843-1224
-                </a>
-              </div>
               <div aria-label='Contact & Help'>
                 <p tabIndex={0} onKeyDown={(e) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -617,8 +608,19 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
       e.currentTarget.querySelector('a')?.click();
     }
   }}>Phone: <a href="tel:(979)-845-1637" target="_blank" rel="noopener noreferrer">(979)-845-1637</a></p>
+                <p tabIndex={0} onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  e.currentTarget.querySelector('a')?.click();
+                }
+              }}> Address: 
+                <a href="https://www.google.com/maps?q=Texas+A%26M+University+471+Houston+Street,+SSB+Ste+122,+College+Station,+TX+77843-1224" target="_blank" rel="noopener noreferrer">
+                  <p>Texas A&M University</p>
+                  <p>471 Houston Street, SSB Ste 122</p>
+                  <p>College Station, TX 77843-1224</p>
+                </a>
+                </p>
               </div>
-            </div>
           </footer>
       </>
     );
