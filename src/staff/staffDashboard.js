@@ -45,7 +45,7 @@ function DropdownSection({ title, isOpen, toggleOpen, children }) {
 
 // ============================== MAIN STAFF DASH FUNCTION ==============================================//
 
-function StaffDashboard() {
+function StaffDashboard({ userPermissions, userInfo }) {
 
   // CONSTANTS UNTIL LINE 513 -------------------------------------------------------------------------------------------------------------------------------
 
@@ -269,6 +269,9 @@ function StaffDashboard() {
     }
   };
 
+  const [showStudentHelp, setShowStudentHelp] = useState(false);
+  const [showRequestsHelp, setShowRequestsHelp] = useState(false);
+
   const handleEditChange = (event) => {
     const { name, value } = event.target;
     setEditedStudent((prev) => ({ ...prev, [name]: value }));
@@ -396,6 +399,19 @@ function StaffDashboard() {
     }
 
     
+  };
+
+  const [activeTooltip, setActiveTooltip] = useState(null);
+  const tooltipRefs = {
+    students: useRef(null),
+    requests: useRef(null),
+  };
+
+  const toggleTooltip = (type) => {
+    setActiveTooltip(prev => (prev === type ? null : type));
+    setTimeout(() => {
+      tooltipRefs[type]?.current?.focus();
+    }, 100); // Ensure tooltip receives focus for screen readers
   };
 
   const resetToMainMenu = async () => {
@@ -683,27 +699,80 @@ function openModal() {
 
       {/* DEFAULT DASHBOARD VIEW ------------------------------------------------------------------------------------- */}
 
-      {view === null && (
-        <div className="staff-menu">
-          <h2>Select an action:</h2>
-          <div className="staff-menu-buttons">
-            <button 
-                aria_label="search for students" 
-                onClick={() => 
-                  setView('students')}
-              >
-                🔍 Student Search</button>
+      { view === null && (
+      <div className="staff-menu">
+        <h2>Select an action:</h2>
+        <div className="staff-menu-buttons">
+          
+          {/* STUDENT SEARCH */}
+          <div className="staff-button-wrapper">
             <button
-                onClick={() => {
-                  setLoadingRequests(true);
-                  setView('requests');
-                }}
+              aria-label="Search for students"
+              onClick={() => setView("students")}
+              className="staff-action-btn"
+            >
+              🔍 Student Search
+            </button>
+            <button
+              className="question-icon-btn"
+              aria-label="What does Student Search do?"
+              aria-haspopup="true"
+              aria-expanded={activeTooltip === "students"}
+              onClick={() => toggleTooltip("students")}
+            >
+              ?
+            </button>
+            {activeTooltip === "students" && (
+              <div
+                className="tooltip-box"
+                role="tooltip"
+                aria-live="polite"
+                ref={tooltipRefs.students}
+                tabIndex={-1}
               >
-                📌 Manage Requests
-              </button>
+                Search for students by name or UIN. From there, you can view/edit their profile information, submitted forms, accommodations, and assistive technology.
+              </div>
+            )}
           </div>
+
+          {/* MANAGE REQUESTS */}
+          <div className="staff-button-wrapper">
+            <button
+              onClick={() => {
+                setLoadingRequests(true);
+                setView("requests");
+              }}
+              aria-label="Manage accommodation requests"
+              className="staff-action-btn"
+            >
+              📌 Manage Requests
+            </button>
+            <button
+              className="question-icon-btn"
+              aria-label="What does Manage Requests do?"
+              aria-haspopup="true"
+              aria-expanded={activeTooltip === "requests"}
+              onClick={() => toggleTooltip("requests")}
+            >
+              ?
+            </button>
+            {activeTooltip === "requests" && (
+              <div
+                className="tooltip-box"
+                role="tooltip"
+                aria-live="polite"
+                ref={tooltipRefs.requests}
+                tabIndex={-1}
+              >
+                View and update accommodation requests submitted by students.
+              </div>
+            )}
+          </div>
+
         </div>
-      )}
+      </div>
+    )}
+
 
       {/* EXPORTS TO OTHER FILES ---------------------------------------------------------------- */}
 
@@ -733,6 +802,8 @@ function openModal() {
 
       {view === 'studentDetails' && (
         <StaffStudentProfile
+          userInfo={userInfo}
+          userPermissions={userPermissions}
           lastIntendedFocusRef={lastIntendedFocusRef}
           view={view}
           handleEditChange={handleEditChange}

@@ -892,6 +892,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   border-radius: 10px;
   width: 100%;
   height: fit-content;
+  /* animation: staffStudentProfile-spin 1s linear infinite; */
   margin-top: 100vh;
 }
 
@@ -902,6 +903,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   padding: 20px;
   border-radius: 10px;
   width: 100%;
+  animation: spin 1s linear infinite;
   height: fit-content;
 }
 
@@ -1806,12 +1808,12 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
 }
 
 /* Bigger and More Accessible Staff Menu Buttons */
-.staff-menu-buttons button {
-  width: 300px; /* Increase width */
-  height: 50px; /* Increase height */
-  font-size: 1rem; /* Bigger text */
-  padding: 15px; /* More padding for better clickability */
-  background-color: #5a0000; /* Same color as before */
+/* .staff-menu-buttons button {
+  width: 300px; 
+  height: 50px; 
+  font-size: 1rem; 
+  padding: 15px; 
+  background-color: #5a0000; 
   color: white;
   border: none;
   border-radius: 10px;
@@ -1820,11 +1822,10 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   margin-bottom:5vh;
 }
 
-/* Hover effect for better UI */
 .staff-menu-buttons button:hover {
   background-color: #6a0000;
-  transform: scale(1.05); /* Slightly enlarges on hover */
-}
+  transform: scale(1.05); 
+} */
 
 
 /* Center the dashboard title */
@@ -2793,6 +2794,140 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   text-align: left;
 }
 
+/* Individual form entry */
+.staffDash-form-entry {
+  background-color: #fcdad8;
+  border: 2px solid #7c0a02;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s ease;
+}
+.staffDash-accommodation-entry{
+  background-color: #fcdad8;
+  border: 2px solid #7c0a02;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s ease;
+
+}
+
+.staffDash-notes-textarea {
+  width: 100%;
+  padding: 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  resize: vertical;
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+}
+.visually-hidden {
+  position: absolute !important;
+  height: 1px; width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
+}
+
+.sr-only {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
+}
+
+.staffDash-notes-label {
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.staffDash-previous-notes {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 0.6rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  color: #333;
+  font-size: 0.95rem;
+  white-space: pre-wrap;
+}
+
+.staffDash-notes-input-label {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  display: block;
+}
+
+.staffDash-notes-textarea {
+  width: 100%;
+  padding: 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  font-size: 0.95rem;
+  resize: vertical;
+}
+
+
+.staffDash-form-entry:hover {
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+/* Headings inside form */
+.staffDash-form-entry h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+/* Form details */
+.staffDash-form-entry p {
+  margin: 0.4rem 0;
+  font-size: 0.95rem;
+}
+
+/* Form link */
+.staffDash-form-entry a {
+  color: var(--highlight-links-color);
+  font-weight: 500;
+}
+
+.staffDash-form-entry a:hover {
+  text-decoration: underline;
+}
+
+/* Form status select + button */
+.staffDash-form-entry select {
+  margin-top: 0.75rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #aaa;
+  font-size: 0.95rem;
+}
+
+.staffDash-form-entry button {
+  margin-top: 0.75rem;
+  margin-left: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #6a0000;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.staffDash-form-entry button:hover {
+  background-color: #4d0000;
+}
+
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
@@ -3272,4 +3407,190 @@ p:focus-visible  {
   outline: 3px solid #ff3366; /* vibrant focus outline */
   outline-offset: 2px;
 }
+.staffStudentProfile-spinner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(153, 153, 153, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.staffStudentProfile-spinner {
+  width: 60px;
+  height: 60px;
+  border: 6px solid #ccc;
+  border-top: 6px solid var(--foreground-color);
+  border-radius: 50%;
+  animation: staffStudentProfile-spin 1s linear infinite;
+}
+
+@keyframes staffStudentProfile-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.staffDash-accommodation-entry {
+  padding: 1rem;
+  border: 2px solid #4F0000;
+  border-radius: 10px;
+  background-color: #fffaf8;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.staffDash-accommodation-entry label {
+  display: block;
+  margin-top: 0.75rem;
+  font-weight: 600;
+}
+
+.staffDash-accommodation-entry input,
+.staffDash-accommodation-entry select {
+  margin-top: 0.25rem;
+  padding: 0.5rem;
+  width: 90%;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.staffDash-save-btn {
+  margin-top: 1rem;
+  background-color: #4F0000;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.staffDash-save-btn:hover {
+  background-color: #750000;
+}
+
+.staffDash-notes-toggle {
+  margin-top: 1rem;
+  background-color: transparent;
+  color: #4f0000;
+  border: 2px solid #4f0000;
+  border-radius: 6px;
+  padding: 0.4rem 0.8rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.staffDash-notes-toggle:hover {
+  background-color: #4f0000;
+  color: white;
+}
+
+.staffDash-notes-box {
+  background-color: #fff3f1;
+  padding: 0.75rem 1rem;
+  border-left: 4px solid #4f0000;
+  border-radius: 6px;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  white-space: pre-wrap;
+}
+
+.staffDash-assistive-tech-entry {
+  background-color: #fff6f6;
+  border: 2px solid #4F0000;
+  padding: 1rem;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.staffDash-assistive-tech-entry:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.staffDash-save-btn {
+  margin-top: 0.75rem;
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+}
+
+.staffDash-save-btn:hover {
+  background-color: #6a0000;
+}
+
+.staff-button-wrapper {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+.staff-action-btn {
+  background-color: #5c0000;
+  color: white;
+  font-weight: bold;
+  padding: 2.0rem 3.0rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.staff-action-btn:hover {
+  background-color: rgb(124, 27, 27);
+}
+
+
+.question-icon-btn {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  min-height: 28px;
+  border-radius: 50%;
+  background-color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.5rem;
+}
+
+.question-icon-btn:hover,
+.question-icon-btn:focus {
+  background-color: #f3e3e3;
+  outline: none;
+  box-shadow: 0 0 0 2px #50000033;
+}
+
+.tooltip-box {
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  padding: 0.75rem;
+  border-radius: 8px;
+  position: absolute;
+  left: 100%;
+  margin-left: 0.5rem;
+  width: 280px;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+
 
