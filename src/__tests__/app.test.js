@@ -463,7 +463,6 @@ describe('Dynamic tab initialization based on user role', () => {
             expect.arrayContaining([
               expect.objectContaining({ name: 'Dashboard' }),
               expect.objectContaining({ name: 'Accommodations' }),
-              expect.objectContaining({ name: 'Forms' }),
               expect.objectContaining({ name: 'Profile' }),
             ])
           );

@@ -29,15 +29,19 @@ body.align-right{
   --align-items: flex-end;
 }
 
+body.highlight-keyboard-focus-enabled .categoryTabBtn:focus{
+  outline-offset: 5px;
+}
+
 body.highlight-keyboard-focus-enabled .basicHeader svg:focus{
-  border: 2px solid var(--highlight-keyboard-focus-color) !important;
-  background-color: var(--highlight-keyboard-focus-color) !important;
+  outline: 2px solid var(--highlight-keyboard-focus-color) !important;
+  background-color: transparent !important;
   border-radius: 1rem;
 }
 
 body.highlight-keyboard-focus-enabled input:focus{
-  border: 2px solid var(--highlight-keyboard-focus-color) !important;
-  background-color: var(--highlight-keyboard-focus-color) !important;
+  outline: 2px solid var(--highlight-keyboard-focus-color) !important;
+  outline-offset: 5px;
 }
 
 body.highlight-links-enabled a {
@@ -45,8 +49,7 @@ body.highlight-links-enabled a {
 }
 
 body.highlight-keyboard-focus-enabled a:focus{
-  background-color: var(--highlight-keyboard-focus-color) !important;
-  padding: 1rem;
+  outline: 2px solid var(--highlight-keyboard-focus-color) !important;
   border-radius: 1rem;
 }
 
@@ -63,7 +66,8 @@ a{
 }
 
 body.highlight-keyboard-focus-enabled button:focus{
-  background-color: var(--highlight-keyboard-focus-color) !important;
+  outline: 2px solid var(--highlight-keyboard-focus-color) !important;
+  outline-offset: 5px;
 }
 
 body.highlight-hover-enabled button:hover{
@@ -71,7 +75,7 @@ body.highlight-hover-enabled button:hover{
 }
 
 body.highlight-keyboard-focus-enabled h1:focus{
-  background-color: var(--highlight-keyboard-focus-color) !important;
+  outline: 2px solid var(--highlight-keyboard-focus-color) !important;
   border-radius: 1rem;
 }
 
@@ -81,9 +85,8 @@ body.highlight-hover-enabled h1:hover{
 }
 
 body.highlight-keyboard-focus-enabled h2:focus{
-  background-color: var(--highlight-keyboard-focus-color) !important;
+  outline: 2px solid var(--highlight-keyboard-focus-color) !important;
   border-radius: 1rem;
-  padding: 1rem;
 }
 
 
@@ -94,9 +97,8 @@ body.highlight-hover-enabled h2:hover{
 }
 
 body.highlight-keyboard-focus-enabled h3:focus{
-  background-color: var(--highlight-keyboard-focus-color) !important;
+  outline: 2px solid var(--highlight-keyboard-focus-color) !important;
   border-radius: 1rem;
-  padding: 1rem;
 }
 
 body.highlight-hover-enabled h3:hover{
@@ -106,9 +108,8 @@ body.highlight-hover-enabled h3:hover{
 }
 
 body.highlight-keyboard-focus-enabled h4:focus{
-  background-color: var(--highlight-keyboard-focus-color) !important;
+  outline: 2px solid var(--highlight-keyboard-focus-color) !important;
   border-radius: 1rem;
-  padding: 1rem;
 }
 
 body.highlight-hover-enabled h4:hover{
@@ -118,7 +119,7 @@ body.highlight-hover-enabled h4:hover{
 }
 
 body.highlight-keyboard-focus-enabled .basicLogoImg:focus{
-  background-color: var(--highlight-keyboard-focus-color) !important;
+  outline: 2px solid var(--highlight-keyboard-focus-color) !important;
   border-radius: 1rem;
 }
 
@@ -128,9 +129,8 @@ body.highlight-hover-enabled .basicLogoImg:hover{
 }
 
 body.highlight-keyboard-focus-enabled label:focus{
-  background-color: var(--highlight-keyboard-focus-color) !important;
+  outline: 2px solid var(--highlight-keyboard-focus-color) !important;
   border-radius: 1rem;
-  padding: 1rem;
 }
 
 body.highlight-hover-enabled label:hover{
@@ -140,7 +140,7 @@ body.highlight-hover-enabled label:hover{
 }
 
 body.highlight-keyboard-focus-enabled .colorInput:focus{
-  background-color: var(--highlight-keyboard-focus-color) !important;
+  outline: 2px solid var(--highlight-keyboard-focus-color) !important;
 }
 
 body.highlight-hover-enabled .colorInput:hover{
@@ -148,8 +148,7 @@ body.highlight-hover-enabled .colorInput:hover{
 }
 
 body.highlight-keyboard-focus-enabled p:focus{
-  background-color: var(--highlight-keyboard-focus-color) !important;
-  padding: 1rem;
+  outline: 2px solid var(--highlight-keyboard-focus-color) !important;
   border-radius: 1rem;
 }
 
@@ -164,7 +163,8 @@ body.highlight-hover-enabled input:hover{
 }
 
 body.highlight-keyboard-focus-enabled textarea:focus{
-  background-color: var(--highlight-keyboard-focus-color) !important;
+  outline: 2px solid var(--highlight-keyboard-focus-color) !important;
+  outline-offset: 5px;
 }
 
 body.highlight-hover-enabled textarea:hover{
@@ -172,7 +172,7 @@ body.highlight-hover-enabled textarea:hover{
 }
 
 body.highlight-keyboard-focus-enabled .newStudentApp > div > label:focus{
-  background-color: var(--highlight-keyboard-focus-color) !important;
+  outline: 2px solid var(--highlight-keyboard-focus-color) !important;
 }
 
 body.highlight-hover-enabled .newStudentApp > div > label:hover{
@@ -201,7 +201,8 @@ body.highlight-hover-enabled .settingsNav ul > li > form > select:hover{
 }
 
 body.highlight-keyboard-focus-enabled .settingsNav ul > li > form > select:focus{
-  background-color: var(--highlight-keyboard-focus-color) !important;
+  outline: 2px solid var(--highlight-keyboard-focus-color) !important;
+  outline-offset: 5px;
 }
 
 body.highlight-hover-enabled .settingsNav ul > li:hover{
@@ -617,10 +618,6 @@ body.highlight-hover-enabled #search:hover{
   color: var(--background-color);
 }
 
-.settingsHeading:focus{
-  background-color: blue;
-}
-
 .disProfilesList{
   display: flex !important;
   flex-direction: column !important;
@@ -686,8 +683,8 @@ body.highlight-hover-enabled #search:hover{
   border: 2px solid transparent;
 }
 
-body.highlight_keyboard_focus .tabNav a:hover{
-  background-color: var(--highlight-keyboard-focus_-olor);
+body.highlight_keyboard_focus .tabNav a:focus{
+  outline: 2px solid var(--highlight-keyboard-focus-color) !important;
 }
 
 body.highlight-hover-enabled .tabNav a:hover{
@@ -757,12 +754,18 @@ body.highlight-hover-enabled .activeTab:hover{
   color: var(--background-color);
 }
 
+body.highlight-keyboard-focus-enabled .addressLink:focus{
+  outline: none !important;
+}
+
 body.highlight-keyboard-focus-enabled .studentCard:focus{
-  background-color: var(--highlight-keyboard-focus-color) !important;
+  outline: 2px solid var(--highlight-keyboard-focus-color) !important;
+  outline-offset: 5px;
 }
 
 body.highlight-keyboard-focus-enabled .classItem:focus{
-  background-color: var(--highlight-keyboard-focus-color) !important;
+  outline: 2px solid var(--highlight-keyboard-focus-color) !important;
+  outline-offset: 5px;
 }
 
 body.highlight-hover-enabled .classItem:hover{
@@ -903,7 +906,6 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   padding: 20px;
   border-radius: 10px;
   width: 100%;
-  animation: spin 1s linear infinite;
   height: fit-content;
 }
 
@@ -1306,7 +1308,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   padding: 0.4rem 0.8rem;
   border-radius: 8px;
   font-size: 0.9rem;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
   transition: background-color 0.2s ease;
 }
 
@@ -1335,7 +1337,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   border: 2px solid var(--foreground-color);
   background-color: var(--background-color);
   color: var(--foreground-color);
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
   transition: all 0.3s ease;
 }
 
@@ -1361,7 +1363,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 6px;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
   margin-bottom: 1rem;
 }
 
@@ -1400,7 +1402,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   border-radius: 6px;
   background-color: var(--foreground-color);
   color: var(--background-color);
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
   font-weight: bold;
 }
 
@@ -1549,7 +1551,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   padding: 1rem;
   border: 2px solid var(--foreground-color);
   border-radius: 1rem;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
   background-color: var(--background-color);
 }
 
@@ -1570,7 +1572,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   padding: 0.4rem 0.8rem;
   border-radius: 6px;
   border: none;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
 }
 
 .studentForms-delete-btn:hover {
@@ -1594,7 +1596,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   color: white;
   border: none;
   padding: 5px 10px;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
   border-radius: 5px;
   font-size: 14px;
   z-index: 1000; /* Ensures it stays on top */
@@ -1663,7 +1665,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   border-radius: 5px;
   padding:3px;
   margin:10px;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
 }
 
 .download-btn:hover {
@@ -1679,7 +1681,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   padding: 12px;
   font-size: 16px;
   border: none;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
   border-radius: 5px;
   margin: 15px;
 }
@@ -1778,7 +1780,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   padding: 5px 12px;
   border: none;
   border-radius: 5px;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
   font-size: 0.9rem;
   margin: 5px;
 }
@@ -2084,7 +2086,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   padding: 1rem;
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
   margin: 0 auto; /* center the item if there's extra width */
   width: 100%;    /* let it fill the parent container's width */
   max-width: 600px; /* or 700px if you prefer */
@@ -2141,7 +2143,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 6px;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
 }
 
 .modalCloseBtn:hover {
@@ -2157,7 +2159,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   border: none;
   border-radius: 4px;
   text-decoration: none;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
   display: inline-block;
 }
 
@@ -2191,7 +2193,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   padding: 8px 16px;
   border-radius: 4px;
   margin-right: 8px;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
   transition: background-color 0.3s ease, color 0.3s ease;
   font-size: 1rem;
 }
@@ -2260,7 +2262,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   border: none;
   padding: 8px 16px;
   border-radius: 4px;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
   margin-top: 1rem;
   transition: background-color 0.3s ease;
 }
@@ -2312,7 +2314,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   padding: 8px 16px;
   border: none;
   border-radius: 4px;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
   transition: background-color 0.3s ease;
 }
 
@@ -2632,7 +2634,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
 .staffDash-search-item {
   width: 100%; /* ensures the item takes full width and keeps the text aligned center */
   padding: 1rem;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
   border-bottom: 1px solid #eee;
 }
 
@@ -2647,7 +2649,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   border: none;
   background-color: var(--foreground-color);
   color: white;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
 }
 
 .staffDash-cancel-btn:hover, .staffDash-backtoprofile-btn:hover {
@@ -2660,7 +2662,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   background-color: var(--foreground-color);
   color: white;
   border-radius: 8px;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
   border: none;
 }
 
@@ -2715,7 +2717,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
 .staffDash-modalHeaderCloseBtn {
   border: none;
   background: transparent;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
   font-size: 1.5rem;
 }
 
@@ -2781,7 +2783,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   border: none;
   background-color: var(--foreground-color);
   color: white;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
 }
 
 .staffDash-student-modal-buttons button:hover {
@@ -2921,7 +2923,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   color: white;
   border: none;
   border-radius: 6px;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
   font-weight: 500;
   transition: background-color 0.2s ease-in-out;
 }
@@ -3027,7 +3029,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   background: transparent;
   border: none;
   font-size: 2rem;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
   color: var(--foreground-color);
 }
 
@@ -3037,18 +3039,12 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   color: #fff;
   border-radius: 5px;
   border: none;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
   margin-top: 20px;
 }
 
 .fullscreen-message-button:hover {
   background-color: #6a0000;
-}
-
-.fullscreen-message-button:focus,
-.fullscreen-message-close-btn:focus {
-  outline: 2px solid #0066ff;
-  outline-offset: 3px;
 }
 
 .staff-student-details-container {
@@ -3080,7 +3076,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   background-color: var(--foreground-color);
   color: white;
   border-radius: 10px;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
   border: none;
 }
 
@@ -3157,7 +3153,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
 .request-meta-dropdown summary {
   font-weight: bold;
   color: var(--foreground-color);
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
   margin-bottom: 1rem;
 }
 
@@ -3190,7 +3186,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   padding: 0.5rem 1rem;
   border-radius: 8px;
   border: none;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
 }
 
 .save-icon-button:hover {
@@ -3224,7 +3220,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   padding: 0.5rem 1rem;
   border: 2px solid var(--foreground-color);
   border-radius: 8px;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
   margin-bottom: 1rem;
 }
 
@@ -3250,7 +3246,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   padding:1rem;
   border-radius: 8px;
   background-color: #fff;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
   transition: background-color 0.2s ease;
 }
 
@@ -3273,7 +3269,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 8px;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
 }
 
 .pagination-btn[disabled] {
@@ -3291,7 +3287,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   font-size: 1rem;
   border: none;
   border-radius: 6px;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -3343,31 +3339,13 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   white-space: nowrap;
 }
 
-button:focus-visible  {
-  outline: 4px solid #0066ff; /* Bright blue for high contrast */
-  outline-offset: 4px;
-  border-radius: 12px; /* Rounded outline for visibility */
-}
-
-div:focus-visible  {
-  outline: 4px solid #0066ff; /* Bright blue for high contrast */
-  outline-offset: 4px;
-  border-radius: 12px; /* Rounded outline for visibility */
-}
-
-p:focus-visible  {
-  outline: 4px solid #0066ff; /* Bright blue for high contrast */
-  outline-offset: 4px;
-  border-radius: 12px; /* Rounded outline for visibility */
-}
-
 .studentForms-custom-file-input {
   position: relative;
   border: 2px dashed var(--foreground-color);
   background-color: #fff;
   padding: 1rem;
   border-radius: 8px;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
   text-align: center;
   font-weight: 500;
   color: var(--foreground-color);
@@ -3379,7 +3357,7 @@ p:focus-visible  {
   width: 100%;
   height: 100%;
   opacity: 0;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
 }
 
 .student-form-viewbtn {
@@ -3471,7 +3449,7 @@ p:focus-visible  {
   padding: 0.6rem 1.2rem;
   border: none;
   border-radius: 6px;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
   font-weight: bold;
 }
 
@@ -3487,7 +3465,7 @@ p:focus-visible  {
   border-radius: 6px;
   padding: 0.4rem 0.8rem;
   font-weight: bold;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
   transition: background-color 0.3s ease;
 }
 
@@ -3549,7 +3527,7 @@ p:focus-visible  {
   border: none;
   border-radius: 10px;
   font-size: 1.5rem;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
 }
 
 .staff-action-btn:hover {
@@ -3566,7 +3544,7 @@ p:focus-visible  {
   background-color: white;
   font-size: 16px;
   font-weight: bold;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3640,7 +3618,7 @@ p:focus-visible  {
   color: var(--foreground-color);
   border: 3px solid var(--foreground-color);
   border-radius: 12px;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
   transition: all 0.3s ease;
   min-width: 250px;
 }
@@ -3674,7 +3652,7 @@ p:focus-visible  {
   font-size: calc(var(--txtSize) + 4px);
   font-weight: 500;
   color: var(--foreground-color);
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
   transition: all 0.2s ease;
 }
 
@@ -3691,7 +3669,7 @@ p:focus-visible  {
   color: var(--foreground-color);
   border: 2px solid var(--foreground-color);
   border-radius: 10px;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
 }
 
 .auditBackBtn:hover {
@@ -3740,7 +3718,7 @@ p:focus-visible  {
   background-color: #f9f9f9;
   border: 3px solid var(--foreground-color);
   border-radius: 20px;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
   text-align: left;
   transition: background 0.2s ease;
 }
@@ -3805,7 +3783,7 @@ p:focus-visible  {
   color: var(--foreground-color);
   border: 2px solid var(--foreground-color);
   border-radius: 10px;
-  cursor: pointer;
+  cursor: var(--custom-hover-cursor);
   transition: all 0.2s ease;
 }
 

@@ -52,14 +52,14 @@ function UserDashboard({ userInfo, displayHeaderRef, settingsTabOpen, lastIntend
             <button onClick={() => setAuditChoice('forms')} className="auditButton">
               Find Forms
             </button>
-            <div
+            <p
               className="accommodationsInfoBox"
               role="note"
               aria-label="Want to apply? Click the Accommodations tab in the navigation bar."
               tabIndex={0}
             >
               Want to apply? Click the <strong>Accommodations</strong> tab in the navigation bar.
-            </div>
+            </p>
           </div>
         </div>
       )}
