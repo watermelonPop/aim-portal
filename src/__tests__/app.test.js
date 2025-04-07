@@ -115,6 +115,19 @@ describe('App updateSettings behavior with timeout', () => {
     document.documentElement.style = '';
   });
 
+  beforeEach(() => {
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        json: () => Promise.resolve({ students: [] }),
+      })
+    );
+  });
+  
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
+  
+
   afterEach(() => {
     jest.clearAllTimers();
     jest.clearAllMocks();
@@ -582,6 +595,11 @@ describe('Dynamic tab initialization based on user role', () => {
               return Promise.resolve({
                   ok: true,
                   json: () => Promise.resolve([]),
+              });
+            }else if (url === '/api/getStudents') {
+              return Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve({ students: [] }),
               });
             }else{
                 console.log("OTHER API ROUTE");
