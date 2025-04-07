@@ -22,7 +22,7 @@
   
   .customBrowseButton {
     padding: 5px 10px;
-    background-color: #335CFF;
+    background-color: #6a0000;
     color: white;
     border: none;
     border-radius: 3px;
@@ -32,7 +32,7 @@
   
   .customBrowseButton:focus,
   .customBrowseButton:hover {
-    outline: 2px solid #FFD700;
+    outline: 2px solid #b72222;
   }
   
   .fileNameSpan {

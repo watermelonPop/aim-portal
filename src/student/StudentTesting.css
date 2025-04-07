@@ -34,12 +34,12 @@
   }
   
   .examDetails:focus {
-    outline: 2px solid #FFD700;
+    outline: 2px solid #b72222;
   }
   
   .examItem button {
     padding: 5px 10px;
-    background-color: #335CFF;
+    background-color: #6a0000;
     color: white;
     border: none;
     border-radius: 3px;
@@ -48,7 +48,7 @@
   
   .examItem button:focus, 
   .examItem button:hover {
-    outline: 2px solid #FFD700;
+    outline: 2px solid #b72222;
   }
   
   .pendingStatus {
@@ -65,9 +65,12 @@
     width: 100%;
     height: 100%;
     background: rgba(0,0,0,0.5);
+  
+    /* Use Flexbox to center the modal */
     display: flex;
     align-items: center;
     justify-content: center;
+  
     z-index: 1000;
   }
   
@@ -112,7 +115,7 @@
   .modalButtons button {
     margin-left: 10px;
     padding: 5px 10px;
-    background-color: #335CFF;
+    background-color: #6a0000;
     color: white;
     border: none;
     border-radius: 3px;
@@ -121,6 +124,6 @@
   
   .modalButtons button:focus, 
   .modalButtons button:hover {
-    outline: 2px solid #FFD700;
+    outline: 2px solid #b72222;
   }
   

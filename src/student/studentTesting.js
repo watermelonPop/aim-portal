@@ -13,14 +13,17 @@ const ACCOMMODATION_OPTIONS = [
 function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastIntendedFocusRef }) {
   const localRef = useRef(null);
   const headingRef = displayHeaderRef || localRef;
+  
+  // Provide a default object if lastIntendedFocusRef is not provided.
+  const safeLastIntendedFocusRef = lastIntendedFocusRef || { current: null };
 
   // Header focus management
   useEffect(() => {
     if (!headingRef.current || settingsTabOpen === true) return;
-    if (lastIntendedFocusRef?.current !== headingRef.current) {
-      lastIntendedFocusRef.current = headingRef.current;
+    if (safeLastIntendedFocusRef.current !== headingRef.current) {
+      safeLastIntendedFocusRef.current = headingRef.current;
     }
-  }, [settingsTabOpen, headingRef, lastIntendedFocusRef]);
+  }, [settingsTabOpen, headingRef, safeLastIntendedFocusRef]);
 
   useEffect(() => {
     if (!headingRef.current || settingsTabOpen === true) return;
@@ -30,14 +33,14 @@ function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastInten
         headingRef.current &&
         !isAlertOpen &&
         document.activeElement !== headingRef.current &&
-        lastIntendedFocusRef.current === headingRef.current
+        safeLastIntendedFocusRef.current === headingRef.current
       ) {
         headingRef.current.focus();
-        lastIntendedFocusRef.current = null;
+        safeLastIntendedFocusRef.current = null;
       }
     });
     return () => cancelAnimationFrame(frame);
-  }, [settingsTabOpen, headingRef, lastIntendedFocusRef]);
+  }, [settingsTabOpen, headingRef, safeLastIntendedFocusRef]);
 
   // State for exam data
   const [upcomingExams, setUpcomingExams] = useState([]);
@@ -102,7 +105,7 @@ function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastInten
     }
   }, [isModalOpen]);
 
-  // Modal keyboard navigation: trap focus inside the modal and allow Escape to close.
+  // Modal keyboard navigation: trap focus and support Escape to close.
   const handleModalKeyDown = (e) => {
     if (e.key === 'Escape') {
       setIsModalOpen(false);
@@ -134,7 +137,7 @@ function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastInten
     setIsModalOpen(true);
   };
 
-  // Handle submission: create the accommodation and upload the form.
+  // Handle submission of accommodation request and file upload.
   const handleAccommodationSubmit = async (e) => {
     e.preventDefault();
     if (!selectedAccommodation) {
@@ -175,7 +178,7 @@ function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastInten
           alert("Accommodation request submitted but file upload failed.");
         }
       }
-      // Show success modal with a link to the accommodations page.
+      // Show success modal with instructions.
       setIsModalOpen(false);
       setSelectedExam(null);
       setUploadedFile(null);
@@ -331,7 +334,7 @@ function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastInten
             <h2 id="success-modal-heading">Request Submitted</h2>
             <p tabIndex={0}>Your accommodation request has been submitted successfully.</p>
             <p tabIndex={0}>
-              Please check your <a href="/accommodations" aria-label="Go to accommodations page">Accommodations Page</a> to view request statuses.
+              Check your accommodations tab to view your request statuses.
             </p>
             <div className="modalButtons">
               <button type="button" onClick={() => setShowSuccessModal(false)}>
