@@ -16,18 +16,33 @@ export default async function handler(req, res) {
         courses: {
           include: {
             students: {
-                include: {
-                    account: true
-                }
+              include: {
+                account: true,
+              },
             },
-            exams: true
-          }
+            exams: true,
+          },
+        },
+      },
+    });
+    
+    // Flatten all students across courses
+    const studentMap = new Map();
+    
+    for (const course of professor.courses) {
+      for (const student of course.students) {
+        if (!studentMap.has(student.userId)) {
+          studentMap.set(student.userId, student);
         }
       }
+    }
+    
+    const allStudents = Array.from(studentMap.values());
+    
+    res.status(200).json({
+      courses: professor.courses,
+      students: allStudents,
     });
-
-
-    res.status(200).json(professor);
   } catch (error) {
     console.error('Error fetching student data:', error);
     res.status(500).json({ error: 'Internal server error' });
