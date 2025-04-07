@@ -1,0 +1,154 @@
+/* Wrapper for the page content */
+.studentAccommodationsWrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Center the main heading */
+  /* .dashboardTitle {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 20px;
+  } */
+  
+  /* Center the "Apply" buttons */
+  .applyAccommodationButton,
+  .applyAssistiveButton {
+    display: block;
+    margin: 0 auto 20px auto;
+    padding: 10px 15px;
+    background-color: #6a0000;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .applyAccommodationButton:focus,
+  .applyAccommodationButton:hover,
+  .applyAssistiveButton:focus,
+  .applyAssistiveButton:hover {
+    outline: 2px solid #b72222;
+  }
+  
+  /* Container for accommodations - center cards using flexbox */
+  .accommodationsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin: 20px 0;
+  }
+  
+  /* Accommodation cards: larger size, more rounded edges, subtle shadow */
+  .accommodationCard {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px; /* increased rounded edges */
+    padding: 15px;
+    width: 320px; /* increased width */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    outline: none;
+    text-align: left;
+  }
+  
+  .accommodationCard:focus {
+    outline: 2px solid #b72222;
+  }
+  
+  /* Delete Request button styling */
+  .accommodationCard button {
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #d9534f; /* red color */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .accommodationCard button:focus,
+  .accommodationCard button:hover {
+    outline: 2px solid #c9302c;
+  }
+  
+  /* Modal overlay using fixed positioning to cover the viewport */
+  .saModalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+  }
+  
+  /* Center the modal in the viewport */
+  .saModalContent {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 20px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+  
+  .saModalContent h2 {
+    margin-top: 0;
+  }
+  
+  .saModalContent form {
+    margin-top: 15px;
+  }
+  
+  .saModalContent label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .saModalContent select,
+  .saModalContent input[type="file"] {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 15px;
+  }
+  
+  /* Modal buttons */
+  .saModalButtons {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .saModalButtons button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #6a0000;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .saModalButtons button:focus,
+  .saModalButtons button:hover {
+    outline: 2px solid #b72222;
+  }
+  
+  /* Fieldset styling for class selection */
+  fieldset {
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+  
+  legend {
+    font-weight: bold;
+  }  
