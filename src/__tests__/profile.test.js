@@ -76,18 +76,35 @@ describe('Profile component', () => {
     expect(screen.getByText('STAFF PROFILE')).toBeInTheDocument();
   });
 
-  test('renders correct role title for PROFESSOR', () => {
+  test('renders correct role title for PROFESSOR', async () => {
     const mockProfessor = {
       id: 601,
       role: 'PROFESSOR',
     };
-
+  
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        json: () =>
+          Promise.resolve({
+            email: 'prof@aim.com',
+            phone_number: '555-1234',
+          }),
+      })
+    );
+  
     const mockDisplayHeaderRef = { current: null };
     const mockLastIntendedFocusRef = { current: null };
-
-    render(<Profile userInfo={mockProfessor} displayHeaderRef={mockDisplayHeaderRef}
-      lastIntendedFocusRef={mockLastIntendedFocusRef}
-      settingsTabOpen={false}/>);
-    expect(screen.getByText('PROFESSOR PROFILE')).toBeInTheDocument();
+  
+    render(
+      <Profile
+        userInfo={mockProfessor}
+        displayHeaderRef={mockDisplayHeaderRef}
+        lastIntendedFocusRef={mockLastIntendedFocusRef}
+        settingsTabOpen={false}
+      />
+    );
+  
+    expect(await screen.findByText('PROFESSOR PROFILE')).toBeInTheDocument();
   });
+  
 });
