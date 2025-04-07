@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import AlertsArea from '../AlertsArea'; // Import the alerts component
+import '../index.css';
 
 export default function StudentDashboard({ userInfo, displayHeaderRef, settingsTabOpen, lastIntendedFocusRef }) {
   const [courses, setCourses] = useState([]);

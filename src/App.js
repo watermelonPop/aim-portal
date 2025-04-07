@@ -43,7 +43,6 @@ export function App() {
 
     {name: 'Dashboard', elem: <Dash/>},
     {name: 'Accommodations', elem: <Accommodations/>},
-    {name: 'Forms', elem: <Forms/>},
     {name: 'Profile', elem: <Profile/>},
 
   ]);
@@ -211,7 +210,6 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
       updatedUserTabs = [
         {name: 'Dashboard', elem: <Dash userInfo={userInfo}/>},
         {name: 'Accommodations', elem: <Accommodations userInfo={userInfo} setAlertMessage={setAlertMessage} setShowAlert={setShowAlert}/>},
-        {name: 'Forms', elem: <Forms userInfo={userInfo}/>},
         {name: 'Profile', elem: <Profile userInfo={userInfo}/>},
       ];
 
@@ -614,7 +612,7 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
                   e.currentTarget.querySelector('a')?.click();
                 }
               }}> Address: 
-                <a href="https://www.google.com/maps?q=Texas+A%26M+University+471+Houston+Street,+SSB+Ste+122,+College+Station,+TX+77843-1224" target="_blank" rel="noopener noreferrer">
+                <a className='addressLink' href="https://www.google.com/maps?q=Texas+A%26M+University+471+Houston+Street,+SSB+Ste+122,+College+Station,+TX+77843-1224" target="_blank" rel="noopener noreferrer">
                   <p>Texas A&M University</p>
                   <p>471 Houston Street, SSB Ste 122</p>
                   <p>College Station, TX 77843-1224</p>

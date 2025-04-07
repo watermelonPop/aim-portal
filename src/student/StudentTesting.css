@@ -1,0 +1,117 @@
+/* General layout and typography */
+.studentTesting {
+    padding: 20px;
+  }
+  
+  .dashboardTitle {
+    margin-bottom: 20px;
+  }
+  
+  /* Sections */
+  .upcomingExams, .submittedExams {
+    margin-bottom: 30px;
+  }
+  
+  .upcomingExams h3, .submittedExams h3 {
+    margin-bottom: 10px;
+  }
+  
+  /* Exam List Items */
+  .examItem {
+    border-bottom: 1px solid var(--text-color);
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .examDetails {
+    flex: 1;
+    outline: none;
+  }
+
+  body.highlight-keyboard-focus-enabled .examItem:focus{
+  outline: 2px solid var(--highlight-keyboard-focus-color) !important;
+  border-radius: 1rem;
+  }
+  
+  .examItem button {
+    padding: 5px 10px;
+    background-color: var(--background-color);
+    color: var(--foreground-color);
+    border: 2px solid var(--foreground-color);
+    border-radius: 3px;
+    cursor: var(--custom-hover-cursor);
+    border-radius: 1rem;
+  }
+
+  .examItem button:hover{
+    background-color: var(--foreground-color);
+    color: var(--background-color);
+  }
+  
+  /* Modal Styles */
+  .modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+  
+    /* Use Flexbox to center the modal */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    z-index: 1000;
+  }
+  
+  .modalContent {
+    background: var(--background-color);
+    padding: 20px;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+  
+  .modalContent h2 {
+    margin-top: 0;
+  }
+  
+  .modalExamDetails {
+    margin: 10px 0;
+  }
+  
+  .modalContent form {
+    margin-top: 15px;
+  }
+  
+  .modalContent label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .modalContent select,
+  .modalContent input[type="file"] {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 15px;
+  }
+  
+  .modalButtons {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .modalButtons button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: var(--background-color);
+    color: var(--foreground-color);
+    border: none;
+    border-radius: 3px;
+    cursor: var(--custom-hover-cursor);
+  }
+  
