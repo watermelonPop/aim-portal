@@ -28,7 +28,7 @@ export default async function handler(req, res) {
           }
         },
 
-        courses: true  // Added to include courses data
+        courses: true,  // Added to include courses data
         account:true,
       }
     });
