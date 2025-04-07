@@ -289,7 +289,7 @@ function StaffExamView({ userInfo, displayHeaderRef, settingsTabOpen, lastIntend
                         &times;
                       </button>
                         {/* ================== EXAM DETAILS ================== */}
-                      <h2>{selectedExam.course.name} - {selectedExam.name}</h2>
+                      <h2>{selectedExam?.course?.name} - {selectedExam.name}</h2>
                         <p>   
                                 <strong>Date:</strong>{' '}
                                 {new Date(selectedExam.date).toLocaleDateString()}
@@ -307,7 +307,7 @@ function StaffExamView({ userInfo, displayHeaderRef, settingsTabOpen, lastIntend
                                 <h3 className="section-title">Course Information</h3>
 
                                 <p>
-                                <strong>Course Name:</strong> {selectedExam.course.name}
+                                <strong>Course Name:</strong> {selectedExam?.course?.name}
                                 </p>
                                 
                                 {loadingProfessor ? (
