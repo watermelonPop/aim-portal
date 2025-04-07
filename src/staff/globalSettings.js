@@ -316,14 +316,16 @@ function GlobalSettings({ displayHeaderRef, settingsTabOpen, lastIntendedFocusRe
           Advisor Lookup and Access Control
         </h2>
       </div>
-      <div>
-        <input 
-          type="text"
-          placeholder="Enter Advisor Name..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          aria-label="Search for an advisor by name"
-        />
+
+      <div className='globalSettingsInputDiv'> {/* Searchbar */}
+          <input 
+            type="text"
+            placeholder="Enter Advisor Name..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className='globalSettingsInput'
+            aria-label="Search for an advisor by name"
+          />
       </div>
       <div>
         {selectedAdvisor ? (

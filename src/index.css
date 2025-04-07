@@ -663,44 +663,49 @@ body.highlight-hover-enabled #search:hover{
 .tabNav {
   width: 100vw;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   background-color: var(--foreground-color);
   justify-content: space-evenly;
   position: sticky;
   top: 16vh;
   z-index: 1000;
+  height: 3rem;
+  margin-bottom: 1rem;
 }
 
 .tabNav a {
   float: left;
   display: block;
   text-align: var(--align-text);
-  padding: 0.5rem !important;
   text-decoration: none;
   color:var(--background-color);
   font-weight: 400;
   font-size: calc(var(--txtSize) + 5px);
   letter-spacing: var(--letterSpacing);
-  height: 80%;
+  height: 100% !important;
   border: 2px solid transparent;
 }
 
 body.highlight_keyboard_focus .tabNav a:hover{
   background-color: var(--highlight-keyboard-focus_-olor);
-  padding: 0.5rem;
 }
 
 body.highlight-hover-enabled .tabNav a:hover{
   background-color: var(--highlight-hover-color);
-  padding: 0.5rem;
 }
 
 .tabNav a:hover{
-  color: var(--background-color);
-  border-color: var(--background-color);
+  float: left;
+  display: block;
+  text-align: var(--align-text);
+  text-decoration: none;
+  color:var(--background-color);
+  font-weight: 400;
+  font-size: calc(var(--txtSize) + 5px);
+  letter-spacing: var(--letterSpacing);
+  height: 90% !important;
+  border: 2px solid var(--background-color);
   border-radius: 1rem;
-  border: 2px solid;
-  padding: 0.5rem;
 }
 
 
@@ -708,7 +713,6 @@ body.highlight-hover-enabled .tabNav a:hover{
   background-color: var(--background-color);
   color: var(--foreground-color);
   border-radius: 1rem;
-  padding: 0.5rem;
 }
 
 body.highlight-hover-enabled .activeTab:hover{
@@ -737,8 +741,9 @@ body.highlight-hover-enabled .activeTab:hover{
 
 .basicFooter div{
   display: flex;
+  flex-direction: column;
   column-gap: 5%;
-  width: 75%;
+  width: 50%;
   color:var(--background-color);
   font-weight: 400;
   font-size: var(--txtSize);
@@ -747,12 +752,7 @@ body.highlight-hover-enabled .activeTab:hover{
   text-align: var(--align-text);
 }
 
-.basicFooter div > div{
-  display: flex;
-  flex-direction: column;
-}
-
-.basicFooter div > div > p > a{
+.basicFooter div > p > a{
   text-decoration: underline !important;
   color: var(--background-color);
 }
@@ -769,11 +769,11 @@ body.highlight-hover-enabled .classItem:hover{
   background-color: var(--highlight-hover-color) !important;
 }
 
-body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
+body.highlight-hover-enabled .basicFooter div > p > a:hover{
   background-color: transparent !important;
 }
 
-.basicFooter div > div > a{
+.basicFooter div > a{
   text-decoration: underline !important;
   color: var(--background-color);
 }
@@ -1030,6 +1030,25 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
   text-align: var(--align-text);
 }
 
+.globalSettingsInputDiv{
+  width: 50%;
+}
+
+.globalSettingsInput{
+  margin-bottom: 15px;
+  border-radius: 1rem;
+  min-height: 2rem;
+  padding: 1%;
+  font-weight: 400;
+  font-size: var(--txtSize);
+  letter-spacing: var(--letterSpacing);
+  background-color: var(--background-color);
+  border-color: var(--text-color);
+  color: var(--text-color);
+  width: 100%;
+  text-align: var(--align-text);
+}
+
 
 #uploadFile{
   width: fit-content !important;
@@ -1117,7 +1136,6 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
 }
 
 .stickyContainer{
-  border: 1px black solid;
   height: fit-content;
 }
 
@@ -1244,6 +1262,175 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
   color: var(--background-color);
 }
 
+/* Main container */
+.studentForms-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Selection section: heading + contact button */
+.studentForms-selection-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 600px;
+}
+
+.studentForms-selection-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.studentForms-selection-header h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--primary-text);
+  margin: 0;
+}
+
+.studentForms-contact-advisor-btn-small {
+  background-color: transparent;
+  color: var(--foreground-color);
+  border: 2px solid var(--foreground-color);
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.studentForms-contact-advisor-btn-small:hover {
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+}
+
+/* Action buttons */
+.studentForms-selection-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.studentForms-selection-buttons button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  min-width: 160px;
+  text-align: center;
+  border-radius: 10px;
+  border: 2px solid var(--foreground-color);
+  background-color: var(--background-color);
+  color: var(--foreground-color);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.studentForms-selection-buttons button:hover {
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+}
+
+/* Wrapper around upload/manage view */
+.studentForms-form-wrapper {
+  width: 100%;
+  max-width: 800px;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Back button */
+.studentForms-back-btn {
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.studentForms-back-btn:hover {
+  background-color: #6a0000;
+}
+
+/* Upload form */
+.studentForms-upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.studentForms-upload-form label {
+  font-weight: bold;
+}
+
+.studentForms-upload-form input[type="file"] {
+  margin-top: 0.5rem;
+}
+
+/* PDF preview */
+.studentForms-pdf-preview {
+  border: 2px dashed var(--foreground-color);
+  border-radius: 8px;
+  padding: 1rem;
+  background-color: #f8f8f8;
+}
+
+/* Submit button */
+.studentForms-submit-btn {
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.studentForms-submit-btn:hover {
+  background-color: #6a0000;
+}
+
+/* Upload success and error messages */
+.studentForms-success-msg {
+  color: green;
+  font-weight: bold;
+}
+
+.studentForms-error-msg {
+  color: red;
+  font-weight: bold;
+}
+
+/* Spinner inside button */
+.studentForms-spinner {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border: 3px solid #ccc;
+  border-top: 3px solid var(--foreground-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-right: 0.5rem;
+}
+
+@keyframes spin {}
+
 .content-container{
   padding-top: 1rem;
   padding-bottom: 5rem;
@@ -1293,6 +1480,21 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
     transform: rotate(360deg);
   }
 }
+
+/* Submitted Forms Table */
+.studentForms-submitted-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.studentForms-submitted-table th,
+.studentForms-submitted-table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
 
 
 /* --- General Layout Styling --- */
@@ -1354,6 +1556,24 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
   color: var(--background-color);
 }
 
+.studentForms-submitted-table a {
+  color: var(--highlight-links-color);
+  text-decoration: underline;
+}
+
+/* Delete button */
+.studentForms-delete-btn {
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.studentForms-delete-btn:hover {
+  background-color: #6a0000;
+}
 /* --- Forms Page (No White Box) --- */
 
 /* Centers content naturally within available space */
@@ -2319,6 +2539,28 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
   border: 2px solid var(--foreground-color);
 }
 
+.pagination-buttons button{
+  background-color: var(--background-color);
+  color: var(--foreground-color);
+  font-weight: 650;
+  font-size: calc(var(--txtSize) + 5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  line-height: var(--line-height); 
+  border: 2px solid var(--foreground-color);
+}
+
+.pagination-buttons button:hover{
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+  border-color: var(--background-color);
+}
+
 .backBtnClasses button:hover{
   background-color: var(--foreground-color);
   color: var(--background-color);
@@ -2537,3 +2779,53 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
   font-size: calc(var(--txtSize) + 5px);
   color: '#555';
   }
+  
+.studentForms-custom-file-input {
+  position: relative;
+  border: 2px dashed var(--foreground-color);
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  font-weight: 500;
+  color: var(--foreground-color);
+}
+
+.studentForms-custom-file-input input[type="file"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.student-form-viewbtn {
+  display: inline-block;
+  padding: 0.6rem 0.9rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--foreground-color);
+  background-color: transparent;
+  border: 2px solid var(--foreground-color);
+  border-radius: 8px;
+  text-decoration: none;
+  color: #4f0000 !important; /* or whatever your theme's main text color is */
+  transition: all 0.3s ease;
+}
+
+.student-form-viewbtn:hover,
+.student-form-viewbtn:focus-visible {
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+  text-decoration: none;
+  color: white !important;
+  outline: none;
+}
+
+.student-form-viewbtn:focus-visible {
+  outline: 3px solid #ff3366; /* vibrant focus outline */
+  outline-offset: 2px;
+}
+
