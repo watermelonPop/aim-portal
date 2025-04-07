@@ -1,7 +1,7 @@
 // CustomFileInput.test.js
 import React from 'react';
 import { render, screen, fireEvent, act } from '@testing-library/react';
-import CustomFileInput from '../student/CustomFileInput';
+import CustomFileInput from '../student/CustomFileInput.js';
 
 test('renders CustomFileInput with default text', () => {
   render(<CustomFileInput onFileChange={jest.fn()} />);
