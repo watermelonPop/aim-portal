@@ -50,6 +50,496 @@ describe('BasicSettingsBar Component', () => {
       localStorage.clear();
     });
 
+    test('all interactions forms call preventDefault on submit', async () => {
+        const preventDefault = jest.fn();
+      
+        render(
+          <BasicSettingsBar
+            isOpen={true}
+            onClose={mockOnClose}
+            settings={mockSettings}
+            setSettings={mockSetSettings}
+            logout={mockLogout}
+            setLoggedIn={mockSetLoggedIn}
+          />
+        );
+      
+        // Show a category with multiple forms
+        act(() => {
+          BasicSettingsBar.setSelectedCategory('Interactions');
+        });
+      
+        await waitFor(() => {
+          expect(document.querySelectorAll('form').length).toBeGreaterThan(0);
+        });
+      
+        const forms = document.querySelectorAll('form');
+      
+        forms.forEach((form) => {
+          const submitEvent = new Event('submit', { bubbles: true, cancelable: true });
+          Object.defineProperty(submitEvent, 'preventDefault', { value: preventDefault });
+      
+          form.dispatchEvent(submitEvent);
+        });
+      
+        expect(preventDefault).toHaveBeenCalled();
+    });
+
+    test('all audio forms call preventDefault on submit', async () => {
+        const preventDefault = jest.fn();
+      
+        render(
+          <BasicSettingsBar
+            isOpen={true}
+            onClose={mockOnClose}
+            settings={mockSettings}
+            setSettings={mockSetSettings}
+            logout={mockLogout}
+            setLoggedIn={mockSetLoggedIn}
+          />
+        );
+      
+        // Show a category with multiple forms
+        act(() => {
+          BasicSettingsBar.setSelectedCategory('Audio');
+        });
+      
+        await waitFor(() => {
+          expect(document.querySelectorAll('form').length).toBeGreaterThan(0);
+        });
+      
+        const forms = document.querySelectorAll('form');
+      
+        forms.forEach((form) => {
+          const submitEvent = new Event('submit', { bubbles: true, cancelable: true });
+          Object.defineProperty(submitEvent, 'preventDefault', { value: preventDefault });
+      
+          form.dispatchEvent(submitEvent);
+        });
+      
+        expect(preventDefault).toHaveBeenCalled();
+    });
+
+    test('all cursor forms call preventDefault on submit', async () => {
+        const preventDefault = jest.fn();
+      
+        render(
+          <BasicSettingsBar
+            isOpen={true}
+            onClose={mockOnClose}
+            settings={mockSettings}
+            setSettings={mockSetSettings}
+            logout={mockLogout}
+            setLoggedIn={mockSetLoggedIn}
+          />
+        );
+      
+        // Show a category with multiple forms
+        act(() => {
+          BasicSettingsBar.setSelectedCategory('Cursor');
+        });
+      
+        await waitFor(() => {
+          expect(document.querySelectorAll('form').length).toBeGreaterThan(0);
+        });
+      
+        const forms = document.querySelectorAll('form');
+      
+        forms.forEach((form) => {
+          const submitEvent = new Event('submit', { bubbles: true, cancelable: true });
+          Object.defineProperty(submitEvent, 'preventDefault', { value: preventDefault });
+      
+          form.dispatchEvent(submitEvent);
+        });
+      
+        expect(preventDefault).toHaveBeenCalled();
+    });
+
+    test('all visuals forms call preventDefault on submit', async () => {
+        const preventDefault = jest.fn();
+      
+        render(
+          <BasicSettingsBar
+            isOpen={true}
+            onClose={mockOnClose}
+            settings={mockSettings}
+            setSettings={mockSetSettings}
+            logout={mockLogout}
+            setLoggedIn={mockSetLoggedIn}
+          />
+        );
+      
+        // Show a category with multiple forms
+        act(() => {
+          BasicSettingsBar.setSelectedCategory('Visuals');
+        });
+      
+        await waitFor(() => {
+          expect(document.querySelectorAll('form').length).toBeGreaterThan(0);
+        });
+      
+        const forms = document.querySelectorAll('form');
+      
+        forms.forEach((form) => {
+          const submitEvent = new Event('submit', { bubbles: true, cancelable: true });
+          Object.defineProperty(submitEvent, 'preventDefault', { value: preventDefault });
+      
+          form.dispatchEvent(submitEvent);
+        });
+      
+        expect(preventDefault).toHaveBeenCalled();
+    });
+
+    test('all text forms call preventDefault on submit', async () => {
+        const preventDefault = jest.fn();
+      
+        render(
+          <BasicSettingsBar
+            isOpen={true}
+            onClose={mockOnClose}
+            settings={mockSettings}
+            setSettings={mockSetSettings}
+            logout={mockLogout}
+            setLoggedIn={mockSetLoggedIn}
+          />
+        );
+      
+        // Show a category with multiple forms
+        act(() => {
+          BasicSettingsBar.setSelectedCategory('Text');
+        });
+      
+        await waitFor(() => {
+          expect(document.querySelectorAll('form').length).toBeGreaterThan(0);
+        });
+      
+        const forms = document.querySelectorAll('form');
+      
+        forms.forEach((form) => {
+          const submitEvent = new Event('submit', { bubbles: true, cancelable: true });
+          Object.defineProperty(submitEvent, 'preventDefault', { value: preventDefault });
+      
+          form.dispatchEvent(submitEvent);
+        });
+      
+        expect(preventDefault).toHaveBeenCalled();
+      });
+      
+      
+      
+
+    test('calls logout with setLoggedIn when logout button is clicked', () => {
+        render(
+          <BasicSettingsBar
+            isOpen={true}
+            onClose={mockOnClose}
+            settings={mockSettings}
+            setSettings={mockSetSettings}
+            logout={mockLogout}
+            setLoggedIn={mockSetLoggedIn}
+          />
+        );
+      
+        const logoutButton = screen.getByRole('button', { name: /log out/i });
+        fireEvent.click(logoutButton);
+      
+        expect(mockLogout).toHaveBeenCalledWith(mockSetLoggedIn);
+    });
+      
+
+    test('sets highlight_keyboard_focus_color on input change and button click', async () => {
+        render(
+          <BasicSettingsBar
+            isOpen={true}
+            onClose={mockOnClose}
+            settings={{ ...mockSettings, highlight_keyboard_focus_color: '#BD180F' }}
+            setSettings={mockSetSettings}
+            logout={mockLogout}
+            setLoggedIn={mockSetLoggedIn}
+          />
+        );
+      
+        await act(async () => {
+          BasicSettingsBar.setSelectedCategory('Interactions');
+        });
+      
+        const newColor = '#00FF00';
+        const input = screen.getByTestId('highlightKeyboardFocusColorInput');
+        fireEvent.change(input, { target: { value: newColor } });
+      
+        const button = screen.getByRole('button', { name: /set highlight keyboard focus color/i });
+        fireEvent.click(button);
+      
+        await waitFor(() => {
+          expect(mockSetSettings).toHaveBeenCalledWith(
+            expect.objectContaining({ highlight_keyboard_focus_color: newColor.toLowerCase() })
+          );
+        });
+      });
+      
+      
+      
+
+    test('toggles highlight_keyboard_focus on button click', async () => {
+        const mockSettingsWithFocus = {
+          ...mockSettings,
+          highlight_keyboard_focus: false,
+        };
+      
+        render(
+          <BasicSettingsBar
+            isOpen={true}
+            onClose={mockOnClose}
+            settings={mockSettingsWithFocus}
+            setSettings={mockSetSettings}
+            logout={mockLogout}
+            setLoggedIn={mockSetLoggedIn}
+          />
+        );
+      
+        // Navigate to Interactions tab
+        await act(async () => {
+          BasicSettingsBar.setSelectedCategory('Interactions');
+        });
+      
+        const toggleBtn = screen.getByRole('button', { name: /toggle highlight keyboard focus/i });
+      
+        fireEvent.click(toggleBtn);
+      
+        await waitFor(() => {
+          expect(mockSetSettings).toHaveBeenCalledWith(
+            expect.objectContaining({ highlight_keyboard_focus: true })
+          );
+        });
+    });
+      
+
+    test('sets highlight_links_color on input change and button click', async () => {
+        const settingsWithLinkColor = {
+          ...mockSettings,
+          highlight_links_color: '#335CFF',
+        };
+      
+        render(
+          <BasicSettingsBar
+            isOpen={true}
+            onClose={mockOnClose}
+            settings={settingsWithLinkColor}
+            setSettings={mockSetSettings}
+            logout={mockLogout}
+            setLoggedIn={mockSetLoggedIn}
+          />
+        );
+      
+        act(() => {
+          BasicSettingsBar.setSelectedCategory("Text");
+        });
+      
+        const newColor = '#FF00FF';
+        const input = screen.getByLabelText('Highlight Link Color');
+        fireEvent.change(input, { target: { value: newColor } });
+      
+        const setBtn = screen.getByRole('button', { name: /Set Highlight Link Color/i });
+        fireEvent.click(setBtn);
+      
+        await waitFor(() => {
+          expect(mockSetSettings).toHaveBeenCalledWith(
+            expect.objectContaining({ highlight_links_color: newColor.toLowerCase() })
+          );
+        });
+    });
+      
+
+    test('toggles highlight_links setting', async () => {
+        const settingsWithHighlightLinks = {
+          ...mockSettings,
+          highlight_links: false,
+        };
+      
+        render(
+          <BasicSettingsBar
+            isOpen={true}
+            onClose={mockOnClose}
+            settings={settingsWithHighlightLinks}
+            setSettings={mockSetSettings}
+            logout={mockLogout}
+            setLoggedIn={mockSetLoggedIn}
+          />
+        );
+      
+        act(() => {
+          BasicSettingsBar.setSelectedCategory("Text");
+        });
+      
+        const toggleBtn = screen.getByRole('button', { name: /Toggle Highlight Links/i });
+      
+        fireEvent.click(toggleBtn);
+      
+        await waitFor(() => {
+          expect(mockSetSettings).toHaveBeenCalledWith(
+            expect.objectContaining({ highlight_links: true })
+          );
+        });
+    });
+      
+
+    test('increases and decreases line height', async () => {
+        const settingsWithLineHeight = {
+          ...mockSettings,
+          line_height: 1.5,
+          letter_spacing: "5px", // required to avoid error when parsing
+        };
+      
+        render(
+          <BasicSettingsBar
+            isOpen={true}
+            onClose={mockOnClose}
+            settings={settingsWithLineHeight}
+            setSettings={mockSetSettings}
+            logout={mockLogout}
+            setLoggedIn={mockSetLoggedIn}
+          />
+        );
+      
+        act(() => {
+          BasicSettingsBar.setSelectedCategory("Text");
+        });
+      
+        const incBtn = screen.getByRole('button', { name: /Increase Line Height/i });
+        const decBtn = screen.getByRole('button', { name: /Decrease Line Height/i });
+      
+        // Increase
+        fireEvent.click(incBtn);
+        await waitFor(() => {
+          expect(mockSetSettings).toHaveBeenCalledWith(
+            expect.objectContaining({ line_height: 2.0 })
+          );
+        });
+      
+        // Decrease
+        fireEvent.click(decBtn);
+        await waitFor(() => {
+          expect(mockSetSettings).toHaveBeenCalledWith(
+            expect.objectContaining({ line_height: 1.0 })
+          );
+        });
+    });
+      
+
+    test('increases and decreases word spacing', async () => {
+        const settingsWithWordSpacing = {
+          ...mockSettings,
+          word_spacing: "5px",
+        };
+      
+        render(
+          <BasicSettingsBar
+            isOpen={true}
+            onClose={mockOnClose}
+            settings={settingsWithWordSpacing}
+            setSettings={mockSetSettings}
+            logout={mockLogout}
+            setLoggedIn={mockSetLoggedIn}
+          />
+        );
+      
+        act(() => {
+          BasicSettingsBar.setSelectedCategory("Text");
+        });
+      
+        const incBtn = screen.getByRole('button', { name: /Increase Word Spacing/i });
+        const decBtn = screen.getByRole('button', { name: /Decrease Word Spacing/i });
+      
+        // Increase
+        fireEvent.click(incBtn);
+        await waitFor(() => {
+          expect(mockSetSettings).toHaveBeenCalledWith(
+            expect.objectContaining({ word_spacing: "6px" })
+          );
+        });
+      
+        // Decrease
+        fireEvent.click(decBtn);
+        await waitFor(() => {
+          expect(mockSetSettings).toHaveBeenCalledWith(
+            expect.objectContaining({ word_spacing: "4px" })
+          );
+        });
+    });
+      
+
+    test('pressing Enter or Space on category tab opens that category', async () => {
+        act(() => {
+            render(
+                <BasicSettingsBar
+                  isOpen={true}
+                  onClose={mockOnClose}
+                  settings={mockSettings}
+                  setSettings={mockSetSettings}
+                  logout={mockLogout}
+                  setLoggedIn={mockSetLoggedIn}
+                />
+              );
+        });
+
+        await act(async () => {
+            const categoryLink = screen.getByTestId('Text');
+      
+            fireEvent.keyDown(categoryLink, { key: 'Enter', code: 'Enter' });
+        });
+      
+        await waitFor(() => {
+          expect(screen.getByText('Text Size')).toBeInTheDocument();
+        });
+      
+        // Reset and try with spacebar
+        await act(async () => BasicSettingsBar.setSelectedCategory(null));
+    
+        await act(async () => {
+            const categoryLink = screen.getByTestId('Text');
+            fireEvent.keyDown(categoryLink, { key: ' ', code: 'Space' });
+        });
+      
+        await waitFor(() => {
+          expect(screen.getByText('Text Size')).toBeInTheDocument();
+        });
+    });
+      
+      
+
+    test('focuses back button when a category is selected, then close button when deselected', async () => {
+        render(
+          <BasicSettingsBar
+            isOpen={true}
+            onClose={mockOnClose}
+            settings={mockSettings}
+            setSettings={mockSetSettings}
+            logout={mockLogout}
+            setLoggedIn={mockSetLoggedIn}
+          />
+        );
+      
+        act(() => {
+          BasicSettingsBar.setSelectedCategory('Text');
+        });
+      
+        await waitFor(() => {
+          const backBtn = screen.getByTestId('backBtn');
+          expect(document.activeElement).toBe(backBtn);
+        });
+      
+        act(() => {
+          fireEvent.click(screen.getByTestId('backBtn'));
+        });
+      
+        await waitFor(() => {
+          const closeBtn = screen.getByTestId('closeSettingsBtn');
+          expect(document.activeElement).toBe(closeBtn);
+        });
+    });
+      
+      
+
     test('mute sounds form submit should call preventDefault', async () => {
         const mockPlay = jest.fn().mockResolvedValue(); // Define mockPlay
         window.Audio = jest.fn().mockImplementation(() => ({
@@ -1071,8 +1561,16 @@ describe('settingsPanel', () => {
                     expect(mockSetSettings).toHaveBeenCalledWith({
                         ...mockSettings,
                         font_size: "14px",
-                        letter_spacing: "4.5px",
-                        contrast: "50%"
+                                                        letter_spacing: "4.5px",
+                                                        contrast: "50%",
+                                                        background_color: "#FFFFF6",
+                                                        line_height: 2,
+                                                        align_text: "left",
+                                                        font: "Lexend",
+                                                        highlight_hover: false,
+                                                        highlight_links_color: "#8398EB",
+                                                        cursor_size: 5,
+                                                        word_spacing: "5px",
                     });
                 });
             }); 
@@ -1116,8 +1614,19 @@ describe('settingsPanel', () => {
                     expect(mockSetSettings).toHaveBeenCalledWith({
                         ...mockSettings,
                         font_size: "16px",
-                        letter_spacing: "2px",
-                        contrast: "200%"
+                                                        letter_spacing: "2px",
+                                                        contrast: "200%",
+                                                        font: "Arimo",
+                                                        line_height: 1.5,
+                                                        align_text: "left",
+                                                        highlight_links: true,
+                                                        saturation: "200%",
+                                                        highlight_hover: true,
+                                                        highlight_hover_color: "#335CFF",
+                                                        cursor_size: 6,
+                                                        cursor_color:"#A42D2D",
+                                                        highlight_links_color: "#A42D2D",
+                                                        word_spacing: "3px",
                     });
                 });
             }); 
@@ -1160,21 +1669,28 @@ describe('settingsPanel', () => {
                 await waitFor(() => {
                     expect(mockSetSettings).toHaveBeenCalledWith({
                         ...mockSettings,
-                        align_text: "center",
-                        font_size: "14px",
-                        letter_spacing: "0px",
-                        contrast: "100%",
-                        saturation: "100%",
-                        mute_sounds: false,
-                        highlight_hover: false,
-                        highlight_hover_color: "#BD180F",
-                        cursor_size: 3,
-                        cursor_color: "#000000",
-                        cursor_border_color: "#FFFFFF",
-                        background_color: "#FFEDED",
-                        foreground_color: "#4F0000",
-                        text_color: "#000000",
-                        font: "Mitr",
+                        highlight_links: false,
+      highlight_links_color: "#335CFF",
+      text_magnifier: false,
+      align_text: "center",
+      font_size: "14px",
+      line_height: 1.5,
+      letter_spacing: "0px",
+      contrast: "100%",
+      saturation: "100%",
+      mute_sounds: false,
+      highlight_hover: false,
+      highlight_keyboard_focus: false,
+      highlight_keyboard_focus_color: "#BD180F",
+      highlight_hover_color: "#BD180F",
+      cursor_size: 3,
+    cursor_color: "#000000",
+    cursor_border_color: "#FFFFFF",
+    background_color: "#FFEDED",
+    foreground_color: "#4F0000",
+    text_color: "#000000",
+    font: "Mitr",
+    word_spacing: "0px"
                     });
                 });
             }); 
