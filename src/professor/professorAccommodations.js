@@ -72,6 +72,7 @@ function ProfessorAccommodations({ userInfo, setAlertMessage, setShowAlert, disp
                   <div className="accommodationsContainer">
                   <h2 ref={headingRef}
                         tabIndex={0}>PROFESSOR ACCOMMODATIONS</h2>
+                    {console.log("Professor Data: ", professorData)}
                     {professorData?.courses.map((course) => (
                       <div key={course.id} className="courseCard">
                         <button
