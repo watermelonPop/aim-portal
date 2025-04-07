@@ -1,38 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-function UserDashboard({ userInfo, displayHeaderRef, settingsTabOpen, lastIntendedFocusRef, setCurrentTab, tabs }) {
+function UserDashboard({ userInfo, settingsTabOpen, setCurrentTab, tabs }) {
   const [auditChoice, setAuditChoice] = useState(null);
   const [openGroup, setOpenGroup] = useState(null);
-  const localRef = useRef(null);
-  const headingRef = displayHeaderRef || localRef;
-
-  useEffect(() => {
-    if (!headingRef.current || settingsTabOpen === true) return;
-
-    if (lastIntendedFocusRef?.current !== headingRef.current) {
-      lastIntendedFocusRef.current = headingRef.current;
-    }
-  }, [settingsTabOpen, headingRef]);
-
-  useEffect(() => {
-    if (!headingRef.current || settingsTabOpen === true) return;
-
-    const frame = requestAnimationFrame(() => {
-      const isAlertOpen = document.querySelector('[data-testid="alert"]') !== null;
-
-      if (
-        headingRef.current &&
-        !isAlertOpen &&
-        document.activeElement !== headingRef.current &&
-        lastIntendedFocusRef.current === headingRef.current
-      ) {
-        headingRef.current.focus();
-        lastIntendedFocusRef.current = null;
-      }
-    });
-
-    return () => cancelAnimationFrame(frame);
-  }, [settingsTabOpen, headingRef]);
 
   const toggleGroup = (group) => {
     setOpenGroup(prev => (prev === group ? null : group));
@@ -42,10 +12,10 @@ function UserDashboard({ userInfo, displayHeaderRef, settingsTabOpen, lastIntend
     <div className="profileBlock">
       {auditChoice === null && (
         <div className="auditViewContainer" role="dialog" aria-labelledby="audit-header" aria-describedby="audit-description">
-          <h2 id="audit-header" ref={headingRef} tabIndex={0} className="auditTitle">
+          <h2 id="audit-header" className="auditTitle">
             Welcome to the Texas A&M AIM Portal!
           </h2>
-          <p tabIndex={0} aria-label="Would you like to find and download required forms or go directly to apply for accommodations?" id="audit-description" className="auditPrompt">
+          <p aria-label="Would you like to find and download required forms or go directly to apply for accommodations?" id="audit-description" className="auditPrompt">
             Would you like to find and download required forms or go directly to apply for accommodations?
           </p>
           <div className="auditButtonGroup">

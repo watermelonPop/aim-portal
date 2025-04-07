@@ -2,7 +2,7 @@
 import { useEffect, useState, useRef } from 'react';
 
 
-export function UserAccommodations({userInfo, setAlertMessage, setShowAlert, displayHeaderRef, settingsTabOpen, lastIntendedFocusRef}) {
+export function UserAccommodations({userInfo, setAlertMessage, setShowAlert, settingsTabOpen}) {
         const [formData, setFormData] = useState({
                 name: userInfo.name || "",
                 email: userInfo.email || "",
@@ -22,41 +22,6 @@ export function UserAccommodations({userInfo, setAlertMessage, setShowAlert, dis
         const [errors, setErrors] = useState(null);
 
         const [existingRequest, setExistingRequest] = useState(null);
-
-        const localRef = useRef(null);
-        
-            // If ref is passed in (from parent), use that. Otherwise use internal.
-            const headingRef = displayHeaderRef || localRef;
-        
-            useEffect(() => {
-                if (!headingRef.current || settingsTabOpen === true) return;
-              
-                if (lastIntendedFocusRef?.current !== headingRef.current) {
-                    lastIntendedFocusRef.current = headingRef.current;
-                }
-            }, [settingsTabOpen, headingRef]);
-              
-            useEffect(() => {
-                if (!headingRef.current || settingsTabOpen === true) return;
-              
-                const frame = requestAnimationFrame(() => {
-                  const isAlertOpen = document.querySelector('[data-testid="alert"]') !== null;
-              
-                  if (
-                    headingRef.current &&
-                    !isAlertOpen &&
-                    document.activeElement !== headingRef.current &&
-                    lastIntendedFocusRef.current === headingRef.current
-                  ) {
-                    console.log("FOCUSING DASH");
-                    console.log("Intent:", lastIntendedFocusRef.current, "Target:", headingRef.current);
-                    headingRef.current.focus();
-                    lastIntendedFocusRef.current = null;
-                  }
-                });
-              
-                return () => cancelAnimationFrame(frame);
-        }, [settingsTabOpen, headingRef]);
 
         const handleFileChange = (event) => {
                 setFormData(prevState => ({
@@ -355,7 +320,7 @@ export function UserAccommodations({userInfo, setAlertMessage, setShowAlert, dis
         return (
                 <>
                 <div role="presentation" className="newStudentDiv">
-                        <h2 className='dashboardTitle' ref={headingRef}
+                        <h2 className='dashboardTitle'
                                 tabIndex={0}>New Student Application</h2>
                         {existingRequest === null ? (
                                 <>

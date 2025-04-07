@@ -2,9 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import CreateExamModal from "./createExamModal";
 import './Professor.css';
 
-function ProfessorTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastIntendedFocusRef }) {
-  const localRef = useRef(null);
-  const headingRef = displayHeaderRef || localRef;
+function ProfessorTesting({ userInfo, settingsTabOpen }) {
 
   const [loading, setLoading] = useState(false);
   const [professorData, setProfessorData] = useState(null);
@@ -16,30 +14,6 @@ function ProfessorTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastInt
   const studentRefs = useRef({});
   const triggerButtonRefs = useRef({});
   const lastTriggerButtonRef = useRef(null);
-
-  useEffect(() => {
-    if (!headingRef.current || settingsTabOpen) return;
-    if (lastIntendedFocusRef?.current !== headingRef.current) {
-      lastIntendedFocusRef.current = headingRef.current;
-    }
-  }, [settingsTabOpen, headingRef]);
-
-  useEffect(() => {
-    if (!headingRef.current || settingsTabOpen) return;
-    const frame = requestAnimationFrame(() => {
-      const isAlertOpen = document.querySelector('[data-testid="alert"]') !== null;
-      if (
-        headingRef.current &&
-        !isAlertOpen &&
-        document.activeElement !== headingRef.current &&
-        lastIntendedFocusRef.current === headingRef.current
-      ) {
-        headingRef.current.focus();
-        lastIntendedFocusRef.current = null;
-      }
-    });
-    return () => cancelAnimationFrame(frame);
-  }, [settingsTabOpen, headingRef]);
 
   const openModal = (course, refKey) => {
     setSelectedCourse(course);
@@ -140,7 +114,7 @@ function ProfessorTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastInt
         </div>
       ) : (
         <div className="accommodationsContainer">
-          <h2 ref={headingRef} tabIndex={0}>PROFESSOR TESTING</h2>
+          <h2>PROFESSOR TESTING</h2>
 
           <div className="filterButtonContainer">
             <button onClick={toggleFilter}>

@@ -2,43 +2,9 @@
 import { useEffect, useState, useRef } from 'react';
 
 
-export function StudentAccommodations({userInfo, setAlertMessage, setShowAlert, displayHeaderRef, settingsTabOpen, lastIntendedFocusRef}) {
+export function StudentAccommodations({userInfo, setAlertMessage, setShowAlert, settingsTabOpen}) {
         const [loading, setLoading] = useState(false);
         const [studentData, setStudentData] = useState(null);
-        const localRef = useRef(null);
-        
-            // If ref is passed in (from parent), use that. Otherwise use internal.
-            const headingRef = displayHeaderRef || localRef;
-        
-            useEffect(() => {
-                if (!headingRef.current || settingsTabOpen === true) return;
-              
-                if (lastIntendedFocusRef?.current !== headingRef.current) {
-                    lastIntendedFocusRef.current = headingRef.current;
-                }
-            }, [settingsTabOpen, headingRef]);
-              
-            useEffect(() => {
-                if (!headingRef.current || settingsTabOpen === true) return;
-              
-                const frame = requestAnimationFrame(() => {
-                  const isAlertOpen = document.querySelector('[data-testid="alert"]') !== null;
-              
-                  if (
-                    headingRef.current &&
-                    !isAlertOpen &&
-                    document.activeElement !== headingRef.current &&
-                    lastIntendedFocusRef.current === headingRef.current
-                  ) {
-                    console.log("FOCUSING DASH");
-                    console.log("Intent:", lastIntendedFocusRef.current, "Target:", headingRef.current);
-                    headingRef.current.focus();
-                    lastIntendedFocusRef.current = null;
-                  }
-                });
-              
-                return () => cancelAnimationFrame(frame);
-        }, [settingsTabOpen, headingRef]);
 
         useEffect(() => {
           if (userInfo?.role === 'STUDENT' && userInfo?.id) {
@@ -56,8 +22,7 @@ export function StudentAccommodations({userInfo, setAlertMessage, setShowAlert, 
                 <>
             <div className="studentAccommodationsWrapper">
               {/* Accommodations Section */}
-              <h2 ref={headingRef}
-                                tabIndex={0}>Accommodations</h2>
+              <h2>Accommodations</h2>
               {studentData?.accommodations?.length > 0 ? (
                 <div className="accommodationsContainer">
                   {studentData.accommodations.map((acc, index) => (

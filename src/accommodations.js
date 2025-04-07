@@ -3,9 +3,8 @@ import { useEffect, useState, useCallback } from 'react';
 import UserAccommodations from './user/userAccommodations';
 import StudentAccommodations from './student/studentAccommodations';
 import ProfessorAccommodations from './professor/professorAccommodations';
-import StaffAccommodations from './staff/staffAccommodations';
 
-export function Accommodations({ userInfo, setAlertMessage, setShowAlert, displayHeaderRef, settingsTabOpen, lastIntendedFocusRef }) {
+export function Accommodations({ userInfo, setAlertMessage, setShowAlert, settingsTabOpen }) {
 
   return (
     <main className='dashboardOuter' data-testid='basicAccommodations' id='basicAccommodations'>
@@ -14,9 +13,7 @@ export function Accommodations({ userInfo, setAlertMessage, setShowAlert, displa
           userInfo={userInfo}
           setAlertMessage={setAlertMessage}
           setShowAlert={setShowAlert}
-          displayHeaderRef={displayHeaderRef}
           settingsTabOpen={settingsTabOpen}
-          lastIntendedFocusRef={lastIntendedFocusRef}
         />
       )}
 
@@ -25,9 +22,7 @@ export function Accommodations({ userInfo, setAlertMessage, setShowAlert, displa
           userInfo={userInfo}
           setAlertMessage={setAlertMessage}
           setShowAlert={setShowAlert}
-          displayHeaderRef={displayHeaderRef}
           settingsTabOpen={settingsTabOpen}
-          lastIntendedFocusRef={lastIntendedFocusRef}
         />
       )}
       
@@ -35,19 +30,8 @@ export function Accommodations({ userInfo, setAlertMessage, setShowAlert, displa
         <ProfessorAccommodations userInfo={userInfo}
         setAlertMessage={setAlertMessage}
         setShowAlert={setShowAlert}
-        displayHeaderRef={displayHeaderRef}
-        settingsTabOpen={settingsTabOpen}
-        lastIntendedFocusRef={lastIntendedFocusRef}/>
+        settingsTabOpen={settingsTabOpen}/>
       )}
-
-      {userInfo.role === "ADVISOR" && <StaffAccommodations
-          userInfo={userInfo}
-          setAlertMessage={setAlertMessage}
-          setShowAlert={setShowAlert}
-          displayHeaderRef={displayHeaderRef}
-          settingsTabOpen={settingsTabOpen}
-          lastIntendedFocusRef={lastIntendedFocusRef}
-        />}
     </main>
   );
 }

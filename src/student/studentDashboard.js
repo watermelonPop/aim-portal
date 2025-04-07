@@ -2,44 +2,15 @@ import React, { useEffect, useState, useRef } from 'react';
 import AlertsArea from '../AlertsArea'; // Import the alerts component
 import '../index.css';
 
-export default function StudentDashboard({ userInfo, displayHeaderRef, settingsTabOpen, lastIntendedFocusRef }) {
+export default function StudentDashboard({ userInfo, settingsTabOpen}) {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(false);
   const [viewMode, setViewMode] = useState('card');
   const [error, setError] = useState('');
   const [selectedCourse, setSelectedCourse] = useState(null);
 
-  const localRef = useRef(null);
-  // Use passed-in header ref or local ref.
-  const headingRef = displayHeaderRef || localRef;
   // Ref for the modal container
   const modalRef = useRef(null);
-
-  useEffect(() => {
-    if (!headingRef.current || settingsTabOpen === true) return;
-    if (lastIntendedFocusRef?.current !== headingRef.current) {
-      lastIntendedFocusRef.current = headingRef.current;
-    }
-  }, [settingsTabOpen, headingRef]);
-
-  useEffect(() => {
-    if (!headingRef.current || settingsTabOpen === true) return;
-    const frame = requestAnimationFrame(() => {
-      const isAlertOpen = document.querySelector('[data-testid="alert"]') !== null;
-      if (
-        headingRef.current &&
-        !isAlertOpen &&
-        document.activeElement !== headingRef.current &&
-        lastIntendedFocusRef.current === headingRef.current
-      ) {
-        console.log("FOCUSING DASH");
-        console.log("Intent:", lastIntendedFocusRef.current, "Target:", headingRef.current);
-        headingRef.current.focus();
-        lastIntendedFocusRef.current = null;
-      }
-    });
-    return () => cancelAnimationFrame(frame);
-  }, [settingsTabOpen, headingRef]);
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -97,7 +68,7 @@ export default function StudentDashboard({ userInfo, displayHeaderRef, settingsT
   return (
     <div className="studentDashboard" role="main">
       <div className="leftColumn">
-        <h2 ref={headingRef} tabIndex={0}>
+        <h2>
           Welcome, {userInfo?.name || 'Student'}
         </h2>
         <div className="viewToggle">

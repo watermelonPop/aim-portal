@@ -9,10 +9,7 @@ export const formatDate = (dateString) => {
         return isNaN(date.getTime()) ? '' : date.toISOString().split('T')[0];
 }
 
-export function ProfessorDashboard({ userInfo, setAlertMessage, setShowAlert, displayHeaderRef, settingsTabOpen, lastIntendedFocusRef }){
-        const localRef = useRef(null);
-        const headingRef = displayHeaderRef || localRef;
-        const backBtnRef = useRef(null);
+export function ProfessorDashboard({ userInfo, setAlertMessage, setShowAlert, settingsTabOpen}){
 
         const [selectedTab, setSelectedTab] = useState('class'); // 'class' or 'student'
         const [classes, setClasses] = useState([]);
@@ -87,70 +84,6 @@ export function ProfessorDashboard({ userInfo, setAlertMessage, setShowAlert, di
             
                 fetchClasses();
         }, [userInfo]);
-            
-              
-
-        useEffect(() => {
-                if (!headingRef.current || settingsTabOpen) return;
-
-                if (lastIntendedFocusRef?.current !== headingRef.current) {
-                lastIntendedFocusRef.current = headingRef.current;
-        }
-        }, [settingsTabOpen, headingRef]);
-
-        useEffect(() => {
-                if (!headingRef.current || settingsTabOpen) return;
-
-                const frame = requestAnimationFrame(() => {
-                        const isAlertOpen = document.querySelector('[data-testid="alert"]') !== null;
-                        console.log("ALERT: ", isAlertOpen);
-
-                        if (
-                                headingRef.current &&
-                                !isAlertOpen &&
-                                document.activeElement !== headingRef.current &&
-                                lastIntendedFocusRef.current === headingRef.current
-                        ) {
-                                headingRef.current.focus();
-                                lastIntendedFocusRef.current = null;
-                        }
-                });
-
-                return () => cancelAnimationFrame(frame);
-        }, [settingsTabOpen, headingRef]);
-
-        useEffect(() => {
-                const isAlertOpen = document.querySelector('[data-testid="alert"]') !== null;
-                if(isAlertOpen) return;
-                if (selectedClass !== null) {
-                    const raf = requestAnimationFrame(() => {
-                        backBtnRef.current?.focus();
-                    });
-                    return () => cancelAnimationFrame(raf);
-                } else if (selectedClass === null) {
-                    const raf = requestAnimationFrame(() => {
-                        headingRef.current?.focus();
-                    });
-                    return () => cancelAnimationFrame(raf);
-                }
-        }, [selectedClass]);
-
-
-        useEffect(() => {
-                const isAlertOpen = document.querySelector('[data-testid="alert"]') !== null;
-                if(isAlertOpen) return;
-                if (selectedStudent !== null) {
-                        const raf = requestAnimationFrame(() => {
-                            backBtnRef.current?.focus();
-                        });
-                        return () => cancelAnimationFrame(raf);
-                } else if (selectedStudent === null) {
-                        const raf = requestAnimationFrame(() => {
-                            headingRef.current?.focus();
-                        });
-                        return () => cancelAnimationFrame(raf);
-                }
-        }, [selectedStudent]);
 
         const getClassAlertNumber = (classObj) => {
                 let num = 0;
@@ -248,7 +181,7 @@ export function ProfessorDashboard({ userInfo, setAlertMessage, setShowAlert, di
                   <div className="tabContent" role="tabpanel">
                   {selectedTab === "class" ? (
   <div>
-    <h2 ref={headingRef} tabIndex={0} className="dashboardTitle">
+    <h2 className="dashboardTitle">
       Class View Dashboard
     </h2>
     <div>
@@ -301,7 +234,6 @@ export function ProfessorDashboard({ userInfo, setAlertMessage, setShowAlert, di
               <button
                 aria-label="back"
                 onClick={() => setSelectedClass(null)}
-                ref={backBtnRef}
               >
                 <FontAwesomeIcon icon={faArrowLeft} aria-hidden="true" />
               </button>
@@ -369,7 +301,7 @@ export function ProfessorDashboard({ userInfo, setAlertMessage, setShowAlert, di
   </div>
                     ) : (
                       <div>
-                        <h2 ref={headingRef} tabIndex={0} className="dashboardTitle">
+                        <h2 className="dashboardTitle">
                           Student View Dashboard
                         </h2>
                         <div>
@@ -422,7 +354,6 @@ export function ProfessorDashboard({ userInfo, setAlertMessage, setShowAlert, di
                                                 <button
                                                 aria-label="back"
                                                 onClick={() => setSelectedStudent(null)}
-                                                ref={backBtnRef}
                                                 >
                                                         <FontAwesomeIcon icon={faArrowLeft} aria-hidden="true" />
                                                 </button>

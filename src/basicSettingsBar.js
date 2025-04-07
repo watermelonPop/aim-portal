@@ -3,10 +3,7 @@ import { useEffect, useState, useCallback, useRef, useLayoutEffect } from 'react
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faToggleOff, faToggleOn, faArrowLeft, faArrowRight} from '@fortawesome/free-solid-svg-icons';
 
-export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logout, setLoggedIn, displayHeaderRef, lastIntendedFocusRef }) {
-        const settingsRef = useRef(null);
-        const backBtnRef = useRef(null);
-        const hasFocusedRef = useRef(false);
+export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logout, setLoggedIn }) {
 
         const categories = {
                 Profiles: ['disability_profile'],
@@ -51,22 +48,6 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                 setSettings({ ...settings, ...updates });
         };
 
-        useEffect(() => {
-                if (selectedCategory !== null && !hasFocusedRef.current) {
-                    const raf = requestAnimationFrame(() => {
-                        backBtnRef.current?.focus();
-                        hasFocusedRef.current = true;
-                    });
-                    return () => cancelAnimationFrame(raf);
-                } else if (selectedCategory === null) {
-                    const raf = requestAnimationFrame(() => {
-                        settingsRef.current?.focus();
-                        hasFocusedRef.current = false;
-                    });
-                    return () => cancelAnimationFrame(raf);
-                }
-        }, [selectedCategory]);
-
         useLayoutEffect(() => {
                 const scrollY = localStorage.getItem("scroll-position-settings");
                 const savedCategory = localStorage.getItem("selectedCategory");
@@ -107,12 +88,11 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                 >
                 <div className="innerSettingsNav">
                         <div className="settingsHeading">
-                        <button id="closeSettingPanel" ref={settingsRef} onClick={onClose} aria-label="close" data-testid="closeSettingsBtn">
+                        <button id="closeSettingPanel" onClick={onClose} aria-label="close" data-testid="closeSettingsBtn">
                         x
                         </button>
                         <h2
                         className="visuallyFocusedHeading"
-                        tabIndex={0}
                         data-testid="settingsTitle"
                         >
                         Settings
@@ -156,7 +136,7 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                 ) : selectedCategory === "Text" ? (
                                 <>
                                         <li id="backSettingPanelOuter">
-                                                <button data-testid="backBtn" ref={backBtnRef} aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)}>
+                                                <button data-testid="backBtn" aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)}>
                                                         <FontAwesomeIcon icon={faArrowLeft} aria-hidden="true" />
                                                 </button>
                                                 <h3 tabIndex={0}>Text</h3>
@@ -356,7 +336,7 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                         )  : selectedCategory === "Visuals" ? (
                                 <>
                                         <li id="backSettingPanelOuter">
-                                                <button data-testid="backBtn" ref={backBtnRef} aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)}>
+                                                <button data-testid="backBtn" aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)}>
                                                         <FontAwesomeIcon icon={faArrowLeft} aria-hidden="true" />
                                                 </button>
                                                 <h3 tabIndex={0}>Visuals</h3>
@@ -414,7 +394,7 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                         )  : selectedCategory === "Cursor" ? (
                                 <>
                                         <li id="backSettingPanelOuter">
-                                                <button data-testid="backBtn" ref={backBtnRef} aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)}>
+                                                <button data-testid="backBtn" aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)}>
                                                         <FontAwesomeIcon icon={faArrowLeft} aria-hidden="true" />
                                                 </button>
                                                 <h3 tabIndex={0}>Cursor</h3>
@@ -454,7 +434,7 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                         )  : selectedCategory === "Audio" ? (
                                 <>
                                         <li id="backSettingPanelOuter">
-                                                <button data-testid="backBtn" ref={backBtnRef} aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)}>
+                                                <button data-testid="backBtn" aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)}>
                                                         <FontAwesomeIcon icon={faArrowLeft} aria-hidden="true" />
                                                 </button>
                                                 <h3 tabIndex={0}>Audio</h3>
@@ -479,7 +459,7 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                         )  : selectedCategory === "Profiles" ? (
                                 <>
                                         <li id="backSettingPanelOuter">
-                                                <button data-testid="backBtn" ref={backBtnRef} aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)}>
+                                                <button data-testid="backBtn" aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)}>
                                                         <FontAwesomeIcon icon={faArrowLeft} aria-hidden="true" />
                                                 </button>
                                                 <h3 tabIndex={0}>Accessibility Profiles</h3>
@@ -554,7 +534,7 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                         )  : selectedCategory === "Interactions" ? (
                                 <>
                                         <li id="backSettingPanelOuter">
-                                                <button data-testid="backBtn" ref={backBtnRef} aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)}>
+                                                <button data-testid="backBtn" aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)}>
                                                         <FontAwesomeIcon icon={faArrowLeft} aria-hidden="true" />
                                                 </button>
                                                 <h3 tabIndex={0}>Interactions</h3>

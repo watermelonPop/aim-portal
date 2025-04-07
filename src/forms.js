@@ -1,11 +1,10 @@
 
 import StudentForms from './student/studentForms.js';
-import StaffForms from './staff/staffForms.js';
 
-function Forms({ userInfo, displayHeaderRef, settingsTabOpen, lastIntendedFocusRef }) {
+function Forms({ userInfo, settingsTabOpen }) {
   return (
     <main className="dashboardOuter">
-      {userInfo.role === "STUDENT" && <StudentForms userInfo={userInfo} displayHeaderRef={displayHeaderRef} settingsTabOpen={settingsTabOpen} lastIntendedFocusRef={lastIntendedFocusRef} />}
+      {userInfo.role === "STUDENT" && <StudentForms userInfo={userInfo} settingsTabOpen={settingsTabOpen} />}
     </main>
   );
 }

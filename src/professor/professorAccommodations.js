@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-function ProfessorAccommodations({ userInfo, setAlertMessage, setShowAlert, displayHeaderRef, settingsTabOpen, lastIntendedFocusRef }) {
+function ProfessorAccommodations({ userInfo, setAlertMessage, setShowAlert, settingsTabOpen }) {
   const [loading, setLoading] = useState(false);
   const [professorData, setProfessorData] = useState(null);
   const [openProfessorCourses, setOpenProfessorCourses] = useState({});
@@ -32,34 +32,6 @@ function ProfessorAccommodations({ userInfo, setAlertMessage, setShowAlert, disp
     });
   };
 
-  const localRef = useRef(null);
-  const headingRef = displayHeaderRef || localRef;
-
-  // Focus management for initial load
-  useEffect(() => {
-    if (!headingRef.current || settingsTabOpen === true) return;
-    if (lastIntendedFocusRef?.current !== headingRef.current) {
-      lastIntendedFocusRef.current = headingRef.current;
-    }
-  }, [settingsTabOpen, headingRef]);
-
-  useEffect(() => {
-    if (!headingRef.current || settingsTabOpen === true) return;
-    const frame = requestAnimationFrame(() => {
-      const isAlertOpen = document.querySelector('[data-testid="alert"]') !== null;
-      if (
-        headingRef.current &&
-        !isAlertOpen &&
-        document.activeElement !== headingRef.current &&
-        lastIntendedFocusRef.current === headingRef.current
-      ) {
-        headingRef.current.focus();
-        lastIntendedFocusRef.current = null;
-      }
-    });
-    return () => cancelAnimationFrame(frame);
-  }, [settingsTabOpen, headingRef]);
-
   useEffect(() => {
     if (userInfo?.role === 'PROFESSOR' && userInfo?.id) {
       setLoading(true);
@@ -82,7 +54,7 @@ function ProfessorAccommodations({ userInfo, setAlertMessage, setShowAlert, disp
                     </div>
             ) : (
     <div className="accommodationsContainer">
-      <h2 ref={headingRef} tabIndex={0}>PROFESSOR ACCOMMODATIONS</h2>
+      <h2>PROFESSOR ACCOMMODATIONS</h2>
       {professorData?.courses.map((course) => {
         const filtered = course.accommodations.filter(acc => allowedAccommodations.has(acc.type));
         return (
