@@ -195,7 +195,7 @@ function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastInten
       
       {/* Upcoming Exams Section */}
       <section className="upcomingExams">
-        <h3>Upcoming Exams</h3>
+        <h3 tabIndex={0}>Upcoming Exams</h3>
         {loadingUpcoming ? (
           <p>Loading upcoming exams...</p>
         ) : errorUpcoming ? (
@@ -205,10 +205,9 @@ function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastInten
         ) : (
           <ul>
             {upcomingExams.map((exam) => (
-              <li key={exam.id} className="examItem">
+              <li key={exam.id} className="examItem" tabIndex={0}>
                 <div
                   className="examDetails"
-                  tabIndex={0}
                   aria-label={`${exam.name}, scheduled on ${new Date(exam.date).toLocaleDateString()} at ${exam.location} for course ${exam.courseName}`}
                 >
                   <strong>{exam.name}</strong> - {new Date(exam.date).toLocaleDateString()} at {exam.location} (Course: {exam.courseName})
@@ -237,10 +236,9 @@ function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastInten
         ) : (
           <ul>
             {submittedExams.map((exam) => (
-              <li key={exam.id} className="examItem">
+              <li key={exam.id} className="examItem" tabIndex={0}>
                 <div
                   className="examDetails"
-                  tabIndex={0}
                   aria-label={`Submitted exam ${exam.name}, scheduled on ${new Date(exam.date).toLocaleDateString()} for course ${exam.courseName}`}
                 >
                   <strong>{exam.name}</strong> - {new Date(exam.date).toLocaleDateString()} (Course: {exam.courseName})

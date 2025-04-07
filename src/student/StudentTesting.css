@@ -1,11 +1,9 @@
 /* General layout and typography */
 .studentTesting {
     padding: 20px;
-    font-family: Arial, sans-serif;
   }
   
   .dashboardTitle {
-    font-size: 2em;
     margin-bottom: 20px;
   }
   
@@ -15,13 +13,12 @@
   }
   
   .upcomingExams h3, .submittedExams h3 {
-    font-size: 1.5em;
     margin-bottom: 10px;
   }
   
   /* Exam List Items */
   .examItem {
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid var(--text-color);
     padding: 10px 0;
     display: flex;
     justify-content: space-between;
@@ -32,29 +29,25 @@
     flex: 1;
     outline: none;
   }
-  
-  .examDetails:focus {
-    outline: 2px solid #b72222;
+
+  body.highlight-keyboard-focus-enabled .examItem:focus{
+  outline: 2px solid var(--highlight-keyboard-focus-color) !important;
+  border-radius: 1rem;
   }
   
   .examItem button {
     padding: 5px 10px;
-    background-color: #6a0000;
-    color: white;
-    border: none;
+    background-color: var(--background-color);
+    color: var(--foreground-color);
+    border: 2px solid var(--foreground-color);
     border-radius: 3px;
-    cursor: pointer;
+    cursor: var(--custom-hover-cursor);
+    border-radius: 1rem;
   }
-  
-  .examItem button:focus, 
-  .examItem button:hover {
-    outline: 2px solid #b72222;
-  }
-  
-  .pendingStatus {
-    font-weight: bold;
-    color: #BD180F;
-    margin-left: 10px;
+
+  .examItem button:hover{
+    background-color: var(--foreground-color);
+    color: var(--background-color);
   }
   
   /* Modal Styles */
@@ -75,7 +68,7 @@
   }
   
   .modalContent {
-    background: #fff;
+    background: var(--background-color);
     padding: 20px;
     width: 90%;
     max-width: 500px;
@@ -115,15 +108,10 @@
   .modalButtons button {
     margin-left: 10px;
     padding: 5px 10px;
-    background-color: #6a0000;
-    color: white;
+    background-color: var(--background-color);
+    color: var(--foreground-color);
     border: none;
     border-radius: 3px;
-    cursor: pointer;
-  }
-  
-  .modalButtons button:focus, 
-  .modalButtons button:hover {
-    outline: 2px solid #b72222;
+    cursor: var(--custom-hover-cursor);
   }
   

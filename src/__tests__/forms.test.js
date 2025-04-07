@@ -24,11 +24,6 @@ describe('Forms Component', () => {
     expect(screen.getByTestId('student-forms')).toBeInTheDocument();
   });
 
-  test('renders StaffForms for role ADVISOR', () => {
-    render(<Forms {...props} userInfo={{ role: 'ADVISOR' }} />);
-    expect(screen.getByTestId('staff-forms')).toBeInTheDocument();
-  });
-
   test('renders nothing for unrecognized role', () => {
         const { container } = render(<Forms {...props} userInfo={{ role: 'GUEST' }} />);
         const main = container.querySelector('main');

@@ -43,7 +43,6 @@ export function App() {
 
     {name: 'Dashboard', elem: <Dash/>},
     {name: 'Accommodations', elem: <Accommodations/>},
-    {name: 'Forms', elem: <Forms/>},
     {name: 'Profile', elem: <Profile/>},
 
   ]);
@@ -64,17 +63,13 @@ export function App() {
   ]);
   const [staffTabs, setStaffTabs] = useState([
     {name: 'Dashboard', elem: <Dash/>},
-    {name: 'Forms', elem: <Forms/>},
     {name: 'Profile', elem: <Profile/>},
   ]);
   const [currentTab, setCurrentTab] = useState(null);
   const [staffAccess, setStaffAccess] = useState([
     {access: 'Global Settings', hasAccess: false, elem: <GlobalSettings/>},
-    {access: 'Accommodations', hasAccess: false, elem: <Accommodations/>},
     {access: 'Note Taking', hasAccess: false, elem: <NoteTaking/>},
-    {access: 'Assistive Technology', hasAccess: false, elem: <AssistiveTech/>},
     {access: 'Accessible Testing', hasAccess: false, elem: <Testing/>},
-    {access: 'Student Cases', hasAccess: false, elem: <StudentCases/>},
   ]);
   const [settingsTabOpen, setSettingsTabOpen] = useState(false);
   const [settings, setSettings] = useState({
@@ -211,7 +206,6 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
       updatedUserTabs = [
         {name: 'Dashboard', elem: <Dash userInfo={userInfo}/>},
         {name: 'Accommodations', elem: <Accommodations userInfo={userInfo} setAlertMessage={setAlertMessage} setShowAlert={setShowAlert}/>},
-        {name: 'Forms', elem: <Forms userInfo={userInfo}/>},
         {name: 'Profile', elem: <Profile userInfo={userInfo}/>},
       ];
 
@@ -234,16 +228,13 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
 
       updatedStaffTabs = [
         {name: 'Dashboard', elem: <Dash userInfo={userInfo}/>},
-        {name: 'Forms', elem: <Forms userInfo={userInfo}/>},
         {name: 'Profile', elem: <Profile userInfo={userInfo}/>},
       ];
       updatedStaffAccess[0].elem = <GlobalSettings/>;
-      updatedStaffAccess[1].elem = <Accommodations userInfo={userInfo} setAlertMessage={setAlertMessage} setShowAlert={setShowAlert}/>;
-      updatedStaffAccess[2].elem = <NoteTaking userInfo={userInfo}/>;
-      updatedStaffAccess[3].elem = <AssistiveTech/>;
-      updatedStaffAccess[4].elem = <Testing userInfo={userInfo}/>;
-      updatedStaffAccess[5].elem = <StudentCases/>;
+      updatedStaffAccess[1].elem = <NoteTaking userInfo={userInfo}/>;
+      updatedStaffAccess[2].elem = <Testing userInfo={userInfo}/>;
     }
+    console.log(userInfo.role);
     if(userInfo.role === "USER"){
       setTabs(updatedUserTabs);
       setCurrentTab(updatedUserTabs[0]);
@@ -357,6 +348,7 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
 
 
   const checkAccountConnected = async (userId, setUserConnected) => {
+    console.log("CHECKING ACCOUNT CONNECTED");
     if (!userId) {
         console.error('Invalid user ID provided');
         return;
@@ -614,7 +606,7 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
                   e.currentTarget.querySelector('a')?.click();
                 }
               }}> Address: 
-                <a href="https://www.google.com/maps?q=Texas+A%26M+University+471+Houston+Street,+SSB+Ste+122,+College+Station,+TX+77843-1224" target="_blank" rel="noopener noreferrer">
+                <a className='addressLink' href="https://www.google.com/maps?q=Texas+A%26M+University+471+Houston+Street,+SSB+Ste+122,+College+Station,+TX+77843-1224" target="_blank" rel="noopener noreferrer">
                   <p>Texas A&M University</p>
                   <p>471 Houston Street, SSB Ste 122</p>
                   <p>College Station, TX 77843-1224</p>
@@ -653,7 +645,6 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
         role="alert"
         aria-live="assertive"
         aria-busy="true"
-        tabIndex={0}
         >
         <div className="spinner" role="status" aria-label="Loading, please wait">
           <div className="spinner-icon" aria-hidden="true"></div>
