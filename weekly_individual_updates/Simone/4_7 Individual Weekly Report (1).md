@@ -33,7 +33,7 @@ Include **screenshots/graphics** to illustrate what you did this past week:
 - We learned more about what keyboard navigation should and shouldn’t look like to satisfy both screen reader users and keyboard navigation users.   
     
 6. Who was your most awesome team member this week and why?  
-- 
+- I was the most awesome team member this week because I implemented keyboard navigation for the whole project and taught everyone how to continue
 
 | Plans for Next Week |
 | :---- |
