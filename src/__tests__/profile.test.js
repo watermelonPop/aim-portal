@@ -78,7 +78,7 @@ describe('Profile component', () => {
 
   test('renders correct role title for PROFESSOR', () => {
     const mockProfessor = {
-      id: 3,
+      id: 601,
       role: 'PROFESSOR',
     };
 
