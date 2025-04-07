@@ -201,6 +201,11 @@ function StudentForms({ userInfo, displayHeaderRef, settingsTabOpen, lastIntende
 
   async function handleSubmitFileOnly(e) {
     e.preventDefault();
+    if (!userInfo || !userInfo.id) {
+      setUploadError("User information is missing. Please log in again.");
+      console.error("userInfo is undefined or missing 'id':", userInfo);
+      return;
+    }
     const confirmed = window.confirm("Are you sure you want to submit this form?");
     if (!confirmed) {
       return;
@@ -376,13 +381,18 @@ function StudentForms({ userInfo, displayHeaderRef, settingsTabOpen, lastIntende
             aria-label="Upload PDF form"
           >
             <label htmlFor="upload-pdf">Upload PDF:</label>
+            <div className="studentForms-custom-file-input">
             <input
-              id="upload-pdf"
               type="file"
+              id="fileUpload"
               accept="application/pdf"
               onChange={(e) => setFormFile(e.target.files[0])}
               required
             />
+            <span>
+              {formFile ? formFile.name : "Choose a PDF file..."}
+            </span>
+          </div>
   
             {formFile && formFile.type === "application/pdf" && (
               <div
@@ -502,6 +512,7 @@ function StudentForms({ userInfo, displayHeaderRef, settingsTabOpen, lastIntende
                     </td>
                     <td>
                       <a
+                        className='student-form-viewbtn'
                         href={form.formUrl}
                         target="_blank"
                         rel="noopener noreferrer"

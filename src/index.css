@@ -2581,3 +2581,53 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
 .skip-to-content:focus {
   top: 0;
 }
+
+.studentForms-custom-file-input {
+  position: relative;
+  border: 2px dashed var(--foreground-color);
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  font-weight: 500;
+  color: var(--foreground-color);
+}
+
+.studentForms-custom-file-input input[type="file"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.student-form-viewbtn {
+  display: inline-block;
+  padding: 0.6rem 0.9rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--foreground-color);
+  background-color: transparent;
+  border: 2px solid var(--foreground-color);
+  border-radius: 8px;
+  text-decoration: none;
+  color: #4f0000 !important; /* or whatever your theme's main text color is */
+  transition: all 0.3s ease;
+}
+
+.student-form-viewbtn:hover,
+.student-form-viewbtn:focus-visible {
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+  text-decoration: none;
+  color: white !important;
+  outline: none;
+}
+
+.student-form-viewbtn:focus-visible {
+  outline: 3px solid #ff3366; /* vibrant focus outline */
+  outline-offset: 2px;
+}
+
