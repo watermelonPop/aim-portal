@@ -15,7 +15,6 @@ function SignUp({ userInfo, setUserInfo, setAlertMessage, setShowAlert, setUserC
         const [errors, setErrors] = useState(null);
 
         useEffect(() => {
-                console.log("USE EFFECT");
                 setLoading(false);
         }, []);
 
@@ -44,46 +43,87 @@ function SignUp({ userInfo, setUserInfo, setAlertMessage, setShowAlert, setUserC
                   return;
                 }
               
-                if (chosenRole !== 'USER') return; // Staff handling can be added later
+                if (chosenRole === 'USER'){
               
-                try {
-                  const payload = {
-                    userId: formData.id,
-                    dob: new Date(formData.dob).toISOString(),
-                    uin: Number(formData.uin),
-                    phoneNumber: formData.phone_number,
-                  };
-              
-                  const response = await fetch('/api/createUser', {
-                    method: 'POST',
-                    credentials: 'include',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload),
-                  });
-              
-                  const data = await response.json();
-              
-                  if (!response.ok || !data?.success) {
-                    throw new Error(data.message || 'Sign Up failed');
-                  }
-              
-                  setLoading(true);
-                  setUserConnected(true);
-                  setUserInfo({
-                    ...userInfo,
-                    dob: formData.dob,
-                    uin: formData.uin,
-                    phone_number: formData.phone_number,
-                  });
-                } catch (error) {
-                  console.error('Error Signing Up:', error);
-                  setAlertMessage('Failed to sign up. Please try again.');
-                  setShowAlert(true);
+                        try {
+                        const payload = {
+                        userId: formData.id,
+                        dob: new Date(formData.dob).toISOString(),
+                        uin: Number(formData.uin),
+                        phoneNumber: formData.phone_number,
+                        };
+                
+                        const response = await fetch('/api/createUser', {
+                        method: 'POST',
+                        credentials: 'include',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload),
+                        });
+                
+                        const data = await response.json();
+                
+                        if (!response.ok || !data?.success) {
+                        throw new Error(data.message || 'Sign Up failed');
+                        }
+                
+                        setLoading(true);
+                        setUserConnected(true);
+                        setUserInfo({
+                        ...userInfo,
+                        dob: formData.dob,
+                        uin: formData.uin,
+                        phone_number: formData.phone_number,
+                        });
+                        } catch (error) {
+                        console.error('Error Signing Up:', error);
+                        setAlertMessage('Failed to sign up. Please try again.');
+                        setShowAlert(true);
+                        }
+                }else if(chosenRole === 'STAFF'){
+                        let newRole = "Coordinator";
+                        if(formData.role === "Administration"){
+                                newRole = "Admin"
+                        }else if(formData.role === "Testing Center"){
+                                newRole = "Testing_Staff"
+                        }else if(formData.role === "Assistive Technology"){
+                                newRole = "Tech_Staff"
+                        }
+                        try {
+                                const payload = {
+                                userId: formData.id,
+                                role: newRole,
+                                };
+                        
+                                const response = await fetch('/api/createAdvisor', {
+                                method: 'POST',
+                                credentials: 'include',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(payload),
+                                });
+                        
+                                const data = await response.json();
+                        
+                                if (!response.ok || !data?.success) {
+                                throw new Error(data.message || 'Sign Up failed');
+                                }
+                        
+                                setLoading(true);
+                                setUserConnected(true);
+                                setUserInfo({
+                                        ...userInfo,
+                                        role: "ADVISOR",
+                                });
+                        } catch (error) {
+                                console.error('Error Signing Up:', error);
+                                setAlertMessage('Failed to sign up. Please try again.');
+                                setShowAlert(true);
+                        }
                 }
         };
               
 
         const validateForm = (chosenRole) => {
+                console.log(formData);
                 let newErrors = {};
 
                 if (!formData.name) newErrors.name = "Name is required";
@@ -121,7 +161,6 @@ function SignUp({ userInfo, setUserInfo, setAlertMessage, setShowAlert, setUserC
         role="tablist"
         className="tabNav"
         id="mainContent"
-        tabIndex={0}
       >
         {["USER", "STAFF"].map((role) => (
                 <a 
@@ -184,7 +223,7 @@ function SignUp({ userInfo, setUserInfo, setAlertMessage, setShowAlert, setUserC
                                         <>
                                         <div role="group">
                                                 <label tabIndex={0} htmlFor='role' data-testid="staffRole">Staff Role</label>
-                                                <select onChange={handleChange} name='role'>
+                                                <select onChange={handleChange} name='role' value={formData.role}>
                                                         <option>Administration</option>
                                                         <option>Testing Center</option>
                                                         <option>Assistive Technology</option>

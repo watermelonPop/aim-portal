@@ -6,7 +6,6 @@ function Forms({ userInfo, displayHeaderRef, settingsTabOpen, lastIntendedFocusR
   return (
     <main className="dashboardOuter">
       {userInfo.role === "STUDENT" && <StudentForms userInfo={userInfo} displayHeaderRef={displayHeaderRef} settingsTabOpen={settingsTabOpen} lastIntendedFocusRef={lastIntendedFocusRef} />}
-      {userInfo.role === "ADVISOR" && <StaffForms displayHeaderRef={displayHeaderRef} settingsTabOpen={settingsTabOpen} lastIntendedFocusRef={lastIntendedFocusRef} />}
     </main>
   );
 }
