@@ -14,6 +14,8 @@ function StudentForms({ userInfo }) {
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [uploadError, setUploadError] = useState('');
   const [loadingForms, setLoadingForms] = useState(false);
+  const [deleteSuccessMsg, setDeleteSuccessMsg] = useState("");
+
 
 
 
@@ -94,6 +96,23 @@ function StudentForms({ userInfo }) {
     formData.append("dueDate", dueDate || "");
 
   }
+
+  const handleContactAdvisor = async () => {
+    try {
+      const res = await fetch(`/api/getAdvisorEmail?userId=${userInfo.id}`);
+      const data = await res.json();
+  
+      if (res.ok) {
+        window.location.href = `mailto:${data.advisorEmail}?subject=Assistance%20Needed&body=Hi%20Advisor,`;
+      } else {
+        alert("Could not find your advisor's email.");
+      }
+    } catch (err) {
+      alert("Something went wrong fetching your advisor.");
+      console.error(err);
+    }
+  };
+  
   
   
 
@@ -194,7 +213,7 @@ function StudentForms({ userInfo }) {
     
   }
 
-  async function handleDeleteForm(formId) {
+  const handleDeleteForm = async (formId) => {
     const confirmed = window.confirm("Are you sure you want to delete this form?");
     if (!confirmed) return;
   
@@ -211,6 +230,8 @@ function StudentForms({ userInfo }) {
   
       if (res.ok) {
         setSubmittedForms(prev => prev.filter(f => f.id !== formId));
+        setDeleteSuccessMsg("✅ Form deleted successfully!");
+        setTimeout(() => setDeleteSuccessMsg(""), 4000);
       } else {
         console.error("Failed to delete:", data.error);
         alert("Error deleting form: " + data.error);
@@ -219,7 +240,8 @@ function StudentForms({ userInfo }) {
       console.error("Network error:", error);
       alert("Network error while deleting form.");
     }
-  }
+  };
+  
   
 
   
@@ -258,104 +280,221 @@ function StudentForms({ userInfo }) {
 
 
   return (
-    <div className="content-container">
+    <div className="studentForms-container">
       {view === null && (
-        <div className="selection-container">
-          <h2>Select an option below to proceed:</h2>
-          <div className="selection-buttons">
-            <button onClick={() => { setView('upload'); setSelectedDisability(''); }}>Upload Forms</button>
-            <button onClick={() => setView('manage')}>Manage Forms</button>
+        <div
+          className="studentForms-selection-container"
+          aria-label="Form selection interface"
+        >
+          <div className="studentForms-selection-header">
+            <h2
+              tabIndex={0}
+              aria-label="Select an option to proceed, upload forms or manage forms."
+            >
+              What would you like to do?
+            </h2>
+            <button
+              className="studentForms-contact-advisor-btn-small"
+              onClick={handleContactAdvisor}
+              aria-label="Contact your advisor through email"
+            >
+              📧 Contact Advisor (Outlook)
+            </button>
+          </div>
+          <div className="studentForms-selection-buttons">
+            <button
+              onClick={() => {
+                setView("upload");
+                setSelectedDisability("");
+              }}
+              aria-label="Go to upload forms section"
+            >
+              Upload Forms
+            </button>
+            <button
+              onClick={() => setView("manage")}
+              aria-label="Go to manage submitted forms section"
+            >
+              Manage Forms
+            </button>
           </div>
         </div>
       )}
-
-{view === 'upload' && (
-  <div className="form-wrapper">
-    <button className="back-btn" onClick={handleExitUploadView}>← Back</button>
-    <h2>📤 Upload Documentation</h2>
-
-    <form onSubmit={handleSubmitFileOnly} className="upload-form upload-file-only">
-      <label>
-        Upload PDF:
-        <input
-          type="file"
-          accept="application/pdf"
-          onChange={(e) => setFormFile(e.target.files[0])}
-          required
-        />
-      </label>
-
-      {formFile && formFile.type === "application/pdf" && (
-        <div className="pdf-preview">
-          <p>📄 Preview:</p>
-          <embed
-            src={URL.createObjectURL(formFile)}
-            type="application/pdf"
-            width="100%"
-            height="400px"
-          />
+  
+      {view === "upload" && (
+        <div
+          className="studentForms-form-wrapper"
+          aria-label="Upload form documentation section"
+        >
+          <button
+            className="studentForms-back-btn"
+            onClick={handleExitUploadView}
+            aria-label="Return to previous menu"
+          >
+            ← Back
+          </button>
+          <h2 tabIndex={0}>📤 Upload Documentation</h2>
+  
+          <form
+            onSubmit={handleSubmitFileOnly}
+            className="studentForms-upload-form"
+            aria-label="Upload PDF form"
+          >
+            <label htmlFor="upload-pdf">Upload PDF:</label>
+            <input
+              id="upload-pdf"
+              type="file"
+              accept="application/pdf"
+              onChange={(e) => setFormFile(e.target.files[0])}
+              required
+            />
+  
+            {formFile && formFile.type === "application/pdf" && (
+              <div
+                className="studentForms-pdf-preview"
+                aria-label="Preview of uploaded PDF"
+                tabIndex={-1}
+              >
+                <p>📄 Preview:</p>
+                <embed
+                  src={URL.createObjectURL(formFile)}
+                  type="application/pdf"
+                  width="100%"
+                  height="400px"
+                  aria-hidden="true"
+                />
+              </div>
+            )}
+  
+            <button
+              type="submit"
+              className="studentForms-submit-btn"
+              disabled={uploading}
+              aria-label={uploading ? "Uploading your file" : "Submit documentation"}
+            >
+              {uploading ? (
+                <span>
+                  <span
+                    className="studentForms-spinner"
+                    aria-hidden="true"
+                  ></span>{" "}
+                  Uploading...
+                </span>
+              ) : (
+                "Submit Documentation"
+              )}
+            </button>
+  
+            {uploadSuccess && (
+              <p
+                className="studentForms-success-msg"
+                tabIndex={0}
+                aria-live="polite"
+              >
+                ✅ Upload successful!
+              </p>
+            )}
+            {uploadError && (
+              <p
+                className="studentForms-error-msg"
+                tabIndex={0}
+                aria-live="assertive"
+              >
+                ❌ {uploadError}
+              </p>
+            )}
+          </form>
         </div>
       )}
+  
+      {view === "manage" && (
+        <div
+          className="studentForms-form-wrapper"
+          aria-label="Submitted forms list section"
+        >
+          <button
+            className="studentForms-back-btn"
+            onClick={handleExitUploadView}
+            aria-label="Return to previous menu"
+          >
+            ← Back
+          </button>
+          <h2 tabIndex={0}>📁 Submitted Forms</h2>
 
-      <button type="submit" className="submit-btn" disabled={uploading}>
-        {uploading ? (
-          <span><span className="spinner"></span> Uploading...</span>
-        ) : "Submit Documentation"}
-      </button>
-
-      {uploadSuccess && <p className="success-msg">✅ Upload successful!</p>}
-      {uploadError && <p className="error-msg">❌ {uploadError}</p>}
-    </form>
-  </div>
-)}
-
-
-{view === 'manage' && (
-  <div className="form-wrapper">
-    <button className="back-btn" onClick={handleExitUploadView}>← Back</button>
-    <h2>📁 Submitted Forms</h2>
-
-    {loadingForms ? (
-      <p>Loading your forms...</p>
-    ) : submittedForms.length === 0 ? (
-      <p>No forms submitted yet.</p>
-    ) : (
-      <table className="submitted-forms-table">
-        <thead>
-          <tr>
-            <th>File Name</th>
-            <th>Submitted</th>
-            <th>Status</th>
-            <th>View</th>
-            <td>
-</td>
-
-          </tr>
-        </thead>
-        <tbody>
-        {submittedForms.map((form) => (
-          <tr key={form.id}>
-            <td>{form.name}</td>
-            <td>{new Date(form.submittedDate).toLocaleDateString()}</td>
-            <td>{form.status}</td>
-            <td>
-              <a href={form.formUrl} target="_blank" rel="noopener noreferrer">View</a>
-            </td>
-            <td>
-              <button className="delete-btn" onClick={() => handleDeleteForm(form.id)}>
-                🗑️ Delete
-              </button>
-            </td>
-          </tr>
-        ))}
-
-        </tbody>
-      </table>
-    )}
-  </div>
-)}
+          {deleteSuccessMsg && (
+              <p
+                className="studentForms-success-msg"
+                role="status"
+                aria-live="polite"
+                tabIndex={0}
+              >
+                {deleteSuccessMsg}
+              </p>
+            )}
+  
+          {loadingForms ? (
+            <p tabIndex={0}>Loading your forms...</p>
+          ) : submittedForms.length === 0 ? (
+            <p tabIndex={0}>No forms submitted yet.</p>
+          ) : (
+            <table
+              className="studentForms-submitted-table"
+              aria-label="Submitted forms table"
+            >
+              <thead>
+                <tr>
+                  <th scope="col">File Name</th>
+                  <th scope="col">Submitted</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">View/Download</th>
+                  <th scope="col">Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                {submittedForms.map((form) => (
+                  <tr key={form.id}>
+                    <td tabIndex={0} aria-label={`Form name: ${form.name}`}>
+                      {form.name}
+                    </td>
+                    <td
+                      tabIndex={0}
+                      aria-label={`Submitted on ${new Date(form.submittedDate).toLocaleDateString()}`}
+                    >
+                      {new Date(form.submittedDate).toLocaleDateString()}
+                    </td>
+                    <td tabIndex={0} aria-label={`Status: ${form.status}`}>
+                      {form.status}
+                    </td>
+                    <td>
+                      <a
+                        href={form.formUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`View form ${form.name}`}
+                      >
+                        View
+                      </a>
+                    </td>
+                    <td>
+                      <button
+                        className="studentForms-delete-btn"
+                        onClick={() => handleDeleteForm(form.id)}
+                        aria-label={`Delete form ${form.name}`}
+                      >
+                        🗑️ Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+      )}
     </div>
   );
+  
+  
 }
 
 export default StudentForms;

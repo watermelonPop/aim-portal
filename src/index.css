@@ -1114,3 +1114,214 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
   background-color: var(--foreground-color);
   color: var(--background-color);
 }
+
+/* Main container */
+.studentForms-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Selection section: heading + contact button */
+.studentForms-selection-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 600px;
+}
+
+.studentForms-selection-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.studentForms-selection-header h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--primary-text);
+  margin: 0;
+}
+
+.studentForms-contact-advisor-btn-small {
+  background-color: transparent;
+  color: var(--foreground-color);
+  border: 2px solid var(--foreground-color);
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.studentForms-contact-advisor-btn-small:hover {
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+}
+
+/* Action buttons */
+.studentForms-selection-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.studentForms-selection-buttons button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  min-width: 160px;
+  text-align: center;
+  border-radius: 10px;
+  border: 2px solid var(--foreground-color);
+  background-color: var(--background-color);
+  color: var(--foreground-color);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.studentForms-selection-buttons button:hover {
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+}
+
+/* Wrapper around upload/manage view */
+.studentForms-form-wrapper {
+  width: 100%;
+  max-width: 800px;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Back button */
+.studentForms-back-btn {
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.studentForms-back-btn:hover {
+  background-color: #6a0000;
+}
+
+/* Upload form */
+.studentForms-upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.studentForms-upload-form label {
+  font-weight: bold;
+}
+
+.studentForms-upload-form input[type="file"] {
+  margin-top: 0.5rem;
+}
+
+/* PDF preview */
+.studentForms-pdf-preview {
+  border: 2px dashed var(--foreground-color);
+  border-radius: 8px;
+  padding: 1rem;
+  background-color: #f8f8f8;
+}
+
+/* Submit button */
+.studentForms-submit-btn {
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.studentForms-submit-btn:hover {
+  background-color: #6a0000;
+}
+
+/* Upload success and error messages */
+.studentForms-success-msg {
+  color: green;
+  font-weight: bold;
+}
+
+.studentForms-error-msg {
+  color: red;
+  font-weight: bold;
+}
+
+/* Spinner inside button */
+.studentForms-spinner {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border: 3px solid #ccc;
+  border-top: 3px solid var(--foreground-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-right: 0.5rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Submitted Forms Table */
+.studentForms-submitted-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.studentForms-submitted-table th,
+.studentForms-submitted-table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.studentForms-submitted-table th {
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+}
+
+.studentForms-submitted-table a {
+  color: var(--highlight-links-color);
+  text-decoration: underline;
+}
+
+/* Delete button */
+.studentForms-delete-btn {
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.studentForms-delete-btn:hover {
+  background-color: #6a0000;
+}
