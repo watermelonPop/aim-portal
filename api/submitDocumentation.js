@@ -1,6 +1,7 @@
 import { BlobServiceClient } from "@azure/storage-blob";
 import formidable from "formidable";
 import fs from "fs";
+import os from "os";
 
 const AZURE_STORAGE_CONNECTION_STRING = process.env.AZURE_STORAGE_CONNECTION_STRING;
 const containerName = "forms";
@@ -31,7 +32,7 @@ export default async function handler(req, res) {
     
         const form = formidable({
                 multiples: false, // Allow only one file for now
-                uploadDir: "/tmp", // Optional: Define a temp upload location
+                uploadDir: os.tmpdir(),  // uses the OS's real temp directory
                 keepExtensions: true, // Keep file extension
         });
         console.log("FORM: ", form);
