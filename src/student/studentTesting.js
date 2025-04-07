@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import './StudentTesting.css';
+import CustomFileInput from './CustomFileInput';
 
-// Predefined accommodation options
 const ACCOMMODATION_OPTIONS = [
   "Extended Time",
   "Alternative Format Materials",
@@ -12,7 +12,6 @@ const ACCOMMODATION_OPTIONS = [
 
 function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastIntendedFocusRef }) {
   const localRef = useRef(null);
-  // Use provided header ref or fallback to local
   const headingRef = displayHeaderRef || localRef;
 
   // Header focus management
@@ -40,7 +39,7 @@ function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastInten
     return () => cancelAnimationFrame(frame);
   }, [settingsTabOpen, headingRef, lastIntendedFocusRef]);
 
-  // States for exam data
+  // State for exam data
   const [upcomingExams, setUpcomingExams] = useState([]);
   const [submittedExams, setSubmittedExams] = useState([]);
   const [loadingUpcoming, setLoadingUpcoming] = useState(false);
@@ -55,7 +54,10 @@ function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastInten
   const [uploadedFile, setUploadedFile] = useState(null);
   const modalRef = useRef(null);
 
-  // Fetch upcoming exams via /api/getStudentUpcomingExams
+  // Success modal state
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+  // Fetch upcoming exams from /api/getStudentUpcomingExams
   useEffect(() => {
     if (!userInfo?.id) return;
     setLoadingUpcoming(true);
@@ -74,7 +76,7 @@ function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastInten
       .finally(() => setLoadingUpcoming(false));
   }, [userInfo]);
 
-  // Fetch submitted exams via /api/getStudentSubmittedExams
+  // Fetch submitted exams from /api/getStudentSubmittedExams
   useEffect(() => {
     if (!userInfo?.id) return;
     setLoadingSubmitted(true);
@@ -93,20 +95,20 @@ function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastInten
       .finally(() => setLoadingSubmitted(false));
   }, [userInfo]);
 
-  // Move focus to modal when it opens
+  // When the modal opens, move focus into it.
   useEffect(() => {
     if (isModalOpen && modalRef.current) {
       modalRef.current.focus();
     }
   }, [isModalOpen]);
 
-  // Modal keyboard navigation (including exam details, select, and buttons)
+  // Modal keyboard navigation: trap focus inside the modal and allow Escape to close.
   const handleModalKeyDown = (e) => {
     if (e.key === 'Escape') {
       setIsModalOpen(false);
       setSelectedExam(null);
     } else if (e.key === 'Tab') {
-      const focusableElements = modalRef.current.querySelectorAll('p, select, button');
+      const focusableElements = modalRef.current.querySelectorAll('p, select, button, input');
       if (focusableElements.length === 0) {
         e.preventDefault();
         return;
@@ -124,7 +126,7 @@ function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastInten
     }
   };
 
-  // Open the accommodation modal for a selected exam
+  // Open the accommodation modal for a selected exam.
   const openAccommodationModal = (exam) => {
     setSelectedExam(exam);
     setSelectedAccommodation('');
@@ -132,14 +134,14 @@ function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastInten
     setIsModalOpen(true);
   };
 
-  // Handle submission of accommodation request and file upload
+  // Handle submission: create the accommodation and upload the form.
   const handleAccommodationSubmit = async (e) => {
     e.preventDefault();
     if (!selectedAccommodation) {
       alert("Please select an accommodation option.");
       return;
     }
-    // Create the accommodation request payload
+    // Build payload for accommodation request.
     const accommodationPayload = {
       examId: selectedExam.id,
       accommodationType: selectedAccommodation,
@@ -148,7 +150,7 @@ function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastInten
     };
 
     try {
-      // Create accommodation request
+      // Submit the accommodation request.
       const res1 = await fetch('/api/applyForExamAccommodations', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -158,38 +160,26 @@ function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastInten
         alert("Failed to submit accommodation request.");
         return;
       }
-
-      // If a file is uploaded, submit it as a form (using the same logic as studentForms)
+      // If a file was uploaded, submit it using the uploadForm API.
       if (uploadedFile) {
         const formData = new FormData();
         formData.append("file", uploadedFile);
         formData.append("type", "TESTING_ACCOMMODATION");
         formData.append("formName", `Supporting Document for ${selectedExam.name}`);
         formData.append("userId", userInfo.id);
-        // Optionally, append dueDate or other fields if needed
-
         const res2 = await fetch('/api/uploadForm', {
           method: 'POST',
           body: formData,
         });
         if (!res2.ok) {
           alert("Accommodation request submitted but file upload failed.");
-          // You could choose to return here or continue.
         }
       }
-
-      alert("Accommodation request submitted successfully.");
-      // Update upcoming exams to mark this exam as pending
-      setUpcomingExams(prev =>
-        prev.map((exam) =>
-          exam.id === selectedExam.id
-            ? { ...exam, accommodations: [selectedAccommodation] }
-            : exam
-        )
-      );
+      // Show success modal with a link to the accommodations page.
       setIsModalOpen(false);
       setSelectedExam(null);
       setUploadedFile(null);
+      setShowSuccessModal(true);
     } catch (error) {
       console.error("Error submitting accommodation request:", error);
       alert("Error submitting accommodation request.");
@@ -213,7 +203,6 @@ function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastInten
           <ul>
             {upcomingExams.map((exam) => (
               <li key={exam.id} className="examItem">
-                {/* Focusable exam details container */}
                 <div
                   className="examDetails"
                   tabIndex={0}
@@ -221,16 +210,12 @@ function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastInten
                 >
                   <strong>{exam.name}</strong> - {new Date(exam.date).toLocaleDateString()} at {exam.location} (Course: {exam.courseName})
                 </div>
-                {exam.accommodations && exam.accommodations.length > 0 ? (
-                  <span className="pendingStatus" aria-live="polite">Request Pending</span>
-                ) : (
-                  <button
-                    onClick={() => openAccommodationModal(exam)}
-                    aria-label={`Apply for accommodation for ${exam.name}`}
-                  >
-                    Apply for Accommodation
-                  </button>
-                )}
+                <button
+                  onClick={() => openAccommodationModal(exam)}
+                  aria-label={`Apply for accommodation for ${exam.name}`}
+                >
+                  Apply for Accommodation
+                </button>
               </li>
             ))}
           </ul>
@@ -305,17 +290,16 @@ function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastInten
                   <option key={index} value={option}>{option}</option>
                 ))}
               </select>
-
-              {/* New section for uploading a supporting form */}
-              <label htmlFor="supportingFormUpload">Upload Supporting Form (optional):</label>
-              <input
-                type="file"
-                id="supportingFormUpload"
-                accept="application/pdf"
-                onChange={(e) => setUploadedFile(e.target.files[0])}
+              
+              {/* Custom File Input Component */}
+              <CustomFileInput 
+                onFileChange={(file) => setUploadedFile(file)}
+                fileLabel="Upload Supporting Form (optional)"
               />
               {uploadedFile && (
-                <p tabIndex={0} aria-label={`File selected: ${uploadedFile.name}`}>Selected File: {uploadedFile.name}</p>
+                <p tabIndex={0} aria-label={`File selected: ${uploadedFile.name}`}>
+                  Selected File: {uploadedFile.name}
+                </p>
               )}
 
               <div className="modalButtons">
@@ -325,6 +309,35 @@ function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastInten
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Success Modal */}
+      {showSuccessModal && (
+        <div
+          className="modalOverlay"
+          onClick={() => setShowSuccessModal(false)}
+          role="presentation"
+        >
+          <div
+            className="modalContent"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="success-modal-heading"
+            tabIndex={0}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 id="success-modal-heading">Request Submitted</h2>
+            <p tabIndex={0}>Your accommodation request has been submitted successfully.</p>
+            <p tabIndex={0}>
+              Please check your <a href="/accommodations" aria-label="Go to accommodations page">Accommodations Page</a> to view request statuses.
+            </p>
+            <div className="modalButtons">
+              <button type="button" onClick={() => setShowSuccessModal(false)}>
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}

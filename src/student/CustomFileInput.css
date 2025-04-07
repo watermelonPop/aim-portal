@@ -1,0 +1,41 @@
+.customFileInputWrapper {
+    margin-bottom: 15px;
+  }
+  
+  .customFileInputWrapper label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .customFileInputRow {
+    display: flex;
+    align-items: center;
+  }
+  
+  .realFileInput {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 1px;
+    height: 1px;
+  }
+  
+  .customBrowseButton {
+    padding: 5px 10px;
+    background-color: #335CFF;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  .customBrowseButton:focus,
+  .customBrowseButton:hover {
+    outline: 2px solid #FFD700;
+  }
+  
+  .fileNameSpan {
+    color: #666;
+  }
+  

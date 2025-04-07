@@ -46,7 +46,8 @@
     cursor: pointer;
   }
   
-  .examItem button:focus, .examItem button:hover {
+  .examItem button:focus, 
+  .examItem button:hover {
     outline: 2px solid #FFD700;
   }
   
@@ -118,7 +119,8 @@
     cursor: pointer;
   }
   
-  .modalButtons button:focus, .modalButtons button:hover {
+  .modalButtons button:focus, 
+  .modalButtons button:hover {
     outline: 2px solid #FFD700;
   }
   
