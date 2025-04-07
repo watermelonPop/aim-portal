@@ -1,4 +1,3 @@
-import { fa } from '@faker-js/faker';
 import { useState, useEffect, useRef, useMemo } from 'react';
 
 function StaffExamView({ userInfo, displayHeaderRef, settingsTabOpen, lastIntendedFocusRef }) {
@@ -336,7 +335,7 @@ function StaffExamView({ userInfo, displayHeaderRef, settingsTabOpen, lastIntend
                                         student && student.account ? (
                                                 <>
                                                         <p>
-                                                        <strong>Student Name: {' '}</strong> {student.account.name}
+                                                        <strong>Student Name: </strong> {student.account.name}
                                                         </p>
                                                         <p>
                                                         <strong>Student Email: </strong> {student.account.email}

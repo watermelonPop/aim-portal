@@ -73,43 +73,7 @@ function GlobalSettings({ displayHeaderRef, settingsTabOpen, lastIntendedFocusRe
   }, [searchQuery, advisorList, loaded]);
 
   function CardView({ advisors, skip, take }) {
-    const gridContainerStyle = {
-      display: 'grid',
-      gridTemplateColumns: 'repeat(3, 28vw)',
-      gridAutoRows: '20vh',
-      gap: '16px',
-      padding: '16px',
-      justifyContent: 'center'
-    };
-
-    const cardStyle = {
-      border: '1px solid #ccc',
-      borderRadius: '8px',
-      padding: '20px',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      textAlign: 'center',
-      overflow: 'hidden'
-    };
-
-    const nameStyle = {
-      margin: '0 0 8px',
-      fontSize: '1.2em'
-    };
-
-    const emailStyle = {
-      margin: 0,
-      fontSize: '0.9em',
-      color: '#555'
-    };
-
-    const roleStyle = {
-      margin: 0,
-      fontSize: '0.7em',
-      color: '#555'
-    };
+    
 
     if (!loaded) {
       return <div style={{ padding: '16px', textAlign: 'center' }}>Loading advisors...</div>;
@@ -122,11 +86,11 @@ function GlobalSettings({ displayHeaderRef, settingsTabOpen, lastIntendedFocusRe
     let displayedAdvisors = searchQuery === "" ? advisorList.slice(skip, take) : advisors.slice(skip, take);
 
     return (
-      <div style={gridContainerStyle}>
+      <div className="gridContainerStyle">
         {displayedAdvisors.map(advisor => (
           <div
             key={advisor.id}
-            style={cardStyle}
+            className="cardStyle"
             onClick={() => handleCardClick(advisor)}
             role="button"
             tabIndex={0}
@@ -135,14 +99,19 @@ function GlobalSettings({ displayHeaderRef, settingsTabOpen, lastIntendedFocusRe
             }}
             aria-label={`Advisor card for ${advisor.account.name}, email: ${advisor.account.email}, role: ${advisor.role}`}
           >
-            <h3 style={nameStyle}>{advisor.account.name}</h3>
-            <p style={emailStyle}>{advisor.account.email}</p>
-            <p style={roleStyle}>{advisor.role}</p>
+            <h3 className="nameStyle">{advisor.account.name}</h3>
+            <p className="emailStyle">{advisor.account.email}</p>
+            <p className="roleStyle">{advisor.role}</p>
           </div>
         ))}
       </div>
     );
   }
+
+
+
+
+
 
   function PaginationButtons() {
     const onPageChange = (page_update) => {
@@ -176,6 +145,11 @@ function GlobalSettings({ displayHeaderRef, settingsTabOpen, lastIntendedFocusRe
       </div>
     );
   }
+
+
+
+
+
 
   function AdvisorCard({ advisor, onClose }) {
     const temp_advisor_perms = [
@@ -249,16 +223,10 @@ function GlobalSettings({ displayHeaderRef, settingsTabOpen, lastIntendedFocusRe
         });
     };
 
-    const detailCardStyle = {
-      border: '2px solid #333',
-      borderRadius: '8px',
-      padding: '30px',
-      margin: '20px',
-      textAlign: 'center'
-    };
+    
 
     return (
-      <div style={detailCardStyle}>
+      <div className="detailCardStyle">
         <h2 tabIndex={0} aria-label={`Details for advisor ${advisor.account.name}`}>
           {advisor.account.name}
         </h2>
@@ -311,11 +279,9 @@ function GlobalSettings({ displayHeaderRef, settingsTabOpen, lastIntendedFocusRe
 
   return (
     <div className="global-settings">
-      <div>
         <h2 ref={headingRef} tabIndex={0} aria-label="Advisor Lookup and Access Control">
           Advisor Lookup and Access Control
         </h2>
-      </div>
 
       <div className='globalSettingsInputDiv'> {/* Searchbar */}
           <input 
@@ -327,14 +293,13 @@ function GlobalSettings({ displayHeaderRef, settingsTabOpen, lastIntendedFocusRe
             aria-label="Search for an advisor by name"
           />
       </div>
-      <div>
-        {selectedAdvisor ? (
-          <h2 tabIndex={0} aria-label="Edit Advisor Permissions">Edit Advisor Permissions:</h2>
-        ) : (
-          <h2 tabIndex={0} aria-label="Advisor Search Results">Search Results:</h2>
-        )}
-      </div>
-      <div>
+      {selectedAdvisor ? (
+        <h2 tabIndex={0} aria-label="Edit Advisor Permissions">Edit Advisor Permissions:</h2>
+      ) : (
+        <h2 tabIndex={0} aria-label="Advisor Search Results">Search Results:</h2>
+      )}
+      
+      
         {selectedAdvisor ? (
           <AdvisorCard 
             advisor={selectedAdvisor} 
@@ -347,12 +312,11 @@ function GlobalSettings({ displayHeaderRef, settingsTabOpen, lastIntendedFocusRe
             take={(currentPage + 1) * 9}
           />
         )}
-      </div>
-      <div>
+      
         {selectedAdvisor ? null : (
           <PaginationButtons/>
         )}
-      </div>
+      
     </div>
   );
 }

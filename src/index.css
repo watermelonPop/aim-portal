@@ -2539,6 +2539,8 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   border: 2px solid var(--foreground-color);
 }
 
+
+
 .pagination-buttons button{
   background-color: var(--background-color);
   color: var(--foreground-color);
@@ -2555,10 +2557,18 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   border: 2px solid var(--foreground-color);
 }
 
-.pagination-buttons button:hover{
+.pagination-buttons button:hover,
+.pagination-buttons button:focus{
   background-color: var(--foreground-color);
   color: var(--background-color);
   border-color: var(--background-color);
+}
+
+.pagination-buttons button:disabled {
+  background-color: grey;
+  color: #ccc;
+  border-color: grey;
+  cursor: not-allowed;
 }
 
 .backBtnClasses button:hover{
@@ -2582,23 +2592,56 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   top: 0;
 }
 
+/*========================== GLOBAL SETTINGS ==========================*/
+
 .global-settings {
   font-size: var(--txtSize);
-  letter-spacing: var(--letterSpacing);
-  text-align: var(--align-text);
+  line-height: var(--line-height);
   color: var(--text-color);
   background-color: var(--background-color);
-  line-height: var(--line-height);
   padding: 1rem;
-  max-width: 1200px;
   margin: 0 auto;
+  width:100%;
+  max-width: 1200px;
+  display: flex;
+  text-align: var(--align-text);
+  align-items: var(--align-text);
+  justify-content: var(--align-text);
+  flex-direction: column;
 }
 
 .global-settings h2 {
   margin-bottom: 1rem;
+  justify-content: var(--align-text);
   font-size: calc(var(--txtSize) + 20px);
   text-align: var(--align-text);
 }
+
+.global-settings button {
+  background-color: var(--background-color);
+  color: var(--foreground-color);
+  font-weight: 650;
+  font-size: calc(var(--txtSize) + 5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  line-height: var(--line-height); 
+  border: 2px solid var(--foreground-color);
+}
+
+
+
+.global-settings button:hover,
+.global-settings button:focus{
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+  border-color: var(--background-color);
+}
+
 
 .global-settings input[type="text"] {
   padding: 0.5rem;
@@ -2614,6 +2657,71 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   box-shadow: 0 0 0 3px rgba(189, 24, 15, 0.5);
 }
 
+.global-settings .detailCardStyle {
+  border: 3px solid var(--foreground-color);
+  border-radius: 8px;
+  padding: 30px;
+  margin: 20px;
+  text-align: var(--align-text);
+}
+
+.global-settings .gridContainerStyle{
+  display: grid;
+  /* border: 5px solid rgb(0,0,0); */
+  border-radius: 8px;
+  grid-template-columns: repeat(3, 36vh);
+  grid-auto-rows: 20vh;
+  gap: 12px;
+  justify-content: center;
+}
+
+.global-settings .cardStyle{
+  border: 2px solid var(--foreground-color);
+  border-radius: 8px;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: var(--align-text);
+  justify-content: center;
+  text-align: var(--align-text);
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+
+.global-settings .cardStyle:hover,
+.global-settings .cardStyle:focus {
+    background-color: var(--foreground-color);
+    color: var(--background-color);
+    outline: none;
+    transform: translateY(-5px);
+  }
+
+.global-settings h3{
+  font-size: calc(var(--txtSize) + 9px);
+  padding: 3px;
+}
+
+.global-settings p{
+  font-size: calc(var(--txtSize) + 9px);
+  padding: 3px;
+}
+
+.global-settings .nameStyle{
+  font-size: calc(var(--txtSize) + 9px);
+}
+
+.global-settings .emailStyle{
+  margin: 0;
+  font-size: calc(var(--txtSize) + 4px);
+}
+
+.global-settings .roleStyle{
+  margin: 0;
+  font-size: calc(var(--txtSize) + 4px);
+}
+
+
+/*========================== STAFF EXAM ==========================*/
 
 .staffExamView {
   font-size: var(--txtSize);
@@ -2770,16 +2878,19 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   }
 
 .staffExamView .titleStyle {
-  margin: '0 0 8px';
+  margin: 0 0 8px;
   font-size: calc(var(--txtSize) + 15px);
   }
 
 .staffExamView .detailStyle {
   margin: 0;
   font-size: calc(var(--txtSize) + 5px);
-  color: '#555';
+  color: #555;
   }
-  
+
+
+/*========================== STUDENT FORMS ==========================*/
+
 .studentForms-custom-file-input {
   position: relative;
   border: 2px dashed var(--foreground-color);
