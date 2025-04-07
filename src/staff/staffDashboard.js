@@ -1,11 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import PopupModal from "../PopupModal"; 
 import StaffRequests from './staffRequests';
-
-
-
-
-
+import StaffStudentProfile from './staffStudentProfile';
 
 
 //helper functions
@@ -50,6 +46,9 @@ function DropdownSection({ title, isOpen, toggleOpen, children }) {
 // ============================== MAIN STAFF DASH FUNCTION ==============================================//
 
 function StaffDashboard() {
+
+  // CONSTANTS UNTIL LINE 513 -------------------------------------------------------------------------------------------------------------------------------
+
   const [view, setView] = useState(null); // 'students', 'requests', 'forms', 'studentDetails'
   const [studentsData, setStudentsData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -63,7 +62,7 @@ function StaffDashboard() {
   const [selectedRequest, setSelectedRequest] = useState(null); // Stores the selected request
   const [currentPage, setCurrentPage] = useState(1); // Tracks the current page
   const [filteredRequests, setFilteredRequests] = useState([]); // Stores filtered results
-  const totalPages = Math.ceil(filteredRequests.length / 10);
+  const totalPages = Math.ceil((filteredRequests?.length || 0) / 10);
   const [requestsData, setRequestsData] = useState([]); // Holds the requests from the DB
   const [requests, setRequests] = useState([]);
   const [expandedRequest, setExpandedRequest] = useState(null); // Track which request is expanded
@@ -87,9 +86,9 @@ function StaffDashboard() {
   const [isUpdatingFormStatus, setIsUpdatingFormStatus] = useState(false);
   const [fullscreenMessage, setFullscreenMessage] = useState(null);
   const [isLoadingData, setIsLoadingData] = useState(false);
-  // const [isRefreshingData, setIsRefreshingData] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
-
+  const modalTopRef = useRef(null);
+  const lastIntendedFocusRef = useRef(null);
 
 
   const debounce = (func, delay) => {
@@ -125,7 +124,6 @@ function StaffDashboard() {
   };
 
   const lastFocusedRef = useRef(null);
-
 
   const handleFormStatusChange = (formId, newStatus) => {
     setFullscreenMessage({
@@ -165,10 +163,6 @@ function StaffDashboard() {
     });
   };
   
-  
-  
-
-
   const fetchForms = async (userId) => {
     try {
       const res = await fetch(`/api/getForms?userId=${userId}`);
@@ -179,10 +173,6 @@ function StaffDashboard() {
       setSubmittedForms([]);
     }
   };
-
-  
-  
-  
 
   const handleStatusChange = (accId, newStatus) => {
     setEditedAccommodations(prev => ({
@@ -235,8 +225,6 @@ function StaffDashboard() {
     setView('requestDetails');
   };
   
-
-  // Handle search input
   const handleSearchChange = (event) => {
     const query = event.target.value.toLowerCase();
     setSearchTerm(query);
@@ -255,8 +243,6 @@ function StaffDashboard() {
     setFilteredStudents(results);
   };
 
-  // Handle clicking a student to open details
-  // Ensure correct structure when selecting a student
   const handleStudentClick = async (student) => {
     setSelectedStudent({
       userId: student.userId,
@@ -283,7 +269,6 @@ function StaffDashboard() {
     }
   };
 
-  // Handle input change for editing
   const handleEditChange = (event) => {
     const { name, value } = event.target;
     setEditedStudent((prev) => ({ ...prev, [name]: value }));
@@ -517,14 +502,16 @@ function openModal() {
   const modalRef = useRef(null);
 
 
+  
+  
+    
+  // =========================================== USE EFFECTS UNTIL LINE 662 ====================================================== //
+
   useEffect(() => {
     if (fullscreenMessage && modalRef.current) {
       modalRef.current.focus();
     }
   }, [fullscreenMessage]);
-  
-    
-  // =========================================== USE EFFECTS ====================================================== //
 
   useEffect(() => {
     if (fullscreenMessage) {
@@ -658,10 +645,12 @@ function openModal() {
     const filtered = requestsData.filter((request) => {
       const query = searchTerm.toLowerCase();
       return (
-        (request.UIN && request.UIN.toString().includes(query)) ||  // ✅ Correct field
-        (request.notes && request.notes.toLowerCase().includes(query)) // ✅ Allows search by notes
+        (request.UIN && request.UIN.toString().includes(query)) ||
+        (request.student_name && request.student_name.toLowerCase().includes(query)) ||
+        (request.notes && request.notes.toLowerCase().includes(query))
       );
     });
+    
 
     setFilteredRequests(filtered);
     setCurrentPage(1); // Reset to first page when search updates
@@ -672,569 +661,267 @@ function openModal() {
 
   return (
     <div className="staff-dashboard-container" role="main" aria-label="Staff Dashboard">
-      {/* Main Content Section */}
+
       <div className="staff-main-content">
+
       {(isLoadingData || isRefreshing) && (
         <div className="fullscreen-message-overlay">
           <div className="fullscreen-message-content">
             <div className="staffDash-loading-spinner"></div>
-            {/* <p>
-              {isRefreshing ? "🔄 Refreshing page..." : "⌛ Loading..."}
-            </p> */}
           </div>
         </div>
       )}
 
-        {/* Dashboard Title & Back Button */}
-        <div className="staff-header" role="banner" aria-label="Dashboard Header">
-          {view !== null && (
-            <button className="back-btn" aria-label="Back to Dashboard" onClick={resetToMainMenu}>
-              ← Back to Dashboard
-            </button>
-          )}
+      <div className="staff-header" role="banner" aria-label="Dashboard Header">
+        {view !== null && (
+          <button className="back-btn" aria-label="Back to Dashboard" onClick={resetToMainMenu}>
+            ← Back to Dashboard
+          </button>
+        )}
+      </div>
+
+
+      {/* DEFAULT DASHBOARD VIEW ------------------------------------------------------------------------------------- */}
+
+      {view === null && (
+        <div className="staff-menu">
+          <h2>Select an action:</h2>
+          <div className="staff-menu-buttons">
+            <button 
+                aria_label="search for students" 
+                onClick={() => 
+                  setView('students')}
+              >
+                🔍 Student Search</button>
+            <button
+                onClick={() => {
+                  setLoadingRequests(true);
+                  setView('requests');
+                }}
+              >
+                📌 Manage Requests
+              </button>
+          </div>
         </div>
-        {view === 'forms' && (
-  <div className="staff-forms-section">
-    <h2 tabIndex={0}>Submitted Forms</h2>
-    {/* more content goes here */}
-  </div>
-)}
-        {/* Default Staff Menu */}
-        {view === null && (
-          <div className="staff-menu">
-            <h2>Select an action:</h2>
-            <div className="staff-menu-buttons">
-              <button onClick={() => setView('students')}>🔍 Student Search</button>
-              <button
-                  onClick={() => {
-                    setLoadingRequests(true);
-                    setView('requests');
+      )}
+
+      {/* EXPORTS TO OTHER FILES ---------------------------------------------------------------- */}
+
+      {view === 'requests' && (
+        <StaffRequests
+          selectedRequest={selectedRequest}
+          setSelectedRequest={setSelectedRequest}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          filteredRequests={filteredRequests}
+          setFilteredRequests={setFilteredRequests}
+          requestsData={requestsData}
+          setRequestsData={setRequestsData}
+          editedRequests={editedRequests}
+          setEditedRequests={setEditedRequests}
+          loadingRequests={loadingRequests}
+          setLoadingRequests={setLoadingRequests}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          expandedRequest={expandedRequest}
+          setExpandedRequest={setExpandedRequest}
+          confirmAndSaveRequestStatus={confirmAndSaveRequestStatus}
+          totalPages={totalPages}
+
+        />
+      )}
+
+      {view === 'studentDetails' && (
+        <StaffStudentProfile
+          lastIntendedFocusRef={lastIntendedFocusRef}
+          view={view}
+          handleEditChange={handleEditChange}
+          setIsRefreshing={setIsRefreshing}
+          handleSaveChanges={handleSaveChanges}
+          resetToStudentSearch={resetToStudentSearch}
+          refreshStudentData={refreshStudentData}
+          fetchForms={fetchForms}
+          selectedStudent={selectedStudent}
+          setSelectedStudent={setSelectedStudent}
+          showStudentInfo={showStudentInfo}
+          setShowStudentInfo={setShowStudentInfo}
+          isEditing={isEditing}
+          setIsEditing={setIsEditing}
+          editedStudent={editedStudent}
+          setEditedStudent={setEditedStudent}
+          loading={loading}
+          setLoading={setLoading}
+          successMessage={successMessage}
+          setSuccessMessage={setSuccessMessage}
+          infoMessage={infoMessage}
+          setInfoMessage={setInfoMessage}
+          refreshingStudent={refreshingStudent}
+          setRefreshingStudent={setRefreshingStudent}
+          studentNeedsRefresh={studentNeedsRefresh}
+          setStudentNeedsRefresh={setStudentNeedsRefresh}
+          showForms={showForms}
+          setShowForms={setShowForms}
+          submittedForms={submittedForms}
+          setSubmittedForms={setSubmittedForms}
+          activeModal={activeModal}
+          setActiveModal={setActiveModal}
+          formEdits={formEdits}
+          setFormEdits={setFormEdits}
+          isUpdatingFormStatus={isUpdatingFormStatus}
+          setIsUpdatingFormStatus={setIsUpdatingFormStatus}
+          fullscreenMessage={fullscreenMessage}
+          setFullscreenMessage={setFullscreenMessage}
+          editedAccommodations={editedAccommodations}
+          setEditedAccommodations={setEditedAccommodations}
+          importantDates={importantDates}
+          loadingDates={loadingDates}
+          lastFocusedRef={lastFocusedRef}
+          handleFormStatusChange={handleFormStatusChange}
+          modalTopRef={modalTopRef}
+          formatFormType={formatFormType}
+          isRefreshing={isRefreshing}
+        />
+      )}
+
+
+      {/* STUDENT SEARCH ------------------------------------------------------------------------------------- */}
+
+      {view === 'students' && (
+        <div className="staff-dashboard-section">
+          <h3>Search for Students</h3>
+          <input
+            type="text"
+            placeholder="Enter student name or UIN..."
+            aria-label="Search students by name or UIN"
+            tabIndex={0}
+            value={searchTerm}
+            onChange={handleSearchChange}
+            className="staffDash-search-bar"
+          />
+
+          {/* Display search results */}
+          {filteredStudents.length > 0 ? (
+            <div className="staffDash-search-results">
+              {filteredStudents.map(student => (
+                <div
+                  key={student.userId}
+                  className="staffDash-search-item"
+                  onClick={() => handleStudentClick(student)}
+                  data-testid={`student-item-${student.userId}`}
+                  tabIndex="0"
+                  role="button"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      handleStudentClick(student);
+                    }
                   }}
                 >
-                  📌 Manage Requests
-                </button>
-              <button onClick={() => setView('forms')}>📄 Review Submitted Forms</button>
+                  <p data-testid={`student-${student.userId}`}>
+                    {student.student_name || "N/A"} (UIN: {student.UIN || "N/A"})
+                  </p>
+                </div>
+              ))}
             </div>
-          </div>
-        )}
-
-{view === 'requests' && (
-  <StaffRequests
-    selectedRequest={selectedRequest}
-    setSelectedRequest={setSelectedRequest}
-    currentPage={currentPage}
-    setCurrentPage={setCurrentPage}
-    filteredRequests={filteredRequests}
-    setFilteredRequests={setFilteredRequests}
-    requestsData={requestsData}
-    setRequestsData={setRequestsData}
-    editedRequests={editedRequests}
-    setEditedRequests={setEditedRequests}
-    loadingRequests={loadingRequests}
-    setLoadingRequests={setLoadingRequests}
-    searchTerm={searchTerm}
-    setSearchTerm={setSearchTerm}
-    expandedRequest={expandedRequest}
-    setExpandedRequest={setExpandedRequest}
-    confirmAndSaveRequestStatus={confirmAndSaveRequestStatus}
-  />
-)}
-
-
-
-
-
-        {/* Search for Students */}
-        {view === 'students' && (
-  <div className="staff-dashboard-section">
-    <h3>Search for Students</h3>
-    <input
-      type="text"
-      placeholder="Enter student name or UIN..."
-      aria-label="Search students by name or UIN"
-      value={searchTerm}
-      onChange={handleSearchChange}
-      className="staffDash-search-bar"
-    />
-
-    {/* Display search results */}
-    {filteredStudents.length > 0 ? (
-      <div className="staffDash-search-results">
-        {filteredStudents.map(student => (
-          <div
-            key={student.userId}
-            className="staffDash-search-item"
-            onClick={() => handleStudentClick(student)}
-            data-testid={`student-item-${student.userId}`}
-            tabIndex="0"
-            role="button"
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                handleStudentClick(student);
-              }
-            }}
-          >
-            <p data-testid={`student-${student.userId}`}>
-              {student.student_name || "N/A"} (UIN: {student.UIN || "N/A"})
-            </p>
-          </div>
-        ))}
-      </div>
-    ) : (
-      searchTerm.length > 0 && <p>No matching students found.</p>
-    )}
-  </div>
-)}
-
-{/* Student Details View */}
-{view === 'studentDetails' && selectedStudent && (
-  <div className="staff-student-details-container">
-  <div className="student-profile-card">
-    <h2 className="student-profile-heading">{selectedStudent.student_name}'s Profile</h2>
-    
-    <button className="staffDash-cancel-btn" aria-label="View/Edit Student Info" onClick={() => setActiveModal({ type: 'studentInfo' })}>
-      View / Edit Student Info
-    </button>
-    
-{activeModal?.type === 'studentInfo' && (
-  <div className="staffDash-modalOverlay">
-    <div className="staffDash-modalContent">
-      <div className="staffDash-modalHeader ">
-        <h2>{selectedStudent?.student_name}'s Information</h2>
-        <button 
-
-          className="staffDash-modalHeaderCloseBtn "
-          tabIndex="0"
-          onClick={() => { setActiveModal(null); setIsEditing(false)}}
-        >
-          ✕
-        </button>
-      </div>
-
-      {/* Show "refreshing" spinner if needed */}
-      {refreshingStudent && (
-        <div className="staffDash-overlay-spinner">
-          <div className="staffDash-loading-spinner"></div>
-          <p>Refreshing student data...</p>
+          ) : (
+            searchTerm.length > 0 && <p>No matching students found.</p>
+          )}
         </div>
       )}
-
-      {/* Info / Edit UI EXACTLY like your old "student-info-box" */}
-      {isEditing ? (
-        <>
-          {infoMessage && <div className="staffDash-form-warning ">{infoMessage}</div>}
-          {successMessage && <div className="staffDash-form-success">{successMessage}</div>}
-
-          <div className="staffDash-edit-student-form">
-            <div className="staffDash-form-group">
-              <label htmlFor="name">Full Name:</label>
-              <input
-                id="name"
-                type="text"
-                name="student_name"
-                value={editedStudent?.student_name || ""}
-                onChange={handleEditChange}
-              />
-            </div>
-            <div className="staffDash-form-group">
-              <label htmlFor="uin">UIN:</label>
-              <input
-                id="uin"
-                type="text"
-                name="UIN"
-                value={editedStudent?.UIN || ""}
-                onChange={handleEditChange}
-              />
-            </div>
-            <div className="staffDash-form-group">
-              <label htmlFor="dob">Date of Birth:</label>
-              <input
-                id="dob"
-                type="date"
-                name="dob"
-                value={editedStudent?.dob ? editedStudent.dob.split("T")[0] : ""}
-                onChange={handleEditChange}
-              />
-            </div>
-            <div className="staffDash-form-group">
-              <label htmlFor="email">Email:</label>
-              <input
-                id="email"
-                type="email"
-                name="email"
-                value={editedStudent?.email || ""}
-                onChange={handleEditChange}
-              />
-            </div>
-            <div className="staffDash-form-group">
-              <label htmlFor="phone_number">Phone Number:</label>
-              <input
-                id="phone_number"
-                type="text"
-                name="phone_number"
-                value={editedStudent?.phone_number || ""}
-                onChange={handleEditChange}
-              />
-            </div>
-
-            <button onClick={handleSaveChanges} aria-label="Save Changes to Student Profile" disabled={loading}>
-              {loading ? 'Saving...' : 'Save Changes'}
-              {loading && <div className="staffDash-loading-spinner"></div>}
-            </button>
-
-            <button
-              className="staffDash-backtoprofile-btn "
-              onClick={() => {
-                setIsEditing(false);
-                refreshStudentData(editedStudent?.userId);
-              }}
-
-            >
-              Cancel Edit
-            </button>
-          </div>
-        </>
-      ) : (
-        <>
-          <p><strong>Name:</strong> {selectedStudent?.student_name || "N/A"}</p>
-          <p><strong>UIN:</strong> {selectedStudent?.UIN || "N/A"}</p>
-          <p><strong>DOB:</strong> {selectedStudent?.dob
-            ? new Date(selectedStudent.dob).toLocaleDateString()
-            : "N/A"}</p>
-          <p><strong>Email:</strong> {selectedStudent?.email || "N/A"}</p>
-          <p><strong>Phone Number:</strong> {selectedStudent?.phone_number || "N/A"}</p>
-
-          <button 
-            className="staffDash-edit-profile-button"
-            onClick={() => setIsEditing(true)}
-          >
-            ✏️ Edit Profile
-          </button>
-        </>
-      )}
     </div>
-  </div>
-)}
 
+    {/* ALERTS TAB ------------------------------------------------------------------------------------- */}
 
-<button
-      className="staffDash-cancel-btn"
-      onClick={() => {
-        resetToStudentSearch();
-        setIsEditing(false);
-      }}
-    >
-      Back to Search
-    </button>
-  </div>
-
-
-{/* RIGHT COLUMN – Dropdowns */}
-<div className="staffDash-student-modal-buttons ">
-  <button
-    onClick={async () => {
-      setIsRefreshing(true); // show spinner
-      await fetchForms(selectedStudent.userId); // make sure you're using correct key
-      setIsRefreshing(false);
-      setActiveModal({ type: 'forms' });
-    }}
-    aria-label="View submitted forms"
-  >
-    📄 View Submitted Forms
-  </button>
-  <button
-    onClick={async () => {
-      setIsRefreshing(true);
-      // No fetch needed if data is already in selectedStudent.accommodations
-      await new Promise(resolve => setTimeout(resolve, 500)); // brief delay for UX
-      setIsRefreshing(false);
-      setActiveModal({ type: 'accommodations' });
-    }}
-    aria-label="View student accommodations"
-  >
-    📝 View Accommodations
-  </button>
-  <button
-    onClick={async () => {
-      setIsRefreshing(true);
-      await new Promise(resolve => setTimeout(resolve, 500));
-      setIsRefreshing(false);
-      setActiveModal({ type: 'tech' });
-    }}
-    aria-label="View assistive technology"
-  >
-    💻 View Assistive Tech
-  </button>
-
-</div>
-</div>
-
-
-
-)}
-      </div>
-
-      {/* Alerts Section */}
-      {/* Alerts Section - Only Show on Landing Page */}
-      {view === null && (
-  <aside className="staff-alerts">
-    <h3>📢 Alerts</h3>
-    <div className="alert-box">
-      {loadingDates ? (
-        <div className="staffDash-loading-spinner" aria-label="Loading alerts..." />
-      ) : (
-        importantDates.map(date => (
-          <div key={date.id} className="alert-item">
-            <p className="alert-date">{new Date(date.date).toISOString().split('T')[0]}</p>
-            <p className="alert-message">
-              <strong>{capitalizeWords(date.name)}</strong>
-            </p>
-            <p className="alert-notes">{renderNotes(date.type)}</p>
-          </div>
-        ))
-      )}
-    </div>
-  </aside>
-)}
-
-
-{activeModal?.type === 'formStatus' && (
-  <div className="staffDash-modalOverlay">
-    <div className="staffDash-modalContent">
-      <h2>Update Form Status</h2>
-      <p><strong>Form:</strong> {formatFormType(activeModal.form.type)}</p>
-      <p><strong>Current Status:</strong> {activeModal.form.status}</p>
-
-      <label htmlFor="newStatusSelect">Select New Status:</label>
-      <select
-        id="newStatusSelect"
-        value={formEdits[activeModal.form.id] || activeModal.form.status}
-        onChange={(e) =>
-          setFormEdits((prev) => ({
-            ...prev,
-            [activeModal.form.id]: e.target.value,
-          }))
-        }
-      >
-        <option value="APPROVED">Approve</option>
-        <option value="REJECTED">Reject</option>
-        <option value="OVERDUE">Overdue</option>
-        <option value="PENDING">Pending</option>
-      </select>
-      {isUpdatingFormStatus && (
-      <div className="staffDash-overlay-spinner">
-        <div className="staffDash-loading-spinner"></div>
-        <p>Updating Form Status...</p>
-      </div>
+    {view === null && (
+      <aside className="staff-alerts">
+        <h3>📢 Alerts</h3>
+        <div className="alert-box">
+          {loadingDates ? (
+            <div className="staffDash-loading-spinner" aria-label="Loading alerts..." />
+          ) : (
+            importantDates.map(date => (
+              <div key={date.id} className="alert-item">
+                <p className="alert-date">{new Date(date.date).toISOString().split('T')[0]}</p>
+                <p className="alert-message">
+                  <strong>{capitalizeWords(date.name)}</strong>
+                </p>
+                <p className="alert-notes">{renderNotes(date.type)}</p>
+              </div>
+            ))
+          )}
+        </div>
+      </aside>
     )}
 
-      <div className="viewToggle" style={{ marginTop: '1rem' }}>
-        <button ref={lastFocusedRef} aria_label="Save" onClick={() => handleFormStatusChange(activeModal.form.id, formEdits[activeModal.form.id] || activeModal.form.status)}>
-          ✅ Save
-        </button>
-        <button onClick={() => setActiveModal(null)}>Cancel</button>
-      </div>
-    </div>
-    
-  </div>
-)}
-{activeModal?.type === 'forms' && (
-  <div className="staffDash-modalOverlay">
-    <div className="staffDash-modalContent">
-    <div className="staffDash-modalHeader ">
-      <h2 tabIndex={0}>Submitted Forms</h2>
-      <button tabIndex={0} className="staffDash-modalHeaderCloseBtn" aria-label="close forms menu" onClick={() => {setActiveModal(null); setIsEditing(false)}}>✕</button>
-      </div>
-        {submittedForms.length > 0 ? (
-          submittedForms.map(form => (
-            <section
-          key={form.id}
-          className="staffDash-form-entry"
-          role="region"
-      aria-labelledby={`form-heading-${form.id}`}
-        >
-          <h3 tabIndex={0} id={`form-heading-${form.id}`}>
-            {formatFormType(form.type)}
-          </h3>
 
-          <p tabIndex={0}><strong>Status:</strong> {form.status}</p>
-          <p tabIndex={0}>
-            <strong>Submitted:</strong>{' '}
-            {form.submittedDate
-              ? new Date(form.submittedDate).toLocaleDateString()
-              : 'N/A'}
-          </p>
-          <p tabIndex={0}><strong>Due:</strong> {form.dueDate ? new Date(form.dueDate).toLocaleDateString() : 'N/A'}</p>
-
-          {form.formUrl && (
-            <p>
-              <a
-                href={form.formUrl}
-                rel="noopener noreferrer"
-                aria-label={`View submitted form for ${formatFormType(form.type)}`}
-              >
-                🔗 View Form
-              </a>
-            </p>
-          )}
-
-          <label htmlFor={`status-${form.id}`}>Change Status:</label>
-          <select
-            id={`status-${form.id}`}
-            value={formEdits[form.id] || form.status}
-            onChange={(e) =>
-              setFormEdits((prev) => ({
-                ...prev,
-                [form.id]: e.target.value,
-              }))
-            }
-            aria-label={`Change status for ${formatFormType(form.type)} form. current status: ${form.status}`}
-          >
-            <option value="APPROVED">Approve</option>
-            <option value="REJECTED">Deny</option>
-            <option value="OVERDUE">Overdue</option>
-            <option value="PENDING">Pending</option>
-          </select>
-
-          <button
-          
-            onClick={() => handleFormStatusChange(form.id, formEdits[form.id] || form.status)}
-            aria-label={`Save status change for ${formatFormType(form.type)} form`}
-          >
-            💾 Save
-          </button>
-        </section>
-
-        ))
-      ) : (
-        <p>No forms submitted.</p>
-      )}
-    </div>
-  </div>
-)}
-
-{activeModal?.type === 'accommodations' && (
-  <div className="staffDash-modalOverlay">
-    <div className="staffDash-modalContent">
-    <div className="staffDash-modalHeader ">
-      <h2>Accomodations</h2>
-      <button className="staffDash-modalHeaderCloseBtn"aria-label="close accomodations menu" onClick={() => setActiveModal(null)}>✕</button>
-    </div>
-      {selectedStudent.accommodations?.length > 0 ? (
-        selectedStudent.accommodations.map(acc => (
-          <div key={acc.id} className="staffDash-accommodation-entry">
-            <p><strong>Type:</strong> {acc.type}</p>
-            <p><strong>Status:</strong> {acc.status}</p>
-            <p><strong>Requested On:</strong> {new Date(acc.date_requested).toLocaleDateString()}</p>
-          </div>
-        ))
-      ) : (
-        <p>No accommodations available.</p>
-      )}
-    </div>
-  </div>
-)}
-
-{activeModal?.type === 'tech' && (
-  <div className="staffDash-modalOverlay">
-    <div className="staffDash-modalContent">
-        <div className="staffDash-modalHeader ">
-        <h2>Assistive Technologies</h2>
-        <button className="staffDash-modalHeaderCloseBtn" aria-label="close assistive technologies menu" onClick={() => setActiveModal(null)}>✕</button>
-      </div>
-      {selectedStudent.assistive_technologies?.length > 0 ? (
-        selectedStudent.assistive_technologies.map(tech => (
-          <div key={tech.id} className="staffDash-assistive-tech-entry">
-            <p><strong>Type:</strong> {tech.type}</p>
-            <p><strong>Available:</strong> {tech.available ? "Yes" : "No"}</p>
-          </div>
-        ))
-      ) : (
-        <p>No assistive technology assigned.</p>
-      )}
-    </div>
-  </div>
-)}
-
-{isRefreshing && (
-  <div className="fullscreen-message-overlay">
-    <div className="fullscreen-message-content">
-      <div className="staffDash-loading-spinner"></div>
-      <p>Loading</p>
-    </div>
-  </div>
-)}
-
-
-{fullscreenMessage && (
-  <div 
-    className="fullscreen-message-overlay" 
-    tabIndex="-1" 
-    ref={modalRef}
-    onKeyDown={(e) => {
-      if (e.key === "Escape") setFullscreenMessage(null);
-    }}
-  >
-    <div className="fullscreen-message-content">
-      <button
-        className="fullscreen-message-close-btn"
-        onClick={() => setFullscreenMessage(null)}
-        aria_label="close confirmation menu"              
-        tabIndex="0"
+    {fullscreenMessage && (
+      <div 
+        className="fullscreen-message-overlay" 
+        tabIndex="-1" 
+        ref={modalRef}
         onKeyDown={(e) => {
-          if (e.key === "Enter") setFullscreenMessage(null);
+          if (e.key === "Escape") setFullscreenMessage(null);
         }}
       >
-        x
-      </button>
-
-      <h2>{fullscreenMessage.title}</h2>
-      <p>{fullscreenMessage.message}</p>
-
-      {fullscreenMessage.confirm ? (
-        <>
+        <div className="fullscreen-message-content">
           <button
-            className="fullscreen-message-button"
-            tabIndex="0"
-            onClick={() => {
-              fullscreenMessage.confirm();
-              setFullscreenMessage(null);
-            }}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                fullscreenMessage.confirm();
-                setFullscreenMessage(null);
-              }
-            }}
-          >
-            Confirm
-          </button>
-          <button
-            className="fullscreen-message-button"
-            tabIndex="0"
+            className="fullscreen-message-close-btn"
             onClick={() => setFullscreenMessage(null)}
+            aria-label="close confirmation menu"              
+            tabIndex={0}
             onKeyDown={(e) => {
               if (e.key === "Enter") setFullscreenMessage(null);
             }}
           >
-            Cancel
+            x
           </button>
-        </>
-      ) : (
-        <button
-          className="fullscreen-message-button"
-          tabIndex="0"
-          onClick={() => setFullscreenMessage(null)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") setFullscreenMessage(null);
-          }}
-        >
-          Close
-        </button>
-      )}
-    </div>
-  </div>
-)}
+
+          <h2>{fullscreenMessage.title}</h2>
+          <p>{fullscreenMessage.message}</p>
+
+          {fullscreenMessage.confirm ? (
+            <>
+              <button
+                className="fullscreen-message-button"
+                tabIndex={0}
+                onClick={() => {
+                  fullscreenMessage.confirm();
+                  setFullscreenMessage(null);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    fullscreenMessage.confirm();
+                    setFullscreenMessage(null);
+                  }
+                }}
+              >
+                Confirm
+              </button>
+              <button
+                className="fullscreen-message-button"
+                tabIndex={0}
+                onClick={() => setFullscreenMessage(null)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") setFullscreenMessage(null);
+                }}
+              >
+                Cancel
+              </button>
+            </>
+          ) : (
+            <button
+              className="fullscreen-message-button"
+              tabIndex="0"
+              onClick={() => setFullscreenMessage(null)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") setFullscreenMessage(null);
+              }}
+            >
+              Close
+            </button>
+          )}
+        </div>
+      </div>
+    )}
 
 
     </div>

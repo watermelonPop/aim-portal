@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor, act, cleanup } from '@testing-library/react';
-import StaffDash from '../staff/staffDash'; // Adjust path if needed
+import StaffDashboard from '../staff/staffDashboard'; // Adjust path if needed
 
 // Mocked student data for tests
 const mockStudents = [
