@@ -2,6 +2,10 @@ import { BlobServiceClient } from "@azure/storage-blob";
 import formidable from "formidable";
 import fs from "fs";
 
+
+
+
+
 const AZURE_STORAGE_CONNECTION_STRING = process.env.AZURE_STORAGE_CONNECTION_STRING;
 const containerName = "forms";
 
@@ -34,6 +38,7 @@ export default async function handler(req, res) {
                 uploadDir: "/tmp", // Optional: Define a temp upload location
                 keepExtensions: true, // Keep file extension
         });
+
         console.log("FORM: ", form);
     
         form.parse(req, async (err, fields, files) => {
@@ -52,6 +57,12 @@ export default async function handler(req, res) {
                 const fileName = file.originalFilename;
     
                 const fileUrl = await uploadFile(fileBuffer, fileName);
+
+
+
+
+
+
                 return res.status(200).json({ url: fileUrl });
             } catch (error) {
                 console.error("Upload error:", error);

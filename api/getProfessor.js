@@ -7,29 +7,19 @@ const prisma = new PrismaClient();
 
 module.exports = async (req, res) => {
     if (req.method === 'GET') {
-        const userId = req.query.userId;
-        //console.log("USERID FROM FETCHEXAMBYADVISOR:",userId);
-        //const searchQuery = req.query.searchQuery;
-        //console.log("seqrchQuery:",searchQuery);
-        // const _skip =  parseInt(req.query.skip) || 0;
-        // const _take = parseInt(req.query.take) || 9;
-        // if (!searchQuery) {
-        //     return res.status(400).json({ error: "Missing 'query' parameter" });
-        // }
-        // console.log("before the advisor call");
-        //https://www.prisma.io/docs/orm/prisma-client/queries/pagination
+        const professorId = req.query.userId;
         try {
-            const exams = await prisma.exam.findMany({
+            const professor = await prisma.professor.findUnique({
                 where : {
-                    advisorId : Number(userId),
+                    userId : Number(professorId),
                 },
                 include : {
-                    course:true,
+                    account:true,
                 },
             });
 
             //const 
-        res.status(200).json(exams);
+        res.status(200).json(professor);
             // const advisors = await prisma.advisor.findMany({
             //     include:{
             //         account:true

@@ -2371,3 +2371,169 @@ body.highlight-hover-enabled .basicFooter div > div > p > a:hover{
   border-color: var(--highlight-keyboard-focus-color);
   box-shadow: 0 0 0 3px rgba(189, 24, 15, 0.5);
 }
+
+
+.staffExamView {
+  font-size: var(--txtSize);
+  line-height: var(--line-height);
+  color: var(--text-color);
+  background-color: var(--background-color);
+  padding: 1rem;
+  margin: 0 auto;
+  width:100%;
+  max-width: 1200px;
+  justify-content: var(--align-text);
+  
+}
+
+.staffExamView h2 {
+  width: 100%;
+  /* display: block; */
+  margin-top: 2%;
+  justify-content: var(--align-text);
+  text-align: var(--align-text);
+  font-size: calc(var(--txtSize) + 20px);
+  margin-bottom: 1rem;
+}
+
+.staffExamView h3 {
+  width: 100%;
+  text-align: var(--align-text);
+  align-items: var(--align-text);
+  justify-content: var(--align-text);
+  font-size: calc(var(--txtSize) + 20px);
+  margin-bottom: 1rem;
+}
+
+.staffExamView p {
+  width: 100%;
+  align-items: var(--align-text);
+  text-align: var(--align-text);
+  justify-content: var(--align-text);
+  font-size: calc(var(--txtSize) + 5px);
+  margin-bottom: 1rem;
+}
+
+.staffExamView input[type="file"],
+.staffExamView input[type="text"] {
+  align-items: var(--align-text);
+  font-size: calc(var(--txtSize) + 5px);
+  padding: 0.5rem;
+  border: 2px solid var(--foreground-color);
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  cursor: var(--custom-hover-cursor);
+}
+
+.staffExamView button {
+  /* margin-left: 50%;
+  margin-bottom: 1rem;
+  width:10%; */
+  margin: 0 auto;
+  margin-bottom: 1rem;
+  /* width: 50%; */
+  justify-content: var(--align-text);
+  align-items: var(--align-text);
+  font-size: calc(var(--txtSize) + 5px);
+  padding: 0.5rem;
+  border: 2px solid var(--foreground-color);
+  border-radius: 4px;
+  background-color: var(--background-color);
+  color: var(--foreground-color);
+  cursor: var(--custom-hover-cursor);
+  transition: transform 0.2s ease;
+}
+
+.staffExamView button:hover,
+.staffExamView button:focus {
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+  outline: none;
+  transform: translateY(-5px);
+}
+
+.staffExamView .card-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.staffExamView .card {
+
+  background-color: #fff;
+  padding: 24px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  text-align: center;
+  justify-content: var(--align-text);
+}
+
+.staffExamView .close-button {
+  width: 10%;
+  position: absolute;
+  justify-content: center;
+  top: 16px;
+  right: 16px;
+  cursor: var(--custom-hover-cursor);
+  border: 2px solid var(--foreground-color);
+  border-radius: 4px;
+  background-color: var(--background-color);
+  background: transparent;
+  font-size: calc(var(--txtSize) + 5px);
+}
+
+.staffExamView .section-title {
+  align-items: var(--align-text);
+  text-align: var(--align-text) !important;
+  justify-content: var(--align-text);
+  font-size: calc(var(--txtSize) + 15px);
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.staffExamView .listContainerStyle {
+  padding: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+  }
+
+.staffExamView .listItemStyle {
+  border: 2px solid var(--foreground-color);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 2%;
+  cursor: var(--custom-hover-cursor);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease;
+  }
+
+  .staffExamView .listItemStyle:hover,
+  .staffExamView .listItemStyle:focus {
+    background-color: var(--foreground-color);
+    color: var(--background-color);
+    outline: none;
+    transform: translateY(-5px);
+  }
+
+.staffExamView .titleStyle {
+  margin: '0 0 8px';
+  font-size: calc(var(--txtSize) + 15px);
+  }
+
+.staffExamView .detailStyle {
+  margin: 0;
+  font-size: calc(var(--txtSize) + 5px);
+  color: '#555';
+  }
