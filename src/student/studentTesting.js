@@ -148,7 +148,7 @@ function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastInten
     const accommodationPayload = {
       examId: selectedExam.id,
       accommodationType: selectedAccommodation,
-      note: `Requesting ${selectedAccommodation} for exam "${selectedExam.name}" in course "${selectedExam.courseName}"`,
+      note: `Requesting ${selectedAccommodation} for "${selectedExam.name}" in course "${selectedExam.courseName}"`,
       studentId: userInfo.id,
     };
 

@@ -11,7 +11,7 @@ export default async function handler(req, res) {
 
   try {
     const student = await prisma.student.findUnique({
-      where: { userId: parseInt(userId) },
+      where: { userId: parseInt(userId, 10) },
       include: {
         accommodations: {
           include: {
@@ -27,6 +27,8 @@ export default async function handler(req, res) {
             }
           }
         },
+
+        courses: true  // Added to include courses data
         account:true,
       }
     });
