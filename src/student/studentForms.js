@@ -258,7 +258,7 @@ function StudentForms({ userInfo, displayHeaderRef, settingsTabOpen, lastIntende
     if (!confirmed) return;
   
     try {
-      const res = await fetch("/api/deleteForm", {
+      const res = await fetch("/api/studentDeleteForm", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
