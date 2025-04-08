@@ -104,26 +104,27 @@ function ProfessorTesting({ userInfo, settingsTabOpen }) {
   }, [userInfo]);
 
   return (
-    <main className='dashboardOuter'>
+    <main className='dashboardOuter' role="main">
       {loading ? (
         <div className="loadingScreen" role="status" aria-live="polite">
           <div className="spinner">
-            <div className="spinner-icon"></div>
+            <div className="spinner-icon" aria-hidden="true"></div>
             <p className="spinner-text">Loading accommodations...</p>
           </div>
         </div>
       ) : (
-        <div className="accommodationsContainer">
-          <h2>PROFESSOR TESTING</h2>
-
+        <div >
+          <h2 ref={headingRef} tabIndex={0} id="professor-testing-heading">PROFESSOR TESTING</h2>
+  
           <div className="filterButtonContainer">
-            <button onClick={toggleFilter}>
+            <button onClick={toggleFilter} aria-pressed={showStudentsWithExams}>
               {showStudentsWithExams ? 'Filter: Show Students with Exams' : 'Filter: Show All Students'}
             </button>
           </div>
-
+  
           {professorData?.courses.map((course) => (
-            <div key={course.id} className="courseCard">
+            <section key={course.id} className="courseCard" aria-labelledby={`course-heading-${course.id}`}>
+              <h3 id={`course-heading-${course.id}`} className="sr-only">{`${course.name} (${course.department})`}</h3>
               <button
                 className="courseDropdown"
                 onClick={() => toggleDropdown(course.id, true)}
@@ -136,22 +137,28 @@ function ProfessorTesting({ userInfo, settingsTabOpen }) {
                 tabIndex={0}
                 aria-expanded={openProfessorCourses[course.id]}
                 aria-controls={`students-${course.id}`}
+                aria-label={`Toggle students list for ${course.name}`}
               >
                 {course.name} ({course.department})
                 <span aria-hidden="true">{openProfessorCourses[course.id] ? "🔼" : "🔽"}</span>
               </button>
-
+  
               <div className="examModalButton">
                 <button
                   ref={(el) => (triggerButtonRefs.current[course.id] = el)}
                   onClick={() => openModal(course, course.id)}
+                  aria-label={`Create exam for ${course.name}`}
                 >
                   Create Exam
                 </button>
               </div>
-
+  
               {openProfessorCourses[course.id] && (
-                <div id={`students-${course.id}`} role="region" aria-label={`Students for ${course.name}`}>
+                <div
+                  id={`students-${course.id}`}
+                  role="region"
+                  aria-labelledby={`course-heading-${course.id}`}
+                >
                   {professorData?.students
                     .filter((student) => {
                       const studentExams = course.exams.filter((exam) =>
@@ -163,19 +170,23 @@ function ProfessorTesting({ userInfo, settingsTabOpen }) {
                       const studentExams = course.exams.filter((exam) =>
                         exam.studentIds.includes(Number(student.userId))
                       );
-
+  
                       return (
                         <div
                           key={student.userId}
                           className="professorTestingStudentCard"
                           tabIndex={0}
                           ref={index === 0 ? (el) => studentRefs.current[course.id] = el : null}
+                          role="region"
+                          aria-label={`Student: ${student.account.name}`}
                         >
                           <details className="examsDropdown">
-                            <summary>{student.account.name}</summary>
+                            <summary>
+                              {student.account.name}
+                            </summary>
                             <div><strong>UIN:</strong> {student.UIN || 'N/A'}</div>
                             <div><strong>Email:</strong> {student.account.email || 'N/A'}</div>
-
+  
                             {studentExams.length > 0 ? (
                               <>
                                 <div>Exams:</div>
@@ -184,12 +195,19 @@ function ProfessorTesting({ userInfo, settingsTabOpen }) {
                                     <div><strong>Name:</strong> {exam.name}</div>
                                     <div><strong>Date:</strong> {new Date(exam.date).toLocaleDateString()}</div>
                                     <div><strong>Location:</strong> {exam.location}</div>
-                                    <button onClick={() => handleDeleteExam(exam.id, course.id)}>Delete Exam</button>
+                                    <button
+                                      onClick={() => handleDeleteExam(exam.id, course.id)}
+                                      aria-label={`Delete exam ${exam.name}`}
+                                    >
+                                      Delete Exam
+                                    </button>
                                   </div>
                                 ))}
                               </>
                             ) : (
-                              <div className="noExams">No exams assigned.</div>
+                              <div className="noExams" tabIndex={0}>
+                                No exams assigned.
+                              </div>
                             )}
                           </details>
                         </div>
@@ -197,24 +215,24 @@ function ProfessorTesting({ userInfo, settingsTabOpen }) {
                     })}
                 </div>
               )}
-            </div>
+            </section>
           ))}
         </div>
       )}
-
+  
       {selectedCourse && (
         <CreateExamModal
-        course={selectedCourse}
-        students={professorData.students}
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        returnFocusRef={lastTriggerButtonRef}
-        addExamToStudent={addExamToStudent}
-      />
-      
+          course={selectedCourse}
+          students={professorData.students}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          returnFocusRef={lastTriggerButtonRef}
+          addExamToStudent={addExamToStudent}
+        />
       )}
     </main>
   );
+  
 }
 
 export default ProfessorTesting;

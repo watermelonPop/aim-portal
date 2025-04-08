@@ -129,42 +129,47 @@ function CreateExamModal({ course, students, isOpen, onClose, returnFocusRef, ad
   if (!isOpen) return null;
 
   return (
-    <div className="examModalBackdrop">
+    <div className="examModalBackdrop" role="presentation" onClick={onClose}>
       <div
         className="examModalContent"
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-heading"
         ref={modalRef}
+        onClick={(e) => e.stopPropagation()}
       >
         <h2 id="modal-heading" tabIndex={-1} ref={headingRef}>
           Create New Exam for {course.name}
         </h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} aria-describedby="form-instructions">
+          <p id="form-instructions" className="sr-only">Complete all required fields to create a new exam</p>
+
           <div>
-            <label>Exam Name:</label>
-            <input type="text" value={examName} onChange={(e) => setExamName(e.target.value)} required />
+            <label htmlFor="examName">Exam Name:</label>
+            <input id="examName" type="text" value={examName} onChange={(e) => setExamName(e.target.value)} required />
           </div>
           <div>
-            <label>Exam Date:</label>
-            <input type="date" value={examDate} onChange={(e) => setExamDate(e.target.value)} required />
+            <label htmlFor="examDate">Exam Date:</label>
+            <input id="examDate" type="date" value={examDate} onChange={(e) => setExamDate(e.target.value)} required />
           </div>
           <div>
-            <label>Location:</label>
-            <input type="text" value={examLocation} onChange={(e) => setExamLocation(e.target.value)} required />
+            <label htmlFor="examLocation">Location:</label>
+            <input id="examLocation" type="text" value={examLocation} onChange={(e) => setExamLocation(e.target.value)} required />
           </div>
           <div>
-            <label>Upload Exam File:</label>
-            <input type="file" onChange={handleFileChange} required />
+            <label htmlFor="examFile">Upload Exam File:</label>
+            <input id="examFile" type="file" onChange={handleFileChange} required />
           </div>
 
           <div>
-            <label>Select Accommodations:</label>
+            <label htmlFor="accommodationSelect">Select Accommodations:</label>
             <div className="student-dropdown">
               <button
                 type="button"
                 className="examDropdownButton"
                 onClick={handleAccommodationDropdownToggle}
+                aria-expanded={accommodationDropdownOpen}
+                aria-controls="accommodationSelect"
               >
                 {selectedAccommodations.length > 0
                   ? `Selected ${selectedAccommodations.length} accommodation(s)`
@@ -172,6 +177,7 @@ function CreateExamModal({ course, students, isOpen, onClose, returnFocusRef, ad
               </button>
               {accommodationDropdownOpen && (
                 <select
+                  id="accommodationSelect"
                   multiple
                   value={selectedAccommodations}
                   onChange={handleAccommodationSelection}
@@ -186,12 +192,14 @@ function CreateExamModal({ course, students, isOpen, onClose, returnFocusRef, ad
           </div>
 
           <div>
-            <label>Select Students:</label>
+            <label htmlFor="studentSelect">Select Students:</label>
             <div className="student-dropdown">
               <button
                 type="button"
                 className="examDropdownButton"
                 onClick={handleDropdownToggle}
+                aria-expanded={dropdownOpen}
+                aria-controls="studentSelect"
               >
                 {selectedStudents.length > 0
                   ? `Selected ${selectedStudents.length} student(s)`
@@ -199,6 +207,7 @@ function CreateExamModal({ course, students, isOpen, onClose, returnFocusRef, ad
               </button>
               {dropdownOpen && (
                 <select
+                  id="studentSelect"
                   multiple
                   value={selectedStudents}
                   onChange={handleStudentSelection}
