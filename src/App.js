@@ -40,7 +40,6 @@ export function App() {
 
     {name: 'Dashboard', elem: <Dash/>},
     {name: 'Accommodations', elem: <Accommodations/>},
-    {name: 'Profile', elem: <Profile/>},
 
   ]);
   const [studentTabs, setStudentTabs] = useState([
@@ -195,7 +194,6 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
       updatedUserTabs = [
         {name: 'Dashboard', elem: <Dash userInfo={userInfo}/>},
         {name: 'Accommodations', elem: <Accommodations userInfo={userInfo} setAlertMessage={setAlertMessage} setShowAlert={setShowAlert}/>},
-        {name: 'Profile', elem: <Profile userInfo={userInfo}/>},
       ];
 
       updatedProfessorTabs = [
@@ -412,6 +410,7 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
   };
 
   function BasicView({ currentTab, setCurrentTab, userType, tabs }) {
+    const displayHeaderRef = useRef(null);
 
     return (
         <main className='basicScreen' data-testid="basicScreen" id='basicScreen'>
@@ -430,14 +429,24 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
             <BasicHeader/>
             <BasicTabNav tabs={tabs} setCurrentTab={setCurrentTab} currentTab={currentTab} />
           </div>
-          <Display currentTab={currentTab} settingsTabOpen={settingsTabOpen}/>
+          <Display currentTab={currentTab} settingsTabOpen={settingsTabOpen} displayHeaderRef={displayHeaderRef}/>
           <BasicFooter/>
         </main>
     );
   }
 
-  function Display({ currentTab, settingsTabOpen }) {
-    return currentTab ? cloneElement(currentTab.elem, { settingsTabOpen }) : null;
+  function Display({ currentTab, settingsTabOpen, displayHeaderRef }) {
+    useEffect(() => {
+      if(settingsTabOpen ||  document.querySelector('[data-testid="alert"]') !== null) return;
+      const timeout = setTimeout(() => {
+        if (displayHeaderRef.current) {
+          displayHeaderRef.current.focus();
+        }
+      }, 50); // give the DOM a tick to render
+  
+      return () => clearTimeout(timeout);
+    }, [currentTab]);
+    return currentTab ? cloneElement(currentTab.elem, { settingsTabOpen, displayHeaderRef }) : null;
   }
 
   function BasicTabNav({ tabs, currentTab, setCurrentTab }) {
@@ -529,31 +538,33 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
       e.preventDefault();
       e.currentTarget.querySelector('a')?.click();
     }
-  }}>Website: <a href="https://disability.tamu.edu/" target="_blank" rel="noopener noreferrer">https://disability.tamu.edu/</a></p>
+  }}>Website: <a tabIndex={-1} href="https://disability.tamu.edu/" target="_blank" rel="noopener noreferrer">https://disability.tamu.edu/</a></p>
                 <p tabIndex={0} onKeyDown={(e) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       e.currentTarget.querySelector('a')?.click();
     }
-  }}>Email: <a href="mailto:disability@tamu.edu" target="_blank" rel="noopener noreferrer">disability@tamu.edu</a></p>
+  }}>Email: <a tabIndex={-1} href="mailto:disability@tamu.edu" target="_blank" rel="noopener noreferrer">disability@tamu.edu</a></p>
                 <p tabIndex={0} onKeyDown={(e) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       e.currentTarget.querySelector('a')?.click();
     }
-  }}>Phone: <a href="tel:(979)-845-1637" target="_blank" rel="noopener noreferrer">(979)-845-1637</a></p>
+  }}>Phone: <a tabIndex={-1} href="tel:(979)-845-1637" target="_blank" rel="noopener noreferrer">(979)-845-1637</a></p>
                 <p tabIndex={0} onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  e.currentTarget.querySelector('a')?.click();
-                }
-              }}> Address: 
-                <a className='addressLink' href="https://www.google.com/maps?q=Texas+A%26M+University+471+Houston+Street,+SSB+Ste+122,+College+Station,+TX+77843-1224" target="_blank" rel="noopener noreferrer">
-                  <p>Texas A&M University</p>
-                  <p>471 Houston Street, SSB Ste 122</p>
-                  <p>College Station, TX 77843-1224</p>
-                </a>
-                </p>
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      e.currentTarget.querySelector('a')?.click();
+    }
+  }}>Address: <a tabIndex={-1} href="https://www.google.com/maps?q=Texas+A%26M+University+471+Houston+Street,+SSB+Ste+122,+College+Station,+TX+77843-1224" target="_blank" rel="noopener noreferrer">Texas A&M University<br/>
+  471 Houston Street, SSB Ste 122<br/>
+  College Station, TX 77843-1224</a></p>
+  <p tabIndex={0} onKeyDown={(e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      e.currentTarget.querySelector('a')?.click();
+    }
+  }}><a tabIndex={-1} href="#search">Back to Header</a></p>
               </div>
           </footer>
       </>

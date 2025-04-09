@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-function UserDashboard({ userInfo, settingsTabOpen, setCurrentTab, tabs }) {
+function UserDashboard({ userInfo, settingsTabOpen, setCurrentTab, tabs, displayHeaderRef }) {
   const [auditChoice, setAuditChoice] = useState(null);
   const [openGroup, setOpenGroup] = useState(null);
 
@@ -19,14 +19,13 @@ function UserDashboard({ userInfo, settingsTabOpen, setCurrentTab, tabs }) {
             Would you like to find and download required forms or go directly to apply for accommodations?
           </p>
           <div className="auditButtonGroup">
-            <button onClick={() => setAuditChoice('forms')} className="auditButton">
+            <button onClick={() => setAuditChoice('forms')} className="auditButton" ref={displayHeaderRef}>
               Find Forms
             </button>
             <p
               className="accommodationsInfoBox"
               role="note"
               aria-label="Want to apply? Click the Accommodations tab in the navigation bar."
-              tabIndex={0}
             >
               Want to apply? Click the <strong>Accommodations</strong> tab in the navigation bar.
             </p>

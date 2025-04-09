@@ -5,7 +5,6 @@ import Forms from '../forms';
 // Mock subcomponents
 // jest.mock('../user/userForms.js', () => () => <div data-testid="user-forms">User Forms</div>);
 jest.mock('../student/studentForms.js', () => () => <div data-testid="student-forms">Student Forms</div>);
-jest.mock('../staff/staffForms.js', () => () => <div data-testid="staff-forms">Staff Forms</div>);
 
 describe('Forms Component', () => {
   const props = {

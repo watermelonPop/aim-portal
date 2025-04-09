@@ -29,6 +29,12 @@ body.align-right{
   --align-items: flex-end;
 }
 
+body.highlight-keyboard-focus-enabled .courseCard:focus{
+  outline: 2px solid var(--highlight-keyboard-focus-color) !important;
+  border-radius: 1rem;
+  outline-offset: 5px;
+}
+
 body.highlight-keyboard-focus-enabled .categoryTabBtn:focus{
   outline-offset: 5px;
 }
@@ -362,7 +368,7 @@ button{
   border: 3px solid var(--foreground-color);
 }
 
-#loginBtn:hover{
+#loginBtn:hover, #loginBtn:focus{
   background-color: var(--foreground-color);
   color: var(--background-color);
 }
@@ -683,7 +689,7 @@ body.highlight-hover-enabled #search:hover{
   border: 2px solid transparent;
 }
 
-body.highlight_keyboard_focus .tabNav a:focus{
+body.highlight-keyboard-focus-enabled .tabNav a:focus{
   outline: 2px solid var(--highlight-keyboard-focus-color) !important;
 }
 
@@ -780,6 +786,15 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   text-decoration: underline !important;
   color: var(--background-color);
 }
+
+.dashboardProfTestingOuter{
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
 .dashboardOuter{
   width: 100%;
   height: fit-content;
@@ -820,7 +835,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   border: 2px solid var(--foreground-color);
 }
 
-#backSettingPanel:hover{
+#backSettingPanel:hover, #backSettingPanel:focus{
   background-color: var(--foreground-color);
   color: var(--background-color);
   border-color: var(--background-color);
@@ -842,7 +857,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   border: 2px solid var(--foreground-color);
 }
 
-#closeSettingPanel:hover{
+#closeSettingPanel:hover, #closeSettingPanel:focus{
   background-color: var(--foreground-color);
   color: var(--background-color);
   border-color: var(--background-color);
@@ -879,7 +894,6 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   z-index: 9999;
   justify-content: center;
   align-items: center;
-  backdrop-filter: blur(5px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -962,7 +976,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   border: 2px solid var(--foreground-color);
 }
 
-.logOutBtn:hover{
+.logOutBtn:focus,.logOutBtn:hover{
   background-color: var(--foreground-color);
   color: var(--background-color);
 }
@@ -1040,7 +1054,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
 
 .globalSettingsInput{
   margin-bottom: 15px;
-  border-radius: 1rem;
+  border-radius: 1rem !important;
   min-height: 2rem;
   padding: 1%;
   font-weight: 400;
@@ -1307,12 +1321,16 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   border: 2px solid var(--foreground-color);
   padding: 0.4rem 0.8rem;
   border-radius: 8px;
-  font-size: 0.9rem;
+  font-size: var(--txtSize);
   cursor: var(--custom-hover-cursor);
-  transition: background-color 0.2s ease;
 }
 
 .studentForms-contact-advisor-btn-small:hover {
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+}
+
+.studentForms-contact-advisor-btn-small:focus{
   background-color: var(--foreground-color);
   color: var(--background-color);
 }
@@ -1338,10 +1356,9 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   background-color: var(--background-color);
   color: var(--foreground-color);
   cursor: var(--custom-hover-cursor);
-  transition: all 0.3s ease;
 }
 
-.studentForms-selection-buttons button:hover {
+.studentForms-selection-buttons button:focus, .studentForms-selection-buttons button:hover {
   background-color: var(--foreground-color);
   color: var(--background-color);
 }
@@ -1845,6 +1862,14 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   border-radius: 8px;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
 }
+
+.staff-alerts h3{
+  width: 90%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  column-gap: 1rem;
+}
 .staff-alerts {
   max-height: 400px; /* Adjust this height based on your preference */
   overflow-y: auto;
@@ -1870,10 +1895,15 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
 /* Alerts Box */
 .staff-alerts {
   width: 300px; /* Fixed width for alert section */
-  background: white;
+  background: var(--background-color);
   padding: 15px;
   border-radius: 8px;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  border: 2px solid var(--text-color);
+}
+
+body.highlight-keyboard-focus-enabled .staff-alerts:focus{
+  outline: 2px solid var(--highlight-keyboard-focus-color) !important;
+  outline-offset: 5px;
 }
 
 .alert-box {
@@ -1988,21 +2018,15 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
 }
 
 .courseCard {
-  background-color: #fff;
-  border: 2px solid #4F0000;
-  border-radius: 10px;
-  padding: 1.25rem;
-  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background-color: var(--background-color);
+  border: 2px solid var(--foreground-color);
+  border-radius: 1rem;
+  padding: 1rem;
   /* height: 100%; */
   display: flex;
   flex-direction: column;
   justify-content: center;
-}
-
-.courseCard:hover {
-  transform: translateY(-10px);
-  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.2);
+  row-gap: 1rem;
 }
 
 .courseTitle {
@@ -2065,11 +2089,11 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100% !important;
   background: rgba(0, 0, 0, 0.4);
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: center !important;
+  align-items: center !important;
   z-index: 999;
 }
 
@@ -2080,7 +2104,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   max-width: 600px;
   width: 90%;
   box-shadow: 0 0 20px rgba(0,0,0,0.3);
-  position: relative;
+  margin: 0;
 }
 
 .modalContent h2 {
@@ -2144,11 +2168,11 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
 }
 
 .viewToggle button.toggleBtn {
-  background-color: #4F0000; /* Default background color */
-  color: white;              /* Default text color */
-  border: none;
+  background-color: var(--background-color); /* Default background color */
+  color: var(--foreground-color);              /* Default text color */
+  border: 2px solid var(--foreground-color);
   padding: 8px 16px;
-  border-radius: 4px;
+  border-radius: 1rem;
   margin-right: 8px;
   cursor: var(--custom-hover-cursor);
   transition: background-color 0.3s ease, color 0.3s ease;
@@ -2157,18 +2181,8 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
 
 /* Active state styling */
 .viewToggle button.toggleBtn.active {
-  background-color: #b72222; /* Change to a different color to indicate active view */
+  background-color: var(--foreground-color); /* Change to a different color to indicate active view */
   color: var(--background-color);
-}
-
-/* Optional: Add focus styling for accessibility */
-.viewToggle button:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(79, 0, 0, 0.5);
-}
-
-.viewToggle button:hover {
-  background-color: #6a0000;
 }
 
 /* ===== Alerts Area Styles ===== */
@@ -2316,9 +2330,10 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   align-items: var(--align-items);
   min-height: 100%; /* Changed from height to min-height */
   width: 100%;
-  padding: 20px 0; /* Add some vertical padding */
   row-gap: 1rem;
   column-gap: 5%;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 
 .tabContent{
@@ -2608,9 +2623,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   justify-content: center;
   align-items: center;
   margin: 0;
-  padding: 0;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding: 1rem;
   line-height: var(--line-height); 
   border: 2px solid var(--foreground-color);
 }
@@ -2647,35 +2660,57 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   text-align: var(--align-text);
 }
 
+.global-settings .detailCardStyle > div{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: var(--align-text);
+}
+
+.global-settings .detailCardStyle > div > label{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 70%;
+  column-gap: 1rem !important;
+}
+
+
 .global-settings .gridContainerStyle{
   display: grid;
   /* border: 5px solid rgb(0,0,0); */
-  border-radius: 8px;
-  grid-template-columns: repeat(3, 36vh);
+  border-radius: 1rem;
+  grid-template-columns: repeat(3, 32%);
   grid-auto-rows: 20vh;
-  gap: 12px;
+  gap: 1rem;
   justify-content: center;
+  width: 90%;
 }
 
 .global-settings .cardStyle{
   border: 2px solid var(--foreground-color);
   border-radius: 8px;
-  padding: 5px;
+  padding: 1rem !important;
   display: flex;
   flex-direction: column;
   align-items: var(--align-text);
   justify-content: center;
   text-align: var(--align-text);
   overflow: hidden;
-  transition: transform 0.2s ease;
 }
 
 .global-settings .cardStyle:hover,
 .global-settings .cardStyle:focus {
     background-color: var(--foreground-color);
     color: var(--background-color);
-    outline: none;
-    transform: translateY(-5px);
+  }
+
+  body.highlight-keyboard-focus-enabled .global-settings .cardStyle:focus{
+    background-color: var(--foreground-color);
+    color: var(--background-color);
+    outline: 2px solid var(--highlight-keyboard-focus-color) !important;
+    outline-offset: 5px;
   }
 
 .global-settings h3{
@@ -2708,13 +2743,15 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   font-size: var(--txtSize);
   line-height: var(--line-height);
   color: var(--text-color);
-  background-color: var(--background-color);
   padding: 1rem;
   margin: 0 auto;
-  width:100%;
+  width: 80%;
   max-width: 1200px;
   justify-content: var(--align-text);
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .staffExamView h2 {
@@ -2751,7 +2788,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   font-size: calc(var(--txtSize) + 5px);
   padding: 0.5rem;
   border: 2px solid var(--foreground-color);
-  border-radius: 4px;
+  border-radius: 1rem;
   margin-bottom: 1rem;
   cursor: var(--custom-hover-cursor);
 }
@@ -2768,11 +2805,10 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   font-size: calc(var(--txtSize) + 5px);
   padding: 0.5rem;
   border: 2px solid var(--foreground-color);
-  border-radius: 4px;
+  border-radius: 1rem;
   background-color: var(--background-color);
   color: var(--foreground-color);
   cursor: var(--custom-hover-cursor);
-  transition: transform 0.2s ease;
 }
 
 .staffExamView button:hover,
@@ -2780,7 +2816,6 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   background-color: var(--foreground-color);
   color: var(--background-color);
   outline: none;
-  transform: translateY(-5px);
 }
 
 .staffExamView .card-overlay {
@@ -2798,7 +2833,7 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
 
 .staffExamView .card {
 
-  background-color: #fff;
+  background-color: var(--background-color);
   padding: 24px;
   border-radius: 8px;
   width: 90%;
@@ -2818,10 +2853,11 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   right: 16px;
   cursor: var(--custom-hover-cursor);
   border: 2px solid var(--foreground-color);
-  border-radius: 4px;
+  border-radius: 1rem;
   background-color: var(--background-color);
   background: transparent;
   font-size: calc(var(--txtSize) + 5px);
+  padding: 1rem;
 }
 
 .staffExamView .section-title {
@@ -2834,20 +2870,23 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
 }
 
 .staffExamView .listContainerStyle {
-  padding: 16px;
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   }
 
 .staffExamView .listItemStyle {
   border: 2px solid var(--foreground-color);
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 2%;
+  border-radius: 1rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
   cursor: var(--custom-hover-cursor);
   display: flex;
   flex-direction: column;
   transition: transform 0.2s ease;
+  width: 100%;
   }
 
   .staffExamView .listItemStyle:hover,
@@ -2855,7 +2894,11 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
     background-color: var(--foreground-color);
     color: var(--background-color);
     outline: none;
-    transform: translateY(-5px);
+  }
+
+  body.highlight-keyboard-focus-enabled .staffExamView .listItemStyle:focus{
+    outline: 2px var(--highlight-keyboard-focus-color) solid !important;
+    outline-offset: 5px;
   }
 
 .staffExamView .titleStyle {
@@ -2866,7 +2909,6 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
 .staffExamView .detailStyle {
   margin: 0;
   font-size: calc(var(--txtSize) + 5px);
-  color: #555;
   }
 
 
@@ -3783,20 +3825,24 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   align-items: center;
   margin-bottom: 1.5rem;
   position: relative;
+  column-gap: 1rem;
 }
 .staff-action-btn {
-  background-color: #5c0000;
-  color: white;
+  background-color: var(--background-color);
+  color: var(--foreground-color);
   font-weight: bold;
-  padding: 2.0rem 3.0rem;
-  border: none;
-  border-radius: 10px;
+  border: 2px solid var(--foreground-color);
+  border-radius: 1rem;
   font-size: 1.5rem;
   cursor: var(--custom-hover-cursor);
+  padding: 2rem;
+  display: flex;
+  column-gap: 1rem;
 }
 
-.staff-action-btn:hover {
-  background-color: rgb(124, 27, 27);
+.staff-action-btn:focus,.staff-action-btn:hover {
+  background-color: var(--foreground-color);
+  color: var(--background-color);
 }
 
 
@@ -3806,7 +3852,8 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   min-width: 28px;
   min-height: 28px;
   border-radius: 50%;
-  background-color: white;
+  background-color: var(--background-color);
+  color: var(--foreground-color);
   font-size: 16px;
   font-weight: bold;
   cursor: var(--custom-hover-cursor);
@@ -3814,13 +3861,13 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   align-items: center;
   justify-content: center;
   margin-left: 0.5rem;
+  border: 2px solid var(--foreground-color);
 }
 
 .question-icon-btn:hover,
 .question-icon-btn:focus {
-  background-color: #f3e3e3;
-  outline: none;
-  box-shadow: 0 0 0 2px #50000033;
+  background-color: var(--foreground-color);
+  color: var(--background-color);
 }
 
 .tooltip-box {
@@ -4066,4 +4113,19 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
 @keyframes fadeSlide {
   from { opacity: 0; transform: translateY(-5px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+.globalCheckBox{
+  font-size: var(--txtSize);
+}
+
+
+.globalCheckBox input[type="checkbox"]:checked{
+  accent-color: var(--foreground-color);
+}
+
+body.highlight-keyboard-focus-enabled .globalCheckBox input[type="checkbox"]:focus{
+  outline: 2px var(--highlight-keyboard-focus-color) solid !important;
+  border-radius: 1rem !important;
+  outline-offset: 1px !important;
 }

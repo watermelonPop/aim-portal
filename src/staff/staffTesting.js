@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 
-function StaffExamView({ userInfo, displayHeaderRef, settingsTabOpen, lastIntendedFocusRef }) {
+function StaffExamView({ userInfo, settingsTabOpen, displayHeaderRef }) {
         const [exams, setExams] = useState([]);
         const [student, setStudent] = useState([]);
         const [loadingStudent, setLoadingStudent] = useState(false);
@@ -13,38 +13,8 @@ function StaffExamView({ userInfo, displayHeaderRef, settingsTabOpen, lastIntend
         const [errorMessage, setErrorMessage] = useState(null);
         const [fileUrl, setFileUrl] = useState(null);
         
-
-        const localRef = useRef(null);
-        const headingRef = displayHeaderRef || localRef;
-
-  // ========================================== DO NOT TOUCH ==========================================
-        useEffect(() => {
-                if (!headingRef.current || settingsTabOpen === true) return;
-                if (lastIntendedFocusRef?.current !== headingRef.current) {
-                lastIntendedFocusRef.current = headingRef.current;
-                }
-        }, [settingsTabOpen, headingRef]);
-        
-        useEffect(() => {
-                if (!headingRef.current || settingsTabOpen === true) return;
-                const frame = requestAnimationFrame(() => {
-                const isAlertOpen = document.querySelector('[data-testid="alert"]') !== null;
-                if (
-                headingRef.current &&
-                !isAlertOpen &&
-                document.activeElement !== headingRef.current &&
-                lastIntendedFocusRef.current === headingRef.current
-                ) {
-                console.log("FOCUSING DASH");
-                console.log("Intent:", lastIntendedFocusRef.current, "Target:", headingRef.current);
-                headingRef.current.focus();
-                lastIntendedFocusRef.current = null;
-                }
-                });
-                return () => cancelAnimationFrame(frame);
-        }, [settingsTabOpen, headingRef]);
-
       // ========================================== USE EFFECT LOGIC ==========================================
+
         useEffect(() => {
         if (userInfo?.id) {
         setLoading(true);
@@ -188,6 +158,31 @@ function StaffExamView({ userInfo, displayHeaderRef, settingsTabOpen, lastIntend
         // ========================================== JSX ELEMENT FUNCTIONS ==========================================
         function ExamListView({ exams, loading, setSelectedExam }) {
                 // Define container styles for a list view
+                const localRef = useRef(null);
+                const headingRef = displayHeaderRef || localRef;
+                const [loaded, setLoaded] = useState(false);
+                const displayedExams = exams.length === 0 ? [] : exams;
+                console.log("displayedExams:", displayedExams);
+
+                useEffect(() => {
+                        if (
+                          loading ||
+                          !headingRef.current ||
+                          loaded ||
+                          (!displayedExams) || 
+                          settingsTabOpen ||
+                          document.querySelector('[data-testid="alert"]') !== null
+                        ) return;
+                      
+                        const timeout = setTimeout(() => {
+                          if (headingRef.current) {
+                            headingRef.current.focus();
+                            setLoaded(true);
+                          }
+                        }, 100);
+                      
+                        return () => clearTimeout(timeout);
+                }, [loading, displayedExams, headingRef, loaded]);
                 
         
                 // Display a loading message if data hasn't loaded yet
@@ -236,17 +231,18 @@ function StaffExamView({ userInfo, displayHeaderRef, settingsTabOpen, lastIntend
                 };
         
                 // Determine which array to slice based on the search query
-                const displayedExams = exams.length === 0 ? [] : exams;
-                console.log("displayedExams:", displayedExams);
+                
                 return (
                 <div className="listContainerStyle">
-                {displayedExams?.map((exam) => (
+                {displayedExams?.map((exam, index) => (
                 <div
                         key={exam.id}
                         className="listItemStyle"
                         onClick={() => handleExamClick(exam)}
                         role="button"
                         tabIndex={0}
+                        ref={index === 0 ? headingRef : null}
+                        id={index === 0 ? "topStaffTestingResult" : null}
                         onKeyDown={(e) => {
                         if (e.key === 'Enter') handleExamClick(exam);
                         }}
@@ -259,6 +255,7 @@ function StaffExamView({ userInfo, displayHeaderRef, settingsTabOpen, lastIntend
                         <p className="detailStyle">Date: {new Date(exam.date).toLocaleDateString()}</p>
                 </div>
                 ))}
+                <a href="#topStaffTestingResult">Back to Top</a>
                 </div>
                 );
         }
@@ -277,6 +274,25 @@ function StaffExamView({ userInfo, displayHeaderRef, settingsTabOpen, lastIntend
                 errorMessage
               }) {
                 // Styles for the modal overlay and card
+                const localRef = useRef(null);
+                const headingRef = displayHeaderRef || localRef;
+
+                useEffect(() => {
+                        if (
+                          loading ||
+                          !headingRef.current ||
+                          settingsTabOpen ||
+                          document.querySelector('[data-testid="alert"]') !== null
+                        ) return;
+                      
+                        const timeout = setTimeout(() => {
+                          if (headingRef.current) {
+                            headingRef.current.focus();
+                          }
+                        }, 100);
+                      
+                        return () => clearTimeout(timeout);
+                }, [loading, headingRef]);
                 
                 return (
                   <div className="card-overlay">
@@ -284,7 +300,7 @@ function StaffExamView({ userInfo, displayHeaderRef, settingsTabOpen, lastIntend
                       <button
                         className="close-button"
                         onClick={onClose}
-                        aria-label="Close exam details"
+                        ref={headingRef}
                       >
                         &times;
                       </button>
@@ -387,7 +403,7 @@ function StaffExamView({ userInfo, displayHeaderRef, settingsTabOpen, lastIntend
   //========================================== RETURN LOGIC ==========================================
         return (
         <div className="staffExamView">
-                <h2 ref={headingRef} tabIndex={0} aria-label="Exams Assigned to You">
+                <h2 aria-label="Exams Assigned to You">
                         Exams Assigned to You
                 </h2>
                 

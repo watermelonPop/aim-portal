@@ -138,7 +138,7 @@ function CreateExamModal({ course, students, isOpen, onClose, returnFocusRef, ad
         ref={modalRef}
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 id="modal-heading" tabIndex={-1} ref={headingRef}>
+        <h2 id="modal-heading">
           Create New Exam for {course.name}
         </h2>
         <form onSubmit={handleSubmit} aria-describedby="form-instructions">
@@ -146,7 +146,7 @@ function CreateExamModal({ course, students, isOpen, onClose, returnFocusRef, ad
 
           <div>
             <label htmlFor="examName">Exam Name:</label>
-            <input id="examName" type="text" value={examName} onChange={(e) => setExamName(e.target.value)} required />
+            <input ref={headingRef} id="examName" type="text" value={examName} onChange={(e) => setExamName(e.target.value)} required />
           </div>
           <div>
             <label htmlFor="examDate">Exam Date:</label>

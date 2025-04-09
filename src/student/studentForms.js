@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-
-function StudentForms({ userInfo, settingsTabOpen }) {
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faEnvelope} from '@fortawesome/free-solid-svg-icons';
+function StudentForms({ userInfo, settingsTabOpen, displayHeaderRef }) {
         
         const [view, setView] = useState(null);
   const [selectedDisability, setSelectedDisability] = useState('');
@@ -302,8 +303,9 @@ function StudentForms({ userInfo, settingsTabOpen }) {
               className="studentForms-contact-advisor-btn-small"
               onClick={handleContactAdvisor}
               aria-label="Contact your advisor through email"
+              ref={displayHeaderRef}
             >
-              📧 Contact Advisor (Outlook)
+              <FontAwesomeIcon icon={faEnvelope}aria-hidden="true" /> Contact Advisor (Outlook)
             </button>
           </div>
           <div className="studentForms-selection-buttons">

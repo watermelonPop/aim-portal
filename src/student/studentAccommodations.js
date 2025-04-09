@@ -6,15 +6,12 @@ function StudentAccommodations({
   userInfo, 
   setAlertMessage, 
   setShowAlert, 
-  displayHeaderRef, 
   settingsTabOpen, 
-  lastIntendedFocusRef 
+  displayHeaderRef
 }) {
   const [loading, setLoading] = useState(false);
   const [studentData, setStudentData] = useState(null);
   const [error, setError] = useState('');
-  const localRef = useRef(null);
-  const headingRef = displayHeaderRef || localRef;
   
   // For general accommodations modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -28,8 +25,6 @@ function StudentAccommodations({
   const [selectedAssistiveTech, setSelectedAssistiveTech] = useState('');
   
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  
-  const safeLastIntendedFocusRef = lastIntendedFocusRef || { current: null };
 
   // Helper function to refresh student data
   const refreshStudentData = async () => {
@@ -41,31 +36,6 @@ function StudentAccommodations({
       console.error("Failed to refresh student data", error);
     }
   };
-
-  // Header focus management
-  useEffect(() => {
-    if (!headingRef.current || settingsTabOpen === true) return;
-    if (safeLastIntendedFocusRef.current !== headingRef.current) {
-      safeLastIntendedFocusRef.current = headingRef.current;
-    }
-  }, [settingsTabOpen, headingRef, safeLastIntendedFocusRef]);
-
-  useEffect(() => {
-    if (!headingRef.current || settingsTabOpen === true) return;
-    const frame = requestAnimationFrame(() => {
-      const isAlertOpen = document.querySelector('[data-testid="alert"]') !== null;
-      if (
-        headingRef.current &&
-        !isAlertOpen &&
-        document.activeElement !== headingRef.current &&
-        safeLastIntendedFocusRef.current === headingRef.current
-      ) {
-        headingRef.current.focus();
-        safeLastIntendedFocusRef.current = null;
-      }
-    });
-    return () => cancelAnimationFrame(frame);
-  }, [settingsTabOpen, headingRef, safeLastIntendedFocusRef]);
 
   // Fetch student data (including accommodations, assistive technologies, and courses)
   useEffect(() => {
@@ -370,12 +340,14 @@ function StudentAccommodations({
 
   return (
     <div className="studentAccommodationsWrapper">
-      <h2 ref={headingRef} tabIndex={0} className="dashboardTitle">Accommodations</h2>
+      <h2 className="dashboardTitle">Accommodations</h2>
       
       <button 
         onClick={openApplyModal}
         className="applyAccommodationButton"
+        id="applyAccommodationButton"
         aria-label="Apply for new accommodation"
+        ref={displayHeaderRef}
       >
         Apply for Accommodation
       </button>
@@ -398,7 +370,6 @@ function StudentAccommodations({
             <div 
               key={acc.id} 
               className="accommodationCard" 
-              tabIndex={0} 
               aria-label={`Accommodation ${acc.type} with status ${acc.status}. You requested for this accommodation on ${new Date(acc.date_requested).toLocaleDateString()}. Advisor Name ${acc.advisor.account.name}. Notes ${acc.notes}`}
             >
               <div><strong>Type:</strong> {acc.type || 'N/A'}</div>
@@ -430,7 +401,6 @@ function StudentAccommodations({
             <div 
               key={index} 
               className="accommodationCard" 
-              tabIndex={0} 
               aria-label={`Assistive technology ${tech.type} is ${tech.available ? 'available' : 'not available'}. Advisor Name ${tech.advisor.account.name}`}
             >
               <div><strong>Type:</strong> {tech.type}</div>
@@ -446,6 +416,7 @@ function StudentAccommodations({
       {isModalOpen && renderApplyModal()}
       {isAssistiveModalOpen && renderAssistiveModal()}
       {showSuccessModal && renderSuccessModal()}
+      <a href="#applyAccommodationButton">Back to Top</a>
     </div>
   );
 }

@@ -358,32 +358,6 @@ describe('Dynamic tab initialization based on user role', () => {
           phone_number: '1234567890',
         };
 
-        test('focuses loading screen element when loading is true', async () => {
-          const focusSpy = jest.fn();
-        
-          const loadingDiv = document.createElement('div');
-          loadingDiv.className = 'loadingScreen';
-          loadingDiv.focus = focusSpy;
-          document.body.appendChild(loadingDiv);
-        
-          await act(async () => {
-            App.setLoggedIn(true);
-            App.setUserConnected(true);
-            App.setSettingsTabOpen(false);
-            App.setTabs([{ name: 'Dashboard', elem: <div>Dashboard</div> }]);
-            App.setShowAlert(false);
-            App.setUserInfo({ id: '1', role: 'USER' });
-          });
-        
-          render(<App />);
-        
-          await act(async () => {
-            App.setSettings((prev) => ({ ...prev }));
-          });
-        
-          expect(focusSpy).toHaveBeenCalled();
-        });
-
         test('clicking tab sets it as currentTab', async () => {
           render(<App/>);
           await act(async () => {
@@ -463,7 +437,6 @@ describe('Dynamic tab initialization based on user role', () => {
             expect.arrayContaining([
               expect.objectContaining({ name: 'Dashboard' }),
               expect.objectContaining({ name: 'Accommodations' }),
-              expect.objectContaining({ name: 'Profile' }),
             ])
           );
       
@@ -559,7 +532,6 @@ describe('Dynamic tab initialization based on user role', () => {
             App.setLoggedIn(true);
           });
       
-          expect(App.tabs.find(t => t.name === 'Note Taking')).toBeTruthy();
           expect(App.currentTab.name).toBe('Dashboard');
         });
       
@@ -607,10 +579,7 @@ describe('Dynamic tab initialization based on user role', () => {
           const mockStaffAccess = [
             { hasAccess: true, access: 'Global Settings' },
             { hasAccess: true, access: 'Accommodations' },
-            { hasAccess: false, access: 'Note Taking' },
-            { hasAccess: true, access: 'Assistive Technology' },
-            { hasAccess: false, access: 'Testing' },
-            { hasAccess: true, access: 'Student Cases' },
+            { hasAccess: true, access: 'Testing' },
           ];
       
           await act(async () => {
@@ -622,10 +591,11 @@ describe('Dynamic tab initialization based on user role', () => {
       
           const tabNames = App.tabs.map(t => t.name);
           expect(tabNames).toEqual(expect.arrayContaining([
+            'Dashboard',
             'Global Settings',
             'Accommodations',
-            'Assistive Technology',
-            'Student Cases',
+            'Profile',
+            'Testing'
           ]));
       
           expect(App.currentTab.name).toBe('Dashboard');

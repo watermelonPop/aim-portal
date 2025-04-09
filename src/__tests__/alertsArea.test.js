@@ -12,6 +12,9 @@ describe('AlertsArea', () => {
     { id: 5, name: 'Alert 5', date: new Date('2025-05-01T10:00:00Z').toISOString() },
     { id: 6, name: 'Alert 6', date: new Date('2025-06-01T10:00:00Z').toISOString() },
   ];
+  const displayHeaderRef = {
+    current: document.createElement('button') // simulate focusable element
+  };
 
   beforeEach(() => {
     global.fetch = jest.fn((url) => {
@@ -30,7 +33,8 @@ describe('AlertsArea', () => {
   });
 
   test('renders alerts area with loading state, then displays next 5 alerts', async () => {
-    render(<AlertsArea />);
+
+    render(<AlertsArea displayHeaderRef={displayHeaderRef} />);
     expect(screen.getByText('Loading alerts...')).toBeInTheDocument();
     await waitFor(() => expect(screen.getByText('Alert 1')).toBeInTheDocument());
     const alertsArea = screen.getByTestId('alerts-area');
@@ -39,12 +43,19 @@ describe('AlertsArea', () => {
   });
 
   test('opens modal when "View All" is clicked and displays all alerts', async () => {
-    render(<AlertsArea />);
+    const displayHeaderRef = {
+      current: document.createElement('button'),
+    };
+    document.body.appendChild(displayHeaderRef.current); // optional but realistic
+  
+    render(<AlertsArea displayHeaderRef={displayHeaderRef} />);
     await waitFor(() => expect(screen.getByText('Alert 1')).toBeInTheDocument());
+  
     fireEvent.click(screen.getByText('View All'));
     const modal = await screen.findByRole('dialog', { name: 'All Alerts' });
     const allItems = within(modal).getAllByRole('listitem');
     expect(allItems.length).toBe(6);
+  
     fireEvent.click(screen.getByText('Close'));
     await waitFor(() => {
       expect(screen.queryByRole('dialog', { name: 'All Alerts' })).not.toBeInTheDocument();

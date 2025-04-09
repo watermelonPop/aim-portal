@@ -1,9 +1,13 @@
 import { useEffect, useState, useRef } from 'react';
 import CreateExamModal from "./createExamModal";
 import './Professor.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faCaretDown, faCaretUp} from '@fortawesome/free-solid-svg-icons';
 
-function ProfessorTesting({ userInfo, settingsTabOpen }) {
-
+function ProfessorTesting({ userInfo, settingsTabOpen, displayHeaderRef }) {
+  const localRef = useRef(null);
+  const headingRef = displayHeaderRef || localRef;
+  const [loaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
   const [professorData, setProfessorData] = useState(null);
   const [openProfessorCourses, setOpenProfessorCourses] = useState({});
@@ -96,37 +100,66 @@ function ProfessorTesting({ userInfo, settingsTabOpen }) {
     if (userInfo?.role === 'PROFESSOR' && userInfo?.id) {
       setLoading(true);
       fetch(`/api/getProfessorStudents?userId=${userInfo.id}`)
-        .then(res => res.json())
+        .then(res => {
+          if (!res.ok) throw new Error('Network response was not ok');
+          return res.json();
+        })
         .then(data => setProfessorData(data))
-        .catch(err => console.error('Failed to fetch professor data', err))
-        .finally(() => setLoading(false));
+        .catch(err => {
+          console.error('Failed to fetch professor data', err);
+        })
+        .finally(() => {
+          setLoading(false);
+          setLoaded(true);
+        });
     }
   }, [userInfo]);
+  
+
+  useEffect(() => {
+    if (
+      !loaded ||
+      loading ||
+      !headingRef.current ||
+      settingsTabOpen ||
+      document.querySelector('[data-testid="alert"]') !== null ||
+      !professorData.courses
+    ) return;
+  
+    const timeout = setTimeout(() => {
+      if (headingRef.current) {
+        headingRef.current.focus();
+      }
+    }, 100);
+  
+    return () => clearTimeout(timeout);
+  }, [loaded, headingRef, professorData]);
 
   return (
-    <main className='dashboardOuter' role="main">
+    <main className='dashboardProfTestingOuter' role="main">
+      <h2 id="professor-testing-heading">Professor Testing</h2>
+  
       {loading ? (
-        <div className="loadingScreen" role="status" aria-live="polite">
-          <div className="spinner">
-            <div className="spinner-icon" aria-hidden="true"></div>
-            <p className="spinner-text">Loading accommodations...</p>
-          </div>
+        <div className="spinnerClassItem" role="status" aria-label="Loading, please wait">
+        <div className="spinner-iconClassItem" aria-hidden="true"></div>
+        <h3 className="spinner-textClassItem">Loading...</h3>
         </div>
       ) : (
-        <div >
-          <h2 ref={headingRef} tabIndex={0} id="professor-testing-heading">PROFESSOR TESTING</h2>
-  
+        <div>
           <div className="filterButtonContainer">
-            <button onClick={toggleFilter} aria-pressed={showStudentsWithExams}>
+            <button ref={headingRef} onClick={toggleFilter} aria-pressed={showStudentsWithExams}>
               {showStudentsWithExams ? 'Filter: Show Students with Exams' : 'Filter: Show All Students'}
             </button>
           </div>
   
           {professorData?.courses.map((course) => (
             <section key={course.id} className="courseCard" aria-labelledby={`course-heading-${course.id}`}>
-              <h3 id={`course-heading-${course.id}`} className="sr-only">{`${course.name} (${course.department})`}</h3>
+              <h3 id={`course-heading-${course.id}`} className="sr-only">
+                {`${course.name} (${course.department})`}
+              </h3>
+  
               <button
-                className="courseDropdown"
+                className="courseDropdownTesting"
                 onClick={() => toggleDropdown(course.id, true)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
@@ -140,7 +173,7 @@ function ProfessorTesting({ userInfo, settingsTabOpen }) {
                 aria-label={`Toggle students list for ${course.name}`}
               >
                 {course.name} ({course.department})
-                <span aria-hidden="true">{openProfessorCourses[course.id] ? "🔼" : "🔽"}</span>
+                <span aria-hidden="true">{openProfessorCourses[course.id] ? <FontAwesomeIcon icon={faCaretUp} /> : <FontAwesomeIcon icon={faCaretDown} />}</span>
               </button>
   
               <div className="examModalButton">
@@ -179,19 +212,26 @@ function ProfessorTesting({ userInfo, settingsTabOpen }) {
                           ref={index === 0 ? (el) => studentRefs.current[course.id] = el : null}
                           role="region"
                           aria-label={`Student: ${student.account.name}`}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault();
+                              const detailsElement = e.target.querySelector('.examsDropdown');
+                              if (detailsElement) {
+                                detailsElement.open = !detailsElement.open;
+                              }
+                            }
+                          }}
                         >
                           <details className="examsDropdown">
-                            <summary>
-                              {student.account.name}
-                            </summary>
-                            <div><strong>UIN:</strong> {student.UIN || 'N/A'}</div>
-                            <div><strong>Email:</strong> {student.account.email || 'N/A'}</div>
+                            <summary tabIndex={-1}>{student.account.name}</summary>
+                            <div><strong>UIN: </strong> {student.UIN || 'N/A'}</div>
+                            <div><strong>Email: </strong> {student.account.email || 'N/A'}</div>
   
                             {studentExams.length > 0 ? (
                               <>
                                 <div>Exams:</div>
                                 {studentExams.map((exam) => (
-                                  <div key={exam.id} className="professorTestingStudentCard" tabIndex={0}>
+                                  <div key={exam.id} className="professorTestingStudentCardInner">
                                     <div><strong>Name:</strong> {exam.name}</div>
                                     <div><strong>Date:</strong> {new Date(exam.date).toLocaleDateString()}</div>
                                     <div><strong>Location:</strong> {exam.location}</div>
@@ -205,7 +245,7 @@ function ProfessorTesting({ userInfo, settingsTabOpen }) {
                                 ))}
                               </>
                             ) : (
-                              <div className="noExams" tabIndex={0}>
+                              <div className="noExams">
                                 No exams assigned.
                               </div>
                             )}
@@ -231,7 +271,7 @@ function ProfessorTesting({ userInfo, settingsTabOpen }) {
         />
       )}
     </main>
-  );
+  );  
   
 }
 

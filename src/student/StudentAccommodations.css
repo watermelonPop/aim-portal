@@ -3,7 +3,6 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
-    font-family: Arial, sans-serif;
   }
   
   /* Center the main heading */
@@ -19,19 +18,28 @@
     display: block;
     margin: 0 auto 20px auto;
     padding: 10px 15px;
-    background-color: #6a0000;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+    border: 2px solid var(--foreground-color);
+    border-radius: 1rem;
+    background-color: var(--background-color);
+    color: var(--foreground-color);
   }
-  
-  .applyAccommodationButton:focus,
+
   .applyAccommodationButton:hover,
-  .applyAssistiveButton:focus,
-  .applyAssistiveButton:hover {
-    outline: 2px solid #b72222;
+  .applyAssistiveButton:hover{
+    background-color: var(--foreground-color);
+    color: var(--background-color);
   }
+
+  body.highlight-hover-enabled .applyAccommodationButton:hover{
+    background-color: var(--highlight-hover-color);
+  }
+
+  body.highlight-hover-enabled .applyAssistiveButton:hover{
+    background-color: var(--highlight-hover-color);
+  }
+
+
+  
   
   /* Container for accommodations - center cards using flexbox */
   .accommodationsContainer {
@@ -44,35 +52,36 @@
   
   /* Accommodation cards: larger size, more rounded edges, subtle shadow */
   .accommodationCard {
-    background-color: #fff;
-    border: 1px solid #ccc;
     border-radius: 8px;
     padding: 15px;
     width: 320px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    outline: none;
     text-align: left;
+    border: 2px solid var(--text-color);
+    outline: none;
   }
   
-  .accommodationCard:focus {
-    outline: 2px solid #b72222;
-  }
   
   /* Delete Request button styling */
   .accommodationCard button {
     margin-top: 10px;
     padding: 5px 10px;
-    background-color: #d9534f;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+    border: 2px solid var(--foreground-color);
+    border-radius: 1rem;
+    background-color: var(--background-color);
+    color: var(--foreground-color);
+  }
+
+  .accommodationCard button:hover, .accommodationCard button:focus{
+    background-color: var(--foreground-color);
+    color: var(--background-color);
+  }
+
+  .applyAccommodationButton:focus, .applyAssistiveButton:focus{
+    background-color: var(--foreground-color);
+    color: var(--background-color);
   }
   
-  .accommodationCard button:focus,
-  .accommodationCard button:hover {
-    outline: 2px solid #c9302c;
-  }
   
   /* ---------------------- Modal Overlay & Content ---------------------- */
   .saModalOverlay {

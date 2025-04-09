@@ -31,6 +31,7 @@ function CustomFileInput({ onFileChange, fileLabel = "Upload Supporting Form (op
         <span className="fileNameSpan" aria-live="polite">{fileName}</span>
       </div>
       <input
+        tabIndex={-1}
         type="file"
         accept="application/pdf"
         ref={inputRef}

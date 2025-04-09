@@ -203,19 +203,3 @@ describe('UserDashboard', () => {
     fireEvent.click(toggleBtn);
     expect(toggleBtn).toHaveAttribute('aria-expanded', 'true');
   });
-
-  test('focusable accommodations info box is present', () => {
-    render(
-      <UserDashboard
-        userInfo={mockUserInfo}
-        displayHeaderRef={mockDisplayHeaderRef}
-        lastIntendedFocusRef={mockLastIntendedFocusRef}
-        settingsTabOpen={false}
-        setCurrentTab={mockSetCurrentTab}
-        tabs={mockTabs}
-      />
-    );
-
-    const infoBox = screen.getByRole('note');
-    expect(infoBox).toHaveAttribute('tabindex', '0');
-  });

@@ -4,7 +4,7 @@ import UserAccommodations from './user/userAccommodations';
 import StudentAccommodations from './student/studentAccommodations';
 import ProfessorAccommodations from './professor/professorAccommodations';
 
-export function Accommodations({ userInfo, setAlertMessage, setShowAlert, settingsTabOpen }) {
+export function Accommodations({ userInfo, setAlertMessage, setShowAlert, settingsTabOpen, displayHeaderRef }) {
 
   return (
     <main className='dashboardOuter' data-testid='basicAccommodations' id='basicAccommodations'>
@@ -14,6 +14,7 @@ export function Accommodations({ userInfo, setAlertMessage, setShowAlert, settin
           setAlertMessage={setAlertMessage}
           setShowAlert={setShowAlert}
           settingsTabOpen={settingsTabOpen}
+          displayHeaderRef={displayHeaderRef}
         />
       )}
 
@@ -23,6 +24,7 @@ export function Accommodations({ userInfo, setAlertMessage, setShowAlert, settin
           setAlertMessage={setAlertMessage}
           setShowAlert={setShowAlert}
           settingsTabOpen={settingsTabOpen}
+          displayHeaderRef={displayHeaderRef}
         />
       )}
       
@@ -30,7 +32,8 @@ export function Accommodations({ userInfo, setAlertMessage, setShowAlert, settin
         <ProfessorAccommodations userInfo={userInfo}
         setAlertMessage={setAlertMessage}
         setShowAlert={setShowAlert}
-        settingsTabOpen={settingsTabOpen}/>
+        settingsTabOpen={settingsTabOpen}
+        displayHeaderRef={displayHeaderRef}/>
       )}
     </main>
   );
