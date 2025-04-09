@@ -34,6 +34,11 @@
   outline: 2px solid var(--highlight-keyboard-focus-color) !important;
   border-radius: 1rem;
   }
+
+  .examItem button:focus{
+    background-color: var(--foreground-color);
+    color: var(--background-color);
+  }
   
   .examItem button {
     padding: 5px 10px;
@@ -92,12 +97,21 @@
     display: block;
     margin-bottom: 5px;
   }
+
+  body.highlight-keyboard-focus-enabled .modalContent select:focus{
+    outline: 2px solid var(--highlight-keyboard-focus-color) !important;
+    outline-offset: 5px;
+    border-radius: 1rem;
+  }
   
   .modalContent select,
   .modalContent input[type="file"] {
     width: 100%;
     padding: 5px;
     margin-bottom: 15px;
+    border-radius: 1rem;
+    background-color: var(--background-color);
+    border: 2px solid var(--text-color);
   }
   
   .modalButtons {
@@ -110,8 +124,13 @@
     padding: 5px 10px;
     background-color: var(--background-color);
     color: var(--foreground-color);
-    border: none;
-    border-radius: 3px;
+    border: 2px solid var(--foreground-color);
+    border-radius: 1rem;
     cursor: var(--custom-hover-cursor);
+  }
+
+  .modalButtons button:hover, .modalButtons button:focus{
+    background-color: var(--foreground-color);
+    color: var(--background-color);
   }
   

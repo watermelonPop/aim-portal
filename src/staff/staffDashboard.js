@@ -2,6 +2,8 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import PopupModal from "../PopupModal"; 
 import StaffRequests from './staffRequests';
 import StaffStudentProfile from './staffStudentProfile';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faMagnifyingGlass, faListCheck, faBell} from '@fortawesome/free-solid-svg-icons';
 
 
 //helper functions
@@ -45,7 +47,7 @@ function DropdownSection({ title, isOpen, toggleOpen, children }) {
 
 // ============================== MAIN STAFF DASH FUNCTION ==============================================//
 
-function StaffDashboard({ userPermissions, userInfo }) {
+function StaffDashboard({ userPermissions, userInfo, displayHeaderRef }) {
 
   // CONSTANTS UNTIL LINE 513 -------------------------------------------------------------------------------------------------------------------------------
 
@@ -710,8 +712,9 @@ function openModal() {
               aria-label="Search for students"
               onClick={() => setView("students")}
               className="staff-action-btn"
+              ref={displayHeaderRef}
             >
-              🔍 Student Search
+              <FontAwesomeIcon icon={faMagnifyingGlass} /> Student Search
             </button>
             <button
               className="question-icon-btn"
@@ -745,7 +748,7 @@ function openModal() {
               aria-label="Manage accommodation requests"
               className="staff-action-btn"
             >
-              📌 Manage Requests
+              <FontAwesomeIcon icon={faListCheck} /> Manage Requests
             </button>
             <button
               className="question-icon-btn"
@@ -904,7 +907,7 @@ function openModal() {
 
     {view === null && (
       <aside className="staff-alerts">
-        <h3>📢 Alerts</h3>
+        <h3><FontAwesomeIcon icon={faBell} /> Alerts</h3>
         <div className="alert-box">
           {loadingDates ? (
             <div className="staffDash-loading-spinner" aria-label="Loading alerts..." />

@@ -1,40 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-
-function StudentForms({ userInfo, displayHeaderRef, settingsTabOpen, lastIntendedFocusRef }) {
-        const localRef = useRef(null);
-        
-            // If ref is passed in (from parent), use that. Otherwise use internal.
-            const headingRef = displayHeaderRef || localRef;
-        
-            useEffect(() => {
-                if (!headingRef.current || settingsTabOpen === true) return;
-              
-                if (lastIntendedFocusRef?.current !== headingRef.current) {
-                    lastIntendedFocusRef.current = headingRef.current;
-                }
-            }, [settingsTabOpen, headingRef]);
-              
-            useEffect(() => {
-                if (!headingRef.current || settingsTabOpen === true) return;
-              
-                const frame = requestAnimationFrame(() => {
-                  const isAlertOpen = document.querySelector('[data-testid="alert"]') !== null;
-              
-                  if (
-                    headingRef.current &&
-                    !isAlertOpen &&
-                    document.activeElement !== headingRef.current &&
-                    lastIntendedFocusRef.current === headingRef.current
-                  ) {
-                    console.log("FOCUSING DASH");
-                    console.log("Intent:", lastIntendedFocusRef.current, "Target:", headingRef.current);
-                    headingRef.current.focus();
-                    lastIntendedFocusRef.current = null;
-                  }
-                });
-              
-                return () => cancelAnimationFrame(frame);
-        }, [settingsTabOpen, headingRef]);
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faEnvelope} from '@fortawesome/free-solid-svg-icons';
+function StudentForms({ userInfo, settingsTabOpen, displayHeaderRef }) {
         
         const [view, setView] = useState(null);
   const [selectedDisability, setSelectedDisability] = useState('');
@@ -328,7 +295,6 @@ function StudentForms({ userInfo, displayHeaderRef, settingsTabOpen, lastIntende
         >
           <div className="studentForms-selection-header">
             <h2
-              tabIndex={0}
               aria-label="Select an option to proceed, upload forms or manage forms."
             >
               What would you like to do?
@@ -337,8 +303,9 @@ function StudentForms({ userInfo, displayHeaderRef, settingsTabOpen, lastIntende
               className="studentForms-contact-advisor-btn-small"
               onClick={handleContactAdvisor}
               aria-label="Contact your advisor through email"
+              ref={displayHeaderRef}
             >
-              📧 Contact Advisor (Outlook)
+              <FontAwesomeIcon icon={faEnvelope}aria-hidden="true" /> Contact Advisor (Outlook)
             </button>
           </div>
           <div className="studentForms-selection-buttons">

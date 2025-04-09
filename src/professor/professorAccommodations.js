@@ -1,8 +1,16 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, createRef } from 'react';
 import './Professor.css';
 
-function ProfessorAccommodations({ userInfo, setAlertMessage, setShowAlert, displayHeaderRef, settingsTabOpen, lastIntendedFocusRef }) {
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faCaretDown, faCaretUp} from '@fortawesome/free-solid-svg-icons';
+
+
+
+function ProfessorAccommodations({ userInfo, setAlertMessage, setShowAlert, settingsTabOpen, displayHeaderRef }) {
+  const localRef = useRef(null);
+  const headingRef = displayHeaderRef || localRef;
   const [loading, setLoading] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   const [professorData, setProfessorData] = useState(null);
   const [openProfessorCourses, setOpenProfessorCourses] = useState({});
   const accommodationRefs = useRef({});
@@ -23,7 +31,7 @@ function ProfessorAccommodations({ userInfo, setAlertMessage, setShowAlert, disp
       const isOpen = !prev[courseId];
       if (isOpen && focusAfter) {
         setTimeout(() => {
-          accommodationRefs.current[courseId]?.focus();
+          accommodationRefs.current[courseId]?.current?.focus(); // ✅ focus on courseCard
         }, 0);
       }
       return {
@@ -33,33 +41,6 @@ function ProfessorAccommodations({ userInfo, setAlertMessage, setShowAlert, disp
     });
   };
 
-  const localRef = useRef(null);
-  const headingRef = displayHeaderRef || localRef;
-
-  useEffect(() => {
-    if (!headingRef.current || settingsTabOpen === true) return;
-    if (lastIntendedFocusRef?.current !== headingRef.current) {
-      lastIntendedFocusRef.current = headingRef.current;
-    }
-  }, [settingsTabOpen, headingRef]);
-
-  useEffect(() => {
-    if (!headingRef.current || settingsTabOpen === true) return;
-    const frame = requestAnimationFrame(() => {
-      const isAlertOpen = document.querySelector('[data-testid="alert"]') !== null;
-      if (
-        headingRef.current &&
-        !isAlertOpen &&
-        document.activeElement !== headingRef.current &&
-        lastIntendedFocusRef.current === headingRef.current
-      ) {
-        headingRef.current.focus();
-        lastIntendedFocusRef.current = null;
-      }
-    });
-    return () => cancelAnimationFrame(frame);
-  }, [settingsTabOpen, headingRef]);
-
   useEffect(() => {
     if (userInfo?.role === 'PROFESSOR' && userInfo?.id) {
       setLoading(true);
@@ -67,87 +48,120 @@ function ProfessorAccommodations({ userInfo, setAlertMessage, setShowAlert, disp
         .then(res => res.json())
         .then(data => setProfessorData(data))
         .catch(err => console.error('Failed to fetch professor data', err))
-        .finally(() => setLoading(false));
+        .finally(() => {
+          setLoading(false);
+          setLoaded(true);
+        });
     }
   }, [userInfo]);
+  
+
+  useEffect(() => {
+      if (
+        !loaded ||
+        loading ||
+        !headingRef.current ||
+        settingsTabOpen ||
+        document.querySelector('[data-testid="alert"]') !== null ||
+        !professorData.courses
+      ) return;
+    
+      const timeout = setTimeout(() => {
+        if (headingRef.current) {
+          headingRef.current.focus();
+        }
+      }, 100);
+    
+      return () => clearTimeout(timeout);
+  }, [loaded, headingRef, professorData]);
 
   return (
-    <>
+    <div className='profAccommodationsOuter' role="region" aria-labelledby="professor-accommodations-heading">
+      <h2 id="professor-accommodations-heading">
+        Professor Accommodations
+      </h2>
+  
       {loading ? (
-        <div className="loadingScreen" role="status" aria-live="polite">
-          <div className="spinner">
-            <div className="spinner-icon"></div>
-            <p className="spinner-text">Loading accommodations...</p>
-          </div>
+        <div className="spinnerClassItem" role="status" aria-label="Loading, please wait">
+        <div className="spinner-iconClassItem" aria-hidden="true"></div>
+        <h3 className="spinner-textClassItem">Loading...</h3>
         </div>
       ) : (
-        <div role="region" aria-labelledby="professor-accommodations-heading">
-          <h2 id="professor-accommodations-heading" ref={headingRef} tabIndex={0}>
-            PROFESSOR ACCOMMODATIONS
-          </h2>
-
-          {professorData?.courses.map((course) => {
-            const filtered = course.accommodations.filter(acc => allowedAccommodations.has(acc.type));
-            return (
-              <div key={course.id} className="courseCard">
-                <button
-                  className="courseDropdown"
-                  onClick={() => toggleDropdown(course.id, true)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      toggleDropdown(course.id, true);
-                    }
-                  }}
-                  tabIndex={0}
-                  aria-expanded={openProfessorCourses[course.id]}
-                  aria-controls={`accommodations-${course.id}`}
-                  aria-label={`Toggle accommodations for ${course.name} (${course.department})`}
+        professorData?.courses.map((course, index) => {
+          const filtered = course.accommodations.filter(acc =>
+            allowedAccommodations.has(acc.type)
+          );
+  
+          // Initialize ref for each course
+          if (!accommodationRefs.current[course.id]) {
+            accommodationRefs.current[course.id] = createRef();
+          }
+  
+          return (
+            <div
+              key={course.id}
+              className="courseCard"
+              ref={index === 0 ? headingRef : accommodationRefs.current[course.id]}
+              tabIndex={0}
+              onClick={() => toggleDropdown(course.id, true)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  toggleDropdown(course.id, true);
+                }
+              }}
+            >
+              <button
+                tabIndex={-1}
+                className="courseDropdown"
+                aria-expanded={openProfessorCourses[course.id]}
+                aria-controls={`accommodations-${course.id}`}
+                aria-label={`Toggle accommodations for ${course.name} (${course.department})`}
+              >
+                {course.name} ({course.department})
+                <span aria-hidden="true">
+                  {openProfessorCourses[course.id]
+                    ? <FontAwesomeIcon icon={faCaretUp} />
+                    : <FontAwesomeIcon icon={faCaretDown} />}
+                </span>
+              </button>
+  
+              {openProfessorCourses[course.id] && (
+                <div
+                  id={`accommodations-${course.id}`}
+                  role="region"
+                  aria-label={`Accommodations for ${course.name}`}
                 >
-                  {course.name} ({course.department})
-                  <span aria-hidden="true">
-                    {openProfessorCourses[course.id] ? "🔼" : "🔽"}
-                  </span>
-                </button>
-
-                {openProfessorCourses[course.id] && (
-                  <div
-                    id={`accommodations-${course.id}`}
-                    role="region"
-                    aria-label={`Accommodations for ${course.name}`}
-                  >
-                    {filtered.length > 0 ? (
-                      <div role="list">
-                        {filtered.map((acc, index) => (
-                          <div
-                            key={acc.id}
-                            className="accommodationCard"
-                            tabIndex={0}
-                            role="listitem"
-                            ref={index === 0 ? (el) => accommodationRefs.current[course.id] = el : null}
-                          >
-                            <div><strong>Type:</strong> {acc.type || 'N/A'}</div>
-                            <div><strong>Status:</strong> {acc.status}</div>
-                            <div><strong>Date Requested:</strong> {new Date(acc.date_requested).toLocaleDateString()}</div>
-                            <div><strong>Advisor ID:</strong> {acc.advisorId || 'N/A'}</div>
-                            <div><strong>Notes:</strong> {acc.notes}</div>
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="noAccommodations" tabIndex={0} aria-live="polite">
-                        No accommodations available.
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
+                  {filtered.length > 0 ? (
+                    <div role="list" className="accommodationCards">
+                      {filtered.map((acc, index) => (
+                        <div
+                          key={acc.id}
+                          className="accommodationCard"
+                          tabIndex={0}
+                          role="listitem"
+                        >
+                          <div><strong>Type:</strong> {acc.type || 'N/A'}</div>
+                          <div><strong>Status:</strong> {acc.status}</div>
+                          <div><strong>Date Requested:</strong> {new Date(acc.date_requested).toLocaleDateString()}</div>
+                          <div><strong>Advisor ID:</strong> {acc.advisorId || 'N/A'}</div>
+                          <div><strong>Notes:</strong> {acc.notes}</div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="noAccommodations" tabIndex={0} aria-live="polite">
+                      No accommodations available.
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          );
+        })
       )}
-    </>
-  );
+    </div>
+  );  
 }
 
 export default ProfessorAccommodations;

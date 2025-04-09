@@ -10,42 +10,14 @@ const ACCOMMODATION_OPTIONS = [
   "Use of Assistive Technology"
 ];
 
-function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastIntendedFocusRef }) {
+function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen }) {
   const localRef = useRef(null);
   const headingRef = displayHeaderRef || localRef;
-  
-  // Provide a default object if lastIntendedFocusRef is not provided.
-  const safeLastIntendedFocusRef = lastIntendedFocusRef || { current: null };
-
-  // Header focus management
-  useEffect(() => {
-    if (!headingRef.current || settingsTabOpen === true) return;
-    if (safeLastIntendedFocusRef.current !== headingRef.current) {
-      safeLastIntendedFocusRef.current = headingRef.current;
-    }
-  }, [settingsTabOpen, headingRef, safeLastIntendedFocusRef]);
-
-  useEffect(() => {
-    if (!headingRef.current || settingsTabOpen === true) return;
-    const frame = requestAnimationFrame(() => {
-      const isAlertOpen = document.querySelector('[data-testid="alert"]') !== null;
-      if (
-        headingRef.current &&
-        !isAlertOpen &&
-        document.activeElement !== headingRef.current &&
-        safeLastIntendedFocusRef.current === headingRef.current
-      ) {
-        headingRef.current.focus();
-        safeLastIntendedFocusRef.current = null;
-      }
-    });
-    return () => cancelAnimationFrame(frame);
-  }, [settingsTabOpen, headingRef, safeLastIntendedFocusRef]);
-
   // State for exam data
   const [upcomingExams, setUpcomingExams] = useState([]);
   const [submittedExams, setSubmittedExams] = useState([]);
   const [loadingUpcoming, setLoadingUpcoming] = useState(false);
+  const [loadedUpcoming, setLoadedUpcoming] = useState(false);
   const [loadingSubmitted, setLoadingSubmitted] = useState(false);
   const [errorUpcoming, setErrorUpcoming] = useState('');
   const [errorSubmitted, setErrorSubmitted] = useState('');
@@ -76,8 +48,12 @@ function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastInten
         console.error(err);
         setErrorUpcoming(err.message);
       })
-      .finally(() => setLoadingUpcoming(false));
+      .finally(() => {
+        setLoadingUpcoming(false);
+        setLoadedUpcoming(true);
+      });
   }, [userInfo]);
+  
 
   // Fetch submitted exams from /api/getStudentSubmittedExams
   useEffect(() => {
@@ -110,23 +86,7 @@ function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastInten
     if (e.key === 'Escape') {
       setIsModalOpen(false);
       setSelectedExam(null);
-    } else if (e.key === 'Tab') {
-      const focusableElements = modalRef.current.querySelectorAll('p, select, button, input');
-      if (focusableElements.length === 0) {
-        e.preventDefault();
-        return;
-      }
-      const firstElement = focusableElements[0];
-      const lastElement = focusableElements[focusableElements.length - 1];
-      if (!e.shiftKey && document.activeElement === lastElement) {
-        e.preventDefault();
-        firstElement.focus();
-      }
-      if (e.shiftKey && document.activeElement === firstElement) {
-        e.preventDefault();
-        lastElement.focus();
-      }
-    }
+    } 
   };
 
   // Open the accommodation modal for a selected exam.
@@ -189,13 +149,32 @@ function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastInten
     }
   };
 
+  useEffect(() => {
+    if (
+      !loadedUpcoming ||
+      loadingUpcoming ||
+      !headingRef.current ||
+      settingsTabOpen ||
+      document.querySelector('[data-testid="alert"]') !== null ||
+      isModalOpen
+    ) return;
+  
+    const timeout = setTimeout(() => {
+      if (headingRef.current) {
+        headingRef.current.focus();
+      }
+    }, 100);
+  
+    return () => clearTimeout(timeout);
+}, [loadedUpcoming, upcomingExams, headingRef, isModalOpen]);
+
   return (
     <div className="studentTesting" role="main">
-      <h2 ref={headingRef} tabIndex={0} className="dashboardTitle">STUDENT TESTING</h2>
+      <h2 className="dashboardTitle">STUDENT TESTING</h2>
       
       {/* Upcoming Exams Section */}
       <section className="upcomingExams">
-        <h3 tabIndex={0}>Upcoming Exams</h3>
+        <h3>Upcoming Exams</h3>
         {loadingUpcoming ? (
           <p>Loading upcoming exams...</p>
         ) : errorUpcoming ? (
@@ -204,23 +183,26 @@ function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastInten
           <p>No upcoming exams available.</p>
         ) : (
           <ul>
-            {upcomingExams.map((exam) => (
-              <li key={exam.id} className="examItem" tabIndex={0}>
-                <div
-                  className="examDetails"
-                  aria-label={`${exam.name}, scheduled on ${new Date(exam.date).toLocaleDateString()} at ${exam.location} for course ${exam.courseName}`}
-                >
-                  <strong>{exam.name}</strong> - {new Date(exam.date).toLocaleDateString()} at {exam.location} (Course: {exam.courseName})
-                </div>
-                <button
-                  onClick={() => openAccommodationModal(exam)}
-                  aria-label={`Apply for accommodation for ${exam.name}`}
-                >
-                  Apply for Accommodation
-                </button>
-              </li>
-            ))}
-          </ul>
+  {upcomingExams.map((exam, index) => (
+    <li key={exam.id} className="examItem">
+      <div
+        className="examDetails"
+        aria-label={`${exam.name}, scheduled on ${new Date(exam.date).toLocaleDateString()} at ${exam.location} for course ${exam.courseName}`}
+      >
+        <strong>{exam.name}</strong> - {new Date(exam.date).toLocaleDateString()} at {exam.location} (Course: {exam.courseName})
+      </div>
+      <button
+        onClick={() => openAccommodationModal(exam)}
+        aria-label={`Apply for accommodation for ${exam.name}`}
+        ref={index === 0 ? displayHeaderRef : null}
+        id={index === 0 ? "firstBtn" : null}
+      >
+        Apply for Accommodation
+      </button>
+    </li>
+  ))}
+</ul>
+
         )}
       </section>
 
@@ -236,7 +218,7 @@ function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastInten
         ) : (
           <ul>
             {submittedExams.map((exam) => (
-              <li key={exam.id} className="examItem" tabIndex={0}>
+              <li key={exam.id} className="examItem">
                 <div
                   className="examDetails"
                   aria-label={`Submitted exam ${exam.name}, scheduled on ${new Date(exam.date).toLocaleDateString()} for course ${exam.courseName}`}
@@ -253,6 +235,7 @@ function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastInten
             ))}
           </ul>
         )}
+        <a href="#firstBtn">Back to Top</a>
       </section>
 
       {/* Accommodation Application Modal */}
@@ -267,14 +250,12 @@ function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastInten
             role="dialog"
             aria-modal="true"
             aria-labelledby="accommodation-modal-heading"
-            tabIndex={0}
-            ref={modalRef}
             onClick={(e) => e.stopPropagation()}
             onKeyDown={handleModalKeyDown}
           >
             <h2 id="accommodation-modal-heading">Apply for Accommodation</h2>
             {selectedExam && (
-              <p tabIndex={0} className="modalExamDetails">
+              <p className="modalExamDetails">
                 {selectedExam.name} - {new Date(selectedExam.date).toLocaleDateString()}
               </p>
             )}
@@ -285,6 +266,7 @@ function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastInten
                 value={selectedAccommodation}
                 onChange={(e) => setSelectedAccommodation(e.target.value)}
                 required
+                ref={modalRef}
               >
                 <option value="" disabled>-- Select an option --</option>
                 {ACCOMMODATION_OPTIONS.map((option, index) => (
@@ -298,7 +280,7 @@ function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastInten
                 fileLabel="Upload Supporting Form (optional)"
               />
               {uploadedFile && (
-                <p tabIndex={0} aria-label={`File selected: ${uploadedFile.name}`}>
+                <p aria-label={`File selected: ${uploadedFile.name}`}>
                   Selected File: {uploadedFile.name}
                 </p>
               )}
@@ -326,12 +308,11 @@ function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen, lastInten
             role="dialog"
             aria-modal="true"
             aria-labelledby="success-modal-heading"
-            tabIndex={0}
             onClick={(e) => e.stopPropagation()}
           >
             <h2 id="success-modal-heading">Request Submitted</h2>
-            <p tabIndex={0}>Your accommodation request has been submitted successfully.</p>
-            <p tabIndex={0}>
+            <p >Your accommodation request has been submitted successfully.</p>
+            <p >
               Check your accommodations tab to view your request statuses.
             </p>
             <div className="modalButtons">

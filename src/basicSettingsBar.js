@@ -3,11 +3,10 @@ import { useEffect, useState, useCallback, useRef, useLayoutEffect } from 'react
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faToggleOff, faToggleOn, faArrowLeft, faArrowRight} from '@fortawesome/free-solid-svg-icons';
 
-export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logout, setLoggedIn, displayHeaderRef, lastIntendedFocusRef }) {
+export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logout, setLoggedIn }) {
         const settingsRef = useRef(null);
         const backBtnRef = useRef(null);
         const hasFocusedRef = useRef(false);
-
         const categories = {
                 Profiles: ['disability_profile'],
                 Text: ['font_size', 'letter_spacing', 'align_text', 'highlight_links', 'highlight_links_color'],
@@ -51,22 +50,6 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                 setSettings({ ...settings, ...updates });
         };
 
-        useEffect(() => {
-                if (selectedCategory !== null && !hasFocusedRef.current) {
-                    const raf = requestAnimationFrame(() => {
-                        backBtnRef.current?.focus();
-                        hasFocusedRef.current = true;
-                    });
-                    return () => cancelAnimationFrame(raf);
-                } else if (selectedCategory === null) {
-                    const raf = requestAnimationFrame(() => {
-                        settingsRef.current?.focus();
-                        hasFocusedRef.current = false;
-                    });
-                    return () => cancelAnimationFrame(raf);
-                }
-        }, [selectedCategory]);
-
         useLayoutEffect(() => {
                 const scrollY = localStorage.getItem("scroll-position-settings");
                 const savedCategory = localStorage.getItem("selectedCategory");
@@ -92,6 +75,22 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                 }
         }, [selectedCategory]);
 
+        useEffect(() => {
+                if (selectedCategory !== null && !hasFocusedRef.current) {
+                    const raf = requestAnimationFrame(() => {
+                        backBtnRef.current?.focus();
+                        hasFocusedRef.current = true;
+                    });
+                    return () => cancelAnimationFrame(raf);
+                } else if (selectedCategory === null) {
+                    const raf = requestAnimationFrame(() => {
+                        settingsRef.current?.focus();
+                        hasFocusedRef.current = false;
+                    });
+                    return () => cancelAnimationFrame(raf);
+                }
+        }, [selectedCategory]);
+
         BasicSettingsBar.setSelectedCategory = setSelectedCategory;
         BasicSettingsBar.selectedCategory = selectedCategory;
         BasicSettingsBar.settings = settings;
@@ -107,12 +106,11 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                 >
                 <div className="innerSettingsNav">
                         <div className="settingsHeading">
-                        <button id="closeSettingPanel" ref={settingsRef} onClick={onClose} aria-label="close" data-testid="closeSettingsBtn">
+                        <button ref={settingsRef} id="closeSettingPanel" onClick={onClose} aria-label="close" data-testid="closeSettingsBtn">
                         x
                         </button>
                         <h2
                         className="visuallyFocusedHeading"
-                        tabIndex={0}
                         data-testid="settingsTitle"
                         >
                         Settings
@@ -152,17 +150,25 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                         log out
                                         </button>
                                 </li>
+                                <li>
+                                <a href="#" onClick={(e) => {
+                                        e.preventDefault();
+                                        document.getElementById("closeSettingPanel").focus();
+                                        document.body.scrollTop = 0;
+                                        document.getElementById("settingsScroll").scrollTop = 0;
+                                }}>Back to Top</a>
+                                </li>
                                 </>
                                 ) : selectedCategory === "Text" ? (
                                 <>
                                         <li id="backSettingPanelOuter">
-                                                <button data-testid="backBtn" ref={backBtnRef} aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)}>
+                                                <button ref={backBtnRef} data-testid="backBtn" aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)}>
                                                         <FontAwesomeIcon icon={faArrowLeft} aria-hidden="true" />
                                                 </button>
-                                                <h3 tabIndex={0}>Text</h3>
+                                                <h3>Text</h3>
                                         </li>
                                         <li>
-                                                <h3 id="fontLabel" tabIndex={0}>Font</h3>
+                                                <h3 id="fontLabel">Font</h3>
                                                 <form onSubmit={(e) => e.preventDefault()}>
                                                 <select
                                                         aria-labelledby="fontLabel"
@@ -190,7 +196,7 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                                 </form>
                                         </li>
                                         <li>
-                                                <h3 tabIndex={0}>Text Size</h3>
+                                                <h3>Text Size</h3>
                                                 <form onSubmit={(e) => e.preventDefault()}>
                                                 <button
                                                 tabIndex={0}
@@ -205,7 +211,7 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                                 >
                                                 -
                                                 </button>
-                                                <label tabIndex={0} data-testid='txtSizeLabel'>{settings.font_size}</label>
+                                                <label data-testid='txtSizeLabel'>{settings.font_size}</label>
                                                 <button
                                                 tabIndex={0}
                                                 type="button"
@@ -223,7 +229,7 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                         </li>
 
                                         <li>
-                                                <h3 tabIndex={0}>Letter Spacing</h3>
+                                                <h3 >Letter Spacing</h3>
                                                 <form onSubmit={(e) => e.preventDefault()}>
                                                 <button
                                                 tabIndex={0}
@@ -238,7 +244,7 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                                 >
                                                 -
                                                 </button>
-                                                <label tabIndex={0} data-testid='letterSpacingLabel'>{settings.letter_spacing}</label>
+                                                <label data-testid='letterSpacingLabel'>{settings.letter_spacing}</label>
                                                 <button
                                                 tabIndex={0}
                                                 type="button"
@@ -255,7 +261,7 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                                 </form>
                                         </li>
                                         <li>
-                                                <h3 tabIndex={0}>Word Spacing</h3>
+                                                <h3 >Word Spacing</h3>
                                                 <form onSubmit={(e) => e.preventDefault()}>
                                                 <button
                                                 tabIndex={0}
@@ -269,7 +275,7 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                                 >
                                                 -
                                                 </button>
-                                                <label tabIndex={0}>{settings.word_spacing}</label>
+                                                <label>{settings.word_spacing}</label>
                                                 <button
                                                 tabIndex={0}
                                                 type="button"
@@ -285,7 +291,7 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                                 </form>
                                         </li>
                                         <li>
-                                                <h3 tabIndex={0}>Line Height</h3>
+                                                <h3>Line Height</h3>
                                                 <form onSubmit={(e) => e.preventDefault()}>
                                                 <button
                                                 tabIndex={0}
@@ -299,7 +305,7 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                                 >
                                                 -
                                                 </button>
-                                                <label tabIndex={0}>{settings.line_height}</label>
+                                                <label>{settings.line_height}</label>
                                                 <button
                                                 tabIndex={0}
                                                 type="button"
@@ -315,7 +321,7 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                         </li>
 
                                         <li>
-                                                <h3 id="textAlignLabel" tabIndex={0}>Text Align</h3>
+                                                <h3 id="textAlignLabel">Text Align</h3>
                                                 <form onSubmit={(e) => e.preventDefault()}>
                                                 <select
                                                 tabIndex={0}
@@ -340,35 +346,40 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                                 </form>
                                         </li>
                                         <li>
-                                                <h3 tabIndex={0}>Highlight Links</h3>
+                                                <h3>Highlight Links</h3>
                                                 <form onSubmit={(e) => e.preventDefault()}>
                                                         <button type="button" onClick={handleButtonAction(() => updateSettings({ highlight_links: !settings.highlight_links }))} className="toggleBtn" aria-label="Toggle Highlight Links">{settings.highlight_links === true ? <FontAwesomeIcon className='toggleIcon' icon={faToggleOn} aria-hidden="true" /> : <FontAwesomeIcon icon={faToggleOff} className='toggleIcon' aria-hidden="true" />}</button>
                                                 </form>
                                         </li>
                                         <li>
-                                                <h3 tabIndex={0} id="highlightLinkColorLabel">Highlight Link Color</h3>
+                                                <h3 id="highlightLinkColorLabel">Highlight Link Color</h3>
                                                 <form onSubmit={(e) => e.preventDefault()}>
                                                         <input aria-labelledby="highlightLinkColorLabel" type="color" name="highlight_links_color" value={tempVars.highlight_links_color} onChange={(e) => setTempVars({...tempVars, highlight_links_color: e.target.value})} className="colorInput"/>
                                                         <button type="button" onClick={handleButtonAction(() => updateSettings({ highlight_links_color: tempVars.highlight_links_color }))} className="setBtn" aria-label="Set Highlight Link Color">set</button>
                                                 </form>
                                         </li>
+                                        <a href="#" onClick={(e) => {
+                                                e.preventDefault();
+                                                document.getElementById("backSettingPanel").focus();
+                                                document.body.scrollTop = 0;
+                                        }}>Back to Top</a>
                                 </>
                         )  : selectedCategory === "Visuals" ? (
                                 <>
                                         <li id="backSettingPanelOuter">
-                                                <button data-testid="backBtn" ref={backBtnRef} aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)}>
+                                                <button ref={backBtnRef} data-testid="backBtn" aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)}>
                                                         <FontAwesomeIcon icon={faArrowLeft} aria-hidden="true" />
                                                 </button>
-                                                <h3 tabIndex={0}>Visuals</h3>
+                                                <h3>Visuals</h3>
                                         </li>
                                         <li>
-                                                <h3 tabIndex={0}>Contrast</h3>
+                                                <h3>Contrast</h3>
                                                 <form onSubmit={(e) => e.preventDefault()}>
                                                         <button type="button" onClick={handleButtonAction(() => {
                                                                 let curr = parseInt(settings.contrast.replace("%", ""));
                                                                 updateSettings({ contrast: Math.max(0, curr - 5) + "%" });
                                                         })} className="settingsBtn" aria-label="Decrease Contrast" data-testid="contrastDec">-</button>
-                                                        <label tabIndex={0} data-testid="contrastLabel">{settings.contrast}</label>
+                                                        <label data-testid="contrastLabel">{settings.contrast}</label>
                                                         <button type="button" onClick={handleButtonAction(() => {
                                                                 let curr = parseInt(settings.contrast.replace("%", ""));
                                                                 updateSettings({ contrast: (curr + 5) + "%" });
@@ -376,13 +387,13 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                                 </form>
                                         </li>
                                         <li>
-                                                <h3 tabIndex={0}>Saturation</h3>
+                                                <h3 >Saturation</h3>
                                                 <form onSubmit={(e) => e.preventDefault()}>
                                                         <button type="button" onClick={handleButtonAction(() => {
                                                                 let curr = parseInt(settings.saturation.replace("%", ""));
                                                                 updateSettings({ saturation: Math.max(0, curr - 5) + "%" });
                                                         })} className="settingsBtn" aria-label="Decrease Saturation" data-testid="saturationDec">-</button>
-                                                        <label tabIndex={0}>{settings.saturation}</label>
+                                                        <label >{settings.saturation}</label>
                                                         <button type="button" onClick={handleButtonAction(() => {
                                                                 let curr = parseInt(settings.saturation.replace("%", ""));
                                                                 updateSettings({ saturation: (curr + 5) + "%" });
@@ -390,37 +401,42 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                                 </form>
                                         </li>
                                         <li>
-                                                <h3 tabIndex={0}>Background Color</h3>
+                                                <h3 >Background Color</h3>
                                                 <form onSubmit={(e) => e.preventDefault()}>
                                                         <input type="color" name="background_color" value={tempVars.background_color} onChange={(e) => setTempVars({...tempVars, background_color: e.target.value})} className="colorInput" data-testid="backgroundColorInput"/>
                                                         <button type="button" onClick={handleButtonAction(() => updateSettings({ background_color: tempVars.background_color }))} className="setBtn" aria-label="Set Background Color">set</button>
                                                 </form>
                                         </li>
                                         <li>
-                                                <h3 tabIndex={0}>Foreground Color</h3>
+                                                <h3>Foreground Color</h3>
                                                 <form onSubmit={(e) => e.preventDefault()}>
                                                         <input type="color" name="foreground_color" value={tempVars.foreground_color} onChange={(e) => setTempVars({...tempVars, foreground_color: e.target.value})} className="colorInput" data-testid="foregroundColorInput"/>
                                                         <button type="button" onClick={handleButtonAction(() => updateSettings({ foreground_color: tempVars.foreground_color }))} className="setBtn" aria-label="Set Foreground Color">set</button>
                                                 </form>
                                         </li>
                                         <li>
-                                                <h3 tabIndex={0}>Text Color</h3>
+                                                <h3>Text Color</h3>
                                                 <form onSubmit={(e) => e.preventDefault()}>
                                                         <input type="color" name="text_color" value={tempVars.text_color} onChange={(e) => setTempVars({...tempVars, text_color: e.target.value})} className="colorInput" data-testid="textColorInput"/>
                                                         <button type="button" onClick={handleButtonAction(() => updateSettings({ text_color: tempVars.text_color }))} className="setBtn" aria-label="Set Text Color">set</button>
                                                 </form>
                                         </li>
+                                        <a href="#" onClick={(e) => {
+                                                e.preventDefault();
+                                                document.getElementById("backSettingPanel").focus();
+                                                document.body.scrollTop = 0;
+                                        }}>Back to Top</a>
                                 </>
                         )  : selectedCategory === "Cursor" ? (
                                 <>
                                         <li id="backSettingPanelOuter">
-                                                <button data-testid="backBtn" ref={backBtnRef} aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)}>
+                                                <button ref={backBtnRef} data-testid="backBtn" aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)}>
                                                         <FontAwesomeIcon icon={faArrowLeft} aria-hidden="true" />
                                                 </button>
-                                                <h3 tabIndex={0}>Cursor</h3>
+                                                <h3>Cursor</h3>
                                         </li>
                                         <li>
-                                                <h3 tabIndex={0}>Cursor Size</h3>
+                                                <h3>Cursor Size</h3>
                                                 <form onSubmit={(e) => e.preventDefault()}>
                                                         <button type="button" className="settingsBtn" aria-label="Decrease Cursor Size" onClick={handleButtonAction(() => {
                                                                 let curr = Number(settings.cursor_size);
@@ -429,7 +445,7 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                                                 }
                                                                 updateSettings({ cursor_size: (curr - 1)});
                                                         })}>-</button>
-                                                        <label tabIndex={0} data-testid="cursorSizeLabel">{settings.cursor_size}</label>
+                                                        <label data-testid="cursorSizeLabel">{settings.cursor_size}</label>
                                                         <button type="button" className="settingsBtn" aria-label="Increase Cursor Size" onClick={handleButtonAction(() => {
                                                                 let curr = Number(settings.cursor_size);
                                                                 updateSettings({ cursor_size: (curr + 1)});
@@ -437,30 +453,35 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                                 </form>
                                         </li>
                                         <li>
-                                                <h3 tabIndex={0}>Cursor Color</h3>
+                                                <h3>Cursor Color</h3>
                                                 <form onSubmit={(e) => e.preventDefault()}>
                                                         <input type="color" name="cursor_color" value={tempVars.cursor_color} onChange={(e) => setTempVars({...tempVars, cursor_color: e.target.value})} className="colorInput"/>
                                                         <button type="button" onClick={handleButtonAction(() => updateSettings({ cursor_color: tempVars.cursor_color }))} className="setBtn" aria-label="Set Cursor Color">set</button>
                                                 </form>
                                         </li>
                                         <li>
-                                                <h3 tabIndex={0}>Cursor Border Color</h3>
+                                                <h3>Cursor Border Color</h3>
                                                 <form onSubmit={(e) => e.preventDefault()}>
                                                         <input type="color" name="cursor_border_color" value={tempVars.cursor_border_color} onChange={(e) => setTempVars({...tempVars, cursor_border_color: e.target.value})} className="colorInput"/>
                                                         <button type="button" onClick={handleButtonAction(() => updateSettings({ cursor_border_color: tempVars.cursor_border_color }))} className="setBtn" aria-label="Set Cursor Border Color">set</button>
                                                 </form>
                                         </li>
+                                        <a href="#" onClick={(e) => {
+                                                e.preventDefault();
+                                                document.getElementById("backSettingPanel").focus();
+                                                document.body.scrollTop = 0;
+                                        }}>Back to Top</a>
                                 </>
                         )  : selectedCategory === "Audio" ? (
                                 <>
                                         <li id="backSettingPanelOuter">
-                                                <button data-testid="backBtn" ref={backBtnRef} aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)}>
+                                                <button ref={backBtnRef} data-testid="backBtn" aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)}>
                                                         <FontAwesomeIcon icon={faArrowLeft} aria-hidden="true" />
                                                 </button>
-                                                <h3 tabIndex={0}>Audio</h3>
+                                                <h3>Audio</h3>
                                         </li>
                                         <li>
-                                                <h3 tabIndex={0}>Mute Sounds</h3>
+                                                <h3>Mute Sounds</h3>
                                                 <form onSubmit={(e) => e.preventDefault()}>
                                                         <button type="button" onClick={handleButtonAction(() => {
                                                                 const newMuteValue = !settings.mute_sounds;
@@ -474,20 +495,25 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                                                 }
                                                                 })} className="toggleBtn" aria-label="Toggle Mute Sounds">{settings.mute_sounds === true ? <FontAwesomeIcon className='toggleIcon' icon={faToggleOn} aria-hidden="true" /> : <FontAwesomeIcon icon={faToggleOff} className='toggleIcon' aria-hidden="true" />}</button>
                                                 </form>
+                                                <a href="#" onClick={(e) => {
+                                                e.preventDefault();
+                                                document.getElementById("backSettingPanel").focus();
+                                                document.body.scrollTop = 0;
+                                        }}>Back to Top</a>
                                         </li>
                                 </>
                         )  : selectedCategory === "Profiles" ? (
                                 <>
                                         <li id="backSettingPanelOuter">
-                                                <button data-testid="backBtn" ref={backBtnRef} aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)}>
+                                                <button ref={backBtnRef} data-testid="backBtn" aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)}>
                                                         <FontAwesomeIcon icon={faArrowLeft} aria-hidden="true" />
                                                 </button>
-                                                <h3 tabIndex={0}>Accessibility Profiles</h3>
+                                                <h3>Accessibility Profiles</h3>
                                         </li>
                                         <li>
                                                 <ul className="disProfilesList">
                                                 <li className="disProfiles">
-                                                        <label tabIndex={0}>Dyslexia</label>
+                                                        <label>Dyslexia</label>
                                                         <button onClick={handleButtonAction(() => updateSettings({
                                                         font_size: "14px",
                                                         letter_spacing: "4.5px",
@@ -500,10 +526,10 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                                         highlight_links_color: "#8398EB",
                                                         cursor_size: 5,
                                                         word_spacing: "5px",
-                                                        }))} data-testid="dyslexiaBtn">set</button>
+                                                        }))} data-testid="dyslexiaBtn" id="dyslexiaBtn">set</button>
                                                 </li>
                                                 <li className="disProfiles">
-                                                        <label tabIndex={0}>Visual Impairment</label>
+                                                        <label>Visual Impairment</label>
                                                         <button onClick={handleButtonAction(() => updateSettings({
                                                         font_size: "16px",
                                                         letter_spacing: "2px",
@@ -522,7 +548,7 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                                         }))} data-testid="visImpBtn">set</button>
                                                 </li>
                                                 <li className="disProfiles">
-                                                        <label tabIndex={0}>Default</label>
+                                                        <label>Default</label>
                                                         <button onClick={handleButtonAction(() => updateSettings({
       highlight_links: false,
       highlight_links_color: "#335CFF",
@@ -550,41 +576,51 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                                 </li>
                                                 </ul>
                                                 </li>
+                                                <a href="#" onClick={(e) => {
+                                                e.preventDefault();
+                                                document.getElementById("backSettingPanel").focus();
+                                                document.body.scrollTop = 0;
+                                        }}>Back to Top</a>
                                 </>
                         )  : selectedCategory === "Interactions" ? (
                                 <>
                                         <li id="backSettingPanelOuter">
-                                                <button data-testid="backBtn" ref={backBtnRef} aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)}>
+                                                <button ref={backBtnRef} data-testid="backBtn" aria-label="back" id="backSettingPanel" onClick={() => setSelectedCategory(null)}>
                                                         <FontAwesomeIcon icon={faArrowLeft} aria-hidden="true" />
                                                 </button>
-                                                <h3 tabIndex={0}>Interactions</h3>
+                                                <h3>Interactions</h3>
                                         </li>
                                         <li>
-                                                <h3 tabIndex={0}>Highlight Hover</h3>
+                                                <h3>Highlight Hover</h3>
                                                 <form onSubmit={(e) => e.preventDefault()}>
                                                         <button type="button" onClick={handleButtonAction(() => updateSettings({ highlight_hover: !settings.highlight_hover }))} className="toggleBtn" aria-label="Toggle Highlight Hover">{settings.highlight_hover === true ? <FontAwesomeIcon className='toggleIcon' icon={faToggleOn} aria-hidden="true" /> : <FontAwesomeIcon icon={faToggleOff} className='toggleIcon' aria-hidden="true" />}</button>
                                                 </form>
                                         </li>
                                         <li>
-                                                <h3 tabIndex={0}>Highlight Hover Color</h3>
+                                                <h3>Highlight Hover Color</h3>
                                                 <form onSubmit={(e) => e.preventDefault()}>
                                                         <input type="color" name="highlight_hover_color" value={tempVars.highlight_hover_color} onChange={(e) => setTempVars({...tempVars, highlight_hover_color: e.target.value})} className="colorInput" data-testid="highlightHoverInput"/>
                                                         <button type="button" onClick={handleButtonAction(() => updateSettings({ highlight_hover_color: tempVars.highlight_hover_color }))} className="setBtn" aria-label="Set Highlight Hover Color">set</button>
                                                 </form>
                                         </li>
                                         <li>
-                                                <h3 tabIndex={0}>Highlight Keyboard Focus</h3>
+                                                <h3>Highlight Keyboard Focus</h3>
                                                 <form onSubmit={(e) => e.preventDefault()}>
                                                         <button type="button" onClick={handleButtonAction(() => updateSettings({ highlight_keyboard_focus: !settings.highlight_keyboard_focus }))} className="toggleBtn" aria-label="Toggle Highlight Keyboard Focus">{settings.highlight_keyboard_focus === true ? <FontAwesomeIcon className='toggleIcon' icon={faToggleOn} aria-hidden="true" /> : <FontAwesomeIcon icon={faToggleOff} className='toggleIcon' aria-hidden="true" />}</button>
                                                 </form>
                                         </li>
                                         <li>
-                                                <h3 tabIndex={0}>Highlight Keyboard Focus Color</h3>
+                                                <h3>Highlight Keyboard Focus Color</h3>
                                                 <form onSubmit={(e) => e.preventDefault()}>
                                                         <input data-testid="highlightKeyboardFocusColorInput" type="color" name="highlight_keyboard_focus_color" value={tempVars.highlight_keyboard_focus_color} onChange={(e) => setTempVars({...tempVars, highlight_keyboard_focus_color: e.target.value})} className="colorInput"/>
                                                         <button type="button" onClick={handleButtonAction(() => updateSettings({ highlight_keyboard_focus_color: tempVars.highlight_keyboard_focus_color }))} className="setBtn" aria-label="Set Highlight Keyboard Focus Color">set</button>
                                                 </form>
                                         </li>
+                                        <a href="#" onClick={(e) => {
+                                                e.preventDefault();
+                                                document.getElementById("backSettingPanel").focus();
+                                                document.body.scrollTop = 0;
+                                        }}>Back to Top</a>
                                 </>
                         ) : null
                         }

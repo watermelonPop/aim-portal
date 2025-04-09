@@ -2,44 +2,15 @@ import React, { useEffect, useState, useRef } from 'react';
 import AlertsArea from '../AlertsArea'; // Import the alerts component
 import '../index.css';
 
-export default function StudentDashboard({ userInfo, displayHeaderRef, settingsTabOpen, lastIntendedFocusRef }) {
+export default function StudentDashboard({ userInfo, settingsTabOpen, displayHeaderRef}) {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(false);
   const [viewMode, setViewMode] = useState('card');
   const [error, setError] = useState('');
   const [selectedCourse, setSelectedCourse] = useState(null);
 
-  const localRef = useRef(null);
-  // Use passed-in header ref or local ref.
-  const headingRef = displayHeaderRef || localRef;
   // Ref for the modal container
   const modalRef = useRef(null);
-
-  useEffect(() => {
-    if (!headingRef.current || settingsTabOpen === true) return;
-    if (lastIntendedFocusRef?.current !== headingRef.current) {
-      lastIntendedFocusRef.current = headingRef.current;
-    }
-  }, [settingsTabOpen, headingRef]);
-
-  useEffect(() => {
-    if (!headingRef.current || settingsTabOpen === true) return;
-    const frame = requestAnimationFrame(() => {
-      const isAlertOpen = document.querySelector('[data-testid="alert"]') !== null;
-      if (
-        headingRef.current &&
-        !isAlertOpen &&
-        document.activeElement !== headingRef.current &&
-        lastIntendedFocusRef.current === headingRef.current
-      ) {
-        console.log("FOCUSING DASH");
-        console.log("Intent:", lastIntendedFocusRef.current, "Target:", headingRef.current);
-        headingRef.current.focus();
-        lastIntendedFocusRef.current = null;
-      }
-    });
-    return () => cancelAnimationFrame(frame);
-  }, [settingsTabOpen, headingRef]);
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -63,8 +34,8 @@ export default function StudentDashboard({ userInfo, displayHeaderRef, settingsT
 
   // When modal opens, move focus into it.
   useEffect(() => {
-    if (selectedCourse && modalRef.current) {
-      modalRef.current.focus();
+    if (selectedCourse && document.getElementById("profContact")) {
+      document.getElementById("profContact").focus();
     }
   }, [selectedCourse]);
 
@@ -72,32 +43,14 @@ export default function StudentDashboard({ userInfo, displayHeaderRef, settingsT
   const handleModalKeyDown = (e) => {
     if (e.key === 'Escape') {
       setSelectedCourse(null);
-    } else if (e.key === 'Tab') {
-      const focusableElements = modalRef.current.querySelectorAll(
-        'a, button, [tabindex]:not([tabindex="-1"])'
-      );
-      if (focusableElements.length === 0) {
-        e.preventDefault();
-        return;
-      }
-      const firstElement = focusableElements[0];
-      const lastElement = focusableElements[focusableElements.length - 1];
-
-      if (!e.shiftKey && document.activeElement === lastElement) {
-        e.preventDefault();
-        firstElement.focus();
-      }
-      if (e.shiftKey && document.activeElement === firstElement) {
-        e.preventDefault();
-        lastElement.focus();
-      }
+      displayHeaderRef.current.focus();
     }
   };
 
   return (
     <div className="studentDashboard" role="main">
       <div className="leftColumn">
-        <h2 ref={headingRef} tabIndex={0}>
+        <h2>
           Welcome, {userInfo?.name || 'Student'}
         </h2>
         <div className="viewToggle">
@@ -105,6 +58,7 @@ export default function StudentDashboard({ userInfo, displayHeaderRef, settingsT
             className={`toggleBtn ${viewMode === 'card' ? 'active' : ''}`}
             onClick={() => setViewMode('card')}
             aria-pressed={viewMode === 'card'}
+            ref={displayHeaderRef}
           >
             Card View
           </button>
@@ -149,7 +103,7 @@ export default function StudentDashboard({ userInfo, displayHeaderRef, settingsT
                 >
                   <h3 className="courseTitle">{course.name}</h3>
                   {latestExam?.date ? (
-                    <p className="examDate" tabIndex={0}>
+                    <p className="examDate">
                       Next Exam: {new Date(latestExam.date).toLocaleDateString()}
                     </p>
                   ) : (
@@ -195,17 +149,16 @@ export default function StudentDashboard({ userInfo, displayHeaderRef, settingsT
               role="dialog"
               aria-modal="true"
               aria-labelledby="course-modal-heading"
-              tabIndex={0}
               ref={modalRef}
               onKeyDown={handleModalKeyDown}
             >
-              <h2 id="course-modal-heading" tabIndex={0} data-testid="course-modal-heading">
+              <h2 id="course-modal-heading" data-testid="course-modal-heading">
                 {selectedCourse.name}
               </h2>
-              <p className="infoRow" tabIndex={0}>
+              <p className="infoRow">
                 <strong>Professor:</strong> {selectedCourse.professor?.account?.name || 'N/A'}
               </p>
-              <p className="infoRow" tabIndex={0}>
+              <p className="infoRow">
                 <strong>Email:</strong> {selectedCourse.professor?.account?.email}{' '}
                 <a
                   href={`mailto:${selectedCourse.professor?.account?.email}?subject=${selectedCourse.name} Inquiry`}
@@ -213,28 +166,32 @@ export default function StudentDashboard({ userInfo, displayHeaderRef, settingsT
                   tabIndex={0}
                   target="_blank"
                   rel="noopener noreferrer"
+                  id="profContact"
                 >
                   Contact
                 </a>
               </p>
-              <p className="infoRow" tabIndex={0}>
+              <p className="infoRow">
                 <strong>Department:</strong> {selectedCourse.professor?.department || 'N/A'}
               </p>
-              <p tabIndex={0}>
+              <p>
                 <strong>Exam Dates:</strong>
               </p>
               <ul>
                 {selectedCourse.exams && selectedCourse.exams.length > 0 ? (
                   selectedCourse.exams.map((exam) => (
-                    <li key={exam.id} tabIndex={0}>
+                    <li key={exam.id}>
                       {exam.date ? new Date(exam.date).toLocaleString() : 'No date'} — {exam.location}
                     </li>
                   ))
                 ) : (
-                  <li tabIndex={0}>No exams scheduled</li>
+                  <li>No exams scheduled</li>
                 )}
               </ul>
-              <button className="modalCloseBtn" onClick={() => setSelectedCourse(null)}>
+              <button id="stuDashModalClose" className="modalCloseBtn" onClick={() => {
+              setSelectedCourse(null);
+              displayHeaderRef.current.focus();
+            }}>
                 Close
               </button>
             </div>
@@ -242,7 +199,7 @@ export default function StudentDashboard({ userInfo, displayHeaderRef, settingsT
         )}
       </div>
       <div className="rightColumn">
-        <AlertsArea />
+        <AlertsArea displayHeaderRef={displayHeaderRef} />
       </div>
     </div>
   );

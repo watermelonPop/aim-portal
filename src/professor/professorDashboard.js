@@ -9,11 +9,10 @@ export const formatDate = (dateString) => {
         return isNaN(date.getTime()) ? '' : date.toISOString().split('T')[0];
 }
 
-export function ProfessorDashboard({ userInfo, setAlertMessage, setShowAlert, displayHeaderRef, settingsTabOpen, lastIntendedFocusRef }){
+export function ProfessorDashboard({ userInfo, setAlertMessage, setShowAlert, settingsTabOpen, displayHeaderRef}){
         const localRef = useRef(null);
         const headingRef = displayHeaderRef || localRef;
         const backBtnRef = useRef(null);
-
         const [selectedTab, setSelectedTab] = useState('class'); // 'class' or 'student'
         const [classes, setClasses] = useState([]);
         const [students, setStudents] = useState([]);
@@ -87,70 +86,6 @@ export function ProfessorDashboard({ userInfo, setAlertMessage, setShowAlert, di
             
                 fetchClasses();
         }, [userInfo]);
-            
-              
-
-        useEffect(() => {
-                if (!headingRef.current || settingsTabOpen) return;
-
-                if (lastIntendedFocusRef?.current !== headingRef.current) {
-                lastIntendedFocusRef.current = headingRef.current;
-        }
-        }, [settingsTabOpen, headingRef]);
-
-        useEffect(() => {
-                if (!headingRef.current || settingsTabOpen) return;
-
-                const frame = requestAnimationFrame(() => {
-                        const isAlertOpen = document.querySelector('[data-testid="alert"]') !== null;
-                        console.log("ALERT: ", isAlertOpen);
-
-                        if (
-                                headingRef.current &&
-                                !isAlertOpen &&
-                                document.activeElement !== headingRef.current &&
-                                lastIntendedFocusRef.current === headingRef.current
-                        ) {
-                                headingRef.current.focus();
-                                lastIntendedFocusRef.current = null;
-                        }
-                });
-
-                return () => cancelAnimationFrame(frame);
-        }, [settingsTabOpen, headingRef]);
-
-        useEffect(() => {
-                const isAlertOpen = document.querySelector('[data-testid="alert"]') !== null;
-                if(isAlertOpen) return;
-                if (selectedClass !== null) {
-                    const raf = requestAnimationFrame(() => {
-                        backBtnRef.current?.focus();
-                    });
-                    return () => cancelAnimationFrame(raf);
-                } else if (selectedClass === null) {
-                    const raf = requestAnimationFrame(() => {
-                        headingRef.current?.focus();
-                    });
-                    return () => cancelAnimationFrame(raf);
-                }
-        }, [selectedClass]);
-
-
-        useEffect(() => {
-                const isAlertOpen = document.querySelector('[data-testid="alert"]') !== null;
-                if(isAlertOpen) return;
-                if (selectedStudent !== null) {
-                        const raf = requestAnimationFrame(() => {
-                            backBtnRef.current?.focus();
-                        });
-                        return () => cancelAnimationFrame(raf);
-                } else if (selectedStudent === null) {
-                        const raf = requestAnimationFrame(() => {
-                            headingRef.current?.focus();
-                        });
-                        return () => cancelAnimationFrame(raf);
-                }
-        }, [selectedStudent]);
 
         const getClassAlertNumber = (classObj) => {
                 let num = 0;
@@ -224,14 +159,48 @@ export function ProfessorDashboard({ userInfo, setAlertMessage, setShowAlert, di
                 }
         };
 
+        useEffect(() => {
+          const isAlertOpen = document.querySelector('[data-testid="alert"]') !== null;
+          if(isAlertOpen) return;
+          if (selectedClass !== null) {
+              const raf = requestAnimationFrame(() => {
+                  backBtnRef.current?.focus();
+              });
+              return () => cancelAnimationFrame(raf);
+          } else if (selectedClass === null) {
+              const raf = requestAnimationFrame(() => {
+                  headingRef.current?.focus();
+              });
+              return () => cancelAnimationFrame(raf);
+          }
+  }, [selectedClass]);
+
+  useEffect(() => {
+    const isAlertOpen = document.querySelector('[data-testid="alert"]') !== null;
+    if(isAlertOpen) return;
+    if (selectedStudent !== null) {
+        const raf = requestAnimationFrame(() => {
+            backBtnRef.current?.focus();
+        });
+        return () => cancelAnimationFrame(raf);
+    } else if (selectedStudent === null) {
+        const raf = requestAnimationFrame(() => {
+            headingRef.current?.focus();
+        });
+        return () => cancelAnimationFrame(raf);
+    }
+}, [selectedStudent]);
+
         return (
                 <div role="presentation" className="professorDashOuter">
                   <div className="tabControls" role="tablist">
                     <button
                       className={selectedTab === "class" ? "activeTab" : ""}
+                      id={selectedTab === "class" ? "activeTab" : ""}
                       onClick={() => setSelectedTab("class")}
                       role="tab"
                       aria-selected={selectedTab === "class"}
+                      ref={displayHeaderRef}
                     >
                       Class View
                     </button>
@@ -239,6 +208,7 @@ export function ProfessorDashboard({ userInfo, setAlertMessage, setShowAlert, di
                       className={selectedTab === "student" ? "activeTab" : ""}
                       onClick={() => setSelectedTab("student")}
                       role="tab"
+                      id={selectedTab === "student" ? "activeTab" : ""}
                       aria-selected={selectedTab === "student"}
                     >
                       Student View
@@ -248,7 +218,7 @@ export function ProfessorDashboard({ userInfo, setAlertMessage, setShowAlert, di
                   <div className="tabContent" role="tabpanel">
                   {selectedTab === "class" ? (
   <div>
-    <h2 ref={headingRef} tabIndex={0} className="dashboardTitle">
+    <h2 className="dashboardTitle">
       Class View Dashboard
     </h2>
     <div>
@@ -302,32 +272,33 @@ export function ProfessorDashboard({ userInfo, setAlertMessage, setShowAlert, di
                 aria-label="back"
                 onClick={() => setSelectedClass(null)}
                 ref={backBtnRef}
+                id="backBtnProfDash"
               >
                 <FontAwesomeIcon icon={faArrowLeft} aria-hidden="true" />
               </button>
             </div>
-            <h3 tabIndex={0}>{selectedClassObj.name}</h3>
-            <p tabIndex={0}>{selectedClassObj.department}</p>
-            <p tabIndex={0}>{selectedClassObj.accommodations.length} Requests</p>
+            <h3>{selectedClassObj.name}</h3>
+            <p>{selectedClassObj.department}</p>
+            <p>{selectedClassObj.accommodations.length} Requests</p>
             <div className="studentCards">
               {selectedClassObj.accommodations.map((item, index) => (
-                <div key={index} className="studentCard" tabIndex={0}>
-                  <h4 tabIndex={0}>Request {item.status}</h4>
+                <div key={index} className="studentCard">
+                  <h4>Request {item.status}</h4>
                   {item.status === "PENDING" ? (
                     <button onClick={() => acceptAccommodationRequest(item.id)}>
                       acknowledge & accept
                     </button>
                   ) : null}
                   <div>
-                    <label tabIndex={0}>Student:</label>
-                    <p tabIndex={0}>{item.student.account.name}</p>
+                    <label>Student:</label>
+                    <p>{item.student.account.name}</p>
                   </div>
                   <div>
-                    <label tabIndex={0}>UIN:</label>
-                    <p tabIndex={0}>{item.student.UIN}</p>
+                    <label>UIN:</label>
+                    <p>{item.student.UIN}</p>
                   </div>
                   <div>
-                    <label tabIndex={0}>Email:</label>
+                    <label>Email:</label>
                     <a
                       tabIndex={0}
                       href={`mailto:${item.student.account.email}`}
@@ -336,11 +307,11 @@ export function ProfessorDashboard({ userInfo, setAlertMessage, setShowAlert, di
                     </a>
                   </div>
                   <div>
-                    <label tabIndex={0}>Advisor:</label>
-                    <p tabIndex={0}>{item.advisor.account.name}</p>
+                    <label >Advisor:</label>
+                    <p >{item.advisor.account.name}</p>
                   </div>
                   <div>
-                    <label tabIndex={0}>Advisor Contact:</label>
+                    <label >Advisor Contact:</label>
                     <a
                       tabIndex={0}
                       href={`mailto:${item.advisor.account.email}`}
@@ -349,19 +320,20 @@ export function ProfessorDashboard({ userInfo, setAlertMessage, setShowAlert, di
                     </a>
                   </div>
                   <div>
-                    <label tabIndex={0}>Requested:</label>
-                    <p tabIndex={0}>
+                    <label >Requested:</label>
+                    <p >
                       {item.type} Accommodations on{" "}
                       {formatDate(item.date_requested)}
                     </p>
                   </div>
                   <div>
-                    <label tabIndex={0}>Notes:</label>
-                    <p tabIndex={0}>{item.notes}</p>
+                    <label >Notes:</label>
+                    <p >{item.notes}</p>
                   </div>
                 </div>
               ))}
             </div>
+            <a href="#backBtnProfDash">Back to Top</a>
           </div>
         </>
       )}
@@ -369,7 +341,7 @@ export function ProfessorDashboard({ userInfo, setAlertMessage, setShowAlert, di
   </div>
                     ) : (
                       <div>
-                        <h2 ref={headingRef} tabIndex={0} className="dashboardTitle">
+                        <h2 className="dashboardTitle">
                           Student View Dashboard
                         </h2>
                         <div>
@@ -383,8 +355,8 @@ export function ProfessorDashboard({ userInfo, setAlertMessage, setShowAlert, di
                                   <div
                                     key={student.userId}
                                     className="classItem"
-                                    onClick={() => setSelectedStudent(student.userId)}
                                     tabIndex={0}
+                                    onClick={() => setSelectedStudent(student.userId)}
                                     onKeyDown={(e) => {
                                         if (e.key === 'Enter' || e.key === ' ') {
                                           e.preventDefault();
@@ -423,17 +395,18 @@ export function ProfessorDashboard({ userInfo, setAlertMessage, setShowAlert, di
                                                 aria-label="back"
                                                 onClick={() => setSelectedStudent(null)}
                                                 ref={backBtnRef}
+                                                id="backBtnProfDash"
                                                 >
                                                         <FontAwesomeIcon icon={faArrowLeft} aria-hidden="true" />
                                                 </button>
                                         </div>
-                                        <h3 tabIndex={0}>{selectedStudentObj.account.name}</h3>
-                                        <p tabIndex={0}>UIN: {selectedStudentObj.UIN}</p>
+                                        <h3>{selectedStudentObj.account.name}</h3>
+                                        <p>UIN: {selectedStudentObj.UIN}</p>
                                         <a href={`mailto:${selectedStudentObj.account.email}`}>Email: {selectedStudentObj.account.email}</a>
                                         <div className="studentCards">
                                         {selectedStudentObj.accommodations.map((item, index) => (
-                                                <div key={index} className="studentCard" tabIndex={0}>
-                                                        <h4 tabIndex={0}>{item.class.name} Request {item.status}</h4>
+                                                <div key={index} className="studentCard">
+                                                        <h4>{item.class.name} Request {item.status}</h4>
                                                         {item.status === "PENDING" ? (
                                                                 <button
                                                                 onClick={() =>
@@ -444,27 +417,28 @@ export function ProfessorDashboard({ userInfo, setAlertMessage, setShowAlert, di
                                                                 </button>
                                                         ) : null}
                                                         <div>
-                                                                <label tabIndex={0}>Requested: </label>
-                                                        <p tabIndex={0}>
+                                                                <label>Requested: </label>
+                                                        <p >
                                                                 {item.type} Accommodations on{" "}
                                                                 {formatDate(item.date_requested)}
                                                         </p>
                                                         </div>
                                                         <div>
-                                                        <label tabIndex={0}>Advisor:</label>
-                                                        <p tabIndex={0}>{item.advisor.account.name}</p>
+                                                        <label>Advisor:</label>
+                                                        <p >{item.advisor.account.name}</p>
                                                         </div>
                                                         <div>
-                                                        <label tabIndex={0}>Advisor Contact:</label>
+                                                        <label >Advisor Contact:</label>
                                                         <a tabIndex={0} href={`mailto:${item.advisor.account.email}`}>{item.advisor.account.email}</a>
                                                         </div>
                                                         <div>
-                                                        <label tabIndex={0}>Notes:</label>
-                                                        <p tabIndex={0}>{item.notes}</p>
+                                                        <label>Notes:</label>
+                                                        <p>{item.notes}</p>
                                                         </div>
                                                 </div>
                                         ))}
                                         </div>
+                                        <a href="#backBtnProfDash">Back to Top</a>
                                 </div>
                             </>
                           )}

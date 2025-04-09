@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 
-function GlobalSettings({ displayHeaderRef, settingsTabOpen, lastIntendedFocusRef }) {
+function GlobalSettings({ settingsTabOpen, displayHeaderRef}) {
   const [advisorList, setAdvisorList] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -10,35 +10,19 @@ function GlobalSettings({ displayHeaderRef, settingsTabOpen, lastIntendedFocusRe
   const [selectedAdvisor, setSelectedAdvisor] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState('');
-  const localRef = useRef(null);
-
-  const headingRef = displayHeaderRef || localRef;
+  const firstCardRef = useRef(null);
+  const [focusAfterReturn, setFocusAfterReturn] = useState(false);
 
   useEffect(() => {
-    if (!headingRef.current || settingsTabOpen === true) return;
-    if (lastIntendedFocusRef?.current !== headingRef.current) {
-      lastIntendedFocusRef.current = headingRef.current;
+    const isAlertOpen = document.querySelector('[data-testid="alert"]') !== null;
+    if (!isAlertOpen && firstCardRef.current) {
+      const timeout = setTimeout(() => {
+        firstCardRef.current?.focus();
+      }, 100); // slight delay to ensure render
+      return () => clearTimeout(timeout);
     }
-  }, [settingsTabOpen, headingRef]);
+  }, [currentPage, searchResults, selectedAdvisor]);
 
-  useEffect(() => {
-    if (!headingRef.current || settingsTabOpen === true) return;
-    const frame = requestAnimationFrame(() => {
-      const isAlertOpen = document.querySelector('[data-testid="alert"]') !== null;
-      if (
-        headingRef.current &&
-        !isAlertOpen &&
-        document.activeElement !== headingRef.current &&
-        lastIntendedFocusRef.current === headingRef.current
-      ) {
-        console.log("FOCUSING DASH");
-        console.log("Intent:", lastIntendedFocusRef.current, "Target:", headingRef.current);
-        headingRef.current.focus();
-        lastIntendedFocusRef.current = null;
-      }
-    });
-    return () => cancelAnimationFrame(frame);
-  }, [settingsTabOpen, headingRef]);
 
   useEffect(() => {
     async function fetchAdv() {
@@ -81,29 +65,31 @@ function GlobalSettings({ displayHeaderRef, settingsTabOpen, lastIntendedFocusRe
 
     const handleCardClick = (advisor) => {
       setSelectedAdvisor(advisor);
+      displayHeaderRef.current.focus();
     };
 
     let displayedAdvisors = searchQuery === "" ? advisorList.slice(skip, take) : advisors.slice(skip, take);
 
     return (
       <div className="gridContainerStyle">
-        {displayedAdvisors.map(advisor => (
-          <div
-            key={advisor.id}
-            className="cardStyle"
-            onClick={() => handleCardClick(advisor)}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') handleCardClick(advisor);
-            }}
-            aria-label={`Advisor card for ${advisor.account.name}, email: ${advisor.account.email}, role: ${advisor.role}`}
-          >
-            <h3 className="nameStyle">{advisor.account.name}</h3>
-            <p className="emailStyle">{advisor.account.email}</p>
-            <p className="roleStyle">{advisor.role}</p>
-          </div>
-        ))}
+        {displayedAdvisors.map((advisor, index) => (
+  <div
+    key={advisor.id}
+    className="cardStyle"
+    onClick={() => handleCardClick(advisor)}
+    role="button"
+    tabIndex={0}
+    ref={index === 0 ? firstCardRef : null} // 👈 attach ref to the first
+    onKeyDown={(e) => {
+      if (e.key === 'Enter') handleCardClick(advisor);
+    }}
+    aria-label={`Advisor card for ${advisor.account.name}, email: ${advisor.account.email}, role: ${advisor.role}`}
+  >
+    <h3 className="nameStyle">{advisor.account.name}</h3>
+    <p className="emailStyle">{advisor.account.email}</p>
+    <p className="roleStyle">{advisor.role}</p>
+  </div>
+))}
       </div>
     );
   }
@@ -227,29 +213,21 @@ function GlobalSettings({ displayHeaderRef, settingsTabOpen, lastIntendedFocusRe
 
     return (
       <div className="detailCardStyle">
-        <h2 tabIndex={0} aria-label={`Details for advisor ${advisor.account.name}`}>
+        <h2 aria-label={`Details for advisor ${advisor.account.name}`}>
           {advisor.account.name}
         </h2>
         <p aria-label={`Advisor ID: ${advisor.userId}`}>ID: {advisor.userId}</p>
         <p aria-label={`Advisor email: ${advisor.account.email}`}>Email: {advisor.account.email}</p>
         <p aria-label={`Advisor role: ${advisor.role}`}>Role: {advisor.role}</p>
         <h3>Permissions</h3>
-        <div style={{ textAlign: 'left', display: 'inline-block' }}>
+        <div>
           {availablePermissions.map((perm, index) => (
             <label
+              className='globalCheckBox'
               key={perm}
-              style={{
-                display: 'block',
-                margin: '8px 0',
-                fontSize: '1.1em'
-              }}
             >
               <input
                 type="checkbox"
-                style={{
-                  transform: 'scale(1.8)',
-                  marginRight: '8px'
-                }}
                 checked={permissions[index]}
                 onChange={() => handleCheckboxChange(index)}
                 aria-label={`Permission ${perm}`}
@@ -259,8 +237,8 @@ function GlobalSettings({ displayHeaderRef, settingsTabOpen, lastIntendedFocusRe
           ))}
         </div>
         <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '8px' }}>
-            <button onClick={handleSave} disabled={isSaving} style={{ marginRight: '16px' }} aria-label="Save permissions">
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '8px', columnGap: '1rem' }}>
+            <button className='saveBtns' onClick={handleSave} disabled={isSaving} aria-label="Save permissions">
               {isSaving ? 'Saving...' : 'Save'}
             </button>
             <button onClick={onClose} aria-label="Go back to advisor search results">
@@ -279,7 +257,7 @@ function GlobalSettings({ displayHeaderRef, settingsTabOpen, lastIntendedFocusRe
 
   return (
     <div className="global-settings">
-        <h2 ref={headingRef} tabIndex={0} aria-label="Advisor Lookup and Access Control">
+        <h2 aria-label="Advisor Lookup and Access Control">
           Advisor Lookup and Access Control
         </h2>
 
@@ -291,20 +269,25 @@ function GlobalSettings({ displayHeaderRef, settingsTabOpen, lastIntendedFocusRe
             onChange={(e) => setSearchQuery(e.target.value)}
             className='globalSettingsInput'
             aria-label="Search for an advisor by name"
+            ref={displayHeaderRef}
+            id="enterAdvisorInput"
           />
       </div>
       {selectedAdvisor ? (
-        <h2 tabIndex={0} aria-label="Edit Advisor Permissions">Edit Advisor Permissions:</h2>
+        <h2 aria-label="Edit Advisor Permissions">Edit Advisor Permissions:</h2>
       ) : (
-        <h2 tabIndex={0} aria-label="Advisor Search Results">Search Results:</h2>
+        <h2 aria-label="Advisor Search Results">Search Results:</h2>
       )}
       
       
         {selectedAdvisor ? (
           <AdvisorCard 
-            advisor={selectedAdvisor} 
-            onClose={() => setSelectedAdvisor(null)} 
-          />
+          advisor={selectedAdvisor} 
+          onClose={() => {
+            setSelectedAdvisor(null);
+            setFocusAfterReturn(true); // tell the effect to focus when ready
+          }} 
+        />     
         ) : (
           <CardView 
             advisors={searchResults}
@@ -316,7 +299,7 @@ function GlobalSettings({ displayHeaderRef, settingsTabOpen, lastIntendedFocusRe
         {selectedAdvisor ? null : (
           <PaginationButtons/>
         )}
-      
+      <a href="#enterAdvisorInput">Back To Top</a>
     </div>
   );
 }
