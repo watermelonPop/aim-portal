@@ -91,7 +91,7 @@ describe('StaffExamView Component', () => {
       />
     );
 
-    expect(screen.getByText(/Loading exams/i)).toBeInTheDocument();
+    expect(screen.getByText(/Loading.../i)).toBeInTheDocument();
 
     act(() => {
       resolveFetch({

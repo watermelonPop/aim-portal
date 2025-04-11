@@ -361,7 +361,10 @@ function StudentAccommodations({
       </button>
       
       {loading ? (
-        <p>Loading accommodations...</p>
+        <div className="spinnerClassItem" role="status" aria-label="Loading, please wait">
+        <div className="spinner-iconClassItem" aria-hidden="true"></div>
+        <h3 className="spinner-textClassItem">Loading...</h3>
+        </div>
       ) : error ? (
         <p style={{ color: 'red' }}>{error}</p>
       ) : studentData?.accommodations?.length > 0 ? (
@@ -416,7 +419,9 @@ function StudentAccommodations({
       {isModalOpen && renderApplyModal()}
       {isAssistiveModalOpen && renderAssistiveModal()}
       {showSuccessModal && renderSuccessModal()}
-      <a href="#applyAccommodationButton">Back to Top</a>
+      <div className="accommodationsContainer">
+      <a href="#applyAccommodationButton" className="backToTop">Back to Top</a>
+      </div>
     </div>
   );
 }

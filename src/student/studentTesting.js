@@ -176,7 +176,10 @@ function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen }) {
       <section className="upcomingExams">
         <h3>Upcoming Exams</h3>
         {loadingUpcoming ? (
-          <p>Loading upcoming exams...</p>
+          <div className="spinnerClassItem" role="status" aria-label="Loading, please wait">
+          <div className="spinner-iconClassItem" aria-hidden="true"></div>
+          <h3 className="spinner-textClassItem">Loading...</h3>
+          </div>
         ) : errorUpcoming ? (
           <p style={{ color: 'red' }}>{errorUpcoming}</p>
         ) : upcomingExams.length === 0 ? (
@@ -210,7 +213,10 @@ function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen }) {
       <section className="submittedExams">
         <h3>Submitted Exams</h3>
         {loadingSubmitted ? (
-          <p>Loading submitted exams...</p>
+          <div className="spinnerClassItem" role="status" aria-label="Loading, please wait">
+          <div className="spinner-iconClassItem" aria-hidden="true"></div>
+          <h3 className="spinner-textClassItem">Loading...</h3>
+          </div>
         ) : errorSubmitted ? (
           <p style={{ color: 'red' }}>{errorSubmitted}</p>
         ) : submittedExams.length === 0 ? (
@@ -235,7 +241,9 @@ function StudentTesting({ userInfo, displayHeaderRef, settingsTabOpen }) {
             ))}
           </ul>
         )}
-        <a href="#firstBtn">Back to Top</a>
+        <div className="accommodationsContainer">
+          <a href="#firstBtn" className="backToTop">Back to Top</a>
+        </div>
       </section>
 
       {/* Accommodation Application Modal */}

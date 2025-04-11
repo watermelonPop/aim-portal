@@ -138,7 +138,6 @@ function ProfessorAccommodations({ userInfo, setAlertMessage, setShowAlert, sett
                         <div
                           key={acc.id}
                           className="accommodationCard"
-                          tabIndex={0}
                           role="listitem"
                         >
                           <div><strong>Type:</strong> {acc.type || 'N/A'}</div>

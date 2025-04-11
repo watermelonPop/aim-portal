@@ -58,7 +58,7 @@ describe('GlobalSettings Component', () => {
       settingsTabOpen={false}/>);
     
     // Before fetch resolves, CardView should display a loading message
-    expect(screen.getByText(/Loading advisors.../i)).toBeInTheDocument();
+    expect(screen.getByText(/Loading.../i)).toBeInTheDocument();
     
     // Wait until the advisors are rendered in the card view
     await waitFor(() => {

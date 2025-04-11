@@ -469,7 +469,7 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
             role="tab"
             aria-selected={currentTab?.name === tab.name}
             aria-controls={`tabpanel-${index}`}
-            id={`tab-${index}`}
+            id={`tab-${tab.name}`}
             tabIndex={0}
             href="#"
             className={currentTab?.name === tab?.name ? 'activeTab' : ''}
@@ -559,12 +559,7 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
   }}>Address: <a tabIndex={-1} href="https://www.google.com/maps?q=Texas+A%26M+University+471+Houston+Street,+SSB+Ste+122,+College+Station,+TX+77843-1224" target="_blank" rel="noopener noreferrer">Texas A&M University<br/>
   471 Houston Street, SSB Ste 122<br/>
   College Station, TX 77843-1224</a></p>
-  <p tabIndex={0} onKeyDown={(e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      e.currentTarget.querySelector('a')?.click();
-    }
-  }}><a tabIndex={-1} href="#search">Back to Header</a></p>
+  <p><a href="#search" className="backToTopFooter">Back to Header</a></p>
               </div>
           </footer>
       </>

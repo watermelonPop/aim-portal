@@ -1,4 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faSquareCheck, faSquareXmark} from '@fortawesome/free-solid-svg-icons';
 
 function StaffProfile({ userInfo, displayHeaderRef, settingsTabOpen, lastIntendedFocusRef }) {
         const localRef = useRef(null);
@@ -65,25 +67,24 @@ function StaffProfile({ userInfo, displayHeaderRef, settingsTabOpen, lastIntende
           <div className="profileBlock">
           <h2 className="dashboardTitle">Staff Profile</h2>
           {loading ? (
-            <div className="loadingScreen">
-              <div className="spinner">
-                <div className="spinner-icon"></div>
-                <p className="spinner-text">Loading profile information...</p>
+              <div className="spinnerClassItem" role="status" aria-label="Loading, please wait">
+              <div className="spinner-iconClassItem" aria-hidden="true"></div>
+              <h3 className="spinner-textClassItem">Loading...</h3>
               </div>
-            </div>
           ) : (
             staffData && (
               <div className="profileContainer">
-                <div className="profileField"><span className="label">Name:</span> {staffData.account.name || "N/A"}</div>
-                <div className="profileField"><span className="label">Email:</span> {staffData.account.email || "N/A"}</div>
-                <div className="profileField"><span className="label">Role:</span> {staffData.role || "N/A"}</div>
-                <div className="profileField"><span className="label">Permissions:</span></div>
-                <div className="profileField"><span className="label">Global Settings:</span> {staffData.global_settings ? "✓" : "✗"}</div>
-                <div className="profileField"><span className="label">Accessible Testing:</span> {staffData.accessible_testing_modules ? "✓" : "✗"}</div>
-                <div className="profileField"><span className="label">Accommodation Modules:</span> {staffData.accomodation_modules ? "✓" : "✗"}</div>
-                <div className="profileField"><span className="label">Assistive Technologies:</span> {staffData.assistive_technology_modules ? "✓" : "✗"}</div>
-                <div className="profileField"><span className="label">Student Case Information:</span> {staffData.student_case_information ? "✓" : "✗"}</div>
-                {/* <div className="profileField"><span className="label">Role:</span> {staffData.role || "N/A"}</div> */}
+                <div className="profileField"><span className="label">Name:</span> <span className="profileData">{staffData.account.name || "N/A"}</span></div>
+                <div className="profileField"><span className="label">Email:</span> <span className="profileData">{staffData.account.email || "N/A"}</span></div>
+                <div className="profileField"><span className="label">Role:</span> <span className="profileData">{staffData.role || "N/A"}</span></div>
+                <div className="permissionsField">
+                  <span className="label">Permissions:</span>
+                  <div className="permissionsInnerField"><span className="permissionsLabel">Global Settings:</span> <span className="permissionsData">{staffData.global_settings ? <FontAwesomeIcon icon={faSquareCheck} aria-hidden="true" /> : <FontAwesomeIcon icon={faSquareXmark} aria-hidden="true" />}</span></div>
+                  <div className="permissionsInnerField"><span className="permissionsLabel">Accessible Testing:</span> <span className="permissionsData">{staffData.accessible_testing_modules ? <FontAwesomeIcon icon={faSquareCheck} aria-hidden="true" /> : <FontAwesomeIcon icon={faSquareXmark} aria-hidden="true" />}</span></div>
+                  <div className="permissionsInnerField"><span className="permissionsLabel">Accommodation Modules:</span> <span className="permissionsData">{staffData.accomodation_modules ? <FontAwesomeIcon icon={faSquareCheck} aria-hidden="true" /> : <FontAwesomeIcon icon={faSquareXmark} aria-hidden="true" />}</span></div>
+                  <div className="permissionsInnerField"><span className="permissionsLabel">Assistive Technologies:</span> <span className="permissionsData">{staffData.assistive_technology_modules ? <FontAwesomeIcon icon={faSquareCheck} aria-hidden="true" /> : <FontAwesomeIcon icon={faSquareXmark} aria-hidden="true" />}</span></div>
+                  <div className="permissionsInnerField"><span className="permissionsLabel">Student Case Information:</span> <span className="permissionsData">{staffData.student_case_information ? <FontAwesomeIcon icon={faSquareCheck} aria-hidden="true" /> : <FontAwesomeIcon icon={faSquareXmark} aria-hidden="true" />}</span></div>
+                </div>
               </div>
             )
           )}

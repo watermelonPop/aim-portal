@@ -1091,8 +1091,8 @@ body.highlight-hover-enabled .basicFooter div > p > a:hover{
   border: 2px solid var(--foreground-color);
 }
 
-.newStudentApp button:hover{
-  background-color: var(--foreground-color);
+.newStudentApp button:hover, .newStudentApp button:focus{
+  background-color: var(--foreground-color) !important;
   color:var(--background-color);
 }
 
@@ -1960,21 +1960,78 @@ body.highlight-keyboard-focus-enabled .staff-alerts:focus{
   width: 100%;
 }
 
-.profileContainer {
-  background-color: #fff5f5;
-  padding: 1.5rem;
-  border-radius: 8px;
-  max-width: 600px;
-  margin: 1rem auto;
-  box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+.permissionsField{
+  font-size: var(--txtSize);
+  display: flex;
+  flex-direction: column;
+  line-height: var(--line-height);
+  border: 2px solid var(--text-color);
+  border-radius: 1rem;
+  width: 100%;
+  row-gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 1rem;
+}
+
+.permissionsField .label{
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+}
+
+.permissionsInnerField{
+  font-size: var(--txtSize);
+  display: flex;
+  line-height: var(--line-height);
+  border: 2px solid var(--text-color);
+  border-radius: 1rem;
+  width: 80%;
+}
+
+.permissionsLabel{
+  width: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: var(--align-text);
+  height: 100%;
+  padding: 1rem;
 }
 
 .profileField {
-  margin-bottom: 0.75rem;
-  font-size: 1.1rem;
+  font-size: var(--txtSize);
   display: flex;
-  gap: 0.5rem;
-  line-height: 1.5;
+  line-height: var(--line-height);
+  border: 2px solid var(--text-color);
+  border-radius: 1rem;
+  width: 100%;
+}
+
+.profileField .label{
+  width: 30%;
+  display: flex;
+  align-items: center;
+  justify-content: var(--align-text);
+  height: 100%;
+  padding: 1rem;
+}
+
+.profileField .profileData{
+  display: flex;
+  align-items: center;
+  justify-content: var(--align-text);
+  width: 70%;
+  padding: 1rem;
+}
+
+.permissionsData{
+  display: flex;
+  align-items: center;
+  justify-content: var(--align-text);
+  width: 30%;
+  padding: 1rem;
 }
 
 .label {
@@ -1990,14 +2047,19 @@ body.highlight-keyboard-focus-enabled .staff-alerts:focus{
   align-items: center;
   justify-content: center;
   margin-top: 3rem;
+  margin-bottom: 2rem;
+  width: 80%;
 }
 
 .profileContainer {
-  background-color: white;
-  padding: 2rem;
+  padding: 1rem;
   border-radius: 1rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  width: fit-content;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+  align-items: center;
+  justify-content: center;
 }
 
 .viewToggle {
@@ -2538,6 +2600,8 @@ body.highlight-keyboard-focus-enabled .staff-alerts:focus{
 
 
 
+
+
 .pagination-buttons button{
   background-color: var(--background-color);
   color: var(--foreground-color);
@@ -2568,7 +2632,7 @@ body.highlight-keyboard-focus-enabled .staff-alerts:focus{
   cursor: not-allowed;
 }
 
-.backBtnClasses button:hover{
+.backBtnClasses button:hover, .backBtnClasses button:focus{
   background-color: var(--foreground-color);
   color: var(--background-color);
   border-color: var(--background-color);
@@ -2930,21 +2994,25 @@ body.highlight-keyboard-focus-enabled .staff-alerts:focus{
   padding: 1rem;
   max-height: 400px;
   overflow-y: auto;
-  background-color: white;
+  background-color: var(--background-color);
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   margin-top:10px;
+  border: 2px solid var(--text-color);
+  width: 100%;
 }
 
 .staffDash-search-item {
   width: 100%; /* ensures the item takes full width and keeps the text aligned center */
   padding: 1rem;
   cursor: var(--custom-hover-cursor);
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--text-color);
+  border-top: 1px solid var(--text-color);
 }
 
-.staffDash-search-item:hover {
-  background-color: #f4f4f4;
+.staffDash-search-item:hover, .staffDash-search-item:focus {
+  background-color: var(--foreground-color);
+  color: var(--background-color);
 }
 
 .staffDash-cancel-btn, .staffDash-backtoprofile-btn {
@@ -2964,16 +3032,17 @@ body.highlight-keyboard-focus-enabled .staff-alerts:focus{
 .staffDash-edit-profile-button {
   margin-top: 10px;
   padding: 8px 12px;
-  background-color: var(--foreground-color);
-  color: white;
-  border-radius: 8px;
+  background-color: var(--background-color);
+  color: var(--foreground-color);
+  border-radius: 1rem;
   cursor: var(--custom-hover-cursor);
-  border: none;
+  border: 2px solid var(--foreground-color);
 }
 
-.staffDash-edit-profile-button:hover {
-  background-color: #6a0000;
-}
+.staffDash-edit-profile-button:hover, .staffDash-edit-profile-button:focus {
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+} 
 
 .staffDash-modalOverlay {
   position: fixed;
@@ -2989,15 +3058,16 @@ body.highlight-keyboard-focus-enabled .staff-alerts:focus{
 }
 
 .staffDash-modalContent {
-  background: white;
+  background: var(--background-color);
   width: 90%;
   max-width: 600px;
   max-height: 80vh; /* Prevent overflow */
   overflow-y: auto;  /* Enable scrolling */
-  padding: 1.5rem;
-  border-radius: 12px;
+  padding: 1rem;
+  border-radius: 1rem;
   position: relative;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
 }
 
 .staffDash-modalContent::-webkit-scrollbar {
@@ -3077,10 +3147,27 @@ body.highlight-keyboard-focus-enabled .staff-alerts:focus{
 }
 
 .staffDash-form-group input {
-  width: 100%;
-  padding: 8px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+  width: 95%;
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 2px solid var(--text-color);
+  background-color: var(--background-color);
+}
+
+.staffDash-edit-student-form button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 1rem;
+  background-color: var(--background-color);
+  color: var(--foreground-color);
+  border: 2px solid var(--foreground-color);
+}
+
+.staffDash-edit-student-form button:hover, .staffDash-edit-student-form button:focus{
+  background-color: var(--foreground-color);
+  color: var(--background-color);
 }
 
 .staffDash-student-modal-buttons button {
@@ -3098,32 +3185,26 @@ body.highlight-keyboard-focus-enabled .staff-alerts:focus{
 }
 
 .staffDash-form-entry, .staffDash-accommodation-entry, .staffDash-assistive-tech-entry {
-  background-color: #f9f9f9;
-  border-radius: 8px;
+  background-color: var(--background-color) !important;
+  border-radius: 1rem;
   padding: 10px;
   margin-bottom: 10px;
-  text-align: left;
+  text-align: var(--align-text);
 }
 
 /* Individual form entry */
 .staffDash-form-entry {
-  background-color: #fcdad8;
-  border: 2px solid #7c0a02;
-  border-radius: 12px;
-  padding: 1.5rem;
+  padding: 1rem;
   margin-bottom: 2rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  transition: box-shadow 0.2s ease;
+  border: 2px solid var(--text-color);
 }
 .staffDash-accommodation-entry{
-  background-color: #fcdad8;
-  border: 2px solid #7c0a02;
-  border-radius: 12px;
-  padding: 1.5rem;
+  padding: 1rem;
   margin-bottom: 2rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  transition: box-shadow 0.2s ease;
-
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .staffDash-notes-textarea {
@@ -3215,28 +3296,28 @@ body.highlight-keyboard-focus-enabled .staff-alerts:focus{
 
 /* Form status select + button */
 .staffDash-form-entry select {
-  margin-top: 0.75rem;
-  padding: 0.4rem 0.6rem;
-  border-radius: 6px;
-  border: 1px solid #aaa;
-  font-size: 0.95rem;
+  padding: 0.5rem;
+  border-radius: 1rem;
+  border: 2px solid var(--text-color);
+  font-size: var(--txtSize);
+  background-color: var(--background-color);
 }
 
 .staffDash-form-entry button {
-  margin-top: 0.75rem;
-  margin-left: 0.5rem;
-  padding: 0.5rem 1rem;
-  background-color: #6a0000;
-  color: white;
-  border: none;
-  border-radius: 6px;
+  padding: 1rem;
+  background-color: var(--background-color);
+  color: var(--foreground-color);
+  border: 2px solid var(--foreground-color);
+  border-radius: 1rem;
   cursor: var(--custom-hover-cursor);
   font-weight: 500;
-  transition: background-color 0.2s ease-in-out;
+  display: flex;
+  column-gap: 1rem;
 }
 
-.staffDash-form-entry button:hover {
-  background-color: #4d0000;
+.staffDash-form-entry button:hover,  .staffDash-form-entry button:focus{
+  background-color: var(--foreground-color);
+  color: var(--background-color);
 }
 
 @keyframes spin {
@@ -3285,7 +3366,6 @@ body.highlight-keyboard-focus-enabled .staff-alerts:focus{
 }
 
 .student-profile-card {
-  background: white;
   padding: 2rem;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -3363,14 +3443,6 @@ body.highlight-keyboard-focus-enabled .staff-alerts:focus{
   margin-top: 2rem;
 }
 
-.student-profile-card {
-  flex: 1 1 400px; /* minimum width, expands flexibly */
-  background-color: white;
-  padding: 1.5rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-
 .staffDash-student-modal-buttons {
   flex: 0 1 200px; /* narrower column */
   display: flex;
@@ -3424,11 +3496,12 @@ body.highlight-keyboard-focus-enabled .staff-alerts:focus{
 .staffDash-search-bar {
   width: 100%;
   max-width: 400px;
-  padding: 0.6rem 1rem;
+  padding: 1rem;
   margin: 1rem 0;
   font-size: 1rem;
-  border: 2px solid #ccc;
-  border-radius: 8px;
+  border: 2px solid var(--text-color);
+  border-radius: 1rem;
+  background-color: var(--background-color);
 }
 
 .staff-requests-wrapper {
@@ -3442,11 +3515,15 @@ body.highlight-keyboard-focus-enabled .staff-alerts:focus{
 }
 
 .request-details-card {
-  background-color: white;
+  background-color: var(--background-color);
   border: 2px solid var(--foreground-color);
   border-radius: 1rem;
   padding: 2rem;
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: var(--align-items);
 }
 
 .request-details-card h2 {
@@ -3485,29 +3562,32 @@ body.highlight-keyboard-focus-enabled .staff-alerts:focus{
   padding: 0.5rem;
   border-radius: 0.5rem;
   border: 2px solid var(--foreground-color);
+  background-color: var(--background-color);
 }
 
 .save-icon-button {
-  background-color: var(--foreground-color);
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  border: none;
+  background-color: var(--background-color);
+  color: var(--foreground-color);
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 2px solid var(--foreground-color);
   cursor: var(--custom-hover-cursor);
 }
 
-.save-icon-button:hover {
-  background-color: #6a0000;
+.save-icon-button:hover, .save-icon-button:focus {
+  background-color: var(--foreground-color);
+  color: var(--background-color);
 }
 
 .request-notes,
 .request-docs,
 .student-info-box {
-  background-color: #fff9f9;
+  background-color: var(--background-color);
   padding: 1rem;
   border-radius: 8px;
   margin-bottom: 1rem;
-  border-left: 4px solid var(--foreground-color);
+  border: 2px solid var(--foreground-color);
+  width: 90%;
 }
 
 .doc-badge.yes {
@@ -3524,14 +3604,14 @@ body.highlight-keyboard-focus-enabled .staff-alerts:focus{
   background-color: var(--background-color);
   color: var(--foreground-color);
   font-weight: 600;
-  padding: 0.5rem 1rem;
+  padding: 1rem;
   border: 2px solid var(--foreground-color);
-  border-radius: 8px;
+  border-radius: 1rem;
   cursor: var(--custom-hover-cursor);
   margin-bottom: 1rem;
 }
 
-.expand-button:hover {
+.expand-button:hover, .expand-button:focus {
   background-color: var(--foreground-color);
   color: var(--background-color);
 }
@@ -3542,25 +3622,24 @@ body.highlight-keyboard-focus-enabled .staff-alerts:focus{
   gap: 1rem;
   max-height: 15rem;
   overflow-y: auto;
-  background-color: white;
+  background-color: var(--background-color);
   padding: 1rem;
-  border-radius: 10px;
-  border: 2px solid var(--foreground-color);
+  border-radius: 1rem;
+  border: 2px solid var(--text-color);
 }
 
 .request-tile {
-  border: 1px solid var(--foreground-color);
+  border: 2px solid var(--text-color);
   padding:1rem;
-  border-radius: 8px;
-  background-color: #fff;
+  border-radius: 1rem;
+  background-color: var(--background-color);
   cursor: var(--custom-hover-cursor);
-  transition: background-color 0.2s ease;
 }
 
 .request-tile:hover,
 .request-tile:focus {
-  background-color: #f9e6e6;
-  outline: 2px solid var(--foreground-color);
+  background-color: var(--foreground-color);
+  color: var(--background-color);
 }
 
 .pagination-controls {
@@ -3725,15 +3804,6 @@ body.highlight-keyboard-focus-enabled .staff-alerts:focus{
   }
 }
 
-.staffDash-accommodation-entry {
-  padding: 1rem;
-  border: 2px solid #4F0000;
-  border-radius: 10px;
-  background-color: #fffaf8;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
 .staffDash-accommodation-entry label {
   display: block;
   margin-top: 0.75rem;
@@ -3743,25 +3813,29 @@ body.highlight-keyboard-focus-enabled .staff-alerts:focus{
 .staffDash-accommodation-entry input,
 .staffDash-accommodation-entry select {
   margin-top: 0.25rem;
-  padding: 0.5rem;
+  padding: 1rem;
   width: 90%;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  border: 2px solid var(--text-color);
+  border-radius: 1rem;
+  background-color: var(--background-color);
 }
 
 .staffDash-save-btn {
   margin-top: 1rem;
-  background-color: #4F0000;
-  color: white;
-  padding: 0.6rem 1.2rem;
-  border: none;
-  border-radius: 6px;
+  background-color: var(--background-color);
+  color: var(--foreground-color);
+  border: 2px solid var(--foreground-color);
+  border-radius: 1rem;
   cursor: var(--custom-hover-cursor);
   font-weight: bold;
+  display: flex;
+  column-gap: 1rem;
+  padding: 1rem;
 }
 
-.staffDash-save-btn:hover {
-  background-color: #750000;
+.staffDash-save-btn:hover,  .staffDash-save-btn:focus{
+  background-color: var(--foreground-color);
+  color: var(--background-color);
 }
 
 .staffDash-notes-toggle {
@@ -3794,30 +3868,17 @@ body.highlight-keyboard-focus-enabled .staff-alerts:focus{
 }
 
 .staffDash-assistive-tech-entry {
-  background-color: #fff6f6;
-  border: 2px solid #4F0000;
   padding: 1rem;
-  border-radius: 12px;
+  border-radius: 1rem;
   margin-bottom: 1rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  border: 2px solid var(--text-color);
 }
 
-.staffDash-assistive-tech-entry:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-
-.staffDash-save-btn {
-  margin-top: 0.75rem;
-  background-color: var(--foreground-color);
-  color: var(--background-color);
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 8px;
-}
-
-.staffDash-save-btn:hover {
-  background-color: #6a0000;
+.staffDash-assistive-tech-entry input, .staffDash-assistive-tech-entry select{
+  background-color: var(--background-color);
+  border-radius: 1rem;
+  border: 2px solid var(--text-color);
+  padding: 1rem;
 }
 
 .staff-button-wrapper {
@@ -4128,4 +4189,33 @@ body.highlight-keyboard-focus-enabled .globalCheckBox input[type="checkbox"]:foc
   outline: 2px var(--highlight-keyboard-focus-color) solid !important;
   border-radius: 1rem !important;
   outline-offset: 1px !important;
+}
+
+.backToTop{
+  color: var(--foreground-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+  background-color: var(--background-color) !important;
+  border: 2px solid var(--foreground-color);
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+.backToTop:hover, .backToTop:focus{
+  background-color: var(--foreground-color) !important;
+  color: var(--background-color) !important;
+}
+
+.backToTopFooter{
+  background-color: var(--foreground-color);
+  color: var(--background-color) !important;
+  border-radius: 1rem;
+  border: 2px solid var(--background-color);
+}
+
+.backToTopFooter:hover, .backToTopFooter:focus{
+  background-color: var(--background-color);
+  color: var(--foreground-color) !important;
 }

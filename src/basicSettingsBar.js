@@ -156,7 +156,7 @@ export function BasicSettingsBar({ isOpen, onClose, settings, setSettings, logou
                                         document.getElementById("closeSettingPanel").focus();
                                         document.body.scrollTop = 0;
                                         document.getElementById("settingsScroll").scrollTop = 0;
-                                }}>Back to Top</a>
+                                }} className="backToTop">Back to Top</a>
                                 </li>
                                 </>
                                 ) : selectedCategory === "Text" ? (
