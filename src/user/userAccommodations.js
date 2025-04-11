@@ -342,6 +342,7 @@ export function UserAccommodations({userInfo, setAlertMessage, setShowAlert, set
         UserAccommodations.handleFileUpload = handleFileUpload;
         UserAccommodations.getUserDocumentation = getUserDocumentation;
         UserAccommodations.deleteDocumentation = deleteDocumentation;
+        UserAccommodations.cancelRequest = cancelRequest;
 
         if (loading) {
                 return (

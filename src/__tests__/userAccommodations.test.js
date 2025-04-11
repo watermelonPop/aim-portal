@@ -15,6 +15,335 @@ describe('userAccommodations', () => {
         beforeEach(() => {
                 jest.clearAllMocks();
         });
+              
+        
+        test('deleteDocumentation shows success alert and returns true', async () => {
+                const mockUserInfo = {
+                  id: 123,
+                  name: 'Mock User',
+                  email: 'test@gmail.com',
+                  role: 'USER',
+                  picture: null,
+                  dob: '2000-01-01',
+                  uin: 123456789,
+                  phone_number: 1001001001,
+                };
+              
+                const mockSetAlertMessage = jest.fn();
+                const mockSetShowAlert = jest.fn();
+                const mockDisplayHeaderRef = { current: null };
+                const mockLastIntendedFocusRef = { current: null };
+              
+                global.fetch = jest.fn((url) => {
+                  if (url === '/api/deleteForm') {
+                    return Promise.resolve({
+                      ok: true,
+                      json: () => Promise.resolve({ message: 'Form deleted successfully' }),
+                    });
+                  }
+                  return Promise.resolve({ ok: true, json: () => Promise.resolve({ exists: false }) });
+                });
+              
+                await act(async () => {
+                  render(
+                    <UserAccommodations
+                      userInfo={mockUserInfo}
+                      setAlertMessage={mockSetAlertMessage}
+                      setShowAlert={mockSetShowAlert}
+                      displayHeaderRef={mockDisplayHeaderRef}
+                      lastIntendedFocusRef={mockLastIntendedFocusRef}
+                      settingsTabOpen={false}
+                    />
+                  );
+                });
+              
+                const result = await UserAccommodations.deleteDocumentation(mockUserInfo.id);
+              
+                expect(result).toBe(true);
+                expect(mockSetAlertMessage).toHaveBeenCalledWith('Documentation deleted successfully!');
+                expect(mockSetShowAlert).toHaveBeenCalledWith(true);
+              });
+              
+              
+
+        test('getUserDocumentation throws on failed response', async () => {
+                const mockUserInfo = {
+                  id: 123,
+                  name: 'Mock User',
+                  email: 'test@gmail.com',
+                  role: 'USER',
+                  picture: null,
+                  dob: '2000-01-01',
+                  uin: 123456789,
+                  phone_number: 1001001001,
+                };
+              
+                const mockSetAlertMessage = jest.fn();
+                const mockSetShowAlert = jest.fn();
+                const mockDisplayHeaderRef = { current: null };
+                const mockLastIntendedFocusRef = { current: null };
+              
+                global.fetch = jest.fn((url) => {
+                  if (url === '/api/checkRequests?userId=123') {
+                    return Promise.resolve({
+                      ok: true,
+                      json: () => Promise.resolve({ exists: false }), // prevent useEffect trigger
+                    });
+                  } else if (url === '/api/getUserDocumentation?user_id=123') {
+                    return Promise.resolve({
+                      ok: false,
+                      status: 500,
+                      json: () => Promise.resolve({}),
+                    });
+                  }
+                });
+              
+                const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+              
+                await act(async () => {
+                  render(
+                    <UserAccommodations
+                      userInfo={mockUserInfo}
+                      setAlertMessage={mockSetAlertMessage}
+                      setShowAlert={mockSetShowAlert}
+                      displayHeaderRef={mockDisplayHeaderRef}
+                      lastIntendedFocusRef={mockLastIntendedFocusRef}
+                      settingsTabOpen={false}
+                    />
+                  );
+                });
+              
+                // Call getUserDocumentation manually
+                await act(async () => {
+                  await UserAccommodations.getUserDocumentation(mockUserInfo.id);
+                });
+              
+                expect(consoleSpy).toHaveBeenCalledWith(
+                  'Error while getting user documentation:',
+                  expect.any(Error)
+                );
+              
+                consoleSpy.mockRestore();
+              });
+              
+              test('handleSubmit catches error from createRequest and alerts user', async () => {
+                const file = new File(['dummy'], 'example.pdf', { type: 'application/pdf' });
+              
+                const mockUserInfo = {
+                  id: 123,
+                  name: 'Mock User',
+                  email: 'test@gmail.com',
+                  role: 'USER',
+                  picture: null,
+                  dob: '2000-01-01',
+                  uin: 123456789,
+                  phone_number: 1001001001,
+                };
+              
+                const mockSetAlertMessage = jest.fn();
+                const mockSetShowAlert = jest.fn();
+                const mockDisplayHeaderRef = { current: null };
+                const mockLastIntendedFocusRef = { current: null };
+              
+                global.fetch = jest.fn((url) => {
+                  if (url === '/api/checkRequests?userId=123') {
+                    return Promise.resolve({
+                      ok: true,
+                      json: () => Promise.resolve({ exists: false }),
+                    });
+                  } else if (url === '/api/getUserDocumentation?user_id=123') {
+                    return Promise.resolve({
+                      ok: true,
+                      json: () => Promise.resolve({ exists: false }),
+                    });
+                  } else if (url === '/api/submitDocumentation') {
+                    return Promise.resolve({
+                      ok: true,
+                      json: () => Promise.resolve({ url: 'https://example.com/uploaded.pdf' }),
+                    });
+                  } else if (url === '/api/createRequest') {
+                    return Promise.reject(new Error('Simulated createRequest failure'));
+                  }
+                });
+              
+                await act(async () => {
+                  render(
+                    <UserAccommodations
+                      userInfo={mockUserInfo}
+                      setAlertMessage={mockSetAlertMessage}
+                      setShowAlert={mockSetShowAlert}
+                      displayHeaderRef={mockDisplayHeaderRef}
+                      lastIntendedFocusRef={mockLastIntendedFocusRef}
+                      settingsTabOpen={false}
+                    />
+                  );
+                });
+              
+                await waitFor(() => {
+                  expect(screen.getByTestId('name')).toBeInTheDocument();
+                });
+              
+                // Fill out form
+                fireEvent.change(screen.getByTestId('name'), { target: { value: 'Test Name' } });
+                fireEvent.change(screen.getByTestId('email'), { target: { value: 'test@email.com' } });
+                fireEvent.change(screen.getByTestId('dob'), { target: { value: '2003-01-01' } });
+                fireEvent.change(screen.getByTestId('uin'), { target: { value: 123456789 } });
+                fireEvent.change(screen.getByTestId('phone_number'), { target: { value: 1234567890 } });
+                fireEvent.change(screen.getByTestId('disability'), { target: { value: 'disability' } });
+                fireEvent.change(screen.getByTestId('testing'), { target: { value: 'testing' } });
+                fireEvent.change(screen.getByTestId('inClass'), { target: { value: 'inClass' } });
+                fireEvent.change(screen.getByTestId('housing'), { target: { value: 'housing' } });
+                fireEvent.change(screen.getByTestId('sideEffect'), { target: { value: 'sideEffect' } });
+                fireEvent.change(screen.getByTestId('accommodations'), { target: { value: 'accommodations' } });
+                fireEvent.change(screen.getByTestId('pastAcc'), { target: { value: 'pastAcc' } });
+              
+                fireEvent.change(screen.getByTestId('uploadFile'), {
+                  target: {
+                    files: [file],
+                  },
+                });
+              
+                const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+              
+                fireEvent.click(screen.getByRole('button', { name: /Submit/i }));
+              
+                await waitFor(() => {
+                  expect(consoleSpy).toHaveBeenCalledWith(
+                    'Error submitting request:',
+                    expect.any(Error)
+                  );
+                  expect(mockSetAlertMessage).toHaveBeenCalledWith(
+                    'Request submission failed. Please try again.'
+                  );
+                  expect(mockSetShowAlert).toHaveBeenCalledWith(true);
+                });
+              
+                consoleSpy.mockRestore();
+              });
+                 
+              
+              
+              
+              
+              
+
+        test('handleFileUpload returns null when file is null', async () => {
+                const mockUserInfo = {
+                  id: 123,
+                  name: 'Mock User',
+                  email: 'test@gmail.com',
+                  role: 'USER',
+                  picture: null,
+                  dob: '2000-01-01',
+                  uin: 123456789,
+                  phone_number: 1001001001,
+                };
+              
+                const mockDisplayHeaderRef = { current: null };
+                const mockLastIntendedFocusRef = { current: null };
+              
+                await act(async () => {
+                  render(
+                    <UserAccommodations
+                      userInfo={mockUserInfo}
+                      setAlertMessage={jest.fn()}
+                      setShowAlert={jest.fn()}
+                      displayHeaderRef={mockDisplayHeaderRef}
+                      lastIntendedFocusRef={mockLastIntendedFocusRef}
+                      settingsTabOpen={false}
+                    />
+                  );
+                });
+              
+                const result = await UserAccommodations.handleFileUpload(null);
+                expect(result).toBeNull();
+              });
+              
+              test('handleFileUpload returns null when file is undefined', async () => {
+                const mockUserInfo = {
+                  id: 123,
+                  name: 'Mock User',
+                  email: 'test@gmail.com',
+                  role: 'USER',
+                  picture: null,
+                  dob: '2000-01-01',
+                  uin: 123456789,
+                  phone_number: 1001001001,
+                };
+              
+                const mockDisplayHeaderRef = { current: null };
+                const mockLastIntendedFocusRef = { current: null };
+              
+                await act(async () => {
+                  render(
+                    <UserAccommodations
+                      userInfo={mockUserInfo}
+                      setAlertMessage={jest.fn()}
+                      setShowAlert={jest.fn()}
+                      displayHeaderRef={mockDisplayHeaderRef}
+                      lastIntendedFocusRef={mockLastIntendedFocusRef}
+                      settingsTabOpen={false}
+                    />
+                  );
+                });
+              
+                const result = await UserAccommodations.handleFileUpload(undefined);
+                expect(result).toBeNull();
+              });
+              
+              
+
+        test('handleFileUpload logs error and returns null when fetch throws', async () => {
+                const file = new File(['dummy'], 'error.pdf', { type: 'application/pdf' });
+              
+                const mockUserInfo = {
+                  id: 123,
+                  name: 'Mock User',
+                  email: 'test@gmail.com',
+                  role: 'USER',
+                  picture: null,
+                  dob: '2000-01-01',
+                  uin: 123456789,
+                  phone_number: 1001001001,
+                };
+              
+                const mockSetAlertMessage = jest.fn();
+                const mockSetShowAlert = jest.fn();
+              
+                // Simulate a fetch throwing an error
+                global.fetch = jest.fn(() => {
+                  throw new Error('Simulated upload failure');
+                });
+              
+                const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+              
+                const mockDisplayHeaderRef = { current: null };
+                const mockLastIntendedFocusRef = { current: null };
+              
+                await act(async () => {
+                  render(
+                    <UserAccommodations
+                      userInfo={mockUserInfo}
+                      setAlertMessage={mockSetAlertMessage}
+                      setShowAlert={mockSetShowAlert}
+                      displayHeaderRef={mockDisplayHeaderRef}
+                      lastIntendedFocusRef={mockLastIntendedFocusRef}
+                      settingsTabOpen={false}
+                    />
+                  );
+                });
+              
+                const result = await UserAccommodations.handleFileUpload(file);
+              
+                expect(consoleSpy).toHaveBeenCalledWith(
+                  'Error uploading file:',
+                  expect.any(Error)
+                );
+                expect(result).toBeNull();
+              
+                consoleSpy.mockRestore();
+              });
+              
 
         test('deleteDocumentation throws when message is not "Form deleted successfully"', async () => {
                 const mockUserId = 123;
@@ -343,55 +672,6 @@ describe('userAccommodations', () => {
                         });
                 });
 
-                /*test('sets the existing request', async () => {
-                        let mockUserInfo = {
-                                id: 123,
-                                name: "Mock User",
-                                email: "test@gmail.com",
-                                role: "USER",
-                                picture: null,
-                                dob: "2000-01-01",
-                                uin: 123456789,
-                                phone_number: 1001001001,
-                        };
-
-                        global.fetch = jest.fn((url) => {
-                                if (url === '/api/checkRequests?userId=123') {
-                                    return Promise.resolve({
-                                        ok: true,
-                                        json: () => Promise.resolve({ exists: true, request: {non_registered_userId: 123, documentation: false} }),
-                                    });
-                                } else if (url === '/api/getUserDocumentation?user_id=123') {
-                                    return Promise.resolve({
-                                        ok: true,
-                                        json: () => Promise.resolve({ exists: false }),
-                                    });
-                                }else{
-                                        console.log("OTHER CALL MADE: ", url);
-                                }
-                        });
-
-                        const mockDisplayHeaderRef = { current: null };
-                        const mockLastIntendedFocusRef = { current: null };
-                              
-                        await act(async () => {
-                                  render(
-                                    <UserAccommodations
-                                      userInfo={mockUserInfo}
-                                      setAlertMessage={mockSetAlertMessage}
-                                      setShowAlert={mockSetShowAlert}
-                                      displayHeaderRef={mockDisplayHeaderRef}
-                                      lastIntendedFocusRef={mockLastIntendedFocusRef}
-                                      settingsTabOpen={false}
-                                    />
-                                  );
-                        });
-
-                        await waitFor(() => {
-                                expect(UserAccommodations.existingRequest).toEqual({non_registered_userId: 123, documentation: false});
-                        });
-                }); */
-
         });     
         describe('correct form display based on checkRequest', () => {
                 test('shows the new student application if no request', async () => {
@@ -431,145 +711,6 @@ describe('userAccommodations', () => {
                                 expect(screen.queryByTestId('existingRequest')).not.toBeInTheDocument();
                         });
                 });
-
-                /*test('shows the existing request if exists', async () => {
-                        let mockUserInfo = {
-                                id: "mockId",
-                                name: "Mock User",
-                                email: "test@gmail.com",
-                                role: "USER",
-                                picture: null,
-                                dob: "2000-01-01",
-                                uin: 123456789,
-                                phone_number: 1001001001,
-                        };
-                        global.fetch = jest.fn().mockResolvedValue({
-                                ok: true,
-                                json: jest.fn().mockResolvedValueOnce({exists: true, request: {}})
-                        });
-
-                        const mockDisplayHeaderRef = { current: null };
-                                const mockLastIntendedFocusRef = { current: null };
-                              
-                                await act(async () => {
-                                  render(
-                                    <UserAccommodations
-                                      userInfo={mockUserInfo}
-                                      setAlertMessage={mockSetAlertMessage}
-                                      setShowAlert={mockSetShowAlert}
-                                      displayHeaderRef={mockDisplayHeaderRef}
-                                      lastIntendedFocusRef={mockLastIntendedFocusRef}
-                                      settingsTabOpen={false}
-                                    />
-                                  );
-                        });
-
-                        await waitFor(() => {
-                                expect(screen.queryByTestId('newStudentApp')).not.toBeInTheDocument();
-                                expect(screen.queryByTestId('existingRequest')).toBeInTheDocument();
-                        });
-                });*/
-
-                /*test('shows correct label when student has documentation', async () => {
-                        let mockUserInfo = {
-                                id: 123,
-                                name: "Mock User",
-                                email: "test@gmail.com",
-                                role: "USER",
-                                picture: null,
-                                dob: "2000-01-01",
-                                uin: 123456789,
-                                phone_number: 1001001001,
-                        };
-
-                        global.fetch = jest.fn((url) => {
-                                if (url === '/api/checkRequests?userId=123') {
-                                    return Promise.resolve({
-                                        ok: true,
-                                        json: () => Promise.resolve({ exists: true, request: {non_registered_userId: 123, documentation: true} }),
-                                    });
-                                } else if (url === '/api/getUserDocumentation?user_id=123') {
-                                    return Promise.resolve({
-                                        ok: true,
-                                        json: () => Promise.resolve({ exists: true, form: {name: "fileName", formUrl: "form/testurl", userId: 123, type: "REGISTRATION_ELIGIBILITY"} }),
-                                    });
-                                }else{
-                                        console.log("OTHER CALL MADE: ", url);
-                                }
-                        });
-
-                        const mockDisplayHeaderRef = { current: null };
-                                const mockLastIntendedFocusRef = { current: null };
-                              
-                                await act(async () => {
-                                  render(
-                                    <UserAccommodations
-                                      userInfo={mockUserInfo}
-                                      setAlertMessage={mockSetAlertMessage}
-                                      setShowAlert={mockSetShowAlert}
-                                      displayHeaderRef={mockDisplayHeaderRef}
-                                      lastIntendedFocusRef={mockLastIntendedFocusRef}
-                                      settingsTabOpen={false}
-                                    />
-                                  );
-                        });
-
-                        await waitFor(() => {
-                                        expect(screen.getByText(/You have submitted your documentation, and your request is under review! Review your documentation/)).toBeInTheDocument();
-                                        expect(screen.getByRole('link', { name: /here/i })).toHaveAttribute('href', 'form/testurl');
-                                        expect(screen.queryByText("You have not submitted your documentation yet. Please submit it in Forms before we can review your request.")).not.toBeInTheDocument();
-                        });
-                });*/
-
-                /*test('shows correct label when student doesnt have documentation', async () => {
-                        let mockUserInfo = {
-                                id: 123,
-                                name: "Mock User",
-                                email: "test@gmail.com",
-                                role: "USER",
-                                picture: null,
-                                dob: "2000-01-01",
-                                uin: 123456789,
-                                phone_number: 1001001001,
-                        };
-
-                        global.fetch = jest.fn((url) => {
-                                if (url === '/api/checkRequests?userId=123') {
-                                    return Promise.resolve({
-                                        ok: true,
-                                        json: () => Promise.resolve({ exists: true, request: {non_registered_userId: 123, documentation: false} }),
-                                    });
-                                } else if (url === '/api/getUserDocumentation?user_id=123') {
-                                    return Promise.resolve({
-                                        ok: true,
-                                        json: () => Promise.resolve({ exists: false }),
-                                    });
-                                }else{
-                                        console.log("OTHER CALL MADE: ", url);
-                                }
-                        });
-
-                        const mockDisplayHeaderRef = { current: null };
-                                const mockLastIntendedFocusRef = { current: null };
-                              
-                                await act(async () => {
-                                  render(
-                                    <UserAccommodations
-                                      userInfo={mockUserInfo}
-                                      setAlertMessage={mockSetAlertMessage}
-                                      setShowAlert={mockSetShowAlert}
-                                      displayHeaderRef={mockDisplayHeaderRef}
-                                      lastIntendedFocusRef={mockLastIntendedFocusRef}
-                                      settingsTabOpen={false}
-                                    />
-                                  );
-                        });
-
-                        await waitFor(() => {
-                                expect(screen.getByText("You have not submitted your documentation yet. Please submit it in Forms before we can review your request.")).toBeInTheDocument();
-                                expect(screen.queryByText("You have submitted your documentation, and your request is under review!")).not.toBeInTheDocument();
-                        });
-                });*/
 
                 test('new student application shows correct form labels', async () => {
                         let mockUserInfo = {
@@ -691,114 +832,6 @@ describe('userAccommodations', () => {
                                 expect(screen.queryByTestId('uploadFile')).toBeInTheDocument();
                         });
                 });
-
-                /*test('existing request shows correct form labels', async () => {
-                        let mockUserInfo = {
-                                id: 123,
-                                name: "Mock User",
-                                email: "test@gmail.com",
-                                role: "USER",
-                                picture: null,
-                                dob: "2000-01-01",
-                                uin: 123456789,
-                                phone_number: 1001001001,
-                        };
-
-                        global.fetch = jest.fn((url) => {
-                                if (url === '/api/checkRequests?userId=123') {
-                                    return Promise.resolve({
-                                        ok: true,
-                                        json: () => Promise.resolve({ exists: true, request: {non_registered_userId: 123, documentation: false} }),
-                                    });
-                                } else if (url === '/api/getUserDocumentation?user_id=123') {
-                                    return Promise.resolve({
-                                        ok: true,
-                                        json: () => Promise.resolve({ exists: false }),
-                                    });
-                                }else{
-                                        console.log("OTHER CALL MADE: ", url);
-                                }
-                        });
-
-                        const mockDisplayHeaderRef = { current: null };
-                                const mockLastIntendedFocusRef = { current: null };
-                              
-                                await act(async () => {
-                                  render(
-                                    <UserAccommodations
-                                      userInfo={mockUserInfo}
-                                      setAlertMessage={mockSetAlertMessage}
-                                      setShowAlert={mockSetShowAlert}
-                                      displayHeaderRef={mockDisplayHeaderRef}
-                                      lastIntendedFocusRef={mockLastIntendedFocusRef}
-                                      settingsTabOpen={false}
-                                    />
-                                  );
-                        });
-
-                        await waitFor(() => {
-                                expect(screen.getByText("Name")).toBeInTheDocument();
-                                expect(screen.getByText("Email")).toBeInTheDocument();
-                                expect(screen.getByText("Date of Birth")).toBeInTheDocument();
-                                expect(screen.getByText("UIN")).toBeInTheDocument();
-                                expect(screen.getByText("Phone Number")).toBeInTheDocument();
-                                expect(screen.getByText("Notes")).toBeInTheDocument();
-                        });
-                });*/
-
-                /*test('existing request shows correct form inputs', async () => {
-                        let mockUserInfo = {
-                                id: 123,
-                                name: "Mock User",
-                                email: "test@gmail.com",
-                                role: "USER",
-                                picture: null,
-                                dob: "2000-01-01",
-                                uin: 123456789,
-                                phone_number: 1001001001,
-                        };
-
-                        global.fetch = jest.fn((url) => {
-                                if (url === '/api/checkRequests?userId=123') {
-                                    return Promise.resolve({
-                                        ok: true,
-                                        json: () => Promise.resolve({ exists: true, request: {non_registered_userId: 123, documentation: false} }),
-                                    });
-                                } else if (url === '/api/getUserDocumentation?user_id=123') {
-                                    return Promise.resolve({
-                                        ok: true,
-                                        json: () => Promise.resolve({ exists: false }),
-                                    });
-                                }else{
-                                        console.log("OTHER CALL MADE: ", url);
-                                }
-                        });
-
-                        const mockDisplayHeaderRef = { current: null };
-                                const mockLastIntendedFocusRef = { current: null };
-                              
-                                await act(async () => {
-                                  render(
-                                    <UserAccommodations
-                                      userInfo={mockUserInfo}
-                                      setAlertMessage={mockSetAlertMessage}
-                                      setShowAlert={mockSetShowAlert}
-                                      displayHeaderRef={mockDisplayHeaderRef}
-                                      lastIntendedFocusRef={mockLastIntendedFocusRef}
-                                      settingsTabOpen={false}
-                                    />
-                                  );
-                        });
-
-                        await waitFor(() => {
-                                expect(screen.queryByTestId('name')).toBeInTheDocument();
-                                expect(screen.queryByTestId('email')).toBeInTheDocument();
-                                expect(screen.queryByTestId('dob')).toBeInTheDocument();
-                                expect(screen.queryByTestId('uin')).toBeInTheDocument();
-                                expect(screen.queryByTestId('phone_number')).toBeInTheDocument();
-                                expect(screen.queryByTestId('notes')).toBeInTheDocument();
-                        });
-                });*/
         }); 
 
         describe('input form change', () => {
@@ -853,58 +886,6 @@ describe('userAccommodations', () => {
                                 expect(inputElement.value).toBe('Test Name');
                         });
                 });
-
-                /*test('existing request: on input change, should not change value', async () => {
-                        let mockUserInfo = {
-                                id: 123,
-                                name: "Mock User",
-                                email: "test@gmail.com",
-                                role: "USER",
-                                picture: null,
-                                dob: "2000-01-01",
-                                uin: 123456789,
-                                phone_number: 1001001001,
-                        };
-
-                        global.fetch = jest.fn((url) => {
-                                if (url === '/api/checkRequests?userId=123') {
-                                    return Promise.resolve({
-                                        ok: true,
-                                        json: () => Promise.resolve({ exists: true, request: {non_registered_userId: 123, documentation: false} }),
-                                    });
-                                } else if (url === '/api/getUserDocumentation?user_id=123') {
-                                    return Promise.resolve({
-                                        ok: true,
-                                        json: () => Promise.resolve({ exists: false }),
-                                    });
-                                }else{
-                                        console.log("OTHER CALL MADE: ", url);
-                                }
-                        });
-
-                        const mockDisplayHeaderRef = { current: null };
-                                const mockLastIntendedFocusRef = { current: null };
-                              
-                                await act(async () => {
-                                  render(
-                                    <UserAccommodations
-                                      userInfo={mockUserInfo}
-                                      setAlertMessage={mockSetAlertMessage}
-                                      setShowAlert={mockSetShowAlert}
-                                      displayHeaderRef={mockDisplayHeaderRef}
-                                      lastIntendedFocusRef={mockLastIntendedFocusRef}
-                                      settingsTabOpen={false}
-                                    />
-                                  );
-                        });
-
-                        const inputElement = screen.getByTestId('name');
-                        fireEvent.change(inputElement, { target: { value: 'NOT Test Name' } });
-
-                        await waitFor(() => {
-                                expect(inputElement.value).not.toBe('Test Name');
-                        });
-                });*/
         }); 
 
         describe('new student application submit process', () => {
@@ -1668,215 +1649,6 @@ describe('userAccommodations', () => {
                                                 expect(mockSetShowAlert).toHaveBeenCalledWith(true);
                                         });
                                 });
-                                /*test('calls checkRequests again', async () => {
-                                        let mockUserInfo = {
-                                                id: 123,
-                                                name: "Mock User",
-                                                email: "test@gmail.com",
-                                                role: "USER",
-                                                picture: null,
-                                                dob: "2000-01-01",
-                                                uin: 123456789,
-                                                phone_number: 1001001001,
-                                        };
-
-                                        global.fetch = jest.fn().mockResolvedValue({
-                                                ok: true,
-                                                json: jest.fn().mockResolvedValueOnce({exists: false, message: "No request found"})
-                                        }).mockResolvedValue({
-                                                ok: true,
-                                                status: 200,
-                                                json: jest.fn().mockResolvedValue({ success: true, request: {} })
-                                        }).mockResolvedValue({
-                                                ok: true,
-                                                json: jest.fn().mockResolvedValueOnce({exists: true, request: {}})
-                                        });
-        
-                                        const mockDisplayHeaderRef = { current: null };
-                                const mockLastIntendedFocusRef = { current: null };
-                              
-                                await act(async () => {
-                                  render(
-                                    <UserAccommodations
-                                      userInfo={mockUserInfo}
-                                      setAlertMessage={mockSetAlertMessage}
-                                      setShowAlert={mockSetShowAlert}
-                                      displayHeaderRef={mockDisplayHeaderRef}
-                                      lastIntendedFocusRef={mockLastIntendedFocusRef}
-                                      settingsTabOpen={false}
-                                    />
-                                  );
-                                });
-
-                                        fireEvent.change(screen.getByTestId('name'), { target: { value: 'Test Name' } });
-                                        fireEvent.change(screen.getByTestId('email'), { target: { value: 'test@email.com' } });
-                                        fireEvent.change(screen.getByTestId('dob'), { target: { value: '2003-01-01' } });
-                                        fireEvent.change(screen.getByTestId('uin'), { target: { value: 123456789 } });
-                                        fireEvent.change(screen.getByTestId('phone_number'), { target: { value: 1234567890 } });
-                                        fireEvent.change(screen.getByTestId('disability'), { target: { value: 'disability' } });
-                                        fireEvent.change(screen.getByTestId('testing'), { target: { value: 'testing' } });
-                                        fireEvent.change(screen.getByTestId('inClass'), { target: { value: 'inClass' } });
-                                        fireEvent.change(screen.getByTestId('housing'), { target: { value: 'housing' } });
-                                        fireEvent.change(screen.getByTestId('sideEffect'), { target: { value: 'sideEffect' } });
-                                        fireEvent.change(screen.getByTestId('accommodations'), { target: { value: 'accommodations' } });
-                                        fireEvent.change(screen.getByTestId('pastAcc'), { target: { value: 'pastAcc' } });
-                                        const submitButton = screen.getByRole('button', { name: /Submit/i });
-                                        fireEvent.click(submitButton);
-                                        await waitFor(() => {
-                                                expect(global.fetch).toHaveBeenCalledWith('/api/checkRequests?userId=123');
-                                        });
-                                });*/
-                                /*test('sets existing request', async () => {
-                                        let mockUserInfo = {
-                                                id: 123,
-                                                name: "Mock User",
-                                                email: "test@gmail.com",
-                                                role: "USER",
-                                                picture: null,
-                                                dob: "2000-01-01",
-                                                uin: 123456789,
-                                                phone_number: 1001001001,
-                                        };
-
-                                        global.fetch = jest.fn().mockResolvedValue({
-                                                ok: true,
-                                                json: jest.fn().mockResolvedValueOnce({exists: false, message: "No request found"})
-                                        }).mockResolvedValue({
-                                                ok: true,
-                                                status: 200,
-                                                json: jest.fn().mockResolvedValue({ success: true, request: {
-                                                        name: 'Test Name',
-                                                        user_email: 'test@email.com',
-                                                        dob: '2003-01-01',
-                                                        uin: '123456789',
-                                                        phone_number: '1234567890',
-                                                        notes: 'disability\ntesting\ninClass\nhousing\nsideEffect\naccommodations\npastAcc'
-                                                } })
-                                        }).mockResolvedValue({
-                                                ok: true,
-                                                json: jest.fn().mockResolvedValueOnce({exists: true, request: {
-                                                        name: 'Test Name',
-                                                        user_email: 'test@email.com',
-                                                        dob: '2003-01-01',
-                                                        uin: '123456789',
-                                                        phone_number: '1234567890',
-                                                        notes: 'disability\ntesting\ninClass\nhousing\nsideEffect\naccommodations\npastAcc'
-                                                }})
-                                        });
-        
-                                        const mockDisplayHeaderRef = { current: null };
-                                const mockLastIntendedFocusRef = { current: null };
-                              
-                                await act(async () => {
-                                  render(
-                                    <UserAccommodations
-                                      userInfo={mockUserInfo}
-                                      setAlertMessage={mockSetAlertMessage}
-                                      setShowAlert={mockSetShowAlert}
-                                      displayHeaderRef={mockDisplayHeaderRef}
-                                      lastIntendedFocusRef={mockLastIntendedFocusRef}
-                                      settingsTabOpen={false}
-                                    />
-                                  );
-                                });
-
-                                        fireEvent.change(screen.getByTestId('name'), { target: { value: 'Test Name' } });
-                                        fireEvent.change(screen.getByTestId('email'), { target: { value: 'test@email.com' } });
-                                        fireEvent.change(screen.getByTestId('dob'), { target: { value: '2003-01-01' } });
-                                        fireEvent.change(screen.getByTestId('uin'), { target: { value: 123456789 } });
-                                        fireEvent.change(screen.getByTestId('phone_number'), { target: { value: 1234567890 } });
-                                        fireEvent.change(screen.getByTestId('disability'), { target: { value: 'disability' } });
-                                        fireEvent.change(screen.getByTestId('testing'), { target: { value: 'testing' } });
-                                        fireEvent.change(screen.getByTestId('inClass'), { target: { value: 'inClass' } });
-                                        fireEvent.change(screen.getByTestId('housing'), { target: { value: 'housing' } });
-                                        fireEvent.change(screen.getByTestId('sideEffect'), { target: { value: 'sideEffect' } });
-                                        fireEvent.change(screen.getByTestId('accommodations'), { target: { value: 'accommodations' } });
-                                        fireEvent.change(screen.getByTestId('pastAcc'), { target: { value: 'pastAcc' } });
-                                        const submitButton = screen.getByRole('button', { name: /Submit/i });
-                                        fireEvent.click(submitButton);
-                                        await waitFor(() => {
-                                                expect(UserAccommodations.existingRequest).toStrictEqual({
-                                                        name: 'Test Name',
-                                                        user_email: 'test@email.com',
-                                                        dob: '2003-01-01',
-                                                        uin: '123456789',
-                                                        phone_number: '1234567890',
-                                                        notes: 'disability\ntesting\ninClass\nhousing\nsideEffect\naccommodations\npastAcc'
-                                                });
-                                        });
-                                });*/
-                                /*test('changes view to existing request', async () => {
-                                        let mockUserInfo = {
-                                                id: 123,
-                                                name: "Mock User",
-                                                email: "test@gmail.com",
-                                                role: "USER",
-                                                picture: null,
-                                                dob: "2000-01-01",
-                                                uin: 123456789,
-                                                phone_number: 1001001001,
-                                        };
-
-                                        global.fetch = jest.fn().mockResolvedValue({
-                                                ok: true,
-                                                json: jest.fn().mockResolvedValueOnce({exists: false, message: "No request found"})
-                                        }).mockResolvedValue({
-                                                ok: true,
-                                                status: 200,
-                                                json: jest.fn().mockResolvedValue({ success: true, request: {
-                                                        name: 'Test Name',
-                                                        user_email: 'test@email.com',
-                                                        dob: '2003-01-01',
-                                                        uin: '123456789',
-                                                        phone_number: '1234567890',
-                                                        notes: 'disability\ntesting\ninClass\nhousing\nsideEffect\naccommodations\npastAcc'
-                                                } })
-                                        }).mockResolvedValue({
-                                                ok: true,
-                                                json: jest.fn().mockResolvedValueOnce({exists: true, request: {
-                                                        name: 'Test Name',
-                                                        user_email: 'test@email.com',
-                                                        dob: '2003-01-01',
-                                                        uin: '123456789',
-                                                        phone_number: '1234567890',
-                                                        notes: 'disability\ntesting\ninClass\nhousing\nsideEffect\naccommodations\npastAcc'
-                                                }})
-                                        });
-        
-                                        const mockDisplayHeaderRef = { current: null };
-                                const mockLastIntendedFocusRef = { current: null };
-                              
-                                await act(async () => {
-                                  render(
-                                    <UserAccommodations
-                                      userInfo={mockUserInfo}
-                                      setAlertMessage={mockSetAlertMessage}
-                                      setShowAlert={mockSetShowAlert}
-                                      displayHeaderRef={mockDisplayHeaderRef}
-                                      lastIntendedFocusRef={mockLastIntendedFocusRef}
-                                      settingsTabOpen={false}
-                                    />
-                                  );
-                                });
-                                        fireEvent.change(screen.getByTestId('name'), { target: { value: 'Test Name' } });
-                                        fireEvent.change(screen.getByTestId('email'), { target: { value: 'test@email.com' } });
-                                        fireEvent.change(screen.getByTestId('dob'), { target: { value: '2003-01-01' } });
-                                        fireEvent.change(screen.getByTestId('uin'), { target: { value: 123456789 } });
-                                        fireEvent.change(screen.getByTestId('phone_number'), { target: { value: 1234567890 } });
-                                        fireEvent.change(screen.getByTestId('disability'), { target: { value: 'disability' } });
-                                        fireEvent.change(screen.getByTestId('testing'), { target: { value: 'testing' } });
-                                        fireEvent.change(screen.getByTestId('inClass'), { target: { value: 'inClass' } });
-                                        fireEvent.change(screen.getByTestId('housing'), { target: { value: 'housing' } });
-                                        fireEvent.change(screen.getByTestId('sideEffect'), { target: { value: 'sideEffect' } });
-                                        fireEvent.change(screen.getByTestId('accommodations'), { target: { value: 'accommodations' } });
-                                        fireEvent.change(screen.getByTestId('pastAcc'), { target: { value: 'pastAcc' } });
-                                        const submitButton = screen.getByRole('button', { name: /Submit/i });
-                                        fireEvent.click(submitButton);
-                                        await waitFor(() => {
-                                                expect(screen.queryByTestId('newStudentApp')).not.toBeInTheDocument();
-                                                expect(screen.queryByTestId('existingRequest')).toBeInTheDocument();
-                                        });
-                                });*/
                         });
                         
                         describe('if NOT valid api result from createRequest', () => {
@@ -2007,359 +1779,5 @@ describe('userAccommodations', () => {
                         });
                 });
 
-        }); 
-
-        describe('cancel existing request process', () => {
-                /*test('clicking cancel calls /api/cancelRequest with correct userId', async () => {
-                        let mockUserInfo = {
-                                id: 123,
-                                name: "Mock User",
-                                email: "test@gmail.com",
-                                role: "USER",
-                                picture: null,
-                                dob: "2000-01-01",
-                                uin: 123456789,
-                                phone_number: 1001001001,
-                        };
-
-                        global.fetch = jest.fn((url) => {
-                                if (url === '/api/checkRequests?userId=123') {
-                                        console.log("CHECK REQUESTS WAS C");
-                                    return Promise.resolve({
-                                        ok: true,
-                                        json: () => Promise.resolve({ exists: true, request: {
-                                                non_registered_userId: 123,
-                                                documentation: false,
-                                                notes: 'disability\ntesting\ninClass\nhousing\nsideEffect\naccommodations\npastAcc'
-                                        }}),
-                                    });
-                                }else if (url === '/api/getUserDocumentation?user_id=123') {
-                                        console.log("GET USER DOC WAS C");
-                                        return Promise.resolve({
-                                            ok: true,
-                                            json: () => Promise.resolve({ exists: false }),
-                                        });
-                                }else if (url === '/api/deleteForm') {
-                                        return Promise.resolve({
-                                            ok: true,
-                                            json: () => Promise.resolve({ message: 'Form deleted successfully' }),
-                                        });
-                                }else if (url === '/api/cancelRequest') {
-                                        return Promise.resolve({
-                                            ok: true,
-                                            json: () => Promise.resolve({ message: 'Request deleted successfully' }),
-                                        });
-                                }
-                                else{
-                                        console.log("OTHER CALL MADE: ", url);
-                                }
-                        });
-
-                        const mockDisplayHeaderRef = { current: null };
-                                const mockLastIntendedFocusRef = { current: null };
-                              
-                                await act(async () => {
-                                  render(
-                                    <UserAccommodations
-                                      userInfo={mockUserInfo}
-                                      setAlertMessage={mockSetAlertMessage}
-                                      setShowAlert={mockSetShowAlert}
-                                      displayHeaderRef={mockDisplayHeaderRef}
-                                      lastIntendedFocusRef={mockLastIntendedFocusRef}
-                                      settingsTabOpen={false}
-                                    />
-                                  );
-                                });
-                        
-
-                        const cancelButton = await screen.findByTestId("cancelBtn");
-                        fireEvent.click(cancelButton);
-
-                        await waitFor(() => {
-                                expect(global.fetch).toHaveBeenCalledWith(
-                                        '/api/deleteForm',
-                                        expect.objectContaining({
-                                          method: 'POST',
-                                          headers: { 'Content-Type': 'application/json' },
-                                          body: expect.stringMatching(/"userId"\s*:\s*123.*"type"\s*:\s*"REGISTRATION_ELIGIBILITY"/),
-                                        })
-                                );
-                        });
-                });*/
-                describe('correct response from /api/cancelRequest', () => {
-                        /*test('alerts the user of success', async () => {
-                                  let mockUserInfo = {
-                                        id: 123,
-                                        name: "Mock User",
-                                        email: "test@gmail.com",
-                                        role: "USER",
-                                        picture: null,
-                                        dob: "2000-01-01",
-                                        uin: 123456789,
-                                        phone_number: 1001001001,
-                                };
-        
-                                global.fetch = jest.fn((url) => {
-                                        if (url === '/api/checkRequests?userId=123') {
-                                                console.log("CHECK REQUESTS WAS C");
-                                            return Promise.resolve({
-                                                ok: true,
-                                                json: () => Promise.resolve({ exists: true, 
-                                                        request: {
-                                                          name: 'Test Name',
-                                                          user_email: 'test@email.com',
-                                                          dob: '2003-01-01',
-                                                          uin: '123456789',
-                                                          phone_number: '1234567890',
-                                                          notes: 'disability\ntesting\ninClass\nhousing\nsideEffect\naccommodations\npastAcc',
-                                                          has_documentation: true
-                                                        }}),
-                                            });
-                                        }else if (url === '/api/getUserDocumentation?user_id=123') {
-                                                console.log("GET USER DOC WAS C");
-                                                return Promise.resolve({
-                                                    ok: true,
-                                                    json: () => Promise.resolve({ exists: false }),
-                                                });
-                                        }else if(url == '/api/deleteForm'){
-                                                return Promise.resolve({
-                                                        ok: true,
-                                                        json: () => Promise.resolve({ message: 'Form deleted successfully' }),
-                                                });
-                                        }else if(url == '/api/cancelRequest'){
-                                                return Promise.resolve({
-                                                        ok: true,
-                                                        json: () => Promise.resolve({ message: 'Request deleted successfully' }),
-                                                });
-                                        }
-                                        else{
-                                                console.log("OTHER CALL MADE: ", url);
-                                        }
-                                });
-        
-                                const mockDisplayHeaderRef = { current: null };
-                                const mockLastIntendedFocusRef = { current: null };
-                              
-                                await act(async () => {
-                                  render(
-                                    <UserAccommodations
-                                      userInfo={mockUserInfo}
-                                      setAlertMessage={mockSetAlertMessage}
-                                      setShowAlert={mockSetShowAlert}
-                                      displayHeaderRef={mockDisplayHeaderRef}
-                                      lastIntendedFocusRef={mockLastIntendedFocusRef}
-                                      settingsTabOpen={false}
-                                    />
-                                  );
-                                });
-                                const cancelButton = await screen.findByTestId('cancelBtn');
-                                fireEvent.click(cancelButton);
-                              
-                                await waitFor(() => {
-                                  expect(mockSetAlertMessage).toHaveBeenCalledWith("Request cancelled successfully!");
-                                  expect(mockSetShowAlert).toHaveBeenCalledWith(true);
-                                });
-                        });*/
-                
-                        /*test('sets the existing request as null', async () => {
-                                let mockUserInfo = {
-                                        id: 123,
-                                        name: "Mock User",
-                                        email: "test@gmail.com",
-                                        role: "USER",
-                                        picture: null,
-                                        dob: "2000-01-01",
-                                        uin: 123456789,
-                                        phone_number: 1001001001,
-                                };
-        
-                                global.fetch = jest.fn((url) => {
-                                        if (url === '/api/checkRequests?userId=123') {
-                                                console.log("CHECK REQUESTS WAS C");
-                                            return Promise.resolve({
-                                                ok: true,
-                                                json: () => Promise.resolve({ exists: true, 
-                                                        request: {
-                                                          name: 'Test Name',
-                                                          user_email: 'test@email.com',
-                                                          dob: '2003-01-01',
-                                                          uin: '123456789',
-                                                          phone_number: '1234567890',
-                                                          notes: 'disability\ntesting\ninClass\nhousing\nsideEffect\naccommodations\npastAcc',
-                                                          has_documentation: true
-                                                        }}),
-                                            });
-                                        }else if (url === '/api/getUserDocumentation?user_id=123') {
-                                                console.log("GET USER DOC WAS C");
-                                                return Promise.resolve({
-                                                    ok: true,
-                                                    json: () => Promise.resolve({ exists: false }),
-                                                });
-                                        }else if(url == '/api/deleteForm'){
-                                                return Promise.resolve({
-                                                        ok: true,
-                                                        json: () => Promise.resolve({ message: 'Form deleted successfully' }),
-                                                });
-                                        }else if(url == '/api/cancelRequest'){
-                                                return Promise.resolve({
-                                                        ok: true,
-                                                        json: () => Promise.resolve({ message: 'Request deleted successfully' }),
-                                                });
-                                        }
-                                        else{
-                                                console.log("OTHER CALL MADE: ", url);
-                                        }
-                                });
-        
-                                const mockDisplayHeaderRef = { current: null };
-                                const mockLastIntendedFocusRef = { current: null };
-                              
-                                await act(async () => {
-                                  render(
-                                    <UserAccommodations
-                                      userInfo={mockUserInfo}
-                                      setAlertMessage={mockSetAlertMessage}
-                                      setShowAlert={mockSetShowAlert}
-                                      displayHeaderRef={mockDisplayHeaderRef}
-                                      lastIntendedFocusRef={mockLastIntendedFocusRef}
-                                      settingsTabOpen={false}
-                                    />
-                                  );
-                                });
-                                const cancelButton = await screen.findByTestId('cancelBtn');
-                                fireEvent.click(cancelButton);
-
-                                await waitFor(() => {
-                                        expect(UserAccommodations.existingRequest).toEqual(null);
-                                });
-                        });*/
-                        /*test('changes to new student application', async () => {
-                                let mockUserInfo = {
-                                        id: 123,
-                                        name: "Mock User",
-                                        email: "test@gmail.com",
-                                        role: "USER",
-                                        picture: null,
-                                        dob: "2000-01-01",
-                                        uin: 123456789,
-                                        phone_number: 1001001001,
-                                };
-        
-                                global.fetch = jest.fn((url) => {
-                                        if (url === '/api/checkRequests?userId=123') {
-                                                console.log("CHECK REQUESTS WAS C");
-                                            return Promise.resolve({
-                                                ok: true,
-                                                json: () => Promise.resolve({ exists: true, 
-                                                        request: {
-                                                          name: 'Test Name',
-                                                          user_email: 'test@email.com',
-                                                          dob: '2003-01-01',
-                                                          uin: '123456789',
-                                                          phone_number: '1234567890',
-                                                          notes: 'disability\ntesting\ninClass\nhousing\nsideEffect\naccommodations\npastAcc',
-                                                          has_documentation: true
-                                                        }}),
-                                            });
-                                        }else if (url === '/api/getUserDocumentation?user_id=123') {
-                                                console.log("GET USER DOC WAS C");
-                                                return Promise.resolve({
-                                                    ok: true,
-                                                    json: () => Promise.resolve({ exists: false }),
-                                                });
-                                        }else if(url == '/api/deleteForm'){
-                                                return Promise.resolve({
-                                                        ok: true,
-                                                        json: () => Promise.resolve({ message: 'Form deleted successfully' }),
-                                                });
-                                        }else if(url == '/api/cancelRequest'){
-                                                return Promise.resolve({
-                                                        ok: true,
-                                                        json: () => Promise.resolve({ message: 'Request deleted successfully' }),
-                                                });
-                                        }
-                                        else{
-                                                console.log("OTHER CALL MADE: ", url);
-                                        }
-                                });
-        
-                                const mockDisplayHeaderRef = { current: null };
-                                const mockLastIntendedFocusRef = { current: null };
-                              
-                                await act(async () => {
-                                  render(
-                                    <UserAccommodations
-                                      userInfo={mockUserInfo}
-                                      setAlertMessage={mockSetAlertMessage}
-                                      setShowAlert={mockSetShowAlert}
-                                      displayHeaderRef={mockDisplayHeaderRef}
-                                      lastIntendedFocusRef={mockLastIntendedFocusRef}
-                                      settingsTabOpen={false}
-                                    />
-                                  );
-                                });
-                                const cancelButton = await screen.findByTestId('cancelBtn');
-                                fireEvent.click(cancelButton);
-                                await waitFor(() => {
-                                        expect(screen.queryByTestId('newStudentApp')).toBeInTheDocument();
-                                        expect(screen.queryByTestId('existingRequest')).not.toBeInTheDocument();
-                                });
-                        });*/
-                }); 
-                describe('NOT correct response from /api/cancelRequest', () => {
-                        /*test('alerts the user of failure', async () => {
-                                let mockUserInfo = {
-                                    id: 123,
-                                    name: "Mock User",
-                                    email: "test@gmail.com",
-                                    role: "USER",
-                                    picture: null,
-                                    dob: "2000-01-01",
-                                    uin: 123456789,
-                                    phone_number: 1001001001,
-                                };
-                            
-                                global.fetch = jest.fn((url) => {
-                                    if (url === '/api/cancelRequest') {
-                                        return Promise.resolve({
-                                            ok: true,
-                                            json: () => Promise.resolve({ error: "Cancellation failed" }),
-                                        });
-                                    } else {
-                                        console.log("OTHER CALL MADE:", url);
-                                    }
-                                });
-                            
-                                const mockDisplayHeaderRef = { current: null };
-                                const mockLastIntendedFocusRef = { current: null };
-                              
-                                await act(async () => {
-                                  render(
-                                    <UserAccommodations
-                                      userInfo={mockUserInfo}
-                                      setAlertMessage={mockSetAlertMessage}
-                                      setShowAlert={mockSetShowAlert}
-                                      displayHeaderRef={mockDisplayHeaderRef}
-                                      lastIntendedFocusRef={mockLastIntendedFocusRef}
-                                      settingsTabOpen={false}
-                                    />
-                                  );
-                                });
-                            
-                                const cancelButton = await screen.findByTestId('cancelBtn');
-                                fireEvent.click(cancelButton);
-                            
-                                await waitFor(() => {
-                                    expect(mockSetAlertMessage).toHaveBeenCalledWith(
-                                        "Request cancellation failed. Please try again."
-                                    );
-                                    expect(mockSetShowAlert).toHaveBeenCalledWith(true);
-                                });
-                            
-                                // Test that the `cancelRequest` function throws an error
-                                await expect(cancelRequest()).rejects.toThrow("Cancellation failed");
-                            });*/
-                            
-                }); 
         }); 
 });

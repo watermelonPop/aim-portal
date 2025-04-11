@@ -1,6 +1,9 @@
 
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import SignUp from '../signUp';
+import { axe, toHaveNoViolations } from 'jest-axe';
+
+expect.extend(toHaveNoViolations);
 
 describe('SignUp Component', () => {
   const baseUserInfo = {
@@ -24,6 +27,165 @@ describe('SignUp Component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
+
+  test('successfully signs up STAFF with mapped role "Admin"', async () => {
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ success: true }),
+    });
+  
+    const props = {
+      ...baseProps,
+      userInfo: {
+        ...baseUserInfo,
+        name: 'Jane Staff',
+        email: 'jane@tamu.edu',
+        id: 'staff-id',
+      }
+    };
+  
+    render(<SignUp {...props} />);
+  
+    // Switch to STAFF tab
+    fireEvent.click(screen.getByTestId('STAFF'));
+  
+    // Select "Administration"
+    fireEvent.change(screen.getByLabelText(/staff role/i), {
+      target: { value: 'Administration' }
+    });
+  
+    fireEvent.click(screen.getByText(/Sign Up as STAFF/i));
+  
+    await waitFor(() => {
+      expect(global.fetch).toHaveBeenCalledWith('/api/createAdvisor', expect.objectContaining({
+        method: 'POST',
+        body: JSON.stringify({
+          userId: 'staff-id',
+          role: 'Admin',
+        }),
+      }));
+  
+      expect(props.setUserConnected).toHaveBeenCalledWith(true);
+      expect(props.setUserInfo).toHaveBeenCalledWith(expect.objectContaining({
+        role: 'ADVISOR',
+      }));
+    });
+  });
+
+  test('maps "Testing Center" to "Testing_Staff" and signs up', async () => {
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ success: true }),
+    });
+  
+    const props = {
+      ...baseProps,
+      userInfo: { ...baseUserInfo, id: 'testing-id', name: 'Test', email: 'test@tamu.edu' }
+    };
+  
+    render(<SignUp {...props} />);
+    fireEvent.click(screen.getByTestId('STAFF'));
+  
+    fireEvent.change(screen.getByLabelText(/staff role/i), {
+      target: { value: 'Testing Center' }
+    });
+  
+    fireEvent.click(screen.getByText(/Sign Up as STAFF/i));
+  
+    await waitFor(() => {
+      expect(global.fetch).toHaveBeenCalledWith('/api/createAdvisor', expect.objectContaining({
+        body: JSON.stringify({
+          userId: 'testing-id',
+          role: 'Testing_Staff',
+        })
+      }));
+    });
+  });
+
+  test('maps "Assistive Technology" to "Tech_Staff" and signs up', async () => {
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ success: true }),
+    });
+  
+    const props = {
+      ...baseProps,
+      userInfo: { ...baseUserInfo, id: 'tech-id', name: 'Techie', email: 'tech@tamu.edu' }
+    };
+  
+    render(<SignUp {...props} />);
+    fireEvent.click(screen.getByTestId('STAFF'));
+  
+    fireEvent.change(screen.getByLabelText(/staff role/i), {
+      target: { value: 'Assistive Technology' }
+    });
+  
+    fireEvent.click(screen.getByText(/Sign Up as STAFF/i));
+  
+    await waitFor(() => {
+      expect(global.fetch).toHaveBeenCalledWith('/api/createAdvisor', expect.objectContaining({
+        body: JSON.stringify({
+          userId: 'tech-id',
+          role: 'Tech_Staff',
+        })
+      }));
+    });
+  });
+  
+  test('displays alert if STAFF signup fails', async () => {
+    const mockError = new Error('Sign Up failed');
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: false,
+      json: async () => ({ success: false }),
+    });
+  
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+  
+    const props = {
+      ...baseProps,
+      userInfo: { ...baseUserInfo, id: 'staff-id', name: 'Bad Staff', email: 'fail@tamu.edu' }
+    };
+  
+    render(<SignUp {...props} />);
+    fireEvent.click(screen.getByTestId('STAFF'));
+    fireEvent.change(screen.getByLabelText(/staff role/i), {
+      target: { value: 'Administration' }
+    });
+    fireEvent.click(screen.getByText(/Sign Up as STAFF/i));
+  
+    await waitFor(() => {
+      expect(consoleSpy).toHaveBeenCalledWith('Error Signing Up:', expect.any(Error));
+      expect(props.setAlertMessage).toHaveBeenCalledWith('Failed to sign up. Please try again.');
+      expect(props.setShowAlert).toHaveBeenCalledWith(true);
+    });
+  
+    consoleSpy.mockRestore();
+  });
+  
+  
+
+  test('sign up screen should have no accessibility violations', async () => {
+    const props = {
+      userInfo: {
+        id: '1',
+        name: 'Test User',
+        email: 'test@email.com',
+        dob: '2000-01-01',
+        phone_number: '1234567890',
+        uin: '123456789',
+      },
+      setUserInfo: jest.fn(),
+      setUserConnected: jest.fn(),
+      setAlertMessage: jest.fn(),
+      setShowAlert: jest.fn(),
+      setLoading: jest.fn(),
+    };
+  
+      const { container } = render(<SignUp {...props} />);
+  
+      const results = await axe(container);
+      expect(results).toHaveNoViolations();
+    });
 
   test('throws error when response is not ok or success is false', async () => {
     const mockError = new Error('Sign Up failed');
