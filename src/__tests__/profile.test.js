@@ -8,7 +8,54 @@ expect.extend(toHaveNoViolations);
 describe('Profile component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        ok: true,
+        json: async () => ({}),
+      })
+    );
   });
+  
+
+  test('focuses tab-Profile after slight delay when no alert and settings tab closed', () => {
+    jest.useFakeTimers();
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        ok: true,
+        json: () =>
+          Promise.resolve({
+            uin: 123456789,
+            dob: '2000-01-01T00:00:00.000Z',
+            phone_number: '123-456-7890',
+            email: 'student@example.com',
+          }),
+      })
+    );
+  
+    const mockUserInfo = {
+      id: 'testId',
+      role: 'STUDENT'
+    };
+  
+    const focusSpy = jest.fn();
+    const mockTab = document.createElement('div');
+    mockTab.id = 'tab-Profile';
+    mockTab.focus = focusSpy;
+    document.body.appendChild(mockTab);
+  
+    render(<Profile userInfo={mockUserInfo} settingsTabOpen={false} />);
+  
+    act(() => {
+      jest.runAllTimers();
+    });
+  
+    expect(focusSpy).toHaveBeenCalled();
+  
+    document.body.removeChild(mockTab);
+    jest.useRealTimers();
+  });
+  
+  
 
   test('Profile should have no accessibility violations', async () => {
     let mockUserInfo = {
@@ -31,13 +78,9 @@ describe('Profile component', () => {
   });
 
   test('renders student data correctly', async () => {
-    const mockUserInfo = {
-      id: 1,
-      role: 'STUDENT',
-    };
-
     global.fetch = jest.fn(() =>
       Promise.resolve({
+        ok: true,
         json: () =>
           Promise.resolve({
             uin: 179008299,
@@ -47,20 +90,21 @@ describe('Profile component', () => {
           }),
       })
     );
-
-    const mockDisplayHeaderRef = { current: null };
-    const mockLastIntendedFocusRef = { current: null };
-
-    render(<Profile userInfo={mockUserInfo} displayHeaderRef={mockDisplayHeaderRef}
-      lastIntendedFocusRef={mockLastIntendedFocusRef}
-      settingsTabOpen={false}/>);
-
+  
+    const mockUserInfo = {
+      id: 1,
+      role: 'STUDENT',
+    };
+  
+    render(<Profile userInfo={mockUserInfo} settingsTabOpen={false} />);
+  
     expect(await screen.findByText(/STUDENT PROFILE/)).toBeInTheDocument();
     expect(await screen.findByText(/179008299/)).toBeInTheDocument();
     expect(await screen.findByText(/12\/24\/2024/)).toBeInTheDocument();
     expect(await screen.findByText(/1-935-865-0245 x848/)).toBeInTheDocument();
     expect(await screen.findByText(/student1.aim@gmail.com/)).toBeInTheDocument();
   });
+  
 
   // test('renders correct role title for ADVISOR', () => {
   //   const mockAdvisor = {

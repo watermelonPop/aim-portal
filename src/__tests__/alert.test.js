@@ -20,6 +20,28 @@ describe('alert', () => {
                 jest.clearAllMocks();
         });
 
+        test('focuses close button using requestAnimationFrame', async () => {
+                jest.useFakeTimers(); // Control timer-based APIs like RAF
+                const mockSetShowAlert = jest.fn();
+              
+                const { getByTestId } = render(<Alert message="Focus test" setShowAlert={mockSetShowAlert} />);
+              
+                const closeBtn = getByTestId('alert-close');
+              
+                const focusSpy = jest.spyOn(closeBtn, 'focus');
+              
+                // Run RAF callback
+                act(() => {
+                  jest.runOnlyPendingTimers();
+                });
+              
+                expect(focusSpy).toHaveBeenCalled();
+              
+                jest.useRealTimers();
+              });
+              
+              
+
         test('Alert should have no accessibility violations', async () => {
                 const { container } = render(<Alert message="HELLO" setShowAlert={mockSetShowAlert}/>);
                 const results = await axe(container);
