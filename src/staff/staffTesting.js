@@ -188,7 +188,10 @@ function StaffExamView({ userInfo, settingsTabOpen, displayHeaderRef }) {
                 // Display a loading message if data hasn't loaded yet
                 if (loading) {
                         console.log("returning loading");
-                return <div style={{ padding: '16px', textAlign: 'center' }}>Loading exams...</div>;
+                return (<div className="spinnerClassItem" role="status" aria-label="Loading, please wait">
+                <div className="spinner-iconClassItem" aria-hidden="true"></div>
+                <h3 className="spinner-textClassItem">Loading...</h3>
+                </div>);
                 }
         
                 // Function to handle click on an exam list item
@@ -255,7 +258,7 @@ function StaffExamView({ userInfo, settingsTabOpen, displayHeaderRef }) {
                         <p className="detailStyle">Date: {new Date(exam.date).toLocaleDateString()}</p>
                 </div>
                 ))}
-                <a href="#topStaffTestingResult">Back to Top</a>
+                <a href="#topStaffTestingResult" className='backToTop'>Back to Top</a>
                 </div>
                 );
         }

@@ -71,7 +71,10 @@ export default function StudentDashboard({ userInfo, settingsTabOpen, displayHea
           </button>
         </div>
         {loading ? (
-          <p>Loading courses...</p>
+          <div className="spinnerClassItem" role="status" aria-label="Loading, please wait">
+          <div className="spinner-iconClassItem" aria-hidden="true"></div>
+          <h3 className="spinner-textClassItem">Loading...</h3>
+          </div>
         ) : error ? (
           <p style={{ color: 'red' }}>{error}</p>
         ) : courses.length === 0 ? (

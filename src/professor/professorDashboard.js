@@ -333,7 +333,7 @@ export function ProfessorDashboard({ userInfo, setAlertMessage, setShowAlert, se
                 </div>
               ))}
             </div>
-            <a href="#backBtnProfDash">Back to Top</a>
+            <a href="#backBtnProfDash" className="backToTop">Back to Top</a>
           </div>
         </>
       )}
@@ -438,7 +438,7 @@ export function ProfessorDashboard({ userInfo, setAlertMessage, setShowAlert, se
                                                 </div>
                                         ))}
                                         </div>
-                                        <a href="#backBtnProfDash">Back to Top</a>
+                                        <a href="#backBtnProfDash" className="backToTop">Back to Top</a>
                                 </div>
                             </>
                           )}

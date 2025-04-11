@@ -85,7 +85,7 @@
    test('displays loading state then student data', async () => {
      setupGetStudentDataFetch();
      render(<StudentAccommodations userInfo={dummyUserInfo} />);
-     expect(screen.getByText(/Loading accommodations/i)).toBeInTheDocument();
+     expect(screen.getByText(/Loading.../i)).toBeInTheDocument();
      // Wait until the delete button (with its aria-label) is present.
      await waitFor(() => 
        expect(screen.getByRole('button', { name: /Delete accommodation request for Audio\/Visual Aids/i })).toBeInTheDocument()

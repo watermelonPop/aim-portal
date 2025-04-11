@@ -417,6 +417,9 @@ export function UserAccommodations({userInfo, setAlertMessage, setShowAlert, set
                                                 <input type="file" onChange={handleFileChange} data-testid="uploadFile" id="uploadFile" name="uploadFile"/>
                                         </div>
                                         <button type="submit" aria-label="submit">Submit</button>
+                                        <div role="group" id="uploadFileOuter">
+                                        <a href="#name" className="backToTop">Back to Top</a>
+                                        </div>
                                 </form>
                                 </>
                         ) : (
@@ -455,7 +458,9 @@ export function UserAccommodations({userInfo, setAlertMessage, setShowAlert, set
                                         <textarea data-testid="notes" id="notes" name="notes" value={existingRequest.notes} readOnly></textarea>
                                         </div>
                                         <button type="submit" aria-label="cancel request" data-testid="cancelBtn">Cancel Request</button>
-                                        <a href="#firstFocus">Back to Top</a>
+                                        <div role="group">
+                                        <a href="#name" className="backToTop">Back to Top</a>
+                                        </div>
                                 </form>
                                 </>
                         )}

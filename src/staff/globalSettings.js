@@ -60,7 +60,10 @@ function GlobalSettings({ settingsTabOpen, displayHeaderRef}) {
     
 
     if (!loaded) {
-      return <div style={{ padding: '16px', textAlign: 'center' }}>Loading advisors...</div>;
+      return (<div className="spinnerClassItem" role="status" aria-label="Loading, please wait">
+      <div className="spinner-iconClassItem" aria-hidden="true"></div>
+      <h3 className="spinner-textClassItem">Loading...</h3>
+      </div>);
     }
 
     const handleCardClick = (advisor) => {
@@ -299,7 +302,7 @@ function GlobalSettings({ settingsTabOpen, displayHeaderRef}) {
         {selectedAdvisor ? null : (
           <PaginationButtons/>
         )}
-      <a href="#enterAdvisorInput">Back To Top</a>
+      <a href="#enterAdvisorInput" className='backToTop'>Back To Top</a>
     </div>
   );
 }

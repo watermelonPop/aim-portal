@@ -171,6 +171,7 @@ function ProfessorTesting({ userInfo, settingsTabOpen, displayHeaderRef }) {
                 aria-expanded={openProfessorCourses[course.id]}
                 aria-controls={`students-${course.id}`}
                 aria-label={`Toggle students list for ${course.name}`}
+                id={course.id}
               >
                 {course.name} ({course.department})
                 <span aria-hidden="true">{openProfessorCourses[course.id] ? <FontAwesomeIcon icon={faCaretUp} /> : <FontAwesomeIcon icon={faCaretDown} />}</span>
@@ -253,6 +254,7 @@ function ProfessorTesting({ userInfo, settingsTabOpen, displayHeaderRef }) {
                         </div>
                       );
                     })}
+                    <a href={'#' + course.id} className="backToTop">Back to Top of Class</a>
                 </div>
               )}
             </section>

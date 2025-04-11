@@ -910,7 +910,10 @@ function openModal() {
         <h3><FontAwesomeIcon icon={faBell} /> Alerts</h3>
         <div className="alert-box">
           {loadingDates ? (
-            <div className="staffDash-loading-spinner" aria-label="Loading alerts..." />
+            <div className="spinnerClassItem" role="status" aria-label="Loading, please wait">
+            <div className="spinner-iconClassItem" aria-hidden="true"></div>
+            <h3 className="spinner-textClassItem">Loading...</h3>
+            </div>
           ) : (
             importantDates.map(date => (
               <div key={date.id} className="alert-item">

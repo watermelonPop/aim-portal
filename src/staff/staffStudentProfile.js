@@ -1,4 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faPenToSquare, faFloppyDisk, faClockRotateLeft} from '@fortawesome/free-solid-svg-icons';
 
 function StaffStudentProfile({
     view,
@@ -217,7 +219,7 @@ function StaffStudentProfile({
     }, [settingsTabOpen, headingRef]);
 
   return (
-    <main className="student-profile-wrapper" aria-label="Student Profile View" tabIndex={0}>
+    <main className="student-profile-wrapper" aria-label="Student Profile View">
 
       {loadingPermissions && (
         <div className="staffStudentProfile-spinner-overlay" role="status" aria-live="polite">
@@ -228,24 +230,23 @@ function StaffStudentProfile({
       {view === 'studentDetails' && selectedStudent && (
         <div className="staff-student-details-container">
         <div className="student-profile-card">
-          <h2 ref={headingRef} tabIndex={0} className="student-profile-heading">{selectedStudent.student_name}'s Profile</h2>
+          <h2 ref={headingRef} className="student-profile-heading">{selectedStudent.student_name}'s Profile</h2>
           
           {userPermissions?.student_case_information && (
 
-          <button className="staffDash-cancel-btn" tabIndex={0} aria-label="View/Edit Student Info" onClick={() => setActiveModal({ type: 'studentInfo' })}>
+          <button className="staffDash-cancel-btn" aria-label="View/Edit Student Info" onClick={() => setActiveModal({ type: 'studentInfo' })}>
             View / Edit Student Info
           </button>
           )}
           
       {activeModal?.type === 'studentInfo' && (
         <div className="staffDash-modalOverlay">
-          <div  tabIndex={0} className="staffDash-modalContent">
+          <div  className="staffDash-modalContent">
             <div className="staffDash-modalHeader ">
               <h2>{selectedStudent?.student_name}'s Information</h2>
               <button 
                 aria-label="close student profile menu"
                 className="staffDash-modalHeaderCloseBtn "
-                tabIndex="0"
                 onClick={() => { setActiveModal(null); setIsEditing(false)}}
               >
                 ✕
@@ -350,7 +351,7 @@ function StaffStudentProfile({
                   className="staffDash-edit-profile-button"
                   onClick={() => setIsEditing(true)}
                 >
-                  ✏️ Edit Profile
+                  <FontAwesomeIcon icon={faPenToSquare} aria-hidden="true" /> Edit Profile
                 </button>
               </>
             )}
@@ -382,7 +383,7 @@ function StaffStudentProfile({
             }}
             aria-label="View submitted forms"
           >
-            📄 View Submitted Forms
+            View Submitted Forms
           </button>
         
         {userPermissions?.accomodation_modules && (
@@ -395,7 +396,7 @@ function StaffStudentProfile({
             }}
             aria-label="View student accommodations"
           >
-            📝 View Accommodations
+            View Accommodations
           </button>
         )}
 
@@ -409,7 +410,7 @@ function StaffStudentProfile({
             }}
             aria-label="View assistive technology"
           >
-            💻 View Assistive Tech
+            View Assistive Tech
           </button>
         )}
       
@@ -467,10 +468,10 @@ function StaffStudentProfile({
         )}
         {activeModal?.type === 'forms' && (
         <div className="staffDash-modalOverlay">
-            <div  tabIndex={0} className="staffDash-modalContent">
+            <div className="staffDash-modalContent">
             <div className="staffDash-modalHeader ">
             <h2 ref={modalTopRef} tabIndex={-1}>Submitted Forms</h2>
-            <button tabIndex={0} className="staffDash-modalHeaderCloseBtn" aria-label="close forms menu" onClick={() => {setActiveModal(null); setIsEditing(false)}}>✕</button>
+            <button className="staffDash-modalHeaderCloseBtn" aria-label="close forms menu" onClick={() => {setActiveModal(null); setIsEditing(false)}}>✕</button>
             </div>
                 {submittedForms.length > 0 ? (
                 submittedForms.map(form => (
@@ -480,18 +481,18 @@ function StaffStudentProfile({
                 role="region"
             aria-labelledby={`form-heading-${form.id}`}
                 >
-                <h3 tabIndex={0} id={`form-heading-${form.id}`}>
+                <h3 id={`form-heading-${form.id}`}>
                     {formatFormType(form.type)}
                 </h3>
 
-                <p tabIndex={0}><strong>Status:</strong> {form.status}</p>
-                <p tabIndex={0}>
+                <p ><strong>Status:</strong> {form.status}</p>
+                <p >
                     <strong>Submitted:</strong>{' '}
                     {form.submittedDate
                     ? new Date(form.submittedDate).toLocaleDateString()
                     : 'N/A'}
                 </p>
-                <p tabIndex={0}><strong>Due:</strong> {form.dueDate ? new Date(form.dueDate).toLocaleDateString() : 'N/A'}</p>
+                <p><strong>Due:</strong> {form.dueDate ? new Date(form.dueDate).toLocaleDateString() : 'N/A'}</p>
 
                 {form.formUrl && (
                     <p>
@@ -528,7 +529,7 @@ function StaffStudentProfile({
                     onClick={() => handleFormStatusChange(form.id, formEdits[form.id] || form.status)}
                     aria-label={`Save status change for ${formatFormType(form.type)} form`}
                 >
-                    💾 Save
+                    <FontAwesomeIcon icon={faFloppyDisk} aria-hidden="true" /> Save
                 </button>
                 
                 </section>
@@ -538,7 +539,7 @@ function StaffStudentProfile({
                 <p>No forms submitted.</p>
             )}
             <button
-                className="back-to-top-button"
+                className="backToTop"
                 onClick={() => {
                 modalTopRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
                 setTimeout(() => {
@@ -547,7 +548,7 @@ function StaffStudentProfile({
                 }}
                 aria-label="Back to top of modal"
             >
-                ⬆ Back to Top
+                Back to Top
             </button>
             </div>
         </div>
@@ -555,7 +556,7 @@ function StaffStudentProfile({
 
         {activeModal?.type === 'accommodations' && (
           <div className="staffDash-modalOverlay">
-            <div tabIndex={0} className="staffDash-modalContent">
+            <div className="staffDash-modalContent">
               <div className="staffDash-modalHeader">
                 <h2 ref={modalTopRef} tabIndex={-1}>Accommodations</h2>
                 <button
@@ -649,13 +650,12 @@ function StaffStudentProfile({
                           {/* PREVIOUS NOTES (read-only) */}
                           <div>
                             <p className="staffDash-notes-label" id={`prev-notes-label-${acc.id}`}>
-                              <strong>📝 Previous Notes:</strong>
+                              <strong><FontAwesomeIcon icon={faClockRotateLeft} aria-hidden="true" /> Previous Notes:</strong>
                             </p>
                             <p
                               className="staffDash-previous-notes"
                               role="document"
                               aria-labelledby={`prev-notes-label-${acc.id}`}
-                              tabIndex={0}
                             >
                               {acc.notes ? acc.notes : <em>No notes provided.</em>}
                             </p>
@@ -667,7 +667,7 @@ function StaffStudentProfile({
                               htmlFor={`notes-${acc.id}`}
                               className="staffDash-notes-input-label"
                             >
-                              Edit Notes
+                              <FontAwesomeIcon icon={faPenToSquare} aria-hidden="true" /> Edit Notes
                             </label>
                             <textarea
                               id={`notes-${acc.id}`}
@@ -686,7 +686,6 @@ function StaffStudentProfile({
                               aria-describedby={`notes-desc-${acc.id}`}
                               aria-label={`Edit notes for ${acc.type} accommodation`}
                               placeholder="Enter updated notes here..."
-                              tabIndex={0}
                             />
                             <p id={`notes-desc-${acc.id}`} className="sr-only">
                               Text area to edit the notes for this accommodation.
@@ -694,27 +693,15 @@ function StaffStudentProfile({
                           </div>
                         </div>
                       )}
-
-
-
                       <button
                         className="staffDash-save-btn"
                         onClick={() => confirmAndSaveAccommodation(acc.id)}
                         aria-label={`Save changes to ${acc.type} accommodation`}
-                      >
-                        💾 Save
-                      </button>
-
-                    </section>
-                  );
-                })
-              ) : (
-                <p>No accommodations available.</p>
-              )}
-
-
-              <button
-                className="back-to-top-button"
+                        >
+                          <FontAwesomeIcon icon={faFloppyDisk} aria-hidden="true" /> Save
+                        </button>
+                        <button
+                className="backToTop"
                 onClick={() => {
                   modalTopRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
                   setTimeout(() => {
@@ -723,8 +710,14 @@ function StaffStudentProfile({
                 }}
                 aria-label="Back to top of modal"
               >
-                ⬆ Back to Top
-              </button>
+                Back to Top
+              </button> 
+                    </section>
+                  );
+                })
+              ) : (
+                <p>No accommodations available.</p>
+              )}
             </div>
           </div>
         )}
@@ -751,7 +744,7 @@ function StaffStudentProfile({
                     role="region"
                     aria-labelledby={`assistive-tech-heading-${tech.id}`}
                   >
-                    <h3 id={`assistive-tech-heading-${tech.id}`} tabIndex={0}>
+                    <h3 id={`assistive-tech-heading-${tech.id}`}>
                       {tech.type}
                     </h3>
 
@@ -796,7 +789,7 @@ function StaffStudentProfile({
                       className="staffDash-save-btn"
                       aria-label={`Save changes to assistive tech: ${tech.type}`}
                     >
-                      💾 Save
+                      <FontAwesomeIcon icon={faFloppyDisk} aria-hidden="true" /> Save
                     </button>
                   </section>
                 ))
@@ -805,7 +798,7 @@ function StaffStudentProfile({
               )}
 
               <button
-                className="back-to-top-button"
+                className="backToTop"
                 onClick={() => {
                   modalTopRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
                   setTimeout(() => {
@@ -814,7 +807,7 @@ function StaffStudentProfile({
                 }}
                 aria-label="Back to top of modal"
               >
-                ⬆ Back to Top
+                Back to Top
               </button>
             </div>
           </div>

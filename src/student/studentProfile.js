@@ -6,6 +6,7 @@ function StudentProfile({ userInfo, settingsTabOpen }) {
 
   useEffect(() => {
     if (userInfo?.role === "STUDENT" && userInfo?.id) {
+      setLoading(true);
       fetch(`/api/getStudentProfile?userId=${userInfo.id}`)
         .then(res => res.json())
         .then(data => {
@@ -23,19 +24,17 @@ function StudentProfile({ userInfo, settingsTabOpen }) {
                 <div className="profileBlock">
           <h2 className="dashboardTitle">STUDENT PROFILE</h2>
           {loading ? (
-            <div className="loadingScreen">
-              <div className="spinner">
-                <div className="spinner-icon"></div>
-                <p className="spinner-text">Loading profile information...</p>
-              </div>
+            <div className="spinnerClassItem" role="status" aria-label="Loading, please wait">
+            <div className="spinner-iconClassItem" aria-hidden="true"></div>
+            <h3 className="spinner-textClassItem">Loading...</h3>
             </div>
           ) : (
             studentData && (
               <div className="profileContainer">
-                <div className="profileField"><span className="label">UIN:</span> {studentData.uin || "N/A"}</div>
-                <div className="profileField"><span className="label">DOB:</span> {studentData.dob ? new Date(studentData.dob).toLocaleDateString() : "N/A"}</div>
-                <div className="profileField"><span className="label">Phone Number:</span> {studentData.phone_number || "N/A"}</div>
-                <div className="profileField"><span className="label">Email:</span> {studentData.email || "N/A"}</div>
+                <div className="profileField"><span className="label">UIN:</span> <span className="profileData">{studentData.uin || "N/A"}</span></div>
+                <div className="profileField"><span className="label">DOB:</span> <span className="profileData">{studentData.dob ? new Date(studentData.dob).toLocaleDateString() : "N/A"}</span></div>
+                <div className="profileField"><span className="label">Phone Number:</span> <span className="profileData">{studentData.phone_number || "N/A"}</span></div>
+                <div className="profileField"><span className="label">Email:</span> <span className="profileData">{studentData.email || "N/A"}</span></div>
               </div>
             )
           )}
