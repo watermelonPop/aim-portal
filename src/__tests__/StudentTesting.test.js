@@ -61,6 +61,266 @@ describe('StudentTesting Component', () => {
   afterEach(() => {
     jest.resetAllMocks();
   });
+
+  test('shows alert if accommodation request submission fails', async () => {
+    window.alert = jest.fn();
+  
+    // Mock upcoming and submitted exams normally
+    global.fetch = jest.fn((url) => {
+      if (url.includes('getStudentUpcomingExams')) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(upcomingExamsData),
+        });
+      }
+      if (url.includes('getStudentSubmittedExams')) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(submittedExamsData),
+        });
+      }
+      if (url.includes('applyForExamAccommodations')) {
+        return Promise.resolve({
+          ok: false, // 👈 simulate failure
+          json: () => Promise.resolve({ message: "Failed to submit" }),
+        });
+      }
+      return Promise.resolve({ ok: true, json: () => Promise.resolve({}) });
+    });
+  
+    await act(async () => {
+      render(<StudentTesting userInfo={mockUserInfo} />);
+    });
+  
+    await waitFor(() => screen.getByText(/Math Midterm/i));
+    const applyButton = screen.getByLabelText(/Apply for accommodation for Math Midterm/i);
+  
+    await act(async () => {
+      fireEvent.click(applyButton);
+    });
+  
+    const select = screen.getByLabelText(/Select Accommodation/i);
+    await act(async () => {
+      fireEvent.change(select, { target: { value: "Extended Time" } });
+    });
+  
+    const submitButton = screen.getByText(/Submit Request/i);
+    await act(async () => {
+      fireEvent.click(submitButton);
+    });
+  
+    await waitFor(() => {
+      expect(window.alert).toHaveBeenCalledWith("Failed to submit accommodation request.");
+    });
+  });
+
+  test('shows alert if file upload fails after accommodation request succeeds', async () => {
+    window.alert = jest.fn();
+  
+    global.fetch = jest.fn((url) => {
+      if (url.includes('getStudentUpcomingExams')) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(upcomingExamsData),
+        });
+      }
+      if (url.includes('getStudentSubmittedExams')) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(submittedExamsData),
+        });
+      }
+      if (url.includes('applyForExamAccommodations')) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve({ id: 77, ...upcomingExamsData[0] }),
+        });
+      }
+      if (url.includes('uploadForm')) {
+        return Promise.resolve({
+          ok: false, // 👈 simulate upload failure
+          json: () => Promise.resolve({ message: "Upload failed" }),
+        });
+      }
+      return Promise.resolve({ ok: true, json: () => Promise.resolve({}) });
+    });
+  
+    await act(async () => {
+      render(<StudentTesting userInfo={mockUserInfo} />);
+    });
+  
+    await waitFor(() => screen.getByText(/Math Midterm/i));
+    const applyButton = screen.getByLabelText(/Apply for accommodation for Math Midterm/i);
+  
+    await act(async () => {
+      fireEvent.click(applyButton);
+    });
+  
+    const select = screen.getByLabelText(/Select Accommodation/i);
+    const fileInput = screen.getByLabelText(/Upload PDF file/i);
+  
+    await act(async () => {
+      fireEvent.change(select, { target: { value: "Extended Time" } });
+      fireEvent.change(fileInput, {
+        target: { files: [new File(['dummy'], 'test.pdf', { type: 'application/pdf' })] },
+      });
+    });
+  
+    const submitButton = screen.getByText(/Submit Request/i);
+    await act(async () => {
+      fireEvent.click(submitButton);
+    });
+  
+    await waitFor(() => {
+      expect(window.alert).toHaveBeenCalledWith("Accommodation request submitted but file upload failed.");
+    });
+  });
+  
+  test('shows alert when an exception occurs during accommodation submission', async () => {
+    window.alert = jest.fn();
+    console.error = jest.fn(); // optional: silence or spy on the error log
+  
+    // Simulate fetch throwing on POST to apply for accommodation
+    global.fetch = jest.fn((url) => {
+      if (url.includes('getStudentUpcomingExams')) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(upcomingExamsData),
+        });
+      }
+      if (url.includes('getStudentSubmittedExams')) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(submittedExamsData),
+        });
+      }
+      if (url.includes('applyForExamAccommodations')) {
+        return Promise.reject(new Error('Network failure')); // 👈 force rejection
+      }
+      return Promise.resolve({ ok: true, json: () => Promise.resolve({}) });
+    });
+  
+    await act(async () => {
+      render(<StudentTesting userInfo={mockUserInfo} />);
+    });
+  
+    await waitFor(() => screen.getByText(/Math Midterm/i));
+    const applyButton = screen.getByLabelText(/Apply for accommodation for Math Midterm/i);
+  
+    await act(async () => {
+      fireEvent.click(applyButton);
+    });
+  
+    const select = screen.getByLabelText(/Select Accommodation/i);
+  
+    await act(async () => {
+      fireEvent.change(select, { target: { value: "Extended Time" } });
+    });
+  
+    const submitButton = screen.getByText(/Submit Request/i);
+  
+    await act(async () => {
+      fireEvent.click(submitButton);
+    });
+  
+    await waitFor(() => {
+      expect(window.alert).toHaveBeenCalledWith("Error submitting accommodation request.");
+      expect(console.error).toHaveBeenCalledWith(
+        "Error submitting accommodation request:",
+        expect.any(Error)
+      );
+    });
+  });
+  
+  test('clicking "View Submitted Exam" opens a new tab with the correct URL', async () => {
+    const mockOpen = jest.fn();
+    window.open = mockOpen;
+  
+    await act(async () => {
+      render(<StudentTesting userInfo={mockUserInfo} />);
+    });
+  
+    // Wait until the submitted exam button appears
+    const viewButtons = await screen.findAllByRole('button', {
+      name: /View submitted exam/i,
+    });
+  
+    expect(viewButtons.length).toBeGreaterThan(0);
+  
+    await act(async () => {
+      fireEvent.click(viewButtons[0]);
+    });
+  
+    expect(mockOpen).toHaveBeenCalledWith(
+      submittedExamsData[0].completedExamURL,
+      '_blank',
+      'noopener,noreferrer'
+    );
+  });
+  
+  test('clicking modal overlay closes modal and clears selected exam', async () => {
+    await act(async () => {
+      render(<StudentTesting userInfo={mockUserInfo} />);
+    });
+  
+    // Open the modal
+    const applyButtons = await screen.findAllByLabelText(/Apply for accommodation for Math Midterm/i);
+    await act(async () => {
+      fireEvent.click(applyButtons[0]);
+    });
+  
+    // Confirm modal is open
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+  
+    // Click the overlay
+    const overlay = screen.getByRole('presentation');
+    await act(async () => {
+      fireEvent.click(overlay);
+    });
+  
+    // Confirm modal is closed
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    });
+  });
+  
+  test('clicking "Close" button closes success modal', async () => {
+    await act(async () => {
+      render(<StudentTesting userInfo={mockUserInfo} />);
+    });
+  
+    // Open the modal and submit successfully
+    const applyButtons = await screen.findAllByLabelText(/Apply for accommodation for Math Midterm/i);
+    await act(async () => {
+      fireEvent.click(applyButtons[0]);
+    });
+  
+    const select = screen.getByLabelText(/Select Accommodation/i);
+    await act(async () => {
+      fireEvent.change(select, { target: { value: "Extended Time" } });
+    });
+  
+    const submitButton = screen.getByText(/Submit Request/i);
+    await act(async () => {
+      fireEvent.click(submitButton);
+    });
+  
+    // Confirm success modal is shown
+    const successHeading = await screen.findByText(/Request Submitted/i);
+    expect(successHeading).toBeInTheDocument();
+  
+    // Click "Close" button
+    const closeBtn = screen.getByText(/Close/i);
+    await act(async () => {
+      fireEvent.click(closeBtn);
+    });
+  
+    // Modal should be gone
+    await waitFor(() => {
+      expect(screen.queryByText(/Request Submitted/i)).not.toBeInTheDocument();
+    });
+  });
+  
   
   test('renders upcoming and submitted exam section headings even when loading messages are not visible', async () => {
     await act(async () => {

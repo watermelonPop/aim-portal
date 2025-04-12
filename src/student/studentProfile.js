@@ -19,6 +19,8 @@ function StudentProfile({ userInfo, settingsTabOpen }) {
     }
   }, [userInfo]);
 
+  StudentProfile.setLoading = setLoading;
+
         return (
         
                 <div className="profileBlock">

@@ -42,6 +42,396 @@ describe('StaffExamView Component', () => {
   afterEach(() => {
     jest.restoreAllMocks();
   });
+  
+
+  test('logs error if fetching professor data fails', async () => {
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+  
+    global.fetch.mockImplementation((url) => {
+      if (url.includes('/api/getExamFromAdvisor')) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(examData),
+        });
+      }
+      if (url.includes('/api/getStudentData')) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(studentData),
+        });
+      }
+      if (url.includes('/api/getProfessor')) {
+        return Promise.resolve({ ok: false }); // Simulate failure
+      }
+      return Promise.resolve({ ok: true, json: () => Promise.resolve({}) });
+    });
+  
+    await act(async () => {
+      render(
+        <StaffExamView
+          userInfo={userInfo}
+          displayHeaderRef={displayHeaderRef}
+          settingsTabOpen={false}
+          lastIntendedFocusRef={lastIntendedFocusRef}
+        />
+      );
+    });
+  
+    const examItem = await screen.findByText(/Exam 1/i);
+    fireEvent.click(examItem);
+  
+    await waitFor(() => {
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        'Error fetching professor',
+        expect.any(Error)
+      );
+    });
+  
+    consoleErrorSpy.mockRestore();
+  });
+
+  test('logs error if fetching student data fails', async () => {
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+  
+    global.fetch.mockImplementation((url) => {
+      if (url.includes('/api/getExamFromAdvisor')) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(examData),
+        });
+      }
+      if (url.includes('/api/getStudentData')) {
+        return Promise.resolve({ ok: false }); // Simulate failure
+      }
+      if (url.includes('/api/getProfessor')) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(professorData),
+        });
+      }
+      return Promise.resolve({ ok: true, json: () => Promise.resolve({}) });
+    });
+  
+    await act(async () => {
+      render(
+        <StaffExamView
+          userInfo={userInfo}
+          displayHeaderRef={displayHeaderRef}
+          settingsTabOpen={false}
+          lastIntendedFocusRef={lastIntendedFocusRef}
+        />
+      );
+    });
+  
+    const examItem = await screen.findByText(/Exam 1/i);
+    fireEvent.click(examItem);
+  
+    await waitFor(() => {
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        'Error fetching student:',
+        expect.any(Error)
+      );
+    });
+  
+    consoleErrorSpy.mockRestore();
+  });
+  
+  test('logs error if file upload fails', async () => {
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+  
+    global.fetch.mockImplementation((url) => {
+      if (url.includes('/api/getExamFromAdvisor')) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(examData),
+        });
+      }
+      if (url.includes('/api/getStudentData')) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(studentData),
+        });
+      }
+      if (url.includes('/api/getProfessor')) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(professorData),
+        });
+      }
+      if (url.includes('/api/submitCompletedExam')) {
+        return Promise.reject(new Error('Network error during upload'));
+      }
+      return Promise.resolve({ ok: true, json: () => Promise.resolve({}) });
+    });
+  
+    await act(async () => {
+      render(
+        <StaffExamView
+          userInfo={userInfo}
+          displayHeaderRef={displayHeaderRef}
+          settingsTabOpen={false}
+          lastIntendedFocusRef={lastIntendedFocusRef}
+        />
+      );
+    });
+  
+    const examItem = await screen.findByText(/Exam 1/i);
+    fireEvent.click(examItem);
+  
+    await waitFor(() => {
+      expect(screen.getByText(/Math - Exam 1/i)).toBeInTheDocument();
+    });
+  
+    const examCard = screen.getByText(/Math - Exam 1/i).parentElement;
+    const fileInputElement = examCard.querySelector('input[type="file"]');
+  
+    const testFile = new File(['file contents'], 'test.txt', { type: 'text/plain' });
+    fireEvent.change(fileInputElement, { target: { files: [testFile] } });
+  
+    const uploadButton = screen.getByRole('button', { name: /Upload Exam/i });
+    fireEvent.click(uploadButton);
+  
+    await waitFor(() => {
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        'Error uploading file:',
+        expect.any(Error)
+      );
+    });
+  
+    consoleErrorSpy.mockRestore();
+  });
+  
+  test('logs error if exam fetch fails', async () => {
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+  
+    global.fetch.mockImplementationOnce(() => Promise.reject(new Error('Fetch exams failed')));
+  
+    await act(async () => {
+      render(
+        <StaffExamView
+          userInfo={userInfo}
+          displayHeaderRef={displayHeaderRef}
+          settingsTabOpen={false}
+          lastIntendedFocusRef={lastIntendedFocusRef}
+        />
+      );
+    });
+  
+    await waitFor(() => {
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        'Error fetching exams:',
+        expect.any(Error)
+      );
+    });
+  
+    consoleErrorSpy.mockRestore();
+  });
+  
+  test('throws and logs error if exam fetch response is not ok', async () => {
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+  
+    global.fetch.mockImplementationOnce(() =>
+      Promise.resolve({
+        ok: false,
+        status: 500,
+        json: () => Promise.resolve({ message: 'Internal Server Error' }),
+      })
+    );
+  
+    await act(async () => {
+      render(
+        <StaffExamView
+          userInfo={userInfo}
+          displayHeaderRef={displayHeaderRef}
+          settingsTabOpen={false}
+          lastIntendedFocusRef={lastIntendedFocusRef}
+        />
+      );
+    });
+  
+    await waitFor(() => {
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        'Error fetching exams:',
+        expect.any(Error)
+      );
+    });
+  
+    consoleErrorSpy.mockRestore();
+  });
+  
+  test('displays student accommodation types using .map((acc) => acc.type)', async () => {
+    const studentWithAccommodations = {
+      account: {
+        name: 'Student A',
+        email: 'studentA@example.com',
+      },
+      accommodations: [
+        { type: 'Extended Time' },
+        { type: 'Accessible Seating' },
+      ],
+    };
+  
+    const examData = [
+      {
+        id: 'exam1',
+        studentIds: ['studentA'],
+        course: { professorId: 'profA', name: 'Biology' },
+        name: 'Midterm',
+        date: new Date().toISOString(),
+        examUrl: 'http://example.com/exam',
+      },
+    ];
+  
+    const professorData = {
+      account: {
+        name: 'Prof A',
+        email: 'profA@example.com',
+      },
+    };
+  
+    global.fetch = jest.fn((url) => {
+      if (url.includes('/api/getExamFromAdvisor')) {
+        return Promise.resolve({ ok: true, json: () => Promise.resolve(examData) });
+      }
+      if (url.includes('/api/getStudentData')) {
+        return Promise.resolve({ ok: true, json: () => Promise.resolve(studentWithAccommodations) });
+      }
+      if (url.includes('/api/getProfessor')) {
+        return Promise.resolve({ ok: true, json: () => Promise.resolve(professorData) });
+      }
+      return Promise.resolve({ ok: true, json: () => Promise.resolve({}) });
+    });
+  
+    await act(async () => {
+      render(
+        <StaffExamView
+          userInfo={{ id: 'advisor1' }}
+          displayHeaderRef={{ current: document.createElement('div') }}
+          settingsTabOpen={false}
+          lastIntendedFocusRef={{ current: null }}
+        />
+      );
+    });
+  
+    // Click on the exam to show ExamCard
+    fireEvent.click(await screen.findByText(/Midterm/i));
+  
+    // Wait for accommodation text to appear
+    await waitFor(() => {
+      expect(screen.getByText(/Extended Time, Accessible Seating/i)).toBeInTheDocument();
+    });
+  });
+  
+  
+  
+  test('clicking close button in ExamCard clears selectedExam and returns to exam list view', async () => {
+    // Mock fetch responses for exams, student, and professor
+    global.fetch.mockImplementation((url) => {
+      if (url.includes('/api/getExamFromAdvisor')) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(examData),
+        });
+      }
+      if (url.includes('/api/getStudentData')) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(studentData),
+        });
+      }
+      if (url.includes('/api/getProfessor')) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(professorData),
+        });
+      }
+      return Promise.resolve({ ok: true, json: () => Promise.resolve({}) });
+    });
+  
+    await act(async () => {
+      render(
+        <StaffExamView
+          userInfo={userInfo}
+          displayHeaderRef={displayHeaderRef}
+          settingsTabOpen={false}
+          lastIntendedFocusRef={lastIntendedFocusRef}
+        />
+      );
+    });
+  
+    const examItem = await screen.findByText(/Exam 1/i);
+    fireEvent.click(examItem);
+  
+    // Confirm ExamCard is displayed
+    await waitFor(() => {
+      expect(screen.getByText(/Math - Exam 1/i)).toBeInTheDocument();
+    });
+  
+    // Click the close button (×)
+    const closeButton = screen.getByRole('button', { name: /×/i });
+    await act(async () => {
+      fireEvent.click(closeButton);
+    });
+  
+    // Expect ExamCard to be removed and exam list to be shown again
+    await waitFor(() => {
+      expect(screen.getByText(/Exam 1/i)).toBeInTheDocument(); // back in list view
+      expect(screen.queryByText(/Math - Exam 1/i)).not.toBeInTheDocument(); // card hidden
+    });
+  });
+
+  test('clicking "Download Exam" opens exam URL in a new tab', async () => {
+    const windowOpenSpy = jest.spyOn(window, 'open').mockImplementation(() => null);
+  
+    global.fetch.mockImplementation((url) => {
+      if (url.includes('/api/getExamFromAdvisor')) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(examData),
+        });
+      }
+      if (url.includes('/api/getStudentData')) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(studentData),
+        });
+      }
+      if (url.includes('/api/getProfessor')) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(professorData),
+        });
+      }
+      return Promise.resolve({ ok: true, json: () => Promise.resolve({}) });
+    });
+  
+    await act(async () => {
+      render(
+        <StaffExamView
+          userInfo={userInfo}
+          displayHeaderRef={displayHeaderRef}
+          settingsTabOpen={false}
+          lastIntendedFocusRef={lastIntendedFocusRef}
+        />
+      );
+    });
+  
+    const examItem = await screen.findByText(/Exam 1/i);
+    fireEvent.click(examItem);
+  
+    await waitFor(() => {
+      expect(screen.getByText(/Math - Exam 1/i)).toBeInTheDocument();
+    });
+  
+    const downloadBtn = screen.getByRole('button', { name: /Download Exam/i });
+    fireEvent.click(downloadBtn);
+  
+    expect(windowOpenSpy).toHaveBeenCalledWith('http://example.com/exam', '_blank', 'noopener,noreferrer');
+  
+    windowOpenSpy.mockRestore();
+  });
+  
+  
 
   test('renders heading and fetches exams on mount', async () => {
     // Mock fetch for exams
