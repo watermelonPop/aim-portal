@@ -15,6 +15,342 @@ describe('userAccommodations', () => {
         beforeEach(() => {
                 jest.clearAllMocks();
         });
+
+        test('handleSubmit throws and alerts if /api/createRequest returns !ok', async () => {
+          const mockUserInfo = {
+            id: 123,
+            name: 'Mock User',
+            email: 'test@gmail.com',
+            role: 'USER',
+            dob: '2000-01-01',
+            uin: '123456789',
+            phone_number: '1001001001',
+          };
+        
+          const mockSetAlertMessage = jest.fn();
+          const mockSetShowAlert = jest.fn();
+        
+          // Simulate failure from /api/createRequest
+          global.fetch = jest.fn((input) => {
+            const url = typeof input === 'string' ? input : input.url?.toString();
+        
+            if (url?.includes('/api/checkRequests')) {
+              return Promise.resolve({
+                ok: true,
+                json: async () => ({ exists: false }),
+              });
+            }
+        
+            if (url?.includes('/api/createRequest')) {
+              return Promise.resolve({
+                ok: false,
+                status: 500,
+                json: async () => ({}),
+              });
+            }
+        
+            return Promise.resolve({ ok: true, json: async () => ({}) });
+          });
+        
+          const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+        
+          await act(async () => {
+            render(
+              <UserAccommodations
+                userInfo={mockUserInfo}
+                setAlertMessage={mockSetAlertMessage}
+                setShowAlert={mockSetShowAlert}
+                settingsTabOpen={false}
+              />
+            );
+          });
+        
+          // Fill all required form fields
+          await act(async () => {
+            fireEvent.change(screen.getByTestId('disability'), { target: { value: 'x' } });
+            fireEvent.change(screen.getByTestId('testing'), { target: { value: 'x' } });
+            fireEvent.change(screen.getByTestId('inClass'), { target: { value: 'x' } });
+            fireEvent.change(screen.getByTestId('housing'), { target: { value: 'x' } });
+            fireEvent.change(screen.getByTestId('sideEffect'), { target: { value: 'x' } });
+            fireEvent.change(screen.getByTestId('accommodations'), { target: { value: 'x' } });
+            fireEvent.change(screen.getByTestId('pastAcc'), { target: { value: 'x' } });
+          });
+        
+          // Submit the form
+          await act(async () => {
+            fireEvent.submit(screen.getByTestId('newStudentApp'));
+          });
+        
+          await waitFor(() => {
+            expect(mockSetAlertMessage).toHaveBeenCalledWith("Request submission failed. Please try again.");
+            expect(mockSetShowAlert).toHaveBeenCalledWith(true);
+            expect(errorSpy).toHaveBeenCalledWith('Error submitting request:', expect.any(Error));
+          });
+        
+          errorSpy.mockRestore();
+        });
+        
+        
+        
+        test('cancelRequest sends request to /api/cancelRequest with correct payload', async () => {
+          const mockUserInfo = {
+            id: 123,
+            name: 'Mock User',
+            email: 'test@gmail.com',
+            role: 'USER',
+            picture: null,
+            dob: '2000-01-01',
+            uin: '123456789',
+            phone_number: '1001001001',
+          };
+        
+          const mockSetAlertMessage = jest.fn();
+          const mockSetShowAlert = jest.fn();
+        
+          // Spy on fetch and return a valid response
+          global.fetch = jest.fn((input) => {
+            const url = typeof input === 'string' ? input : input.url?.toString();
+        
+            if (url?.includes('/api/cancelRequest')) {
+              return Promise.resolve({
+                ok: true,
+                json: async () => ({ message: 'Request deleted successfully' }),
+              });
+            }
+        
+            return Promise.resolve({
+              ok: true,
+              json: async () => ({}),
+            });
+          });
+        
+          // Render to initialize static methods
+          await act(async () => {
+            render(
+              <UserAccommodations
+                userInfo={mockUserInfo}
+                setAlertMessage={mockSetAlertMessage}
+                setShowAlert={mockSetShowAlert}
+                settingsTabOpen={false}
+              />
+            );
+          });
+        
+          await act(async () => {
+            await UserAccommodations.cancelRequest(mockUserInfo.id);
+          });
+        
+          await waitFor(() => {
+            expect(global.fetch).toHaveBeenCalledWith('/api/cancelRequest', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ userId: mockUserInfo.id }),
+            });
+          });
+        });
+        
+        test('cancelRequest throws and shows alert if message is not "Request deleted successfully"', async () => {
+          const mockUserInfo = {
+            id: 123,
+            name: 'Mock User',
+            email: 'test@gmail.com',
+            role: 'USER',
+            picture: null,
+            dob: '2000-01-01',
+            uin: '123456789',
+            phone_number: '1001001001',
+          };
+        
+          const mockSetAlertMessage = jest.fn();
+          const mockSetShowAlert = jest.fn();
+        
+          // Mock fetch to return invalid message
+          global.fetch = jest.fn((input) => {
+            const url = typeof input === 'string' ? input : input.url?.toString();
+        
+            if (url?.includes('/api/cancelRequest')) {
+              return Promise.resolve({
+                ok: true,
+                json: async () => ({ message: 'Invalid message' }),
+              });
+            }
+        
+            return Promise.resolve({
+              ok: true,
+              json: async () => ({}),
+            });
+          });
+        
+          const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+        
+          // Render the component to attach static methods
+          await act(async () => {
+            render(
+              <UserAccommodations
+                userInfo={mockUserInfo}
+                setAlertMessage={mockSetAlertMessage}
+                setShowAlert={mockSetShowAlert}
+                settingsTabOpen={false}
+              />
+            );
+          });
+        
+          await act(async () => {
+            await UserAccommodations.cancelRequest(mockUserInfo.id);
+          });
+        
+          await waitFor(() => {
+            expect(mockSetAlertMessage).toHaveBeenCalledWith('Request cancellation failed. Please try again.');
+            expect(mockSetShowAlert).toHaveBeenCalledWith(true);
+            expect(errorSpy).toHaveBeenCalledWith('Error cancelling request:', expect.any(Error));
+          });
+        
+          errorSpy.mockRestore();
+        });
+        
+
+        test('getUserDocumentation returns form when data.exists is true', async () => {
+          const mockUserInfo = {
+            id: 123,
+            name: 'Mock User',
+            email: 'test@gmail.com',
+            role: 'USER',
+            picture: null,
+            dob: '2000-01-01',
+            uin: '123456789',
+            phone_number: '1001001001',
+          };
+        
+          const mockSetAlertMessage = jest.fn();
+          const mockSetShowAlert = jest.fn();
+        
+          const mockForm = { formUrl: 'https://example.com/my-doc.pdf' };
+        
+          global.fetch = jest.fn((input) => {
+            const url = typeof input === 'string' ? input : input.url?.toString();
+        
+            if (url?.includes('/api/getUserDocumentation')) {
+              return Promise.resolve({
+                ok: true,
+                json: async () => ({ exists: true, form: mockForm }),
+              });
+            }
+        
+            if (url?.includes('/api/checkRequests')) {
+              return Promise.resolve({
+                ok: true,
+                json: async () => ({ exists: false }),
+              });
+            }
+        
+            return Promise.resolve({
+              ok: true,
+              json: async () => ({}),
+            });
+          });
+        
+          // Render component to initialize static methods
+          await act(async () => {
+            render(
+              <UserAccommodations
+                userInfo={mockUserInfo}
+                setAlertMessage={mockSetAlertMessage}
+                setShowAlert={mockSetShowAlert}
+                settingsTabOpen={false}
+              />
+            );
+          });
+        
+          // Call function manually
+          let result;
+          await act(async () => {
+            result = await UserAccommodations.getUserDocumentation(mockUserInfo.id);
+          });
+        
+          await waitFor(() => {
+            expect(result).toEqual(mockForm);
+          });
+        });
+        
+
+        
+        test('getUserDocumentation throws and logs error on failed fetch', async () => {
+          const mockUserInfo = {
+            id: 123,
+            name: 'Mock User',
+            email: 'test@gmail.com',
+            role: 'USER',
+            picture: null,
+            dob: '2000-01-01',
+            uin: '123456789',
+            phone_number: '1001001001',
+          };
+        
+          const mockSetAlertMessage = jest.fn();
+          const mockSetShowAlert = jest.fn();
+        
+          const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+        
+          // Ensure fetch fails for getUserDocumentation
+          global.fetch = jest.fn((input) => {
+            const url = typeof input === 'string' ? input : input.url?.toString();
+        
+            if (url?.includes('/api/getUserDocumentation')) {
+              return Promise.resolve({
+                ok: false,
+                status: 500,
+                json: async () => ({}),
+              });
+            }
+        
+            if (url?.includes('/api/checkRequests')) {
+              return Promise.resolve({
+                ok: true,
+                json: async () => ({ exists: false }),
+              });
+            }
+        
+            return Promise.resolve({
+              ok: true,
+              json: async () => ({}),
+            });
+          });
+        
+          // Render the component once so static methods get attached
+          await act(async () => {
+            render(
+              <UserAccommodations
+                userInfo={mockUserInfo}
+                setAlertMessage={mockSetAlertMessage}
+                setShowAlert={mockSetShowAlert}
+                settingsTabOpen={false}
+              />
+            );
+          });
+        
+          // Now manually call getUserDocumentation
+          let result;
+          await act(async () => {
+            result = await UserAccommodations.getUserDocumentation(mockUserInfo.id);
+          });
+        
+          await waitFor(() => {
+            expect(console.error).toHaveBeenCalledWith(
+              'Error while getting user documentation:',
+              expect.any(Error)
+            );
+          });
+        
+          await waitFor(() => {
+            expect(result).toBeNull();
+          });
+        
+          errorSpy.mockRestore();
+        });
+        
+        
+        
+        
               
         
         test('deleteDocumentation shows success alert and returns true', async () => {
