@@ -1,7 +1,9 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor, act, cleanup } from '@testing-library/react';
 import GlobalSettings from '../staff/globalSettings';
+import { axe, toHaveNoViolations } from 'jest-axe';
 
+expect.extend(toHaveNoViolations);
 // Sample advisor objects to use in tests
 const sampleAdvisors = [
   {
@@ -41,6 +43,8 @@ describe('GlobalSettings Component', () => {
     jest.runOnlyPendingTimers();
     jest.useRealTimers();
   });
+  
+  
 
   test('renders initial UI and fetches advisors', async () => {
     // Mock the initial fetch call to /api/getAdvisors

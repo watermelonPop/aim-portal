@@ -2,6 +2,9 @@
 import React from 'react';
 import { render, screen, waitFor, fireEvent, act } from '@testing-library/react';
 import StudentTesting from '../student/studentTesting.js';
+ import { axe, toHaveNoViolations } from 'jest-axe';
+ 
+ expect.extend(toHaveNoViolations);
 
 const mockUserInfo = { id: 123 };
 
@@ -61,6 +64,18 @@ describe('StudentTesting Component', () => {
   afterEach(() => {
     jest.resetAllMocks();
   });
+
+  test('stu testing should have no accessibility violations', async () => {
+      let container;
+      await act(async () => {
+              const rendered = render(<StudentTesting userInfo={mockUserInfo} />);
+              container = rendered.container;
+      });
+  
+      const results = await axe(container);
+      expect(results).toHaveNoViolations();
+    });
+  
 
   test('shows alert if accommodation request submission fails', async () => {
     window.alert = jest.fn();

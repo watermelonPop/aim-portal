@@ -1,7 +1,10 @@
 // AlertsArea.test.jsx
 import React from 'react';
-import { render, screen, waitFor, fireEvent, within } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent, within, act } from '@testing-library/react';
 import AlertsArea from '../AlertsArea';
+import { axe, toHaveNoViolations } from 'jest-axe';
+
+expect.extend(toHaveNoViolations);
 
 describe('AlertsArea', () => {
   const mockAlerts = [
@@ -30,6 +33,17 @@ describe('AlertsArea', () => {
 
   afterEach(() => {
     jest.resetAllMocks();
+  });
+
+  test('alerts area should have no accessibility violations', async () => {
+      let container;
+      await act(async () => {
+              const rendered = render(<AlertsArea displayHeaderRef={displayHeaderRef} />);
+              container = rendered.container;
+      });
+
+      const results = await axe(container);
+      expect(results).toHaveNoViolations();
   });
 
   test('renders alerts area with loading state, then displays next 5 alerts', async () => {

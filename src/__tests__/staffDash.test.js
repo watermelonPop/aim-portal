@@ -1,7 +1,9 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor, act, cleanup } from '@testing-library/react';
 import StaffDashboard from '../staff/staffDashboard'; // Adjust path if needed
+import { axe, toHaveNoViolations } from 'jest-axe';
 
+expect.extend(toHaveNoViolations);
 // Mocked student data for tests
 const mockStudents = [
   {
