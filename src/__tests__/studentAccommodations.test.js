@@ -2,9 +2,13 @@
  * @jest-environment jsdom
  */
  import React from 'react';
- import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+ import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
  import StudentAccommodations from '../student/studentAccommodations.js';
  import '@testing-library/jest-dom';
+
+ import { axe, toHaveNoViolations } from 'jest-axe';
+ 
+ expect.extend(toHaveNoViolations);
  
  // Create a dummy CustomFileInput component since it's imported in the file.
  jest.mock('../student/CustomFileInput', () => (props) => (
@@ -70,6 +74,19 @@
        return Promise.resolve({ ok });
      });
    };
+
+
+
+   test('stu acc should have no accessibility violations', async () => {
+       let container;
+       await act(async () => {
+               const rendered = render(<StudentAccommodations userInfo={dummyUserInfo} />);
+               container = rendered.container;
+       });
+   
+       const results = await axe(container);
+       expect(results).toHaveNoViolations();
+     });
  
    test('renders header and buttons', async () => {
      setupGetStudentDataFetch();

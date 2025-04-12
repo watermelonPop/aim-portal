@@ -3,7 +3,9 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import StaffExamView from '../staff/staffTesting';
+import { axe, toHaveNoViolations } from 'jest-axe';
 
+expect.extend(toHaveNoViolations);
 // Polyfill for requestAnimationFrame in tests
 global.requestAnimationFrame = (cb) => setTimeout(cb, 0);
 global.cancelAnimationFrame = (id) => clearTimeout(id);
@@ -22,6 +24,7 @@ describe('StaffExamView Component', () => {
       name: 'Exam 1',
       date: new Date().toISOString(),
       examUrl: 'http://example.com/exam',
+      studentName: "Student Test"
     },
   ];
   const studentData = { account: { name: 'Student Test', email: 'student@example.com' }, accommodations: [] };
@@ -42,6 +45,42 @@ describe('StaffExamView Component', () => {
   afterEach(() => {
     jest.restoreAllMocks();
   });
+
+  test('staff testing should have no accessibility violations', async () => {
+    global.fetch.mockImplementation((url) => {
+      if (url.includes('/api/getExamFromAdvisor')) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(examData),
+        });
+      }
+      if (url.includes('/api/getStudentData')) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(studentData),
+        });
+      }
+      if (url.includes('/api/getProfessor')) {
+        return Promise.resolve({ ok: false }); // Simulate failure
+      }
+      return Promise.resolve({ ok: true, json: () => Promise.resolve({}) });
+    });
+    let container;
+      await act(async () => {
+              const rendered = render(
+                <StaffExamView
+                  userInfo={userInfo}
+                  displayHeaderRef={displayHeaderRef}
+                  settingsTabOpen={false}
+                  lastIntendedFocusRef={lastIntendedFocusRef}
+                />
+              );
+              container = rendered.container;
+      });
+  
+      const results = await axe(container);
+      expect(results).toHaveNoViolations();
+    });
   
 
   test('logs error if fetching professor data fails', async () => {

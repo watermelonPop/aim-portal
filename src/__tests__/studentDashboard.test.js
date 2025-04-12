@@ -1,8 +1,10 @@
 // StudentDashboard.test.jsx
 import React from 'react';
-import { render, screen, waitFor, fireEvent, within } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent, within, act } from '@testing-library/react';
 import StudentDashboard from '../student/studentDashboard.js';
-
+ import { axe, toHaveNoViolations } from 'jest-axe';
+ 
+ expect.extend(toHaveNoViolations);
 describe('StudentDashboard', () => {
   const mockUser = { id: 1, name: 'Test Student' };
   const mockCourses = [
@@ -45,6 +47,21 @@ describe('StudentDashboard', () => {
 
   afterEach(() => {
     jest.resetAllMocks();
+  });
+
+  test('stu dash should have no accessibility violations', async () => {
+    const mockDisplayHeaderRef = { current: null };
+    const mockLastIntendedFocusRef = { current: null };
+    let container;
+    await act(async () => {
+            const rendered = render(<StudentDashboard userInfo={mockUser} displayHeaderRef={mockDisplayHeaderRef}
+              lastIntendedFocusRef={mockLastIntendedFocusRef}
+              settingsTabOpen={false}/>);
+            container = rendered.container;
+    });
+
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
   });
 
   test('renders welcome message with user name', async () => {

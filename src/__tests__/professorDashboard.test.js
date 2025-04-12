@@ -3,6 +3,9 @@ import { render, screen, fireEvent, waitFor, act, within } from '@testing-librar
 import {ProfessorDashboard, formatDate} from '../professor/professorDashboard.js';
 import { userEvent } from '@testing-library/user-event';
 import flushPromises from 'flush-promises';
+import { axe, toHaveNoViolations } from 'jest-axe';
+
+expect.extend(toHaveNoViolations);
 
 // Mock fetch for API calls
 beforeEach(() => {
@@ -52,6 +55,17 @@ describe('ProfessorDashboard', () => {
     settingsTabOpen: false,
     lastIntendedFocusRef: { current: null },
   };
+
+  test('prof dash should have no accessibility violations', async () => {
+    let container;
+    await act(async () => {
+            const rendered = render(<ProfessorDashboard {...props} />);
+            container = rendered.container;
+    });
+
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
   
         test('returns empty string when dateString is falsy', async() => {
                 let falsyDate;

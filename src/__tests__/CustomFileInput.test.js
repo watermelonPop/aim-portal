@@ -3,6 +3,21 @@ import React from 'react';
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import CustomFileInput from '../student/CustomFileInput.js';
 
+import { axe, toHaveNoViolations } from 'jest-axe';
+
+expect.extend(toHaveNoViolations);
+
+test('UserAccommodation should have no accessibility violations', async () => {
+      let container;
+      await act(async () => {
+              const rendered = render(<CustomFileInput onFileChange={jest.fn()} />);
+              container = rendered.container;
+      });
+
+      const results = await axe(container);
+      expect(results).toHaveNoViolations();
+  });
+
 test('renders CustomFileInput with default text', () => {
   render(<CustomFileInput onFileChange={jest.fn()} />);
   expect(screen.getByText(/No file chosen/i)).toBeInTheDocument();

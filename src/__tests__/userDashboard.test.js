@@ -1,8 +1,11 @@
 
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import UserDashboard from '../user/userDashboard';
+ import { axe, toHaveNoViolations } from 'jest-axe';
+ 
+ expect.extend(toHaveNoViolations);
 
 const mockSetCurrentTab = jest.fn();
 const mockTabs = [
@@ -25,6 +28,26 @@ describe('UserDashboard', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
+
+  test('Userdash should have no accessibility violations', async () => {
+        let container;
+        await act(async () => {
+                const rendered = render(
+                  <UserDashboard
+                    userInfo={mockUserInfo}
+                    displayHeaderRef={mockDisplayHeaderRef}
+                    lastIntendedFocusRef={mockLastIntendedFocusRef}
+                    settingsTabOpen={false}
+                    setCurrentTab={mockSetCurrentTab}
+                    tabs={mockTabs}
+                  />
+                );
+                container = rendered.container;
+        });
+  
+        const results = await axe(container);
+        expect(results).toHaveNoViolations();
+    });
 
   test('renders welcome screen with buttons', () => {
     render(
