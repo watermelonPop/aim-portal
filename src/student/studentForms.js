@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faEnvelope} from '@fortawesome/free-solid-svg-icons';
 function StudentForms({ userInfo, settingsTabOpen, displayHeaderRef }) {
         
-        const [view, setView] = useState(null);
+    const [view, setView] = useState(null);
   const [selectedDisability, setSelectedDisability] = useState('');
   const [uploadedFiles, setUploadedFiles] = useState({});
   const [submittedForms, setSubmittedForms] = useState([]);

@@ -679,9 +679,7 @@ function openModal() {
 
   return (
     <div className="staff-dashboard-container" role="main" aria-label="Staff Dashboard">
-
-      <div className="staff-main-content">
-
+    <div className="staff-main-content">
       {(isLoadingData || isRefreshing) && (
         <div className="fullscreen-message-overlay">
           <div className="fullscreen-message-content">
@@ -690,13 +688,18 @@ function openModal() {
         </div>
       )}
 
-      <div className="staff-header" role="banner" aria-label="Dashboard Header">
+      <div className="staff-header">
         {view !== null && (
-          <button className="back-btn" aria-label="Back to Dashboard" onClick={resetToMainMenu}>
+          <button
+            className="back-btn"
+            aria-label="Back to Dashboard"
+            onClick={resetToMainMenu}
+          >
             ← Back to Dashboard
           </button>
         )}
       </div>
+
 
 
       {/* DEFAULT DASHBOARD VIEW ------------------------------------------------------------------------------------- */}
