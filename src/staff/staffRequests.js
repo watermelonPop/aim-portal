@@ -120,7 +120,7 @@ function StaffRequests(
             <label htmlFor="status-select"><strong>Status:</strong></label>
             <select
               id="status-select"
-              value={editedRequests[selectedRequest.id] || selectedRequest.status || "PENDING"}
+              value={selectedRequest.status}
               onChange={(e) =>
                 setEditedRequests((prev) => ({
                   ...prev,
