@@ -187,76 +187,79 @@ function ProfessorTesting({ userInfo, settingsTabOpen, displayHeaderRef }) {
                 </button>
               </div>
   
-              {openProfessorCourses[course.id] && (
-                <div
-                  id={`students-${course.id}`}
-                  role="region"
-                  aria-labelledby={`course-heading-${course.id}`}
-                >
-                  {professorData?.students
-                    .filter((student) => {
-                      const studentExams = course.exams.filter((exam) =>
-                        exam.studentIds.includes(Number(student.userId))
-                      );
-                      return showStudentsWithExams ? studentExams.length > 0 : true;
-                    })
-                    .map((student, index) => {
-                      const studentExams = course.exams.filter((exam) =>
-                        exam.studentIds.includes(Number(student.userId))
-                      );
-  
-                      return (
-                        <div
-                          key={student.userId}
-                          className="professorTestingStudentCard"
-                          tabIndex={0}
-                          ref={index === 0 ? (el) => studentRefs.current[course.id] = el : null}
-                          role="region"
-                          aria-label={`Student: ${student.account.name}`}
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter' || e.key === ' ') {
-                              e.preventDefault();
-                              const detailsElement = e.target.querySelector('.examsDropdown');
-                              if (detailsElement) {
-                                detailsElement.open = !detailsElement.open;
+              <div
+                id={`students-${course.id}`}
+                role="region"
+                aria-labelledby={`course-heading-${course.id}`}
+                hidden={!openProfessorCourses[course.id]}
+              >
+                {openProfessorCourses[course.id] ? (
+                  <>
+                    {professorData?.students
+                      .filter((student) => {
+                        const studentExams = course.exams.filter((exam) =>
+                          exam.studentIds.includes(Number(student.userId))
+                        );
+                        return showStudentsWithExams ? studentExams.length > 0 : true;
+                      })
+                      .map((student, index) => {
+                        const studentExams = course.exams.filter((exam) =>
+                          exam.studentIds.includes(Number(student.userId))
+                        );
+
+                        return (
+                          <div
+                            key={student.userId}
+                            className="professorTestingStudentCard"
+                            tabIndex={0}
+                            ref={index === 0 ? (el) => (studentRefs.current[course.id] = el) : null}
+                            role="region"
+                            aria-label={`Student: ${student.account.name}`}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                const detailsElement = e.target.querySelector('.examsDropdown');
+                                if (detailsElement) {
+                                  detailsElement.open = !detailsElement.open;
+                                }
                               }
-                            }
-                          }}
-                        >
-                          <details className="examsDropdown">
-                            <summary tabIndex={-1}>{student.account.name}</summary>
-                            <div><strong>UIN: </strong> {student.UIN || 'N/A'}</div>
-                            <div><strong>Email: </strong> {student.account.email || 'N/A'}</div>
-  
-                            {studentExams.length > 0 ? (
-                              <>
-                                <div>Exams:</div>
-                                {studentExams.map((exam) => (
-                                  <div key={exam.id} className="professorTestingStudentCardInner">
-                                    <div><strong>Name:</strong> {exam.name}</div>
-                                    <div><strong>Date:</strong> {new Date(exam.date).toLocaleDateString()}</div>
-                                    <div><strong>Location:</strong> {exam.location}</div>
-                                    <button
-                                      onClick={() => handleDeleteExam(exam.id, course.id)}
-                                      aria-label={`Delete exam ${exam.name}`}
-                                    >
-                                      Delete Exam
-                                    </button>
-                                  </div>
-                                ))}
-                              </>
-                            ) : (
-                              <div className="noExams">
-                                No exams assigned.
-                              </div>
-                            )}
-                          </details>
-                        </div>
-                      );
-                    })}
+                            }}
+                          >
+                            <details className="examsDropdown">
+                              <summary tabIndex={-1}>{student.account.name}</summary>
+                              <div><strong>UIN: </strong> {student.UIN || 'N/A'}</div>
+                              <div><strong>Email: </strong> {student.account.email || 'N/A'}</div>
+
+                              {studentExams.length > 0 ? (
+                                <>
+                                  <div>Exams:</div>
+                                  {studentExams.map((exam) => (
+                                    <div key={exam.id} className="professorTestingStudentCardInner">
+                                      <div><strong>Name:</strong> {exam.name}</div>
+                                      <div><strong>Date:</strong> {new Date(exam.date).toLocaleDateString()}</div>
+                                      <div><strong>Location:</strong> {exam.location}</div>
+                                      <button
+                                        onClick={() => handleDeleteExam(exam.id, course.id)}
+                                        aria-label={`Delete exam ${exam.name}`}
+                                      >
+                                        Delete Exam
+                                      </button>
+                                    </div>
+                                  ))}
+                                </>
+                              ) : (
+                                <div className="noExams">No exams assigned.</div>
+                              )}
+                            </details>
+                          </div>
+                        );
+                      })}
                     <a href={'#' + course.id} className="backToTop">Back to Top of Class</a>
-                </div>
-              )}
+                  </>
+                ) : (
+                  <span className="visually-hidden">Students are collapsed</span>
+                )}
+              </div>
             </section>
           ))}
         </div>

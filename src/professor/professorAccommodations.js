@@ -1,10 +1,7 @@
 import { useEffect, useRef, useState, createRef } from 'react';
 import './Professor.css';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faCaretDown, faCaretUp} from '@fortawesome/free-solid-svg-icons';
-
-
+import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 
 function ProfessorAccommodations({ userInfo, setAlertMessage, setShowAlert, settingsTabOpen, displayHeaderRef }) {
   const localRef = useRef(null);
@@ -31,7 +28,7 @@ function ProfessorAccommodations({ userInfo, setAlertMessage, setShowAlert, sett
       const isOpen = !prev[courseId];
       if (isOpen && focusAfter) {
         setTimeout(() => {
-          accommodationRefs.current[courseId]?.current?.focus(); // ✅ focus on courseCard
+          accommodationRefs.current[courseId]?.current?.focus();
         }, 0);
       }
       return {
@@ -54,49 +51,47 @@ function ProfessorAccommodations({ userInfo, setAlertMessage, setShowAlert, sett
         });
     }
   }, [userInfo]);
-  
 
   useEffect(() => {
-      if (
-        !loaded ||
-        loading ||
-        !headingRef.current ||
-        settingsTabOpen ||
-        document.querySelector('[data-testid="alert"]') !== null ||
-        !professorData.courses
-      ) return;
-    
-      const timeout = setTimeout(() => {
-        if (headingRef.current) {
-          headingRef.current.focus();
-        }
-      }, 100);
-    
-      return () => clearTimeout(timeout);
+    if (
+      !loaded ||
+      loading ||
+      !headingRef.current ||
+      settingsTabOpen ||
+      document.querySelector('[data-testid="alert"]') !== null ||
+      !professorData.courses
+    ) return;
+
+    const timeout = setTimeout(() => {
+      if (headingRef.current) {
+        headingRef.current.focus();
+      }
+    }, 100);
+
+    return () => clearTimeout(timeout);
   }, [loaded, headingRef, professorData]);
 
   return (
     <div className='profAccommodationsOuter' role="region" aria-labelledby="professor-accommodations-heading">
-      <h2 id="professor-accommodations-heading">
-        Professor Accommodations
-      </h2>
-  
+      <h2 id="professor-accommodations-heading">Professor Accommodations</h2>
+
       {loading ? (
         <div className="spinnerClassItem" role="status" aria-label="Loading, please wait">
-        <div className="spinner-iconClassItem" aria-hidden="true"></div>
-        <h3 className="spinner-textClassItem">Loading...</h3>
+          <div className="spinner-iconClassItem" aria-hidden="true"></div>
+          <h3 className="spinner-textClassItem">Loading...</h3>
         </div>
       ) : (
         professorData?.courses.map((course, index) => {
           const filtered = course.accommodations.filter(acc =>
             allowedAccommodations.has(acc.type)
           );
-  
-          // Initialize ref for each course
+
           if (!accommodationRefs.current[course.id]) {
             accommodationRefs.current[course.id] = createRef();
           }
-  
+
+          const isOpen = !!openProfessorCourses[course.id];
+
           return (
             <div
               key={course.id}
@@ -114,32 +109,29 @@ function ProfessorAccommodations({ userInfo, setAlertMessage, setShowAlert, sett
               <button
                 tabIndex={-1}
                 className="courseDropdown"
-                aria-expanded={openProfessorCourses[course.id]}
+                aria-expanded={isOpen}
                 aria-controls={`accommodations-${course.id}`}
                 aria-label={`Toggle accommodations for ${course.name} (${course.department})`}
               >
                 {course.name} ({course.department})
                 <span aria-hidden="true">
-                  {openProfessorCourses[course.id]
+                  {isOpen
                     ? <FontAwesomeIcon icon={faCaretUp} />
                     : <FontAwesomeIcon icon={faCaretDown} />}
                 </span>
               </button>
-  
-              {openProfessorCourses[course.id] && (
-                <div
-                  id={`accommodations-${course.id}`}
-                  role="region"
-                  aria-label={`Accommodations for ${course.name}`}
-                >
-                  {filtered.length > 0 ? (
+
+              <div
+                id={`accommodations-${course.id}`}
+                role="region"
+                aria-label={`Accommodations for ${course.name}`}
+                hidden={!isOpen}
+              >
+                {isOpen ? (
+                  filtered.length > 0 ? (
                     <div role="list" className="accommodationCards">
                       {filtered.map((acc, index) => (
-                        <div
-                          key={acc.id}
-                          className="accommodationCard"
-                          role="listitem"
-                        >
+                        <div key={acc.id} className="accommodationCard" role="listitem">
                           <div><strong>Type:</strong> {acc.type || 'N/A'}</div>
                           <div><strong>Status:</strong> {acc.status}</div>
                           <div><strong>Date Requested:</strong> {new Date(acc.date_requested).toLocaleDateString()}</div>
@@ -152,15 +144,17 @@ function ProfessorAccommodations({ userInfo, setAlertMessage, setShowAlert, sett
                     <div className="noAccommodations" tabIndex={0} aria-live="polite">
                       No accommodations available.
                     </div>
-                  )}
-                </div>
-              )}
+                  )
+                ) : (
+                  <span className="visually-hidden">Accommodations hidden</span>
+                )}
+              </div>
             </div>
           );
         })
       )}
     </div>
-  );  
+  );
 }
 
 export default ProfessorAccommodations;
