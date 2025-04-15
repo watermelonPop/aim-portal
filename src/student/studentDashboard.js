@@ -143,6 +143,7 @@ export default function StudentDashboard({ userInfo, settingsTabOpen, displayHea
         {selectedCourse && (
           <div
             className="modalOverlay"
+            data-testid="modalOverlay"
             onClick={() => setSelectedCourse(null)}
           >
             <div
