@@ -84,16 +84,14 @@ describe('StudentForms Component', () => {
   });
 
   describe('Contact Advisor Flow', () => {
-    test('successful fetch sets window.location.href with mailto link', async () => {
-      // Replace window.location for testing mailto link.
-      delete window.location;
-      window.location = { href: '' };
-
+    test('successful fetch opens Gmail compose in new tab', async () => {
+      const openSpy = jest.spyOn(window, 'open').mockImplementation(() => null); // mock window.open
+    
       jest.spyOn(global, 'fetch').mockResolvedValueOnce({
         ok: true,
         json: () => Promise.resolve({ advisorEmail: 'advisor@example.com' }),
       });
-
+    
       await act(async () => {
         render(
           <StudentForms
@@ -103,15 +101,28 @@ describe('StudentForms Component', () => {
           />
         );
       });
+    
       const contactBtn = screen.getByRole('button', {
         name: /contact your advisor through email/i,
       });
+    
       fireEvent.click(contactBtn);
+    
       await waitFor(() => {
-        expect(window.location.href).toMatch(/^mailto:advisor@example\.com/);
+        expect(openSpy).toHaveBeenCalledWith(
+          expect.stringMatching(
+            /^https:\/\/mail\.google\.com\/mail\/\?view=cm&fs=1&to=advisor@example\.com&su=Assistance%20Needed&body=Howdy%2C/
+          ),
+          '_blank',
+          'noopener,noreferrer'
+        );
+        
       });
+      
+    
+      openSpy.mockRestore(); // clean up
     });
-
+    
   });
 
   describe('Upload View', () => {
