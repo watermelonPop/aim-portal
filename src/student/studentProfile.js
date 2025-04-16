@@ -10,7 +10,7 @@ function StudentProfile({ userInfo, settingsTabOpen }) {
       fetch(`/api/getStudentProfile?userId=${userInfo.id}`)
         .then(res => res.json())
         .then(data => {
-          console.log("Student profile response:", data);
+          //console.log("Student profile response:", data);
           setStudentData(data);
           setLoading(false);
         });

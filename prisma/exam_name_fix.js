@@ -14,7 +14,7 @@ async function assignNamesToExams() {
   let count = 0;
 
   for (const exam of exams) {
-    console.log(`currCourse: ${currCourse}, courseId: ${exam.courseId}`);
+    //console.log(`currCourse: ${currCourse}, courseId: ${exam.courseId}`);
     
     if (currCourse === exam.courseId) {
       count += 1;
@@ -32,7 +32,7 @@ async function assignNamesToExams() {
     currCourse = exam.courseId;
   }
 
-  console.log(`Added names for exams`);
+  //console.log(`Added names for exams`);
 }
 
 assignNamesToExams()

@@ -66,7 +66,7 @@ What are your plans for this next week?
 | Expo poster  | ALL |  |
 | Ethics Deep Dive synthesis | ALL |  |
 | Delete Irrelevant Files | Paul | Raises testing coverage :) |
-| Scrub all console.log messages on client side | ALL |  |
+| Scrub all //console.log messages on client side | ALL |  |
 |  |  |  |
 |  |  |  |
 |  |  |  |

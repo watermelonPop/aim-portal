@@ -9,7 +9,7 @@ function ProfessorProfile({ userInfo, settingsTabOpen }) {
           fetch(`/api/getProfessorData?userId=${userInfo.id}`)
             .then(res => res.json())
             .then(data => {
-              console.log("Professor Profile Response: ", data);
+              //console.log("Professor Profile Response: ", data);
               setProfessorData(data);
               setLoading(false);
             });

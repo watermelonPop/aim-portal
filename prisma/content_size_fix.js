@@ -16,7 +16,7 @@ async function updateSettings() {
     },
   });
 
-  console.log(`Updated ${result.count} settings records.`);
+  //console.log(`Updated ${result.count} settings records.`);
 }
 
 updateSettings()

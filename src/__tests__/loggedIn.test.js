@@ -35,7 +35,7 @@ describe('App', () => {
                                         json: () => Promise.resolve({ exists: true, user_info: {id: 123}}),
                                     });
                                 }else{
-                                    console.log("OTHER API ROUTE");
+                                    //console.log("OTHER API ROUTE");
                                 }
                         });
                     
@@ -67,7 +67,7 @@ describe('App', () => {
                                         json: () => Promise.resolve({ exists: true, user_info: {id: 123}}),
                                     });
                                 }else{
-                                    console.log("OTHER API ROUTE");
+                                    //console.log("OTHER API ROUTE");
                                 }
                         });
                     
@@ -100,7 +100,7 @@ describe('App', () => {
                                         json: () => Promise.resolve({ exists: true, user_info: {id: 123}}),
                                     });
                                 }else{
-                                    console.log("OTHER API ROUTE");
+                                    //console.log("OTHER API ROUTE");
                                 }
                         });
                     
@@ -131,7 +131,7 @@ describe('App', () => {
                                         json: () => Promise.resolve({ exists: true, user_info: {id: 123}}),
                                     });
                                 }else{
-                                    console.log("OTHER API ROUTE");
+                                    //console.log("OTHER API ROUTE");
                                 }
                         });
                     
@@ -171,7 +171,7 @@ describe('App', () => {
                                         json: () => Promise.resolve({ exists: true, user_info: {id: 123}}),
                                     });
                                 }else{
-                                    console.log("OTHER API ROUTE");
+                                    //console.log("OTHER API ROUTE");
                                 }
                         });
                     
@@ -216,7 +216,7 @@ describe('App', () => {
                                         json: () => Promise.resolve({ exists: true, user_info: {id: 123}}),
                                     });
                                 }else{
-                                    console.log("OTHER API ROUTE");
+                                    //console.log("OTHER API ROUTE");
                                 }
                         });
                     
@@ -258,7 +258,7 @@ describe('App', () => {
                                         json: () => Promise.resolve({ exists: true, user_info: {id: 123}}),
                                     });
                                 }else{
-                                    console.log("OTHER API ROUTE");
+                                    //console.log("OTHER API ROUTE");
                                 }
                         });
                     

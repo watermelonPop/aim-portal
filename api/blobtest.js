@@ -7,7 +7,7 @@ const containerName = "forms";
 
 // Function to upload a file buffer to Azure Blob Storage
 async function uploadFile(fileBuffer, fileName) {
-    console.log("Storage Connection String:", AZURE_STORAGE_CONNECTION_STRING); // Debugging
+    //console.log("Storage Connection String:", AZURE_STORAGE_CONNECTION_STRING); // Debugging
     if (!AZURE_STORAGE_CONNECTION_STRING) {
         throw new Error("Missing AZURE_STORAGE_CONNECTION_STRING!");
     }

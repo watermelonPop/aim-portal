@@ -11,7 +11,7 @@ const containerName = "forms";
 
 // Function to upload a file buffer to Azure Blob Storage
 async function uploadFile(fileBuffer, fileName) {
-    console.log("Storage Connection String:", AZURE_STORAGE_CONNECTION_STRING); // Debugging
+    //console.log("Storage Connection String:", AZURE_STORAGE_CONNECTION_STRING); // Debugging
     if (!AZURE_STORAGE_CONNECTION_STRING) {
         throw new Error("Missing AZURE_STORAGE_CONNECTION_STRING!");
     }
@@ -26,8 +26,8 @@ async function uploadFile(fileBuffer, fileName) {
 
 
 export default async function handler(req, res) {
-        console.log("STARTING DOC UPLOAD");
-        console.log("Request Headers:", req.headers);
+        //console.log("STARTING DOC UPLOAD");
+        //console.log("Request Headers:", req.headers);
     
         if (req.method !== "POST") {
             return res.status(405).json({ error: "Method Not Allowed" });
@@ -39,7 +39,7 @@ export default async function handler(req, res) {
                 keepExtensions: true, // Keep file extension
         });
 
-        console.log("FORM: ", form);
+        //console.log("FORM: ", form);
     
         form.parse(req, async (err, fields, files) => {
             if (err) {

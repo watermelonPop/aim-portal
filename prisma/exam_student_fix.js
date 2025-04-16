@@ -15,12 +15,12 @@ async function assignStudentsToExams() {
 
   for (const exam of exams) {
     const students = exam.course.students;
-    // console.log(students[0]);
+    // //console.log(students[0]);
 
     if (students.length > 0) {
       // Select a random student from the course
       const randomStudent = students[Math.floor(Math.random() * students.length)];
-    //   console.log(randomStudent);
+    //   //console.log(randomStudent);
 
       // Update exam with the randomly chosen student's ID
       await prisma.exam.update({
@@ -30,13 +30,13 @@ async function assignStudentsToExams() {
         },
       });
 
-      console.log(`Updated Exam ${exam.id} with Student ${randomStudent.userId}`);
+      //console.log(`Updated Exam ${exam.id} with Student ${randomStudent.userId}`);
     } else {
-      console.log(`No students found for Exam ${exam.id}, skipping.`);
+      //console.log(`No students found for Exam ${exam.id}, skipping.`);
     }
   }
 
-  console.log("Random student assignment completed.");
+  //console.log("Random student assignment completed.");
 }
 
 assignStudentsToExams()

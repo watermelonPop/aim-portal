@@ -30,8 +30,8 @@ function StaffProfile({ userInfo, displayHeaderRef, settingsTabOpen, lastIntende
               document.activeElement !== headingRef.current &&
               lastIntendedFocusRef.current === headingRef.current
             ) {
-              console.log("FOCUSING DASH");
-              console.log("Intent:", lastIntendedFocusRef.current, "Target:", headingRef.current);
+              //console.log("FOCUSING DASH");
+              //console.log("Intent:", lastIntendedFocusRef.current, "Target:", headingRef.current);
               headingRef.current.focus();
               lastIntendedFocusRef.current = null;
             }
@@ -49,7 +49,7 @@ function StaffProfile({ userInfo, displayHeaderRef, settingsTabOpen, lastIntende
             fetch(`/api/getStaffData?userId=${userInfo.id}`)
               .then(res => res.json())
               .then(data => {
-                // console.log("Advisor Profile Response: ", data);
+                // //console.log("Advisor Profile Response: ", data);
                 setStaffData(data);
                 setLoading(false);
               });

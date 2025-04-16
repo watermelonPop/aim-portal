@@ -26,7 +26,7 @@ async function seed() {
     // const advisor = advisors[0];
 
     // Create 2 Accommodations records for student with userId 1 using the selected advisor
-    console.log('START Creating Accommodations');
+    //console.log('START Creating Accommodations');
     for (let i = 0; i < 2; i++) {
       await prisma.accommodations.create({
         data: {
@@ -49,10 +49,10 @@ async function seed() {
         },
       });
     }
-    console.log('DONE Creating Accommodations');
+    //console.log('DONE Creating Accommodations');
 
     // Create 2 Assistive_Technology records for student with userId 1 using the selected advisor
-    console.log('START Creating Assistive Technologies');
+    //console.log('START Creating Assistive Technologies');
     for (let i = 0; i < 2; i++) {
       await prisma.assistive_Technology.create({
         data: {
@@ -70,7 +70,7 @@ async function seed() {
         },
       });
     }
-    console.log('DONE Creating Assistive Technologies');
+    //console.log('DONE Creating Assistive Technologies');
   } catch (error) {
     console.error(error);
   } finally {

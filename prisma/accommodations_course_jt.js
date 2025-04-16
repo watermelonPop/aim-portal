@@ -20,14 +20,14 @@ async function assignRandomAccommodationsToCourses() {
   // Fetch all accommodations
   const accommodations = await prisma.accommodations.findMany();
   if (accommodations.length < 3) {
-    console.log("Not enough accommodations available to assign at least 3 accommodations per course.");
+    //console.log("Not enough accommodations available to assign at least 3 accommodations per course.");
     return;
   }
 
   // Fetch all courses
   const courses = await prisma.course.findMany();
   if (courses.length === 0) {
-    console.log("No courses found.");
+    //console.log("No courses found.");
     return;
   }
 
@@ -49,7 +49,7 @@ async function assignRandomAccommodationsToCourses() {
       }
     });
 
-    console.log(`Course ${course.id} connected to ${numAccommodations} accommodations.`);
+    //console.log(`Course ${course.id} connected to ${numAccommodations} accommodations.`);
   }
 }
 

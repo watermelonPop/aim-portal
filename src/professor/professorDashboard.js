@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faCheck, faArrowLeft} from '@fortawesome/free-solid-svg-icons';
 
 export const formatDate = (dateString) => {
-        console.log("FORMAT: ", dateString);
+        //console.log("FORMAT: ", dateString);
         if (!dateString) return '';
         const date = new Date(dateString);
         return isNaN(date.getTime()) ? '' : date.toISOString().split('T')[0];
@@ -41,7 +41,7 @@ export function ProfessorDashboard({ userInfo, setAlertMessage, setShowAlert, se
                         if (!response.ok) throw new Error('Failed to fetch classes');
             
                         const data = await response.json();
-                        console.log('Fetched classes:', data);
+                        //console.log('Fetched classes:', data);
                         setClasses(data.courses);
 
                         const studentMap = new Map();
@@ -75,7 +75,7 @@ export function ProfessorDashboard({ userInfo, setAlertMessage, setShowAlert, se
                         });
                         });
 
-                        console.log("STUDENTS", Array.from(studentMap.values()));
+                        //console.log("STUDENTS", Array.from(studentMap.values()));
 
                         setStudents(Array.from(studentMap.values()));
                         setLoading(false);
@@ -108,7 +108,7 @@ export function ProfessorDashboard({ userInfo, setAlertMessage, setShowAlert, se
         };
 
         const acceptAccommodationRequest = async (request_id) => {
-                console.log("ACCEPTING");
+                //console.log("ACCEPTING");
                 try {
                     const response = await fetch('/api/professorAcceptStudentAccommodation', {
                         method: 'POST',
@@ -148,8 +148,8 @@ export function ProfessorDashboard({ userInfo, setAlertMessage, setShowAlert, se
                         setClasses(newClasses); // this alone won't reset state if component doesn't unmount
                         setSelectedClass(selectedClass);
 
-                        console.log("selectedClass:", selectedClass);
-                        console.log("selectedClassObj:", selectedClassObj);
+                        //console.log("selectedClass:", selectedClass);
+                        //console.log("selectedClassObj:", selectedClassObj);
                       
                         setAlertMessage(`Accommodation Request Acknowledged and Accepted!`);
                         setShowAlert(true);

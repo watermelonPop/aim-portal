@@ -5,8 +5,8 @@ const prisma = new PrismaClient();
 export default async function handler(req, res) {
   const { userId } = req.query;
 
-  console.log('🚀 API HIT: getStudentSubmittedExams');
-  console.log('👉 userId received:', userId);
+  //console.log('🚀 API HIT: getStudentSubmittedExams');
+  //console.log('👉 userId received:', userId);
 
   if (!userId) {
     console.error('⛔ Missing userId parameter');
@@ -15,7 +15,7 @@ export default async function handler(req, res) {
 
   try {
     const parsedUserId = parseInt(userId);
-    console.log('🔍 Parsed userId:', parsedUserId);
+    //console.log('🔍 Parsed userId:', parsedUserId);
 
     // Retrieve the student with their courses and exams.
     const student = await prisma.student.findUnique({
@@ -52,7 +52,7 @@ export default async function handler(req, res) {
       }
     });
 
-    console.log('✅ Submitted exams retrieved:', submittedExams);
+    //console.log('✅ Submitted exams retrieved:', submittedExams);
     return res.status(200).json(submittedExams);
   } catch (error) {
     console.error('🔥 ERROR during Prisma query:');

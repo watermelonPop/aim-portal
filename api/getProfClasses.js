@@ -37,7 +37,7 @@ module.exports = async (req, res) => {
         }
       });
 
-      console.log(professor);
+      //console.log(professor);
 
       if (professor && professor.courses) {
         res.status(200).json({ exists: true, courses: professor.courses });

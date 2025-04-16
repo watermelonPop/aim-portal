@@ -19,7 +19,7 @@ module.exports = async (req, res) => {
               where: { userId: Number(id) },
           });
 
-          console.log(user);
+          //console.log(user);
 
           if (user) {
               res.status(200).json({ exists: true, user_info: user });

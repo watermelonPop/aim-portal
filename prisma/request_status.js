@@ -22,7 +22,7 @@ async function assignBalancedRandomStatuses() {
         data: { status: newStatus },
       });
       
-      console.log(`Updated request ${requestId} with status ${newStatus}`);
+      //console.log(`Updated request ${requestId} with status ${newStatus}`);
     }
   } catch (error) {
     console.error('Error updating request statuses:', error);

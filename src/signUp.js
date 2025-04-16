@@ -123,7 +123,7 @@ function SignUp({ userInfo, setUserInfo, setAlertMessage, setShowAlert, setUserC
               
 
         const validateForm = (chosenRole) => {
-                console.log(formData);
+                //console.log(formData);
                 let newErrors = {};
 
                 if (!formData.name) newErrors.name = "Name is required";

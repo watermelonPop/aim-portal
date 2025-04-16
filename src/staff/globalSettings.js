@@ -46,7 +46,7 @@ function GlobalSettings({ userInfo, settingsTabOpen, displayHeaderRef}) {
 
   useEffect(() => {
     if (loaded) {
-      console.log("advisorList:", advisorList);
+      //console.log("advisorList:", advisorList);
     }
   }, [loaded]);
 

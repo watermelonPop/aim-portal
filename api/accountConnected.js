@@ -13,7 +13,7 @@ module.exports = async (req, res) => {
       if (!userId) {
           return res.status(400).json({ error: 'userId is required' });
       }
-      console.log("BEFORE CHECK ACCOUNT IS CONNECTED");
+      //console.log("BEFORE CHECK ACCOUNT IS CONNECTED");
       try {
         const [user, student, advisor, professor] = await Promise.all([
                 prisma.user.findFirst({
@@ -31,7 +31,7 @@ module.exports = async (req, res) => {
         ]);
             
         const foundUser = user || student || advisor || professor;
-        console.log("FOUND", foundUser);
+        //console.log("FOUND", foundUser);
         if (foundUser) {
                 res.status(200).json({ exists: true});
         } else {

@@ -40,20 +40,20 @@ function StaffExamView({ userInfo, settingsTabOpen, displayHeaderRef }) {
         //FOR PRINTING ONLY
         useEffect(()=>{
                 if(loading === false && exams.length != 0){
-                        console.log("EXAMS HERE:",exams);
+                        //console.log("EXAMS HERE:",exams);
                 }
         },[exams]);
 
         useEffect(()=>{
                 if(loadingStudent === false && student.length != 0){
-                        console.log("STUDENT HERE:",student);
+                        //console.log("STUDENT HERE:",student);
                 }
         },[student]);
 
 
         useEffect(()=>{
                 if(loadingProfessor === false && professor){
-                        console.log("PROFESSOR HERE:",professor);
+                        //console.log("PROFESSOR HERE:",professor);
                 }
         },[professor]);
 
@@ -61,7 +61,7 @@ function StaffExamView({ userInfo, settingsTabOpen, displayHeaderRef }) {
 //   // Handle file selection
         const handleFileChange = (event) => {
                 setSelectedFile(event.target.files[0]);
-                console.log("HANDLE FILE CHANGE REACHED");
+                //console.log("HANDLE FILE CHANGE REACHED");
         };
 
 
@@ -69,9 +69,9 @@ function StaffExamView({ userInfo, settingsTabOpen, displayHeaderRef }) {
   // Handle file upload using .then to ensure order
         const handleFileUpload = async (file) => {
                 
-                console.log("TRYING FILE UPLOAD");
-                console.log("selected FIle:",selectedFile);
-                console.log("caled File:",file);
+                //console.log("TRYING FILE UPLOAD");
+                //console.log("selected FIle:",selectedFile);
+                //console.log("caled File:",file);
                 const formDataToSend = new FormData();
                 formDataToSend.append("file", file);
                 if (!file) return null;
@@ -83,7 +83,7 @@ function StaffExamView({ userInfo, settingsTabOpen, displayHeaderRef }) {
                         });
                 
                         const result = await response.json();
-                        console.log("URL: ", result);
+                        //console.log("URL: ", result);
                         
                         const updatedExam = await fetch("/api/updateExam", {
                                 method: "POST",
@@ -96,7 +96,7 @@ function StaffExamView({ userInfo, settingsTabOpen, displayHeaderRef }) {
 
                         setSelectedExam(resultExam);
 
-                        console.log("resultExam: ", resultExam);
+                        //console.log("resultExam: ", resultExam);
 
                         return result.url || null;
                 } catch (error) {
@@ -115,7 +115,7 @@ function StaffExamView({ userInfo, settingsTabOpen, displayHeaderRef }) {
                 const headingRef = displayHeaderRef || localRef;
                 const [loaded, setLoaded] = useState(false);
                 const displayedExams = exams.length === 0 ? [] : exams;
-                console.log("displayedExams:", displayedExams);
+                //console.log("displayedExams:", displayedExams);
 
                 useEffect(() => {
                         if (
@@ -140,7 +140,7 @@ function StaffExamView({ userInfo, settingsTabOpen, displayHeaderRef }) {
         
                 // Display a loading message if data hasn't loaded yet
                 if (loading) {
-                        console.log("returning loading");
+                        //console.log("returning loading");
                 return (<div className="spinnerClassItem" role="status" aria-label="Loading, please wait">
                 <div className="spinner-iconClassItem" aria-hidden="true"></div>
                 <h3 className="spinner-textClassItem">Loading...</h3>
@@ -150,7 +150,7 @@ function StaffExamView({ userInfo, settingsTabOpen, displayHeaderRef }) {
                 // Function to handle click on an exam list item
                 const handleExamClick = (exam) => {
                 setSelectedExam(exam);
-                console.log("SELECTED EXAM:",exam)
+                //console.log("SELECTED EXAM:",exam)
                 setLoadingStudent(true);
                 fetch(`/api/getStudentData?userId=${exam.studentIds[0]}`)
                         .then((res) => {

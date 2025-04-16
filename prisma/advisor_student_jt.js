@@ -9,7 +9,7 @@ async function getStudentUserIds() {
       });
       // If you want just an array of userIds rather than objects:
       const userIds = studentUserIds.map(student => student.userId);
-      console.log(userIds);
+      //console.log(userIds);
       return userIds;
     } catch (error) {
       console.error('Error fetching student userIds:', error);
@@ -23,7 +23,7 @@ async function getStudentUserIds() {
           });
       // If you want just an array of userIds rather than objects:
       const userIds = advisorUserIds.map(advisor => advisor.userId);
-      console.log(userIds);
+      //console.log(userIds);
       return userIds;
     } catch (error) {
       console.error('Error fetching advisor userIds:', error);
@@ -38,7 +38,7 @@ async function getStudentUserIds() {
           });
       // If you want just an array of userIds rather than objects:
       const userIds = coordinatorAdvisors.map(advisor => advisor.userId);
-      console.log(userIds);
+      //console.log(userIds);
       return userIds;
     } catch (error) {
       console.error('Error fetching advisor userIds:', error);
@@ -51,14 +51,14 @@ async function main() {
     const student_ids = await getStudentUserIds();  
     const advisor_ids = await getAdvisorUserIds();
     const coordinator_ids = await getCoordinatorUserIds();
-    // console.log(student_ids);
-    // console.log(advisor_ids);
+    // //console.log(student_ids);
+    // //console.log(advisor_ids);
     
     //UNLINKING
     // for(let i = 0; i< advisor_ids.length; i++){
     //     const advisor_id = advisor_ids[i];
 
-    //     console.log("start dropping: ", i);
+    //     //console.log("start dropping: ", i);
     //     await prisma.advisor.update({
     //         where: { userId: advisor_id }, // The specific advisor
     //         data: {
@@ -67,7 +67,7 @@ async function main() {
     //           },
     //         },
     //       });
-    //     console.log("done dropping: ", i);
+    //     //console.log("done dropping: ", i);
           
     // }
 
@@ -78,7 +78,7 @@ async function main() {
         const advisor_id = coordinator_ids[Math.floor(Math.random()*coordinator_ids.length)]
     
         //find 5 random students
-        console.log("start: ", i);
+        //console.log("start: ", i);
         await prisma.student.update({
             where: { userId: student_id },
             data: {
@@ -87,7 +87,7 @@ async function main() {
               },
             },
           });
-          console.log("done: ", i)
+          //console.log("done: ", i)
     }   
     
 

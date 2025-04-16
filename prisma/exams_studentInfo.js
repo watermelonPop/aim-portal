@@ -28,7 +28,7 @@ async function addStudentNameAndEmail() {
         },
     })
 
-    console.log(`Updated exam ${examId} with student ${studEmail}, ${studName}`);
+    //console.log(`Updated exam ${examId} with student ${studEmail}, ${studName}`);
     }
   } catch (error) {
     console.error('Error updating request statuses:', error);

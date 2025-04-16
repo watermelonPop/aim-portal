@@ -48,7 +48,7 @@ export default async function handler(req, res) {
       },
     });
 
-    console.log('✅ Accommodation created:', newAccommodation);
+    //console.log('✅ Accommodation created:', newAccommodation);
     return res.status(200).json(newAccommodation);
   } catch (error) {
     console.error('🔥 Error creating accommodation:', error);

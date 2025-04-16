@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export default async function handler(req, res) {
-  console.log("🗑️ STARTING DELETE FORM");
+  //console.log("🗑️ STARTING DELETE FORM");
 
   if (req.method === 'POST') {
     try {
@@ -17,7 +17,7 @@ export default async function handler(req, res) {
         where: { id: formId },
       });
 
-      console.log("✅ Deleted form:", deletedForm);
+      //console.log("✅ Deleted form:", deletedForm);
       res.status(200).json({ message: 'Form deleted successfully', deletedForm });
 
     } catch (error) {

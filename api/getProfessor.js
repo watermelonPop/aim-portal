@@ -25,7 +25,7 @@ module.exports = async (req, res) => {
             //         account:true
             //     },
             // });
-            //  console.log("SUCCESS BEFORE RETURNING JSON:",advisors);
+            //  //console.log("SUCCESS BEFORE RETURNING JSON:",advisors);
             // // const advisorIds = advisors.map(advisor => advisor.userId);
             // res.status(200).json({ advisors });
 

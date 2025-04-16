@@ -24,7 +24,7 @@ The team was set to meet with the sponsor, Justin, on Monday morning, but he res
 | Expo poster  | ALL | DONE |  |
 | Ethics Deep Dive synthesis | ALL | DONE |  |
 | Delete Irrelevant Files | Paul |  |  |
-| Scrub all console.log messages on client side | ALL |  |  |
+| Scrub all //console.log messages on client side | ALL |  |  |
 | Fix User to Student functionality  | Diego | DONE |  |
 | Add Tests to improve student role coverage | Aviral | IN PROGRESS |  |
 |  |  |  |  |

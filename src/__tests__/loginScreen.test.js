@@ -526,7 +526,7 @@ describe('LoginScreen', () => {
                         expect(global.fetch).toHaveBeenCalledWith('/api/getStaffRole?user_id=mockUserId');
                     });
                 
-                    console.log("getStaffRoles API was called correctly.");
+                    //console.log("getStaffRoles API was called correctly.");
                 });
                 
 

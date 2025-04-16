@@ -20,14 +20,14 @@ async function assignRandomCoursesToAllStudents() {
   // Fetch all courses
   const courses = await prisma.course.findMany();
   if (courses.length < 4) {
-    console.log("Not enough courses available to assign at least 4 courses per student.");
+    //console.log("Not enough courses available to assign at least 4 courses per student.");
     return;
   }
 
   // Fetch all students
   const students = await prisma.student.findMany();
   if (students.length === 0) {
-    console.log("No students found.");
+    //console.log("No students found.");
     return;
   }
 
@@ -49,7 +49,7 @@ async function assignRandomCoursesToAllStudents() {
       }
     });
 
-    console.log(`Student ${student.userId} connected to ${numCourses} courses.`);
+    //console.log(`Student ${student.userId} connected to ${numCourses} courses.`);
   }
 }
 

@@ -20,7 +20,7 @@ module.exports = async (req, res) => {
                   status: "APPROVED", // Set the desired status
                 },
         });
-        console.log(accommodation);
+        //console.log(accommodation);
         
 
       if (accommodation) {

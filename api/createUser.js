@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 module.exports = async (req, res) => {
   if (req.method === 'POST') {
     const { userId, dob, uin, phoneNumber } = req.body;
-    console.log(userId);
+    //console.log(userId);
 
     if (!userId || !phoneNumber || !dob || !uin) {
             return res.status(400).json({ error: 'User ID, phone number, dob, and uin are required' });

@@ -26,7 +26,7 @@ module.exports = async (req, res) => {
         }
       });
 
-      console.log(user);
+      //console.log(user);
       
       if (user && user.request.length !== 0) {
         res.status(200).json({ exists: true, request: user.request[0] });

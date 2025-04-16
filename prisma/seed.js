@@ -4,7 +4,7 @@ const { faker } = require('@faker-js/faker');
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('Starting Seeding\n');
+  //console.log('Starting Seeding\n');
   const num_students = 500;
   const num_users = num_students/5;
   const num_professors = num_students/10;
@@ -53,7 +53,7 @@ async function main() {
     return parseInt(newUIN, 10);
   }
   // --- Create Accounts ---
-  console.log('Creating Student Accounts\n');
+  //console.log('Creating Student Accounts\n');
   const studentAccounts = [];
   for (let i = 0; i < num_students; i++) {
     
@@ -91,10 +91,10 @@ async function main() {
       studentAccounts.push(account);
     }
   }
-  console.log('DONE Creating Student Accounts\n');
+  //console.log('DONE Creating Student Accounts\n');
 
 
-  console.log('START Creating User Accounts\n');
+  //console.log('START Creating User Accounts\n');
   const userAccounts = [];
   for (let i = 0; i < num_users; i++) {
     const firstName = getUniqueFirstName();
@@ -110,10 +110,10 @@ async function main() {
     });
     userAccounts.push(account);
   }
-  console.log('DONE Creating User Accounts\n');
+  //console.log('DONE Creating User Accounts\n');
 
 
-  console.log('START Creating Professor Accounts\n');
+  //console.log('START Creating Professor Accounts\n');
   const professorAccounts = [];
   for (let i = 0; i < num_professors; i++) {
 
@@ -147,9 +147,9 @@ async function main() {
     professorAccounts.push(account);
     }
   }
-  console.log('DONE Creating Professor Accounts\n');
+  //console.log('DONE Creating Professor Accounts\n');
 
-  console.log('START Creating ADVISOR Accounts\n');
+  //console.log('START Creating ADVISOR Accounts\n');
   // Create 5 advisor accounts
   const advisorAccounts = [];
   for (let i = 0; i <  num_advisors; i++) {
@@ -186,12 +186,12 @@ async function main() {
     }
   }
 
-  console.log('DONE Creating ADVISOR Accounts\n');
+  //console.log('DONE Creating ADVISOR Accounts\n');
 
   // --- Create Dependent Records ---
 
 
-  console.log('START Creating Students\n');
+  //console.log('START Creating Students\n');
   // Create 5 Student records (linked to student accounts)
   const students = [];
   for (let i = 0; i < num_students; i++) {
@@ -207,10 +207,10 @@ async function main() {
     });
     students.push(student);
   }
-  console.log('Done Creating Students\n');
+  //console.log('Done Creating Students\n');
 
 
-  console.log('START Creating Users\n');
+  //console.log('START Creating Users\n');
   const users = [];
   for (let i = 0; i < num_users; i++) {
     const account = userAccounts[i];
@@ -224,10 +224,10 @@ async function main() {
     });
     users.push(user);
   }
-  console.log('DONE Creating Users\n');
+  //console.log('DONE Creating Users\n');
 
 
-  console.log('START Creating Professors\n');
+  //console.log('START Creating Professors\n');
   const departments = ["College of Agriculture and Life Sciences",
     "College of Architecture",
     "College of Arts and Sciences",
@@ -257,10 +257,10 @@ async function main() {
     });
     professors.push(professor);
   }
-  console.log('DONE Creating Professors\n');
+  //console.log('DONE Creating Professors\n');
 
 
-  console.log('START Creating Advisors\n');
+  //console.log('START Creating Advisors\n');
   const advisors = [];
   for (let i = 0; i < num_advisors; i++) {
     const account = advisorAccounts[i];
@@ -273,10 +273,10 @@ async function main() {
     });
     advisors.push(advisor);
   }
-  console.log('DONE Creating Advisors\n');
+  //console.log('DONE Creating Advisors\n');
 
   //settings
-  console.log('START Creating Settings\n');
+  //console.log('START Creating Settings\n');
   for (let i = 0; i < num_students; i++) {
     const account = studentAccounts[i];
     await prisma.settings.create({
@@ -309,13 +309,13 @@ async function main() {
       },
     });
   }
-  console.log('DONE Creating Settings\n');
+  //console.log('DONE Creating Settings\n');
 
 
 
 
   // Create 5 Forms (associate these with student accounts)
-  console.log('START Creating Forms\n');
+  //console.log('START Creating Forms\n');
   const formTypes = [
     ['REGISTRATION_ELIGIBILITY', 
       'Application for Disability Services',
@@ -360,10 +360,10 @@ async function main() {
       });
     }
   }
-  console.log('DONE Creating Forms\n');
+  //console.log('DONE Creating Forms\n');
 
   
-  console.log('START Creating Important_Dates\n');
+  //console.log('START Creating Important_Dates\n');
   const important_dates = [
 ['break',
 'spring break',
@@ -401,10 +401,10 @@ async function main() {
       });
     }
   }
-  console.log('Done Creating Important_Dates\n');
+  //console.log('Done Creating Important_Dates\n');
 
 
-  console.log('START Creating Testing_Rooms\n');
+  //console.log('START Creating Testing_Rooms\n');
   // TESTING ROOMS **FIGURE THIS SHIT OUT LATER!**
   for (let i = 0; i < 5; i++) {
     await prisma.testing_Room.create({
@@ -414,11 +414,11 @@ async function main() {
       },
     });
   }
-  console.log('DONE Creating Testing_Rooms\n');
+  //console.log('DONE Creating Testing_Rooms\n');
 
 
 
-  console.log('START Creating AsstTech\n');
+  //console.log('START Creating AsstTech\n');
   // Create 5 Assistive_Technology records (each needs a student and an advisor)
   for (let i = 0; i < 300; i++) {
     
@@ -434,9 +434,9 @@ async function main() {
       },
     });
   }
-  console.log('DONE Creating AsstTech\n');
+  //console.log('DONE Creating AsstTech\n');
 
-  console.log('START Creating Accommodations\n');
+  //console.log('START Creating Accommodations\n');
   // Create 5 Accommodations records (each linked to an advisor)
   for (let i = 0; i < num_students*2; i++) {
     const advisor = advisors[Math.floor(Math.random()*advisors.length)];
@@ -460,10 +460,10 @@ async function main() {
       },
     });
   }
-  console.log('DONE Creating Accommodations\n');
+  //console.log('DONE Creating Accommodations\n');
 
   
-  console.log('START Creating Requests\n');
+  //console.log('START Creating Requests\n');
   // Create 5 Request records (each connects a student and an advisor)
   for (let i = 0; i < num_students; i++) {
     const user = users[i % users.length];
@@ -477,12 +477,12 @@ async function main() {
       },
     });
   }
-  console.log('DONE Creating Requests\n');
+  //console.log('DONE Creating Requests\n');
 
 
   //================================================== UP TO HERE WORKS AS INTENDED ==================================================
 
-  console.log('START Creating Courses\n');
+  //console.log('START Creating Courses\n');
   const course_letters = {
     "College of Agriculture and Life Sciences":"AGSC",
     "College of Architecture":"ARCH",
@@ -520,10 +520,10 @@ async function main() {
       courses.push(course);
     }
   }
-  console.log('DONE Creating Courses\n');
+  //console.log('DONE Creating Courses\n');
 
 
-  console.log('START Creating Exams\n');
+  //console.log('START Creating Exams\n');
   const buildings = ["HRBB", "HELD", "ZACH",  "EVAN", "COKE", "ILCB", "EABA", "CHEM", "LANG", "ARCA"];
   // Create 5 Exams (each linked to a course and an advisor)
   for (let i = 0; i < courses.length; i++) {
@@ -543,9 +543,9 @@ async function main() {
     }
     
   }
-  console.log('DONE Creating Exams\n');
+  //console.log('DONE Creating Exams\n');
 
-  console.log("Seeding complete.");
+  //console.log("Seeding complete.");
 }
 
 main()

@@ -18,7 +18,7 @@ export default async function handler(req, res) {
         }
       });
 
-      console.log(result);
+      //console.log(result);
 
       if (result) {
         res.status(200).json({

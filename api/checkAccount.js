@@ -13,14 +13,14 @@ module.exports = async (req, res) => {
       if (!email) {
           return res.status(400).json({ error: 'Email is required' });
       }
-      //console.log("BEFORE CHECK ACCOUNT");
+      ////console.log("BEFORE CHECK ACCOUNT");
       try {
           // Fetch account using Prisma
           const account = await prisma.account.findUnique({
               where: { email },
           });
 
-          console.log(account);
+          //console.log(account);
 
           if (account) {
               res.status(200).json({ exists: true, user_info: account });

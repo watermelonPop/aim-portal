@@ -26,7 +26,7 @@ I finished all of the views that were necessary this week, and refactored all pr
      
 3. What is the current overall project status from your perspective? 
 
-WE ARE DONE\! There are some very minor changes, like scrubbing console.log messages from the client side, deleting irrelevant files from our repo to accurately increase code coverage, and changing the way we do keyboard navigation, but these are all minor fixes that can be done in an evening\!
+WE ARE DONE\! There are some very minor changes, like scrubbing //console.log messages from the client side, deleting irrelevant files from our repo to accurately increase code coverage, and changing the way we do keyboard navigation, but these are all minor fixes that can be done in an evening\!
 
 4. How is your team functioning from your perspective?  
    We are functioning well, everyone has done a SIGNIFICANT amount of work this last week\! Props to team Good Aim\!  

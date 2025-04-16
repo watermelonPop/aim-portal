@@ -28,7 +28,7 @@ describe('accommodations', () => {
                                 json: () => Promise.resolve({ exists: false, message: "No request found" }),
                             });
                         }else{
-                            console.log("OTHER API ROUTE");
+                            //console.log("OTHER API ROUTE");
                         }
                 });
                 let mockUserInfo = {
@@ -72,7 +72,7 @@ describe('accommodations', () => {
                                 json: () => Promise.resolve({ exists: false, message: "No request found" }),
                             });
                         }else{
-                            console.log("OTHER API ROUTE");
+                            //console.log("OTHER API ROUTE");
                         }
                 });
                 let mockUserInfo = {
@@ -149,7 +149,7 @@ describe('accommodations', () => {
                                 json: () => Promise.resolve({ exists: false, message: "No request found" }),
                             });
                         }else{
-                            console.log("OTHER API ROUTE");
+                            //console.log("OTHER API ROUTE");
                         }
                 });
                 const mockUserInfo = {

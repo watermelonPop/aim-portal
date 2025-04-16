@@ -70,7 +70,7 @@ async function updatePermissions() {
 
 
 
-  console.log(`DONE`);
+  //console.log(`DONE`);
 }
 
 updatePermissions()

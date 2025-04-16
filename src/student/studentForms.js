@@ -38,12 +38,12 @@ function StudentForms({ userInfo, settingsTabOpen, displayHeaderRef }) {
     setUploadSuccess(false);
     setUploadError('');
   
-    console.log("📝 Form Submission Triggered");
-    console.log("Form Type:", formType);
-    console.log("Form Name:", formName);
-    console.log("Due Date:", dueDate);
-    console.log("File:", formFile);
-    console.log("User ID:", userInfo?.id);
+    //console.log("📝 Form Submission Triggered");
+    //console.log("Form Type:", formType);
+    //console.log("Form Name:", formName);
+    //console.log("Due Date:", dueDate);
+    //console.log("File:", formFile);
+    //console.log("User ID:", userInfo?.id);
   
     // Basic validation check
     if (!formFile || !formType || !formName || !userInfo?.id) {
@@ -77,7 +77,7 @@ function StudentForms({ userInfo, settingsTabOpen, displayHeaderRef }) {
         throw new Error(data.error || 'Failed to upload');
       }
   
-      console.log("✅ Upload succeeded:", data.form);
+      //console.log("✅ Upload succeeded:", data.form);
   
       setUploadSuccess(true);
       setFormType('');
@@ -206,7 +206,7 @@ function StudentForms({ userInfo, settingsTabOpen, displayHeaderRef }) {
         throw new Error(data.error || "Upload failed.");
       }
   
-      console.log("✅ File uploaded to:", data.url);
+      //console.log("✅ File uploaded to:", data.url);
       setUploadSuccess(true);
       setFormFile(null);
     } catch (error) {

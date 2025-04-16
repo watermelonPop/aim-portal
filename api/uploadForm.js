@@ -29,7 +29,7 @@ async function uploadFileToAzure(fileBuffer, fileName) {
 }
 
 export default async function handler(req, res) {
-  console.log("📤 STARTING DOC UPLOAD");
+  //console.log("📤 STARTING DOC UPLOAD");
 
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method Not Allowed" });
@@ -63,7 +63,7 @@ export default async function handler(req, res) {
       const fileName = `${userId}_${Date.now()}_${file.originalFilename}`;
       const fileUrl = await uploadFileToAzure(fileBuffer, fileName);
 
-      console.log("✅ File uploaded to Azure:", fileUrl);
+      //console.log("✅ File uploaded to Azure:", fileUrl);
 
       // Create a new form entry in the database
       const newForm = await prisma.form.create({

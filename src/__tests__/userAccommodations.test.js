@@ -888,7 +888,7 @@ describe('userAccommodations', () => {
                                             json: () => Promise.resolve({ exists: false, message: "No request found"}),
                                         });
                                     }else{
-                                    console.log("OTHER API ROUTE");
+                                    //console.log("OTHER API ROUTE");
                                 }
                         });
                         let mockUserInfo = {
@@ -1072,7 +1072,7 @@ describe('userAccommodations', () => {
                                         json: () => Promise.resolve({ exists: false }),
                                     });
                                 }else{
-                                        console.log("OTHER CALL MADE: ", url);
+                                        //console.log("OTHER CALL MADE: ", url);
                                 }
                         });
 
@@ -1133,7 +1133,7 @@ describe('userAccommodations', () => {
                                         json: () => Promise.resolve({ exists: false }),
                                     });
                                 }else{
-                                        console.log("OTHER CALL MADE: ", url);
+                                        //console.log("OTHER CALL MADE: ", url);
                                 }
                         });
 
@@ -1195,7 +1195,7 @@ describe('userAccommodations', () => {
                                         json: () => Promise.resolve({ exists: false }),
                                     });
                                 }else{
-                                        console.log("OTHER CALL MADE: ", url);
+                                        //console.log("OTHER CALL MADE: ", url);
                                 }
                         });
 
@@ -1255,7 +1255,7 @@ describe('userAccommodations', () => {
                                                     json: () => Promise.resolve({ success: true, request: {} }),
                                                 });
                                         }else{
-                                                console.log("OTHER CALL MADE: ", url);
+                                                //console.log("OTHER CALL MADE: ", url);
                                         }
                                 });
         
@@ -1332,7 +1332,7 @@ describe('userAccommodations', () => {
                                                 json: () => Promise.resolve({ exists: false }),
                                             });
                                         }else{
-                                                console.log("OTHER CALL MADE: ", url);
+                                                //console.log("OTHER CALL MADE: ", url);
                                         }
                                 });
         
@@ -1397,7 +1397,7 @@ describe('userAccommodations', () => {
                                                 json: () => Promise.resolve({ exists: false }),
                                             });
                                         }else{
-                                                console.log("OTHER CALL MADE: ", url);
+                                                //console.log("OTHER CALL MADE: ", url);
                                         }
                                 });
         
@@ -1456,7 +1456,7 @@ describe('userAccommodations', () => {
                                                 json: () => Promise.resolve({ exists: false }),
                                             });
                                         }else{
-                                                console.log("OTHER CALL MADE: ", url);
+                                                //console.log("OTHER CALL MADE: ", url);
                                         }
                                 });
         
@@ -1515,7 +1515,7 @@ describe('userAccommodations', () => {
                                                 json: () => Promise.resolve({ exists: false }),
                                             });
                                         }else{
-                                                console.log("OTHER CALL MADE: ", url);
+                                                //console.log("OTHER CALL MADE: ", url);
                                         }
                                 });
         
@@ -1601,7 +1601,7 @@ describe('userAccommodations', () => {
                                                 });
                                         }
                                         else{
-                                                console.log("OTHER CALL MADE: ", url);
+                                                //console.log("OTHER CALL MADE: ", url);
                                         }
                                 });
         
@@ -1687,7 +1687,7 @@ describe('userAccommodations', () => {
                                                             json: () => Promise.resolve({ success: true, request: {} }),
                                                         });
                                                     } else {
-                                                    console.log('OTHER CALL MADE:', url);
+                                                    //console.log('OTHER CALL MADE:', url);
                                                 }
                                             });
                                             
@@ -1776,7 +1776,7 @@ describe('userAccommodations', () => {
                                                             json: () => Promise.resolve({ success: true, request: {} }),
                                                         });
                                                     } else {
-                                                    console.log('OTHER CALL MADE:', url);
+                                                    //console.log('OTHER CALL MADE:', url);
                                                 }
                                         });
                                       
@@ -1869,7 +1869,7 @@ describe('userAccommodations', () => {
                                                             json: () => Promise.resolve({ success: false }),
                                                         });
                                                     } else {
-                                                    console.log('OTHER CALL MADE:', url);
+                                                    //console.log('OTHER CALL MADE:', url);
                                                 }
                                         });
 
@@ -2023,7 +2023,7 @@ describe('userAccommodations', () => {
                                                             json: () => Promise.resolve({ error: "ERROR" }),
                                                         });
                                                     } else {
-                                                    console.log('OTHER CALL MADE:', url);
+                                                    //console.log('OTHER CALL MADE:', url);
                                                 }
                                         });
 

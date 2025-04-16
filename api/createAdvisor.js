@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 module.exports = async (req, res) => {
   if (req.method === 'POST') {
     const { userId, role } = req.body;
-    console.log(userId);
+    //console.log(userId);
 
     if (!userId || !role) {
             return res.status(400).json({ error: 'User ID, and role are required' });

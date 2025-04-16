@@ -5,8 +5,8 @@ const prisma = new PrismaClient();
 export default async function handler(req, res) {
   const { userId } = req.query;
 
-  console.log('🚀 API HIT: getStudentUpcomingExams');
-  console.log('👉 userId received:', userId);
+  //console.log('🚀 API HIT: getStudentUpcomingExams');
+  //console.log('👉 userId received:', userId);
 
   if (!userId) {
     console.error('⛔ Missing userId parameter');
@@ -15,7 +15,7 @@ export default async function handler(req, res) {
 
   try {
     const parsedUserId = parseInt(userId);
-    console.log('🔍 Parsed userId:', parsedUserId);
+    //console.log('🔍 Parsed userId:', parsedUserId);
 
     // Find the student and include their courses and the exams within each course.
     const student = await prisma.student.findUnique({
@@ -54,7 +54,7 @@ export default async function handler(req, res) {
       }
     });
 
-    console.log('✅ Upcoming exams retrieved:', upcomingExams);
+    //console.log('✅ Upcoming exams retrieved:', upcomingExams);
     return res.status(200).json(upcomingExams);
   } catch (error) {
     console.error('🔥 ERROR during Prisma query:');

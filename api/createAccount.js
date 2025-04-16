@@ -4,7 +4,7 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 module.exports = async (req, res) => {
-  console.log("CREATE ACCOUNT START");
+  //console.log("CREATE ACCOUNT START");
   if (req.method === 'POST') {
     const {email, name, role} = req.body;
 
@@ -21,7 +21,7 @@ module.exports = async (req, res) => {
               },
       });
 
-      console.log("ACCOUNT HERE: ", account);
+      //console.log("ACCOUNT HERE: ", account);
 
       const settings = await prisma.settings.create({
         data: {
@@ -31,9 +31,9 @@ module.exports = async (req, res) => {
         }
       });
       
-      console.log("SETTINGS FIX COMPLETE: ",settings);
+      //console.log("SETTINGS FIX COMPLETE: ",settings);
 
-      //console.log(account);
+      ////console.log(account);
 
       if (account && settings) {
         res.status(200).json({ success: true, account: account });

@@ -424,7 +424,7 @@ describe('Dynamic tab initialization based on user role', () => {
                     phone_number: '1234567890',}}),
               });
             }else{
-                console.log("OTHER API ROUTE");
+                //console.log("OTHER API ROUTE");
             }
           });
           await act(async () => {
@@ -476,7 +476,7 @@ describe('Dynamic tab initialization based on user role', () => {
                   json: () => Promise.resolve([]),
               });
             }else{
-                console.log("OTHER API ROUTE");
+                //console.log("OTHER API ROUTE");
             }
           });
           await act(async () => {
@@ -523,7 +523,7 @@ describe('Dynamic tab initialization based on user role', () => {
                   json: () => Promise.resolve([]),
               });
             }else{
-                console.log("OTHER API ROUTE");
+                //console.log("OTHER API ROUTE");
             }
           });
           await act(async () => {
@@ -573,7 +573,7 @@ describe('Dynamic tab initialization based on user role', () => {
                 json: () => Promise.resolve({ students: [] }),
               });
             }else{
-                console.log("OTHER API ROUTE");
+                //console.log("OTHER API ROUTE");
             }
           });
           const mockStaffAccess = [

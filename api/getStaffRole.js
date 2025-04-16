@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 module.exports = async (req, res) => {
   if (req.method === 'GET') {
     const userId = req.query.user_id;
-    console.log("USER ID: ", userId);
+    //console.log("USER ID: ", userId);
 
     if (!userId) {
       return res.status(400).json({ error: 'user_id is required' });
@@ -17,7 +17,7 @@ module.exports = async (req, res) => {
       const advisor = await prisma.advisor.findUnique({
         where: { userId: parseInt(userId, 10) },
       });
-      console.log("ADVISOR HERE: ", advisor);
+      //console.log("ADVISOR HERE: ", advisor);
       res.status(200).json({ res: advisor });
     } catch (error) {
       console.error('Error fetching advisors:', error.message);

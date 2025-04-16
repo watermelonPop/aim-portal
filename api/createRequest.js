@@ -4,13 +4,13 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 module.exports = async (req, res) => {
-  console.log("CREATE REQUEST START");
+  //console.log("CREATE REQUEST START");
   if (req.method === 'POST') {
     let {userId, notes, documentation, doc_url} = req.body;
     if (!userId || !notes || documentation === null) {
       return res.status(400).json({ error: 'userId, notes, documentation are required' });
     }
-    console.log(userId, notes, documentation);
+    //console.log(userId, notes, documentation);
 
     if(doc_url === null){
       documentation = false;

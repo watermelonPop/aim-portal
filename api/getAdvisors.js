@@ -8,13 +8,13 @@ const prisma = new PrismaClient();
 module.exports = async (req, res) => {
     if (req.method === 'GET') {
         //const searchQuery = req.query.searchQuery;
-        //console.log("seqrchQuery:",searchQuery);
+        ////console.log("seqrchQuery:",searchQuery);
         // const _skip =  parseInt(req.query.skip) || 0;
         // const _take = parseInt(req.query.take) || 9;
         // if (!searchQuery) {
         //     return res.status(400).json({ error: "Missing 'query' parameter" });
         // }
-        // console.log("before the advisor call");
+        // //console.log("before the advisor call");
         //https://www.prisma.io/docs/orm/prisma-client/queries/pagination
         try {
             const advisors = await prisma.advisor.findMany({
@@ -22,8 +22,8 @@ module.exports = async (req, res) => {
                     account:true
                 },
             });
-             //console.log("SUCCESS BEFORE RETURNING JSON:",advisors);
-             console.log("SUCCESS BEFORE RETURNING JSON:");
+             ////console.log("SUCCESS BEFORE RETURNING JSON:",advisors);
+             //console.log("SUCCESS BEFORE RETURNING JSON:");
             // const advisorIds = advisors.map(advisor => advisor.userId);
             res.status(200).json({ advisors });
 

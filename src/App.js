@@ -190,7 +190,7 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
     let updatedStaffTabs = {...staffTabs};
     let updatedStaffAccess = [...staffAccess];
     if(userInfo !== null){
-      console.log("UPDATING USER TABS");
+      //console.log("UPDATING USER TABS");
       updatedUserTabs = [
         {name: 'Dashboard', elem: <Dash userInfo={userInfo}/>},
         {name: 'Accommodations', elem: <Accommodations userInfo={userInfo} setAlertMessage={setAlertMessage} setShowAlert={setShowAlert}/>},
@@ -218,7 +218,7 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
       updatedStaffAccess[0].elem = <GlobalSettings userInfo={userInfo}/>;
       updatedStaffAccess[1].elem = <Testing userInfo={userInfo}/>;
     }
-    console.log(userInfo.role);
+    //console.log(userInfo.role);
     if(userInfo.role === "USER"){
       setTabs(updatedUserTabs);
       setCurrentTab(updatedUserTabs[0]);
@@ -233,7 +233,7 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
     }
     else if(userInfo.role === "ADVISOR"){
       let newStaffTabs = [...updatedStaffTabs];
-      console.log("NEW STAFF TABS BEFORE CHANGES: ",newStaffTabs);
+      //console.log("NEW STAFF TABS BEFORE CHANGES: ",newStaffTabs);
       
       for(let i = 0; i < updatedStaffAccess.length; i++){
         if(updatedStaffAccess[i].hasAccess === true){
@@ -318,7 +318,7 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
         };
         
         setSvgCursors(newSvgCursors);
-        console.log("DEFAULT: ", newSvgCursors.default);
+        //console.log("DEFAULT: ", newSvgCursors.default);
         document.documentElement.style.setProperty('--custom-cursor', newSvgCursors.default);
         document.documentElement.style.setProperty('--custom-hover-cursor', newSvgCursors.pointer);
         document.documentElement.style.setProperty('--custom-text-cursor', newSvgCursors.text);
@@ -332,7 +332,7 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
 
 
   const checkAccountConnected = async (userId, setUserConnected) => {
-    console.log("CHECKING ACCOUNT CONNECTED");
+    //console.log("CHECKING ACCOUNT CONNECTED");
     if (!userId) {
         console.error('Invalid user ID provided');
         return;
@@ -386,7 +386,7 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
 
 
   const setSettingsDatabase = async (userId, setts) => {
-    console.log("SETTINGS HERE: ", setts);
+    //console.log("SETTINGS HERE: ", setts);
     try {
       let deformattedSettings = {...setts};
       deformattedSettings.font_size = parseInt(deformattedSettings.font_size.replace("px", ""));
@@ -402,7 +402,7 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
       });
   
       const data = await response.json();
-      console.log(data);
+      //console.log(data);
       return data;
     } catch (error) {
       console.error('Error checking exists', error);
@@ -452,7 +452,7 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
   function BasicTabNav({ tabs, currentTab, setCurrentTab }) {
     useEffect(() => {
       if(currentTab !== null){
-        console.log("CURRENT TAB: ", currentTab);
+        //console.log("CURRENT TAB: ", currentTab);
       }
     }, [currentTab, setCurrentTab]);
 
@@ -649,7 +649,7 @@ export const logout = async (setLoggedIn) => {
           throw new Error(data.message || 'Logout failed');
       }
       setLoggedIn(false);
-      console.log('Logged out:', data.message);
+      //console.log('Logged out:', data.message);
       window.location.href = '/'; // Redirect to homepage or login page
   } catch (error) {
       console.error('Error logging out:', error);

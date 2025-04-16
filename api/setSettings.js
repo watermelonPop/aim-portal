@@ -11,7 +11,7 @@ module.exports = async (req, res) => {
       return res.status(400).json({ error: 'User ID & settings are required' });
     }
 
-    console.log(settings);
+    //console.log(settings);
 
     try {
       // Update user settings using Prisma

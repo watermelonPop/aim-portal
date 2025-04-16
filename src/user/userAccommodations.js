@@ -73,7 +73,7 @@ export function UserAccommodations({userInfo, setAlertMessage, setShowAlert, set
         };
 
         const handleFileUpload = async (file) => {
-                console.log("TRYING FILE UPLOAD");
+                //console.log("TRYING FILE UPLOAD");
                 if (!file) return null;
                 const formDataToSend = new FormData();
                 formDataToSend.append("file", file);
@@ -84,7 +84,7 @@ export function UserAccommodations({userInfo, setAlertMessage, setShowAlert, set
                         });
                 
                         const result = await response.json();
-                        console.log("URL: ", result);
+                        //console.log("URL: ", result);
                         return result.url || null;
                 } catch (error) {
                         console.error("Error uploading file:", error);
@@ -107,7 +107,7 @@ export function UserAccommodations({userInfo, setAlertMessage, setShowAlert, set
                   return;
                 }
               
-                console.log("before Form submitted:", formData);
+                //console.log("before Form submitted:", formData);
               
                 let fileUrl = null;
                 let has_doc = false;
@@ -147,7 +147,7 @@ export function UserAccommodations({userInfo, setAlertMessage, setShowAlert, set
                   if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
               
                   const result = await response.json();
-                  console.log("SUBMIT: ", result);
+                  //console.log("SUBMIT: ", result);
               
                   if (result?.success) {
                     setAlertMessage("Request submitted successfully");
@@ -241,7 +241,7 @@ export function UserAccommodations({userInfo, setAlertMessage, setShowAlert, set
                                 throw new Error(`HTTP error! status: ${response.status}`);
                         }
                         const data = await response.json();
-                        console.log("CHECK REQUESTS DATA: ", data);
+                        //console.log("CHECK REQUESTS DATA: ", data);
                         if (data.exists) {
                                 return data.request;
                         } else {
@@ -274,7 +274,7 @@ export function UserAccommodations({userInfo, setAlertMessage, setShowAlert, set
               
 
         function formatDate(dateString) {
-                console.log("FORMAT: ", dateString);
+                //console.log("FORMAT: ", dateString);
                 if (!dateString) return '';
                 const date = new Date(dateString);
                 return isNaN(date.getTime()) ? '' : date.toISOString().split('T')[0];
@@ -282,12 +282,12 @@ export function UserAccommodations({userInfo, setAlertMessage, setShowAlert, set
         
 
         useEffect(() => {
-                console.log("USER INFO: ", userInfo);
+                //console.log("USER INFO: ", userInfo);
                 setLoading(true);
                 const fetchRequest = async () => {
                     const request = await checkRequests(userInfo.id);
                     setExistingRequest(request);
-                    console.log("in use effect: ", request);
+                    //console.log("in use effect: ", request);
                     setLoading(false);
                 };
                 fetchRequest();
