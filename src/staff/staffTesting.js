@@ -15,32 +15,26 @@ function StaffExamView({ userInfo, settingsTabOpen, displayHeaderRef }) {
         
       // ========================================== USE EFFECT LOGIC ==========================================
 
-      useEffect(() => {
+        useEffect(() => {
         if (userInfo?.id) {
-          const timer = setTimeout(() => {
-            setLoading(true);
-            fetch(`/api/getExamFromAdvisor?userId=${userInfo.id}`)
-              .then((res) => {
-                if (!res.ok) {
-                  throw new Error("Failed to fetch exams");
-                }
+        setLoading(true);
+        fetch(`/api/getExamFromAdvisor?userId=${userInfo.id}`)
+                .then((res) => {
+                if (!res.ok) throw new Error("Failed to fetch exams");
                 return res.json();
-              })
-              .then((data) => {
+                })
+                .then((data) => {
                 setExams(data);
-              })
-              .catch((error) => {
+                })
+                .catch((error) => {
                 console.error("Error fetching exams:", error);
-              })
-              .finally(() => {
+                })
+                .finally(() => {
                 setLoading(false);
-              });
-          }, 1000); 
-      
-          return () => clearTimeout(timer);
+                
+                });
         }
-      }, [userInfo]);
-      
+        }, [userInfo]);
 
 
         //FOR PRINTING ONLY

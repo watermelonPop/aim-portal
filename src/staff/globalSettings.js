@@ -209,7 +209,7 @@ function GlobalSettings({ userInfo, settingsTabOpen, displayHeaderRef}) {
           setSaveSuccess('Settings saved successfully!');
           setTimeout(() => {
             setSaveSuccess('');
-          }, 3000);
+          }, 2000);
         })
         .catch(error => {
           console.error('Error updating permissions:', error);
