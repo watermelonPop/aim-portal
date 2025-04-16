@@ -25,7 +25,11 @@ function StudentForms({ userInfo, settingsTabOpen, displayHeaderRef }) {
       const data = await res.json();
   
       if (res.ok) {
-        window.location.href = `mailto:${data.advisorEmail}?subject=Assistance%20Needed&body=Hi%20Advisor,`;
+        const subject = encodeURIComponent("Assistance Needed");
+        const body = encodeURIComponent("Howdy,");
+        const email = data.advisorEmail;
+        const gmailURL = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${subject}&body=${body}`;
+        window.open(gmailURL, "_blank", "noopener,noreferrer");
       } else {
         alert("Could not find your advisor's email.");
       }
@@ -34,6 +38,7 @@ function StudentForms({ userInfo, settingsTabOpen, displayHeaderRef }) {
       console.error(err);
     }
   };
+  
   
   
 
@@ -196,7 +201,7 @@ function StudentForms({ userInfo, settingsTabOpen, displayHeaderRef }) {
               aria-label="Contact your advisor through email"
               ref={displayHeaderRef}
             >
-              <FontAwesomeIcon icon={faEnvelope}aria-hidden="true" /> Contact Advisor (Outlook)
+              <FontAwesomeIcon icon={faEnvelope}aria-hidden="true" /> Contact Advisor
             </button>
           </div>
           <div className="studentForms-selection-buttons">
