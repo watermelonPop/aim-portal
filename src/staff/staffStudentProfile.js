@@ -55,6 +55,7 @@ function StaffStudentProfile({
     userInfo,
 
 }) {
+
   const localRef = useRef(null);
   const headingRef = displayHeaderRef || localRef;
   const [userPermissions, setUserPermissions] = useState(null);
@@ -350,6 +351,8 @@ function StaffStudentProfile({
                 <button 
                   className="staffDash-edit-profile-button"
                   onClick={() => setIsEditing(true)}
+                  aria-label="edit profile"
+                  role="button"
                 >
                   <FontAwesomeIcon icon={faPenToSquare} aria-hidden="true" /> Edit Profile
                 </button>

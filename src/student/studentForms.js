@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faEnvelope} from '@fortawesome/free-solid-svg-icons';
 function StudentForms({ userInfo, settingsTabOpen, displayHeaderRef }) {
         
-    const [view, setView] = useState(null);
+  const [view, setView] = useState(null);
   const [selectedDisability, setSelectedDisability] = useState('');
   const [uploadedFiles, setUploadedFiles] = useState({});
   const [submittedForms, setSubmittedForms] = useState([]);
@@ -18,86 +18,6 @@ function StudentForms({ userInfo, settingsTabOpen, displayHeaderRef }) {
   const [loadingForms, setLoadingForms] = useState(false);
   const [deleteSuccessMsg, setDeleteSuccessMsg] = useState("");
 
-
-
-
-
-  function handleDisabilityChange(event) {
-    setSelectedDisability(event.target.value);
-    setUploadedFiles({});
-  }
-
-  function handleFileUpload(event, formName) {
-    const file = event.target.files[0];
-    setUploadedFiles(prev => ({ ...prev, [formName]: file.name }));
-  }
-
-  async function handleSubmitForm(e) {
-    e.preventDefault();
-    setUploading(true);
-    setUploadSuccess(false);
-    setUploadError('');
-  
-    //console.log("📝 Form Submission Triggered");
-    //console.log("Form Type:", formType);
-    //console.log("Form Name:", formName);
-    //console.log("Due Date:", dueDate);
-    //console.log("File:", formFile);
-    //console.log("User ID:", userInfo?.id);
-  
-    // Basic validation check
-    if (!formFile || !formType || !formName || !userInfo?.id) {
-      console.error("❌ Missing required field(s):", {
-        formType,
-        formName,
-        formFile,
-        userId: userInfo?.id
-      });
-      setUploadError("Missing required fields.");
-      setUploading(false);
-      return;
-    }
-  
-    const formData = new FormData();
-    formData.append("file", formFile);
-    formData.append("type", formType);
-    formData.append("userId", userInfo.id);
-    formData.append("dueDate", dueDate || "");
-  
-    try {
-      const res = await fetch('/api/uploadForm', {
-        method: 'POST',
-        body: formData,
-      });
-  
-      const data = await res.json();
-  
-      if (!res.ok) {
-        console.error("❌ Upload failed:", data.error || data);
-        throw new Error(data.error || 'Failed to upload');
-      }
-  
-      //console.log("✅ Upload succeeded:", data.form);
-  
-      setUploadSuccess(true);
-      setFormType('');
-      setFormName('');
-      setDueDate('');
-      setFormFile(null);
-    } catch (error) {
-      console.error("❌ Caught error during upload:", error.message);
-      setUploadError(error.message);
-    } finally {
-      setUploading(false);
-    }
-
-    formData.append("file", formFile);
-    formData.append("type", formType);
-    formData.append("formName", formName);
-    formData.append("userId", userInfo.id);
-    formData.append("dueDate", dueDate || "");
-
-  }
 
   const handleContactAdvisor = async () => {
     try {
@@ -116,20 +36,6 @@ function StudentForms({ userInfo, settingsTabOpen, displayHeaderRef }) {
   };
   
   
-  
-
-  function handleRemoveFile(formName) {
-    setUploadedFiles(prev => {
-      const updatedFiles = { ...prev };
-      delete updatedFiles[formName];
-      return updatedFiles;
-    });
-  }
-
-  function handleSubmit(event) {
-    event.preventDefault();
-    alert("Form submission will be implemented later.");
-  }
 
   function handleExitUploadView() {
     if (formType || formName || dueDate || formFile) {
@@ -148,23 +54,7 @@ function StudentForms({ userInfo, settingsTabOpen, displayHeaderRef }) {
     setView(null);
   }
   
-  function formatFormType(type) {
-    if (!type) return 'N/A';
-    return type
-      .toLowerCase()
-      .split('_')
-      .map(word => word[0].toUpperCase() + word.slice(1))
-      .join(' ');
-  }
 
-  function hasUnsavedChanges() {
-    return (
-      formType !== '' ||
-      formName !== '' ||
-      dueDate !== '' ||
-      formFile !== null
-    );
-  }
 
   async function handleSubmitFileOnly(e) {
     e.preventDefault();
@@ -193,6 +83,7 @@ function StudentForms({ userInfo, settingsTabOpen, displayHeaderRef }) {
     formData.append("formName", formName);
     formData.append("userId", userInfo.id);
     formData.append("dueDate", dueDate || "");
+    
   
     try {
       const res = await fetch("/api/uploadForm", {

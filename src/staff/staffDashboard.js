@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import PopupModal from "../PopupModal"; 
 import StaffRequests from './staffRequests';
 import StaffStudentProfile from './staffStudentProfile';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -32,16 +31,6 @@ export function capitalizeWords(text) {
   return text.replace(/\b\w/g, char => char.toUpperCase());
 }
 
-function DropdownSection({ title, isOpen, toggleOpen, children }) {
-  return (
-    <div className="dropdown-section">
-      <button className="toggle-button" onClick={toggleOpen}>
-        {isOpen ? `Hide ${title}` : `Show ${title}`}
-      </button>
-      {isOpen && <div className="dropdown-content">{children}</div>}
-    </div>
-  );
-}
 
 
 
@@ -176,56 +165,22 @@ function StaffDashboard({ userPermissions, userInfo, displayHeaderRef }) {
     }
   };
 
-  const handleStatusChange = (accId, newStatus) => {
-    setEditedAccommodations(prev => ({
-      ...prev,
-      [accId]: newStatus
-    }));
+  // const handleStatusChange = (accId, newStatus) => {
+  //   setEditedAccommodations(prev => ({
+  //     ...prev,
+  //     [accId]: newStatus
+  //   }));
   
-    // Optimistically update the UI
-    setSelectedStudent(prev => ({
-      ...prev,
-      accommodations: prev.accommodations.map(acc =>
-        acc.id === accId ? { ...acc, status: newStatus } : acc
-      )
-    }));
-  };
+  //   // Optimistically update the UI
+  //   setSelectedStudent(prev => ({
+  //     ...prev,
+  //     accommodations: prev.accommodations.map(acc =>
+  //       acc.id === accId ? { ...acc, status: newStatus } : acc
+  //     )
+  //   }));
+  // };
 
-  const performSearch = useCallback(
-    debounce((query) => {
-      if (query.length === 0) {
-        setFilteredStudents([]);
-        return;
-      }
 
-      const results = studentsData.filter(
-        (student) =>
-          (student.student_name &&
-            student.student_name.toLowerCase().includes(query)) ||
-          (student.UIN && student.UIN.toString().includes(query))
-      );
-
-      setFilteredStudents(results);
-    }, 300), // Delay of 300ms
-    [studentsData]
-  );
-
-  const handleRequestClick = (request) => {
-    setSelectedRequest({
-      id: request.id,
-      advisorId: request.advisorId,
-      advisorRole: request.advisorRole || "N/A",
-      userId: request.userId,
-      UIN: request.UIN || "N/A",
-      dob: request.dob || "N/A",
-      phone_number: request.phone_number || "N/A",
-      notes: request.notes,
-      documentation: request.documentation,
-      non_registered_userId: request.non_registered_userId,
-    });
-  
-    setView('requestDetails');
-  };
   
   const handleSearchChange = (event) => {
     const query = event.target.value.toLowerCase();
