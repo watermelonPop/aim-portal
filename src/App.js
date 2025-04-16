@@ -215,7 +215,7 @@ document.documentElement.style.setProperty('--custom-text-cursor', svgCursors.te
         {name: 'Dashboard', elem: <Dash userInfo={userInfo}/>},
         {name: 'Profile', elem: <Profile userInfo={userInfo}/>},
       ];
-      updatedStaffAccess[0].elem = <GlobalSettings/>;
+      updatedStaffAccess[0].elem = <GlobalSettings userInfo={userInfo}/>;
       updatedStaffAccess[1].elem = <Testing userInfo={userInfo}/>;
     }
     console.log(userInfo.role);

@@ -108,53 +108,6 @@ function StaffExamView({ userInfo, settingsTabOpen, displayHeaderRef }) {
                 return null;
         };
 
-
-//         const deleteDocumentation = async (userId) => {
-//                 try {
-//                   const response = await fetch('/api/deleteForm', {
-//                     method: 'POST',
-//                     headers: { 'Content-Type': 'application/json' },
-//                     body: JSON.stringify({
-//                       userId,
-//                       type: 'REGISTRATION_ELIGIBILITY',
-//                     }),
-//                   });
-              
-//                   const result = await response.json();
-              
-//                   if (!response.ok || !result || result.message !== 'Form deleted successfully') {
-//                     throw new Error('Deletion failed');
-//                   }
-              
-//                   setAlertMessage('Documentation deleted successfully!');
-//                   setShowAlert(true);
-//                   return true;
-              
-//                 } catch (error) {
-//                   console.error('Error deleting form:', error);
-//                   setAlertMessage('Form deletion failed.');
-//                   setShowAlert(true);
-//                   return false;
-//                 }
-//         };
-
-
-//         const getUserDocumentation = async (userId) => {
-//                 try {
-//                   const response = await fetch(`/api/getUserDocumentation?user_id=${userId}`);
-//                   if (!response.ok) {
-//                     throw new Error(`HTTP error! status: ${response.status}`);
-//                   }
-              
-//                   const data = await response.json();
-//                   return data?.exists ? data.form : null;
-              
-//                 } catch (error) {
-//                   console.error('Error while getting user documentation:', error);
-//                   return null;
-//                 }
-//         };
-
         // ========================================== JSX ELEMENT FUNCTIONS ==========================================
         function ExamListView({ exams, loading, setSelectedExam }) {
                 // Define container styles for a list view
@@ -297,107 +250,139 @@ function StaffExamView({ userInfo, settingsTabOpen, displayHeaderRef }) {
                         return () => clearTimeout(timeout);
                 }, [loading, headingRef]);
                 
+
+
                 return (
-                  <div className="card-overlay">
-                    <div className="card">
-                      <button
+                        <div className="card-overlay">
+                        <div className="card">
+                        <button
                         className="close-button"
                         onClick={onClose}
                         ref={headingRef}
-                      >
+                        >
                         &times;
-                      </button>
-                        {/* ================== EXAM DETAILS ================== */}
-                      <h2>{selectedExam?.course?.name} - {selectedExam.name}</h2>
-                        <p>   
+                        </button>
+
+                        {/* Render the spinner if the data is not loaded */}
+                        {loadingStudent && loadingProfessor && (
+                        <div className="spinnerClassItem" role="status" aria-label="Loading, please wait">
+                                <div className="spinner-iconClassItem" aria-hidden="true"></div>
+                                <h3 className="spinner-textClassItem">Loading...</h3>
+                        </div>
+                        )}
+
+                        {/* Render the content only when loaded */}
+                        {!loadingStudent && !loadingProfessor && (
+                        <>
+                                {/* ================== EXAM DETAILS ================== */}
+                                <h2>
+                                {selectedExam?.course?.name} - {selectedExam.name}
+                                </h2>
+                                <p>
                                 <strong>Date:</strong>{' '}
                                 {new Date(selectedExam.date).toLocaleDateString()}
-                        </p>
-                        <p>  
+                                </p>
+                                <p>
                                 <strong>Time:</strong>{' '}
-                                {new Date(selectedExam.date).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric' })}
-                        </p>
-                        <p>
+                                {new Date(selectedExam.date).toLocaleTimeString('en-US', {
+                                hour: 'numeric',
+                                minute: 'numeric',
+                                second: 'numeric'
+                                })}
+                                </p>
+                                <p>
                                 <strong>Location:</strong> {selectedExam.location}
-                        </p>
+                                </p>
 
-                        {/* ================== COURSE DETAILS ================== */}
-
+                                {/* ================== COURSE DETAILS ================== */}
                                 <h3 className="section-title">Course Information</h3>
-
                                 <p>
                                 <strong>Course Name:</strong> {selectedExam?.course?.name}
                                 </p>
-                                
-                                {loadingProfessor ? (
-                                        <p>loading professor information</p>
-                                ):(
-                                        professor && professor.account ? (
-                                                <>
-                                                        <p>
-                                                        <strong>Professor Name: </strong> {professor.account.name}
-                                                        </p>
-                                                        <p>
-                                                        <strong> Professor Email: </strong> {professor.account.email}
-                                                        </p>
-                                                </>
-                                                ) : (
-                                                <p>No student data available.</p>
-                                                )
-                                )}
-                               
 
+                                {loadingProfessor ? (
+                                <p>loading professor information</p>
+                                ) : (
+                                professor && professor.account ? (
+                                <>
+                                <p>
+                                        <strong>Professor Name: </strong> {professor.account.name}
+                                </p>
+                                <p>
+                                        <strong>Professor Email: </strong> {professor.account.email}
+                                </p>
+                                </>
+                                ) : (
+                                <p>No professor data available.</p>
+                                )
+                                )}
+
+                                {/* ================== STUDENT DETAILS ================== */}
                                 <h3 className="section-title">Student Information</h3>
                                 {loadingStudent ? (
-                                        <p>loading student information</p>
-                                ):(
-                                        student && student.account ? (
-                                                <>
-                                                        <p>
-                                                        <strong>Student Name: </strong> {student.account.name}
-                                                        </p>
-                                                        <p>
-                                                        <strong>Student Email: </strong> {student.account.email}
-                                                        </p>
-                                                        <p>
-                                                        <strong>Accomodations: </strong> 
-                                                        {student.accommodations.length === 0? 'No Accommodations' :student.accommodations
-                                                                .map((acc) => acc.type)
-                                                                .join(", ")}
-                                                        </p>
-                                                </>
-                                                ) : (
-                                                <p>No student data available.</p>
-                                                )
+                                <p>loading student information</p>
+                                ) : (
+                                student && student.account ? (
+                                <>
+                                <p>
+                                        <strong>Student Name: </strong> {student.account.name}
+                                </p>
+                                <p>
+                                        <strong>Student Email: </strong> {student.account.email}
+                                </p>
+                                <p>
+                                        <strong>Accommodations: </strong>
+                                        {student.accommodations.length === 0
+                                        ? 'No Accommodations'
+                                        : student.accommodations.map((acc) => acc.type).join(", ")}
+                                </p>
+                                </>
+                                ) : (
+                                <p>No student data available.</p>
+                                )
                                 )}
-                       
-                        {/* ================== EXAM UPLOAD/DOWNLOAD ================== */}
-                        
+
+                                {/* ================== EXAM UPLOAD/DOWNLOAD ================== */}
                                 <h3 className="section-title">Exam Download/Upload</h3>
-                                        <button
-                                                onClick={() => window.open(selectedExam.examUrl, '_blank', 'noopener,noreferrer')}
-                                                >
-                                                Download Exam
-                                        </button>
+                                <button
+                                onClick={() =>
+                                window.open(selectedExam.examUrl, '_blank', 'noopener,noreferrer')
+                                }
+                                >
+                                Download Exam
+                                </button>
 
+                                <input type="file" onChange={handleFileChange} />
 
-                                        <input type="file" onChange={handleFileChange}/>
-                                        
+                                {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+                                {selectedExam.completedExamURL && (
+                                <p style={{ color: 'green' }}>
+                                File uploaded!{' '}
+                                <a
+                                href={selectedExam.completedExamURL}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                >
+                                View File
+                                </a>
+                                </p>
+                                )}
 
-                                        {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-                                        {selectedExam.completedExamURL && (
-                                        <p style={{ color: 'green' }}>
-                                                File uploaded!{' '}
-                                                <a href={selectedExam.completedExamURL} target="_blank" rel="noopener noreferrer"> View File </a>
-                                        </p>
-                                        )}
+                                <button
+                                onClick={() => handleFileUpload(selectedFile)}
+                                disabled={uploading}
+                                >
+                                {uploading
+                                ? 'Uploading...'
+                                : selectedExam.completedExamURL
+                                ? 'Reupload Exam'
+                                : 'Upload Exam'}
+                                </button>
+                        </>
+                        )}
+                        </div>
+                        </div>
 
-                                        <button onClick={() => handleFileUpload(selectedFile)} disabled={uploading}> {uploading ? 'Uploading...' : selectedExam.completedExamURL ? 'Reupload Exam':'Upload Exam'} </button>
-                                    
-                                        
-                        
-                    </div>
-                  </div>
                 );
               }
 

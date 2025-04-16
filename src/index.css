@@ -2089,6 +2089,13 @@ body.highlight-keyboard-focus-enabled .staff-alerts:focus{
   flex-direction: column;
   justify-content: center;
   row-gap: 1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.courseCard:hover {
+  transform: translateY(-5px);
+  cursor: var(--custom-hover-cursor);
+  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .courseTitle {
@@ -2137,6 +2144,7 @@ body.highlight-keyboard-focus-enabled .staff-alerts:focus{
 
 .courseListItem:hover {
   transform: translateY(-5px);
+  cursor: var(--custom-hover-cursor);
   box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.2);
 }
 
@@ -2160,7 +2168,7 @@ body.highlight-keyboard-focus-enabled .staff-alerts:focus{
 }
 
 .modalContent {
-  background: white;
+  background: var(--background-color);
   padding: 2rem;
   border-radius: 10px;
   max-width: 600px;

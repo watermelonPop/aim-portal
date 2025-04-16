@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 
-function GlobalSettings({ settingsTabOpen, displayHeaderRef}) {
+function GlobalSettings({ userInfo, settingsTabOpen, displayHeaderRef}) {
   const [advisorList, setAdvisorList] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -18,26 +18,31 @@ function GlobalSettings({ settingsTabOpen, displayHeaderRef}) {
     if (!isAlertOpen && firstCardRef.current) {
       const timeout = setTimeout(() => {
         firstCardRef.current?.focus();
-      }, 100); // slight delay to ensure render
+      }, 200); // slight delay to ensure render
       return () => clearTimeout(timeout);
     }
-  }, [currentPage, searchResults, selectedAdvisor]);
+  }, [currentPage, selectedAdvisor]);
 
 
   useEffect(() => {
-    async function fetchAdv() {
-      fetch(`/api/getAdvisors`)
-        .then(response => response.json())
-        .then(data => {
-          setAdvisorList(data.advisors || []);
-          setCurrentPage(0);
-          setTotalPages(Math.ceil((data.advisors || []).length / 9));
-          setLoaded(true);
-        })
-        .catch(error => console.error('error fetching advisors', error));
-    }
-    fetchAdv();
-  }, []);
+    const timer = setTimeout(() => {
+      async function fetchAdv() {
+        fetch(`/api/getAdvisors`)
+          .then((response) => response.json())
+          .then((data) => {
+            setAdvisorList(data.advisors || []);
+            setCurrentPage(0);
+            setTotalPages(Math.ceil((data.advisors || []).length / 9));
+            setLoaded(true);
+          })
+          .catch((error) => console.error('error fetching advisors', error));
+      }
+  
+      fetchAdv();
+    }, 1000); 
+  
+    return () => clearTimeout(timer);
+  }, [userInfo]);
 
   useEffect(() => {
     if (loaded) {
@@ -204,7 +209,7 @@ function GlobalSettings({ settingsTabOpen, displayHeaderRef}) {
           setSaveSuccess('Settings saved successfully!');
           setTimeout(() => {
             setSaveSuccess('');
-          }, 3000);
+          }, 2000);
         })
         .catch(error => {
           console.error('Error updating permissions:', error);
