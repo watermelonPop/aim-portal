@@ -270,6 +270,7 @@ export function LoginScreen({ setSettings, loggedIn, setLoggedIn, staffAccess, s
   LoginScreen.getUserSettings = getUserSettings;
   LoginScreen.staffAccess = staffAccess;
   LoginScreen.setStaffRoles = setStaffRoles;
+  LoginScreen.createAccount = createAccount;
 
   return (
       <main className='loginScreen' data-testid="login-screen">

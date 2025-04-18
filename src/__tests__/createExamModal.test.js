@@ -29,6 +29,114 @@ describe('CreateExamModal Component', () => {
 
   afterEach(cleanup);
 
+  test('logs error when form submission throws', async () => {
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    global.fetch = jest.fn().mockRejectedValueOnce(new Error('Network failure'));
+  
+    render(
+      <CreateExamModal
+        course={course}
+        students={students}
+        isOpen={true}
+        onClose={onClose}
+        returnFocusRef={returnFocusRef}
+        addExamToStudent={addExamToStudent}
+      />
+    );
+  
+    // Fill out required fields
+    fireEvent.change(screen.getByLabelText(/Exam Name:/i), { target: { value: 'Final' } });
+    fireEvent.change(screen.getByLabelText(/Exam Date:/i), { target: { value: '2024-05-01' } });
+    fireEvent.change(screen.getByLabelText(/Location:/i), { target: { value: 'Room 123' } });
+    const file = new File(['dummy'], 'final.pdf', { type: 'application/pdf' });
+    fireEvent.change(screen.getByLabelText(/Upload Exam File:/i), {
+      target: { files: [file] },
+    });
+  
+    const form = screen.getByText(/Create Exam/i).closest('form');
+    fireEvent.submit(form);
+  
+    await waitFor(() => {
+      expect(global.fetch).toHaveBeenCalled();
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        expect.stringContaining('Error submitting exam:'),
+        expect.any(Error)
+      );
+    });
+  
+    consoleErrorSpy.mockRestore();
+  });
+  
+  test('traps focus inside modal when Tab and Shift+Tab are pressed', async () => {
+    render(
+      <CreateExamModal
+        course={course}
+        students={students}
+        isOpen={true}
+        onClose={onClose}
+        returnFocusRef={returnFocusRef}
+        addExamToStudent={addExamToStudent}
+      />
+    );
+  
+    const nameInput = screen.getByLabelText(/Exam Name:/i);
+    const cancelButton = screen.getByRole('button', { name: /Cancel/i });
+  
+    // Simulate Shift+Tab on first element to move focus to last
+    nameInput.focus();
+    expect(nameInput).toHaveFocus();
+    fireEvent.keyDown(screen.getByRole('dialog'), {
+      key: 'Tab',
+      shiftKey: true,
+    });
+    await waitFor(() => expect(cancelButton).toHaveFocus());
+  
+    // Simulate Tab on last element to wrap back to first
+    cancelButton.focus();
+    expect(cancelButton).toHaveFocus();
+    fireEvent.keyDown(screen.getByRole('dialog'), {
+      key: 'Tab',
+      shiftKey: false,
+    });
+    await waitFor(() => expect(nameInput).toHaveFocus());
+  });
+  
+  test('logs warning if returnFocusRef throws when trying to focus', () => {
+    const brokenRef = { current: { focus: () => { throw new Error('focus failed'); } } };
+    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+  
+    const { rerender } = render(
+      <CreateExamModal
+        course={course}
+        students={students}
+        isOpen={true}
+        onClose={onClose}
+        returnFocusRef={brokenRef}
+        addExamToStudent={addExamToStudent}
+      />
+    );
+  
+    // Close the modal (isOpen: false) to trigger focus return
+    rerender(
+      <CreateExamModal
+        course={course}
+        students={students}
+        isOpen={false}
+        onClose={onClose}
+        returnFocusRef={brokenRef}
+        addExamToStudent={addExamToStudent}
+      />
+    );
+  
+    expect(consoleWarnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('returnFocusRef not available:'),
+      expect.any(Error)
+    );
+  
+    consoleWarnSpy.mockRestore();
+  });
+  
+
   test('does not render when isOpen is false', () => {
     const { container } = render(
       <CreateExamModal

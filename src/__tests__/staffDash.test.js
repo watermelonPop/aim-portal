@@ -675,96 +675,38 @@ test('filters students via search input with debounce logic', async () => {
   jest.useRealTimers();
 });
 
-// test('triggers handleSaveChanges through student profile modal', async () => {
-//   const mockStudent = {
-//     userId: 1,
-//     student_name: 'Alice',
-//     UIN: '111111111',
-//     dob: '2000-01-01',
-//     email: 'alice@example.com',
-//     phone_number: '123-456-7890',
-//     accommodations: [],
-//     assistive_technologies: [],
-//   };
 
-//   global.fetch = jest.fn((url) => {
-//     if (url.includes('/api/getStudents')) {
-//       return Promise.resolve({
-//         ok: true,
-//         json: () => Promise.resolve({ students: [mockStudent] }),
-//       });
-//     }
-//     if (url.includes('/api/getForms')) {
-//       return Promise.resolve({
-//         ok: true,
-//         json: () => Promise.resolve({ forms: [] }),
-//       });
-//     }
-//     if (url.includes('/api/updateStudent')) {
-//       return Promise.resolve({
-//         ok: true,
-//         json: () => Promise.resolve({}),
-//       });
-//     }
-//     if (url.includes('/api/staffgetImportantDates')) {
-//       return Promise.resolve({
-//         ok: true,
-//         json: () => Promise.resolve({ dates: [] }),
-//       });
-//     }
-//     return Promise.resolve({ ok: true, json: () => ({}) });
-//   });
+test('debounce delays function execution and clears previous timers', () => {
+  jest.useFakeTimers();
+  const mockFn = jest.fn();
 
-//   render(
-//     <StaffDashboard
-//       userPermissions={{ canSearch: true, canManageRequests: true }}
-//       userInfo={{ id: 999, role: 'STAFF' }}
-//       displayHeaderRef={{ current: document.createElement('h2') }}
-//     />
-//   );
+  render(
+    <StaffDashboard
+      userPermissions={userPermissions}
+      userInfo={userInfo}
+      displayHeaderRef={displayHeaderRef}
+    />
+  );
 
-//   // STEP 1: Go to student search view
-//   fireEvent.click(await screen.findByRole('button', { name: /search for students/i }));
-//   const input = await screen.findByPlaceholderText(/enter student name or uin/i);
-//   fireEvent.change(input, { target: { value: 'alice' } });
-//   await act(() => new Promise((r) => setTimeout(r, 350)));
+  const debounced = StaffDashboard.debounce(mockFn, 300);
 
-//   // STEP 2: Click the student result
-//   fireEvent.click(await screen.findByRole('button', { name: /alice \(uin: 111111111\)/i }));
-//   act(() => {
-//     document.querySelector('[aria-label="Staff Dashboard"]')._reactRootContainer._internalRoot.current.child.stateNode.setShowStudentInfo(true);
-//   });
+  // Call debounce multiple times in quick succession
+  debounced('first');
+  debounced('second');
+  debounced('third');
 
-//   // STEP 3: Open student info modal
-//   fireEvent.click(await screen.findByRole('button', { name: /view submitted forms/i }));
+  // Before time advances, the function should not have been called
+  expect(mockFn).not.toHaveBeenCalled();
 
+  // Advance time by less than delay → still no call
+  jest.advanceTimersByTime(200);
+  expect(mockFn).not.toHaveBeenCalled();
 
-//   // STEP 4: Enter edit mode
-//   fireEvent.click(await screen.findByRole('button', { name: /edit profile/i }));
+  // Advance past the debounce delay
+  jest.advanceTimersByTime(100);
+  expect(mockFn).toHaveBeenCalledTimes(1);
+  expect(mockFn).toHaveBeenCalledWith('third'); // last call wins
 
-//   // STEP 5: Fill out valid inputs
-//   fireEvent.change(screen.getByLabelText(/full name/i), { target: { value: 'Alice Updated' } });
-//   fireEvent.change(screen.getByLabelText(/uin/i), { target: { value: '123456789' } });
-//   fireEvent.change(screen.getByLabelText(/date of birth/i), { target: { value: '2001-01-01' } });
-//   fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'alice@tamu.edu' } });
-//   fireEvent.change(screen.getByLabelText(/phone number/i), { target: { value: '999-999-9999' } });
-
-//   // STEP 6: Save changes
-//   const saveBtn = screen.getByRole('button', { name: /save changes to student profile/i });
-//   fireEvent.click(saveBtn);
-
-//   // STEP 7: Confirm success state
-//   await waitFor(() => {
-//     expect(global.fetch).toHaveBeenCalledWith(
-//       expect.stringContaining('/api/updateStudent'),
-//       expect.objectContaining({ method: 'POST' })
-//     );
-//     expect(screen.getByText(/changes saved successfully/i)).toBeInTheDocument();
-//   });
-
-//   global.fetch.mockRestore();
-// });
-
-
-
+  jest.useRealTimers();
+});
 

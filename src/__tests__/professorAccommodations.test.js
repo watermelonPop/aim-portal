@@ -192,5 +192,24 @@ describe('ProfessorAccommodations', () => {
   
     document.body.removeChild(alertDiv);
   });
+
+  test('logs error when professor accommodations fetch fails', async () => {
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    
+    // Simulate fetch rejection (network error)
+    global.fetch.mockImplementationOnce(() => Promise.reject(new Error('Network error')));
+  
+    render(<ProfessorAccommodations {...props} />);
+  
+    await waitFor(() => {
+      expect(consoleSpy).toHaveBeenCalledWith(
+        'Failed to fetch professor data',
+        expect.any(Error)
+      );
+    });
+  
+    consoleSpy.mockRestore();
+  });
+  
   
 });

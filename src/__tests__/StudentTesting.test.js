@@ -65,6 +65,37 @@ describe('StudentTesting Component', () => {
     jest.resetAllMocks();
   });
 
+  test('clicking "Close" button in success modal calls setShowSuccessModal(false)', async () => {
+    // Step 1: render component
+    await act(async () => {
+      render(<StudentTesting userInfo={mockUserInfo} />);
+    });
+  
+    // Step 2: open modal and submit request to trigger success modal
+    const applyBtn = await screen.findByLabelText(/Apply for accommodation for Math Midterm/i);
+    fireEvent.click(applyBtn);
+  
+    const select = screen.getByLabelText(/Select Accommodation/i);
+    fireEvent.change(select, { target: { value: "Extended Time" } });
+  
+    const submitButton = screen.getByText(/Submit Request/i);
+    fireEvent.click(submitButton);
+  
+    // Step 3: Confirm modal appears
+    const successModal = await screen.findByRole('dialog', { name: /Request Submitted/i });
+    expect(successModal).toBeInTheDocument();
+  
+    // Step 4: Click close
+    const closeButton = screen.getByText(/Close/i);
+    fireEvent.click(closeButton);
+  
+    // Step 5: Confirm modal closes (this implies setShowSuccessModal(false) ran)
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog', { name: /Request Submitted/i })).not.toBeInTheDocument();
+    });
+  });
+  
+
   test('stu testing should have no accessibility violations', async () => {
       let container;
       await act(async () => {
@@ -534,4 +565,5 @@ describe('StudentTesting Component', () => {
       )).not.toBeInTheDocument();
     });
   });
+  
 });

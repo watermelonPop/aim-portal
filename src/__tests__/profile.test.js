@@ -149,7 +149,7 @@ describe('Profile component', () => {
     document.body.removeChild(heading);
   });
 
-  test('StaffProfile assigns headingRef to lastIntendedFocusRef when not equal', async () => {
+  /*test('StaffProfile assigns headingRef to lastIntendedFocusRef when not equal', async () => {
     const mockUserInfo = {
       id: 99,
       role: 'ADVISOR',
@@ -190,7 +190,7 @@ describe('Profile component', () => {
       // 💡 This line ensures the assignment logic ran:
       expect(lastIntendedFocusRef.current).toBe(displayHeaderRef.current);
     });
-  });
+  });*/
   
   
 
@@ -503,6 +503,50 @@ describe('Profile component', () => {
     expect(await screen.findByText(/1-935-865-0245 x848/)).toBeInTheDocument();
     expect(await screen.findByText(/student1.aim@gmail.com/)).toBeInTheDocument();
   });
+
+  test('StaffProfile assigns headingRef to lastIntendedFocusRef when not equal', async () => {
+    const mockUserInfo = {
+      id: 99,
+      role: 'ADVISOR',
+    };
+  
+    const heading = document.createElement('h2');
+    heading.textContent = 'Staff Profile';
+    heading.focus = jest.fn();
+  
+    const unrelatedElement = document.createElement('div');
+    unrelatedElement.textContent = 'Other Element';
+  
+    const displayHeaderRef = { current: heading };
+    const lastIntendedFocusRef = { current: unrelatedElement };
+  
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        ok: true,
+        json: async () => ({
+          account: { name: 'Jane Advisor', email: 'jane@tamu.edu' },
+          role: 'Admin',
+        }),
+      })
+    );
+  
+    await act(async () => {
+      render(
+        <StaffProfile
+          userInfo={mockUserInfo}
+          displayHeaderRef={displayHeaderRef}
+          lastIntendedFocusRef={lastIntendedFocusRef}
+          settingsTabOpen={false}
+        />
+      );
+    });
+  
+    await waitFor(() => {
+      expect(lastIntendedFocusRef.current).toBe(displayHeaderRef.current);
+    });
+  });
+  
+
   
 });
 

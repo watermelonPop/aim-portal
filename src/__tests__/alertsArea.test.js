@@ -75,4 +75,65 @@ describe('AlertsArea', () => {
       expect(screen.queryByRole('dialog', { name: 'All Alerts' })).not.toBeInTheDocument();
     });
   });
+
+  test('shows error message when fetch response is not ok', async () => {
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        ok: false,
+        json: () => Promise.resolve({}), // This won't be called
+      })
+    );
+  
+    render(<AlertsArea displayHeaderRef={displayHeaderRef} />);
+  
+    await waitFor(() => {
+      expect(screen.getByText('Failed to fetch important dates')).toBeInTheDocument();
+    });
+  });
+  
+  test('pressing Escape closes modal and focuses displayHeaderRef', async () => {
+    const focusMock = jest.fn();
+    const focusableRef = { current: { focus: focusMock } };
+  
+    render(<AlertsArea displayHeaderRef={focusableRef} />);
+  
+    // Wait for alerts to load and open modal
+    await waitFor(() => screen.getByText('Alert 1'));
+    fireEvent.click(screen.getByText('View All'));
+  
+    const modal = await screen.findByRole('dialog', { name: /all alerts/i });
+  
+    // Simulate Escape key press on modal
+    fireEvent.keyDown(modal, { key: 'Escape', code: 'Escape' });
+  
+    // Modal should be removed
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog', { name: /all alerts/i })).not.toBeInTheDocument();
+    });
+  
+    // Focus should return to provided ref
+    expect(focusMock).toHaveBeenCalled();
+  });
+
+  test('clicking the modal overlay closes the modal', async () => {
+    render(<AlertsArea displayHeaderRef={{ current: document.createElement('button') }} />);
+  
+    // Wait for alerts to load and open modal
+    await waitFor(() => screen.getByText('Alert 1'));
+    fireEvent.click(screen.getByText('View All'));
+  
+    // Modal should be visible
+    const modalOverlay = screen.getByText('All Alerts').closest('.modalOverlay');
+    expect(modalOverlay).toBeInTheDocument();
+  
+    // Click outside the modal content to trigger close
+    fireEvent.click(modalOverlay);
+  
+    // Modal should disappear
+    await waitFor(() => {
+      expect(screen.queryByText('All Alerts')).not.toBeInTheDocument();
+    });
+  });
+  
+  
 });

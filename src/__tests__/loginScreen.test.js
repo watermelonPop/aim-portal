@@ -1011,5 +1011,78 @@ describe('LoginScreen', () => {
             });
         });
       
-      
+        test('createAccount updates userInfo when success is true', async () => {
+            const mockSetUserInfo = jest.fn();
+            const mockUserInfo = {
+              name: 'Test User',
+              email: 'test@example.com',
+              role: null,
+            };
+          
+            const mockResponse = {
+              success: true,
+              account: {
+                id: 1,
+                name: 'Test User',
+                email: 'test@example.com',
+                role: 'USER'
+              }
+            };
+          
+            global.fetch = jest.fn().mockResolvedValueOnce({
+              ok: true,
+              json: () => Promise.resolve(mockResponse)
+            });
+          
+            const account = await LoginScreen.createAccount(mockUserInfo, mockSetUserInfo);
+          
+            expect(mockSetUserInfo).toHaveBeenCalledWith({
+              ...mockUserInfo,
+              id: 1,
+              name: 'Test User',
+              email: 'test@example.com',
+              role: 'USER'
+            });
+          
+            expect(account).toEqual(mockResponse.account);
+          });
+
+          test('createAccount logs error when fetch fails', async () => {
+            const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+            const mockSetUserInfo = jest.fn();
+            const mockUserInfo = {
+              name: 'Test User',
+              email: 'test@example.com',
+              role: null,
+            };
+          
+            // Simulate network error
+            global.fetch = jest.fn().mockRejectedValueOnce(new Error('Network error'));
+          
+            await LoginScreen.createAccount(mockUserInfo, mockSetUserInfo);
+          
+            expect(consoleSpy).toHaveBeenCalledWith('Error checking exists', expect.any(Error));
+          
+            consoleSpy.mockRestore();
+          });
+          
+          test('logs warning and returns null when staff role is empty or undefined', async () => {
+            const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+          
+            global.fetch = jest.fn().mockResolvedValueOnce({
+              ok: true,
+              json: () =>
+                Promise.resolve({
+                  res: { role: '' }  // simulate missing/empty role
+                }),
+            });
+          
+            const result = await LoginScreen.getStaffRoles('mockUserId');
+          
+            expect(consoleWarnSpy).toHaveBeenCalledWith('Role is empty or undefined');
+            expect(result).toBeNull();
+          
+            consoleWarnSpy.mockRestore();
+          });
+          
 });

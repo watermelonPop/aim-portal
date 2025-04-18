@@ -435,6 +435,57 @@ test('clicking Cancel button in fullscreen overlay with confirm calls setFullscr
     expect(defaultProps.setFullscreenMessage).toHaveBeenCalledWith(null);
   });
   
+  test('clicking Previous page button calls setCurrentPage with max(prev - 1, 1)', () => {
+    const setCurrentPageMock = jest.fn();
+  
+    render(
+      <StaffRequests
+        {...defaultProps}
+        currentPage={2} // > 1 to enable Previous button
+        setCurrentPage={setCurrentPageMock}
+      />
+    );
+  
+    const prevBtn = screen.getByRole('button', { name: /previous page/i });
+    expect(prevBtn).not.toBeDisabled();
+  
+    fireEvent.click(prevBtn);
+  
+    // Check setCurrentPage called with a function
+    expect(setCurrentPageMock).toHaveBeenCalledWith(expect.any(Function));
+  
+    // ✅ Optional: test the function behavior
+    const updateFn = setCurrentPageMock.mock.calls[0][0];
+    expect(updateFn(2)).toBe(1);  // max(2 - 1, 1) = 1
+    expect(updateFn(1)).toBe(1);  // max(1 - 1, 1) = 1
+  });
+  
+  test('clicking Next page button calls setCurrentPage with min(prev + 1, totalPages)', () => {
+    const setCurrentPageMock = jest.fn();
+    const totalPages = 3;
+  
+    render(
+      <StaffRequests
+        {...defaultProps}
+        currentPage={2}
+        totalPages={totalPages}
+        setCurrentPage={setCurrentPageMock}
+      />
+    );
+  
+    const nextBtn = screen.getByRole('button', { name: /next page/i });
+    expect(nextBtn).not.toBeDisabled();
+  
+    fireEvent.click(nextBtn);
+  
+    // Confirm setCurrentPage was called with a function
+    expect(setCurrentPageMock).toHaveBeenCalledWith(expect.any(Function));
+  
+    // ✅ Optional: test function behavior
+    const updateFn = setCurrentPageMock.mock.calls[0][0];
+    expect(updateFn(2)).toBe(3);  // min(2 + 1, 3) = 3
+    expect(updateFn(3)).toBe(3);  // min(3 + 1, 3) = 3
+  });
   
   
 });

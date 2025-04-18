@@ -353,6 +353,7 @@ function StaffStudentProfile({
                   onClick={() => setIsEditing(true)}
                   aria-label="edit profile"
                   role="button"
+                  data-testid="editProfileBtn"
                 >
                   <FontAwesomeIcon icon={faPenToSquare} aria-hidden="true" /> Edit Profile
                 </button>
@@ -460,7 +461,7 @@ function StaffStudentProfile({
             )}
 
             <div className="viewToggle" style={{ marginTop: '1rem' }}>
-                <button ref={lastFocusedRef} aria_label="Save" onClick={() => handleFormStatusChange(activeModal.form.id, formEdits[activeModal.form.id] || activeModal.form.status)}>
+                <button data-testid="updateFormStatusBtn" ref={lastFocusedRef} aria_label="Save" onClick={() => handleFormStatusChange(activeModal.form.id, formEdits[activeModal.form.id] || activeModal.form.status)}>
                 ✅ Save
                 </button>
                 <button onClick={() => setActiveModal(null)}>Cancel</button>
@@ -565,6 +566,7 @@ function StaffStudentProfile({
                 <button
                   className="staffDash-modalHeaderCloseBtn"
                   aria-label="close accommodations menu"
+                  data-testid="closeStaffDashModal"
                   onClick={() => setActiveModal(null)}
                 >✕</button>
               </div>
@@ -790,6 +792,7 @@ function StaffStudentProfile({
                     <button
                       onClick={() => confirmAndSaveTech(tech.id)}
                       className="staffDash-save-btn"
+                      data-testid="staffDash-save-btn"
                       aria-label={`Save changes to assistive tech: ${tech.type}`}
                     >
                       <FontAwesomeIcon icon={faFloppyDisk} aria-hidden="true" /> Save

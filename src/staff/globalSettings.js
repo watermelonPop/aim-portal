@@ -249,7 +249,7 @@ function GlobalSettings({ userInfo, settingsTabOpen, displayHeaderRef}) {
             <button className='saveBtns' onClick={handleSave} disabled={isSaving} aria-label="Save permissions">
               {isSaving ? 'Saving...' : 'Save'}
             </button>
-            <button onClick={onClose} aria-label="Go back to advisor search results">
+            <button onClick={onClose} aria-label="Go back to advisor search results" data-testid="backToAdvRes">
               Back to Results
             </button>
           </div>

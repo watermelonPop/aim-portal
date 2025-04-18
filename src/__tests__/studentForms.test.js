@@ -82,6 +82,111 @@ describe('StudentForms Component', () => {
     //   expect(results).toHaveNoViolations();
     // });
   });
+  
+  test('logs error when fetching forms in manage view fails', async () => {
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+  
+    // Simulate fetch throwing an error during manage view fetch
+    global.fetch = jest.fn((url) => {
+      if (url.includes('/api/getStudentForms')) {
+        return Promise.reject(new Error('Fetch failed in manage view'));
+      }
+      return Promise.resolve({ ok: true, json: () => Promise.resolve({}) });
+    });
+  
+    await act(async () => {
+      render(
+        <StudentForms
+          userInfo={{ id: 123 }}
+          settingsTabOpen={false}
+          displayHeaderRef={React.createRef()}
+        />
+      );
+    });
+  
+    // Navigate to Manage view
+    const manageBtn = screen.getByRole('button', { name: /go to manage submitted forms section/i });
+    fireEvent.click(manageBtn);
+  
+    await waitFor(() => {
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        'Error loading forms:',
+        expect.any(Error)
+      );
+    });
+  
+    consoleErrorSpy.mockRestore();
+  });
+  
+  test('sets form file on file input change and displays filename', async () => {
+    await act(async () => {
+      render(
+        <StudentForms
+          userInfo={{ id: 123 }}
+          settingsTabOpen={false}
+          displayHeaderRef={React.createRef()}
+        />
+      );
+    });
+  
+    // Navigate to Upload view
+    fireEvent.click(screen.getByRole('button', { name: /go to upload forms section/i }));
+    await screen.findByText(/upload documentation/i);
+  
+    // Select a file
+    const file = new File(['dummy content'], 'myform.pdf', { type: 'application/pdf' });
+    const input = screen.getByLabelText(/upload pdf/i);
+  
+    await act(() => {
+      fireEvent.change(input, { target: { files: [file] } });
+    });
+  
+    expect(screen.getByTestId("formFileDisplayName")).toBeInTheDocument();
+  });
+  
+  
+
+  test('upload form: shows error if userInfo is missing', async () => {
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    
+    await act(async () => {
+      render(
+        <StudentForms
+          userInfo={null} // 👈 simulate missing user info
+          settingsTabOpen={false}
+          displayHeaderRef={React.createRef()}
+        />
+      );
+    });
+  
+    // Go to upload view
+    fireEvent.click(screen.getByRole('button', { name: /go to upload forms section/i }));
+    await waitFor(() => {
+      expect(screen.getByRole('heading', { name: /upload documentation/i })).toBeInTheDocument();
+    });
+  
+    // Simulate selecting a file
+    const fileInput = screen.getByLabelText(/upload pdf/i);
+    const file = new File(['dummy'], 'test.pdf', { type: 'application/pdf' });
+    fireEvent.change(fileInput, { target: { files: [file] } });
+  
+    // Submit form
+    const submitBtn = screen.getByRole('button', { name: /submit documentation/i });
+    fireEvent.submit(submitBtn.closest('form'));
+  
+    // Expect error message and console log
+    await waitFor(() => {
+      expect(screen.getByText(/user information is missing/i)).toBeInTheDocument();
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        "userInfo is undefined or missing 'id':",
+        null
+      );
+    });
+  
+    consoleErrorSpy.mockRestore();
+  });
+  
+  
 
   describe('Contact Advisor Flow', () => {
     test('successful fetch opens Gmail compose in new tab', async () => {
@@ -488,54 +593,3 @@ test('manage view displays formatted form type', async () => {
   //   expect(screen.getByText(/Campus Living Mobility/)).toBeInTheDocument();
   // });
 });
-
-// test('successful upload hits all append calls and sets upload success', async () => {
-//   await act(async () => {
-//     render(
-//       <StudentForms
-//         userInfo={{ id: 123 }}
-//         settingsTabOpen={false}
-//         displayHeaderRef={React.createRef()}
-//       />
-//     );
-//   });
-
-//   // Go to upload view
-//   fireEvent.click(screen.getByRole('button', { name: /go to upload forms section/i }));
-
-//   // Wait for upload form to load
-//   await waitFor(() => {
-//     expect(screen.getByText(/upload documentation/i)).toBeInTheDocument();
-//   });
-
-//   // Fill out all required fields to avoid early return
-//   const fileInput = screen.getByLabelText(/upload pdf/i);
-//   const file = new File(['dummy'], 'form.pdf', { type: 'application/pdf' });
-//   fireEvent.change(fileInput, { target: { files: [file] } });
-
-//   // Fill internal states (mock user input)
-//   // We can set formType, formName, and dueDate directly using fireEvent/input control if these are actual <input>s, but since you're using useState, we’ll simulate directly.
-//   await act(async () => {
-//     // HACK: Override internal state via fireEvent/input if those fields exist
-//     // OR: Patch the component temporarily to accept props (less ideal)
-//     screen.getByLabelText(/upload pdf/i).form.onsubmit = () => {}; // prevents default submission
-//   });
-
-//   // Replace fetch with a successful one
-//   jest.spyOn(global, 'fetch').mockResolvedValueOnce({
-//     ok: true,
-//     json: () => Promise.resolve({ form: { url: 'http://example.com/form.pdf' } }),
-//   });
-
-//   // Trigger the upload
-//   const submitBtn = screen.getByRole('button', { name: /submit documentation/i });
-//   fireEvent.submit(submitBtn.closest('form'));
-
-//   // Assert success appears
-//   await waitFor(() => {
-//     expect(screen.getByText(/upload successful/i)).toBeInTheDocument();
-//   });
-// });
-
-
-

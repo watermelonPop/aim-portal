@@ -629,14 +629,15 @@ function openModal() {
     setCurrentPage(1); // Reset to first page when search updates
 }, [searchTerm, requestsData]);
 
-  
-  
+  StaffDashboard.debounce = debounce;
+  StaffDashboard.refreshStudentData = refreshStudentData;
+  StaffDashboard.setImportantDates = setImportantDates;
 
   return (
     <div className="staff-dashboard-container" role="main" aria-label="Staff Dashboard">
     <div className="staff-main-content">
       {(isLoadingData || isRefreshing) && (
-        <div className="fullscreen-message-overlay">
+        <div className="fullscreen-message-overlay" data-testid="loadingDiv">
           <div className="fullscreen-message-content">
             <div className="staffDash-loading-spinner"></div>
           </div>
@@ -873,7 +874,7 @@ function openModal() {
             <h3 className="spinner-textClassItem">Loading...</h3>
             </div>
           ) : (
-            importantDates.map(date => (
+            (importantDates || []).map(date => (
               <div key={date.id} className="alert-item">
                 <p className="alert-date">{new Date(date.date).toISOString().split('T')[0]}</p>
                 <p className="alert-message">
@@ -917,6 +918,7 @@ function openModal() {
             <>
               <button
                 className="fullscreen-message-button"
+                data-testid="confirmBtn"
                 tabIndex={0}
                 onClick={() => {
                   fullscreenMessage.confirm();

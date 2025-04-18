@@ -351,4 +351,169 @@ describe('GlobalSettings Component', () => {
     });
     expect(screen.queryByText(/Advisor 10/i)).toBeNull();
   });
+
+  test('logs error if fetching advisors fails', async () => {
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+  
+    // Simulate fetch rejecting with an error
+    global.fetch = jest.fn().mockRejectedValueOnce(new Error('Network failure'));
+  
+    const mockDisplayHeaderRef = { current: null };
+  
+    render(
+      <GlobalSettings
+        displayHeaderRef={mockDisplayHeaderRef}
+        settingsTabOpen={false}
+      />
+    );
+  
+    // Advance timers to trigger the delayed fetch
+    act(() => {
+      jest.advanceTimersByTime(1000);
+    });
+  
+    await waitFor(() => {
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        'error fetching advisors',
+        expect.any(Error)
+      );
+    });
+  
+    consoleErrorSpy.mockRestore();
+  });
+
+  test('pressing Enter on advisor card selects the advisor', async () => {
+    global.fetch = jest.fn().mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ advisors: sampleAdvisors }),
+    });
+  
+    const mockDisplayHeaderRef = { current: document.createElement('input') };
+  
+    render(
+      <GlobalSettings
+        displayHeaderRef={mockDisplayHeaderRef}
+        settingsTabOpen={false}
+      />
+    );
+  
+    // Advance timer to trigger advisor fetch
+    act(() => {
+      jest.advanceTimersByTime(1000);
+    });
+  
+    // Wait for advisors to load
+    await waitFor(() => {
+      expect(screen.getByText(/Alice Johnson/i)).toBeInTheDocument();
+    });
+  
+    // Get the card element (button role via tabIndex + aria-label)
+    const advisorCard = screen.getByRole('button', {
+      name: /Advisor card for Alice Johnson/i,
+    });
+  
+    // Simulate pressing Enter on the card
+    fireEvent.keyDown(advisorCard, { key: 'Enter', code: 'Enter' });
+  
+    // Check if the AdvisorCard view is shown
+    await waitFor(() => {
+      expect(screen.getByText(/Edit Advisor Permissions:/i)).toBeInTheDocument();
+    });
+  });
+  
+  test('shows error and stops saving if updateAdvisors fails', async () => {
+    global.fetch = jest
+      .fn()
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ advisors: [sampleAdvisors[0]] }),
+      })
+      .mockRejectedValueOnce(new Error('Network error'));
+  
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+  
+    const mockDisplayHeaderRef = { current: document.createElement('input') };
+  
+    render(
+      <GlobalSettings
+        displayHeaderRef={mockDisplayHeaderRef}
+        settingsTabOpen={false}
+      />
+    );
+  
+    act(() => {
+      jest.advanceTimersByTime(1000);
+    });
+  
+    // Wait for advisors to load
+    await waitFor(() => {
+      expect(screen.getByText(/Alice Johnson/i)).toBeInTheDocument();
+    });
+  
+    // Open AdvisorCard view
+    fireEvent.click(screen.getByText(/Alice Johnson/i));
+    await screen.findByText(/Edit Advisor Permissions/);
+  
+    // Toggle a checkbox to enable save
+    const checkbox = screen.getAllByRole('checkbox')[0];
+    fireEvent.click(checkbox);
+  
+    // Click Save button
+    fireEvent.click(screen.getByRole('button', { name: /Save permissions/i }));
+  
+    // Wait for the error handler to run
+    await waitFor(() => {
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        'Error updating permissions:',
+        expect.any(Error)
+      );
+      // Save button should return to normal after error
+      expect(screen.getByRole('button', { name: /Save permissions/i })).toBeEnabled();
+    });
+  
+    consoleErrorSpy.mockRestore();
+  });
+  
+  test('clicking "Back to Results" resets selectedAdvisor and sets focusAfterReturn', async () => {
+    global.fetch = jest.fn().mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ advisors: [sampleAdvisors[0]] }),
+    });
+  
+    const mockDisplayHeaderRef = { current: document.createElement('input') };
+  
+    render(
+      <GlobalSettings
+        displayHeaderRef={mockDisplayHeaderRef}
+        settingsTabOpen={false}
+      />
+    );
+  
+    // Advance timers to trigger fetch
+    act(() => {
+      jest.advanceTimersByTime(1000);
+    });
+  
+    // Wait for advisor to appear and open AdvisorCard
+    await waitFor(() => {
+      expect(screen.getByText(/Alice Johnson/i)).toBeInTheDocument();
+    });
+  
+    fireEvent.click(screen.getByText(/Alice Johnson/i));
+  
+    // Ensure AdvisorCard is shown
+    await screen.findByText(/Edit Advisor Permissions/);
+    expect(screen.getByText(/alice@example.com/i)).toBeInTheDocument();
+  
+    // Click "Back to Results"
+    fireEvent.click(screen.getByTestId("backToAdvRes"));
+  
+    // Expect UI to return to card view
+    await waitFor(() => {
+      expect(screen.getByText(/Search Results:/i)).toBeInTheDocument();
+      expect(screen.getByText(/Alice Johnson/i)).toBeInTheDocument();
+    });
+  });
+  
+  
 });

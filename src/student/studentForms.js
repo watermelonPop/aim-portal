@@ -200,6 +200,7 @@ function StudentForms({ userInfo, settingsTabOpen, displayHeaderRef }) {
               onClick={handleContactAdvisor}
               aria-label="Contact your advisor through email"
               ref={displayHeaderRef}
+              data-testid="contactAdvBtn"
             >
               <FontAwesomeIcon icon={faEnvelope}aria-hidden="true" /> Contact Advisor
             </button>
@@ -252,7 +253,7 @@ function StudentForms({ userInfo, settingsTabOpen, displayHeaderRef }) {
               onChange={(e) => setFormFile(e.target.files[0])}
               required
             />
-            <span>
+            <span data-testid="formFileDisplayName">
               {formFile ? formFile.name : "Choose a PDF file..."}
             </span>
           </div>

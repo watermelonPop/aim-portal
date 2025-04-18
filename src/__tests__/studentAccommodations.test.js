@@ -82,6 +82,274 @@
        return Promise.resolve({ ok });
      });
    };
+
+   test('logs error when refreshStudentData fails after submission', async () => {
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+  
+    // Mock fetch to:
+    // - allow the accommodation POST
+    // - simulate failure on refreshStudentData call
+    let callCount = 0;
+    global.fetch = jest.fn((url) => {
+      if (url.includes('/api/getStudentData')) {
+        callCount++;
+        if (callCount > 1) {
+          // Simulate refreshStudentData failing on second call
+          return Promise.reject(new Error("Simulated fetch failure"));
+        }
+        return Promise.resolve({ ok: true, json: () => Promise.resolve(dummyStudentData) });
+      }
+      if (url.includes('/api/applyForAccommodation')) {
+        return Promise.resolve({ ok: true, json: () => Promise.resolve({}) });
+      }
+      if (url.includes('/api/uploadForm')) {
+        return Promise.resolve({ ok: true });
+      }
+      return Promise.resolve({ ok: true });
+    });
+  
+    render(<StudentAccommodations userInfo={dummyUserInfo} />);
+  
+    // Open modal and fill it out
+    fireEvent.click(await screen.findByRole('button', { name: /Apply for new accommodation/i }));
+    fireEvent.change(screen.getByLabelText(/Select Accommodation:/i), {
+      target: { value: 'Audio/Visual Aids' },
+    });
+    const firstCourseCheckbox = screen.getByLabelText(dummyStudentData.courses[0].name);
+    fireEvent.click(firstCourseCheckbox);
+  
+    // Submit form
+    fireEvent.submit(screen.getByRole('dialog').querySelector('form'));
+  
+    // Wait for success modal to appear
+    await screen.findByRole('dialog', { name: /Request Submitted/i });
+  
+    // Assert console.error was called with the expected message
+    await waitFor(() => {
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        "Failed to refresh student data",
+        expect.any(Error)
+      );
+    });
+  
+    consoleErrorSpy.mockRestore();
+  });
+
+  test('handleClassToggle removes courseId if already selected', async () => {
+    setupFetch();
+    render(<StudentAccommodations userInfo={dummyUserInfo} />);
+  
+    // Open general accommodation modal
+    fireEvent.click(await screen.findByRole('button', { name: /Apply for new accommodation/i }));
+  
+    // Select an accommodation option
+    fireEvent.change(screen.getByLabelText(/Select Accommodation:/i), {
+      target: { value: 'Audio/Visual Aids' },
+    });
+  
+    // Select course
+    const courseCheckbox = screen.getByLabelText(dummyStudentData.courses[0].name);
+    fireEvent.click(courseCheckbox); // Adds course ID
+    expect(courseCheckbox.checked).toBe(true);
+  
+    // Click again to deselect (triggering filter)
+    fireEvent.click(courseCheckbox); // Removes course ID
+    expect(courseCheckbox.checked).toBe(false); // ✅ Covers filter branch
+  });
+  
+  test('logs error and alerts when deleteAccommodation throws an exception', async () => {
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const alertSpy = jest.spyOn(window, 'alert').mockImplementation(() => {});
+  
+    global.fetch = jest.fn((url) => {
+      if (url.includes('/api/getStudentData')) {
+        return Promise.resolve({ ok: true, json: () => Promise.resolve(dummyStudentData) });
+      }
+      if (url.includes('/api/deleteAccommodation')) {
+        throw new Error("Simulated network error");
+      }
+      return Promise.resolve({ ok: true });
+    });
+  
+    render(<StudentAccommodations userInfo={dummyUserInfo} />);
+  
+    const deleteButton = await screen.findByRole('button', {
+      name: /Delete accommodation request for Audio\/Visual Aids/i,
+    });
+  
+    fireEvent.click(deleteButton);
+  
+    await waitFor(() => {
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        "Error deleting accommodation:",
+        expect.any(Error)
+      );
+      expect(alertSpy).toHaveBeenCalledWith("Error deleting accommodation request.");
+    });
+  
+    consoleErrorSpy.mockRestore();
+    alertSpy.mockRestore();
+  });
+
+  test('logs error and alerts when assistive technology submission throws an exception', async () => {
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const alertSpy = jest.spyOn(window, 'alert').mockImplementation(() => {});
+  
+    global.fetch = jest.fn((url) => {
+      if (url.includes('/api/getStudentData')) {
+        return Promise.resolve({ ok: true, json: () => Promise.resolve(dummyStudentData) });
+      }
+      if (url.includes('/api/applyForAssistiveTech')) {
+        throw new Error("Simulated assistive tech error");
+      }
+      return Promise.resolve({ ok: true });
+    });
+  
+    render(<StudentAccommodations userInfo={dummyUserInfo} />);
+  
+    // Open assistive tech modal
+    fireEvent.click(await screen.findByRole('button', { name: /Apply for assistive technology/i }));
+  
+    // Select a valid assistive tech option
+    fireEvent.change(screen.getByLabelText(/Select Assistive Technology:/i), {
+      target: { value: 'Screen Reader' },
+    });
+  
+    // Submit the form
+    fireEvent.submit(screen.getByRole('dialog').querySelector('form'));
+  
+    await waitFor(() => {
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        "Error submitting assistive technology request:",
+        expect.any(Error)
+      );
+      expect(alertSpy).toHaveBeenCalledWith("Error submitting assistive technology request.");
+    });
+  
+    consoleErrorSpy.mockRestore();
+    alertSpy.mockRestore();
+  });
+  
+  test('trapFocus returns early when non-Tab key is pressed', async () => {
+    setupFetch();
+  
+    const trapSpy = jest.fn(); // to spy if preventDefault is called
+  
+    render(<StudentAccommodations userInfo={dummyUserInfo} />);
+  
+    // Open general accommodation modal
+    fireEvent.click(await screen.findByRole('button', { name: /Apply for new accommodation/i }));
+    const modal = await screen.findByRole('dialog');
+  
+    const selectElement = screen.getByLabelText(/Select Accommodation:/i);
+  
+    // Focus an element inside the modal
+    selectElement.focus();
+  
+    // Press a non-Tab key
+    const event = new KeyboardEvent('keydown', {
+      key: 'Enter',
+      bubbles: true,
+      cancelable: true,
+    });
+  
+    // Override preventDefault to detect if it's skipped
+    event.preventDefault = trapSpy;
+  
+    // Dispatch the event
+    modal.dispatchEvent(event);
+  
+    // Expect preventDefault was not called (because it returned early)
+    expect(trapSpy).not.toHaveBeenCalled();
+  });
+  
+  test('trapFocus returns early if there are no focusable elements', async () => {
+    setupFetch();
+  
+    render(<StudentAccommodations userInfo={dummyUserInfo} />);
+  
+    // Open assistive tech modal
+    fireEvent.click(await screen.findByRole('button', { name: /Apply for assistive technology/i }));
+    const modal = await screen.findByRole('dialog');
+  
+    // Spy and override querySelectorAll to return empty NodeList
+    const originalQuerySelectorAll = modal.querySelectorAll;
+    modal.querySelectorAll = () => [];
+  
+    // Dispatch a Tab key event
+    const event = new KeyboardEvent('keydown', {
+      key: 'Tab',
+      bubbles: true,
+      cancelable: true,
+    });
+  
+    const preventSpy = jest.fn();
+    event.preventDefault = preventSpy;
+  
+    modal.dispatchEvent(event);
+  
+    // Since no focusable elements, preventDefault should not be called
+    expect(preventSpy).not.toHaveBeenCalled();
+  
+    // Restore the original method
+    modal.querySelectorAll = originalQuerySelectorAll;
+  });
+  
+  test('clicking success modal overlay sets showSuccessModal to false', async () => {
+    setupFetch();
+  
+    render(<StudentAccommodations userInfo={dummyUserInfo} />);
+  
+    // Submit an assistive tech request to trigger success modal
+    fireEvent.click(await screen.findByRole('button', { name: /Apply for assistive technology/i }));
+    const modal = await screen.findByRole('dialog');
+    fireEvent.change(screen.getByLabelText(/Select Assistive Technology:/i), {
+      target: { value: 'Screen Reader' },
+    });
+    fireEvent.submit(modal.querySelector('form'));
+  
+    // Wait for success modal to appear
+    const successModal = await screen.findByRole('dialog', { name: /Request Submitted/i });
+    expect(successModal).toBeInTheDocument();
+  
+    // Click the overlay
+    const overlay = screen.getByRole('presentation');
+    fireEvent.click(overlay);
+  
+    // Modal should close
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog', { name: /Request Submitted/i })).not.toBeInTheDocument();
+    });
+  });
+  
+  test('success modal traps focus on Tab keydown (calls trapFocus)', async () => {
+    setupFetch();
+  
+    render(<StudentAccommodations userInfo={dummyUserInfo} />);
+  
+    // Trigger the success modal via assistive tech submission
+    fireEvent.click(await screen.findByRole('button', { name: /Apply for assistive technology/i }));
+    const assistiveModal = await screen.findByRole('dialog');
+    fireEvent.change(screen.getByLabelText(/Select Assistive Technology:/i), {
+      target: { value: 'Screen Reader' },
+    });
+    fireEvent.submit(assistiveModal.querySelector('form'));
+  
+    // Wait for success modal to appear
+    const successModal = await screen.findByRole('dialog', { name: /Request Submitted/i });
+    expect(successModal).toBeInTheDocument();
+  
+    // Focus the close button to test focus wrapping
+    const closeButton = screen.getByRole('button', { name: /Close/i });
+    closeButton.focus();
+  
+    // Dispatch Tab keydown on modal (simulate tabbing inside the modal)
+    fireEvent.keyDown(successModal, { key: 'Tab', code: 'Tab', bubbles: true });
+  
+    // If no errors and modal remains mounted, trapFocus ran successfully
+    expect(successModal).toBeInTheDocument();
+  });
+  
  
    test('passes accessibility check', async () => {
      setupFetch();

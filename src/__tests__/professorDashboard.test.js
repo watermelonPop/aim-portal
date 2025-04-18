@@ -731,4 +731,84 @@ describe('ProfessorDashboard', () => {
       expect(props.setShowAlert).toHaveBeenCalledWith(true);
     });
   });
+
+  test('clicking "acknowledge & accept" in Student View triggers API call and shows alert', async () => {
+    // Mock both initial course fetch and acceptAccommodationRequest response
+    global.fetch
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          courses: [
+            {
+              id: 1,
+              name: 'CS101',
+              department: 'CS',
+              accommodations: [
+                {
+                  id: 101,
+                  type: 'Extra Time',
+                  status: 'PENDING',
+                  date_requested: '2024-04-01',
+                  notes: 'Needs 2x time',
+                  advisor: {
+                    account: { name: 'Dr. Smith', email: 'smith@univ.edu' }
+                  },
+                  student: {
+                    userId: 10,
+                    UIN: '123456789',
+                    account: { name: 'Jane Doe', email: 'jane@univ.edu' }
+                  }
+                }
+              ]
+            }
+          ]
+        })
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          success: true,
+          new_request: {
+            id: 101,
+            status: 'ACCEPTED',
+            type: 'Extra Time',
+            notes: 'Accepted',
+          }
+        })
+      });
+  
+    render(<ProfessorDashboard {...props} />);
+  
+    // Switch to Student View
+    fireEvent.click(screen.getByRole('tab', { name: /student view/i }));
+  
+    // Wait for student card to show
+    const studentCard = await screen.findByRole('button', {
+      name: /open student jane doe/i,
+    });
+    fireEvent.click(studentCard);
+  
+    // Wait for the "acknowledge & accept" button
+    const ackBtn = await screen.findByText(/acknowledge & accept/i);
+    fireEvent.click(ackBtn);
+  
+    await waitFor(() => {
+      expect(global.fetch).toHaveBeenCalledWith(
+        '/api/professorAcceptStudentAccommodation',
+        expect.objectContaining({
+          method: 'POST',
+          headers: expect.objectContaining({
+            'Content-Type': 'application/json'
+          }),
+          body: JSON.stringify({ id: 101 })
+        })
+      );
+  
+      expect(props.setAlertMessage).toHaveBeenCalledWith(
+        expect.stringContaining('Accommodation Request Acknowledged')
+      );
+      expect(props.setShowAlert).toHaveBeenCalledWith(true);
+    });
+  });
+  
 });

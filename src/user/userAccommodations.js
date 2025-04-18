@@ -166,12 +166,63 @@ export function UserAccommodations({userInfo, setAlertMessage, setShowAlert, set
                 }
         };
               
-            
+        const handleDocOnlySubmit = async (e) => {
+                console.log("FUNCTION CALLED");
+                e.preventDefault();
+                let fileUrl = null;
+                console.log("AFTER PREVENT DEFAULT: ", formData);
+                if (formData.file) {
+                  try {
+                        console.log("INSIDE TRY");
+                    fileUrl = await handleFileUpload(formData.file);
+                  } catch (error) {
+                    console.error('Error submitting documentation:', error);
+                    setAlertMessage("Documentation Submission failed. Please try again.");
+                    setShowAlert(true);
+                    return;
+                  }
+                }
+              
+                try {
+                  const response = await fetch('/api/updateRequestDoc', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      userId: userInfo.id,
+                      requestId: existingRequest.id,
+                      doc_url: fileUrl
+                    }),
+                  });
+              
+                  if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+              
+                  const result = await response.json();
+              
+                  if (result?.message === "Documentation updated successfully") {
+                    setAlertMessage("Documentation submitted successfully");
+                    setShowAlert(true);
+              
+                    const request = await checkRequests(userInfo.id);
+                    setExistingRequest(request);
+                  } else {
+                    setAlertMessage("Documentation submission failed. Please try again.");
+                    setShowAlert(true);
+                  }
+                } catch (error) {
+                  console.error('Error submitting documentation:', error);
+                  setAlertMessage("Documentation submission failed. Please try again.");
+                  setShowAlert(true);
+                }
+        };
 
         const handleCancel = async (e) => {
                 e.preventDefault();
-                let deletedForm = await deleteDocumentation(userInfo.id);
-                if(deletedForm === true){
+                if(existingRequest.documentation === true){
+                        let deletedForm = await deleteDocumentation(userInfo.id);
+                        if(deletedForm === true){
+                                await cancelRequest(userInfo.id);
+                        }
+                }else{
                         await cancelRequest(userInfo.id);
                 }
         };
@@ -343,6 +394,7 @@ export function UserAccommodations({userInfo, setAlertMessage, setShowAlert, set
         UserAccommodations.getUserDocumentation = getUserDocumentation;
         UserAccommodations.deleteDocumentation = deleteDocumentation;
         UserAccommodations.cancelRequest = cancelRequest;
+        UserAccommodations.handleDocOnlySubmit = handleDocOnlySubmit;
 
         if (loading) {
                 return (
@@ -430,7 +482,14 @@ export function UserAccommodations({userInfo, setAlertMessage, setShowAlert, set
                                         existingRequest.documentation ? (
                                                 <p className='subTitle'>You have submitted your documentation, and your request is under review! Review your documentation <a ref={headingRef} href={existingRequest?.form?.formUrl} tabIndex={0} id="firstFocus">here</a></p>
                                         ) : (
-                                                <p className='subTitle'>You have not submitted your documentation yet. Please submit it in Forms before we can review your request.</p>
+                                                <>
+                                                <p className='subTitle'>You have not submitted your documentation yet. Please submit it below before we can review your request.</p>
+                                                <div role="group" id="uploadFileOuter">
+                                                        <label htmlFor="uploadFile">Upload Here!</label>
+                                                        <input type="file" onChange={handleFileChange} data-testid="uploadFile" id="uploadFile" name="uploadFile"/>
+                                                        <button onClick={handleDocOnlySubmit} data-testid="uploadFileBtn">upload</button>
+                                                </div>
+                                                </>
                                         )
                                 }
                                 <form className="newStudentApp" onSubmit={handleCancel} data-testid="existingRequest">

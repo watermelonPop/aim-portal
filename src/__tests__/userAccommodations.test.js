@@ -15,6 +15,7 @@ describe('userAccommodations', () => {
         beforeEach(() => {
                 jest.clearAllMocks();
         });
+        
 
         test('handleSubmit throws and alerts if /api/createRequest returns !ok', async () => {
           const mockUserInfo = {
@@ -89,7 +90,6 @@ describe('userAccommodations', () => {
         
           errorSpy.mockRestore();
         });
-        
         
         
         test('cancelRequest sends request to /api/cancelRequest with correct payload', async () => {
@@ -556,8 +556,6 @@ describe('userAccommodations', () => {
               
                 consoleSpy.mockRestore();
               });
-                 
-              
               
               
               
@@ -2116,4 +2114,341 @@ describe('userAccommodations', () => {
                 });
 
         }); 
+
+        test('handleDocOnlySubmit catches error from handleFileUpload and alerts user', async () => {
+          const file = new File(['dummy'], 'error.pdf', { type: 'application/pdf' });
+        
+          const mockUserInfo = {
+            id: 123,
+            name: 'Mock User',
+            email: 'test@gmail.com',
+            role: 'USER',
+            picture: null,
+            dob: '2000-01-01',
+            uin: 123456789,
+            phone_number: 1001001001,
+          };
+        
+          const mockSetAlertMessage = jest.fn();
+          const mockSetShowAlert = jest.fn();
+        
+          // Mock the fetch that checks for existing request
+          global.fetch = jest.fn((url) => {
+            if (url.includes('/api/checkRequests')) {
+              return Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve({ exists: true, request: { id: 1, documentation: false } }),
+              });
+            }
+            return Promise.resolve({ ok: true, json: () => ({}) });
+          });
+        
+          const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+        
+          // Render component
+          render(
+            <UserAccommodations
+              userInfo={mockUserInfo}
+              setAlertMessage={mockSetAlertMessage}
+              setShowAlert={mockSetShowAlert}
+              settingsTabOpen={false}
+            />
+          );
+        
+          // Wait for file input to appear
+          const fileInput = await screen.findByTestId('uploadFile');
+          fireEvent.change(fileInput, { target: { files: [file] } });
+        
+          // Inject the error-throwing mock BEFORE calling the function
+          UserAccommodations.handleFileUpload = () => {
+            throw new Error('Simulated upload failure');
+          };
+        
+          // Click the upload button
+          const uploadBtn = screen.getByTestId('uploadFileBtn');
+          fireEvent.click(uploadBtn);
+        
+          // Assertions
+          await waitFor(() => {
+            expect(mockSetAlertMessage).toHaveBeenCalledWith(
+              'Documentation submission failed. Please try again.'
+            );
+            expect(mockSetShowAlert).toHaveBeenCalledWith(true);
+          });
+        
+          consoleSpy.mockRestore();
+        });
+        
+        test('handleDocOnlySubmit throws on failed /api/updateRequestDoc response and alerts user', async () => {
+          const file = new File(['dummy'], 'error.pdf', { type: 'application/pdf' });
+        
+          const mockUserInfo = {
+            id: 123,
+            name: 'Mock User',
+            email: 'test@gmail.com',
+            role: 'USER',
+            picture: null,
+            dob: '2000-01-01',
+            uin: 123456789,
+            phone_number: 1001001001,
+          };
+        
+          const mockSetAlertMessage = jest.fn();
+          const mockSetShowAlert = jest.fn();
+        
+          global.fetch = jest.fn((url) => {
+            if (url.includes('/api/checkRequests')) {
+              return Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve({ exists: true, request: { id: 1, documentation: false } }),
+              });
+            }
+            if (url.includes('/api/submitDocumentation')) {
+              return Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve({ url: 'https://example.com/fake.pdf' }),
+              });
+            }
+            if (url.includes('/api/updateRequestDoc')) {
+              return Promise.resolve({
+                ok: false,
+                status: 500,
+                json: () => Promise.resolve({}),
+              });
+            }
+            return Promise.resolve({ ok: true, json: () => ({}) });
+          });
+        
+          const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+        
+          render(
+            <UserAccommodations
+              userInfo={mockUserInfo}
+              setAlertMessage={mockSetAlertMessage}
+              setShowAlert={mockSetShowAlert}
+              settingsTabOpen={false}
+            />
+          );
+        
+          const fileInput = await screen.findByTestId('uploadFile');
+          fireEvent.change(fileInput, { target: { files: [file] } });
+        
+          const uploadBtn = screen.getByTestId('uploadFileBtn');
+          fireEvent.click(uploadBtn);
+        
+          await waitFor(() => {
+            expect(consoleSpy).toHaveBeenCalledWith(
+              'Error submitting documentation:',
+              expect.any(Error)
+            );
+            expect(mockSetAlertMessage).toHaveBeenCalledWith(
+              'Documentation submission failed. Please try again.'
+            );
+            expect(mockSetShowAlert).toHaveBeenCalledWith(true);
+          });
+        
+          consoleSpy.mockRestore();
+        });
+        
+        test('handleDocOnlySubmit succeeds when documentation is updated and alerts user', async () => {
+          const file = new File(['dummy'], 'doc.pdf', { type: 'application/pdf' });
+        
+          const mockUserInfo = {
+            id: 123,
+            name: 'Mock User',
+            email: 'test@gmail.com',
+            role: 'USER',
+            picture: null,
+            dob: '2000-01-01',
+            uin: 123456789,
+            phone_number: 1001001001,
+          };
+        
+          const mockSetAlertMessage = jest.fn();
+          const mockSetShowAlert = jest.fn();
+        
+          const initialRequest = { id: 1, documentation: false };
+          const updatedRequest = { id: 1, documentation: true, notes: 'Updated note' };
+        
+          let checkCount = 0;
+          global.fetch = jest.fn((url) => {
+            if (url.includes('/api/checkRequests')) {
+              checkCount++;
+              return Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve({
+                  exists: true,
+                  request: checkCount > 1 ? updatedRequest : initialRequest,
+                }),
+              });
+            }
+        
+            if (url.includes('/api/submitDocumentation')) {
+              return Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve({ url: 'https://example.com/uploaded.pdf' }),
+              });
+            }
+        
+            if (url.includes('/api/updateRequestDoc')) {
+              return Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve({ message: 'Documentation updated successfully' }),
+              });
+            }
+        
+            return Promise.resolve({ ok: true, json: () => ({}) });
+          });
+        
+          render(
+            <UserAccommodations
+              userInfo={mockUserInfo}
+              setAlertMessage={mockSetAlertMessage}
+              setShowAlert={mockSetShowAlert}
+              settingsTabOpen={false}
+            />
+          );
+        
+          const fileInput = await screen.findByTestId('uploadFile');
+          fireEvent.change(fileInput, { target: { files: [file] } });
+        
+          const uploadBtn = screen.getByTestId('uploadFileBtn');
+          fireEvent.click(uploadBtn);
+        
+          await waitFor(() => {
+            expect(mockSetAlertMessage).toHaveBeenCalledWith('Documentation submitted successfully');
+            expect(mockSetShowAlert).toHaveBeenCalledWith(true);
+            expect(UserAccommodations.existingRequest).toEqual(updatedRequest);
+          });
+        });
+        
+        test('handleCancel deletes documentation and cancels request when documentation is true', async () => {
+          const mockUserInfo = {
+            id: 123,
+            name: 'Mock User',
+            email: 'test@gmail.com',
+            dob: '2000-01-01',
+            uin: 123456789,
+            phone_number: 1001001001,
+          };
+        
+          const mockSetAlertMessage = jest.fn();
+          const mockSetShowAlert = jest.fn();
+        
+          // Initial mock request with documentation = true
+          const initialRequest = {
+            id: 1,
+            documentation: true,
+            notes: 'Some notes here',
+          };
+        
+          // Mock checkRequests to return initialRequest
+          global.fetch = jest.fn((url) => {
+            if (url.includes('/api/checkRequests')) {
+              return Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve({ exists: true, request: initialRequest }),
+              });
+            }
+        
+            // Allow cancellation fetch to succeed
+            if (url.includes('/api/cancelRequest')) {
+              return Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve({ message: 'Request deleted successfully' }),
+              });
+            }
+        
+            // Allow deletion to succeed
+            if (url.includes('/api/deleteForm')) {
+              return Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve({ message: 'Form deleted successfully' }),
+              });
+            }
+        
+            return Promise.resolve({ ok: true, json: () => ({}) });
+          });
+        
+          render(
+            <UserAccommodations
+              userInfo={mockUserInfo}
+              setAlertMessage={mockSetAlertMessage}
+              setShowAlert={mockSetShowAlert}
+              settingsTabOpen={false}
+            />
+          );
+        
+          const cancelBtn = await screen.findByTestId('cancelBtn');
+          fireEvent.click(cancelBtn);
+        
+          await waitFor(() => {
+            expect(mockSetAlertMessage).toHaveBeenCalledWith('Request cancelled successfully!');
+            expect(mockSetShowAlert).toHaveBeenCalledWith(true);
+          });
+        });
+
+        test('handleCancel skips deletion and directly cancels request when documentation is false', async () => {
+          const mockUserInfo = {
+            id: 123,
+            name: 'Mock User',
+            email: 'test@gmail.com',
+            dob: '2000-01-01',
+            uin: 123456789,
+            phone_number: 1001001001,
+          };
+        
+          const mockSetAlertMessage = jest.fn();
+          const mockSetShowAlert = jest.fn();
+        
+          // Set existingRequest to documentation: false
+          const initialRequest = {
+            id: 1,
+            documentation: false,
+            notes: 'Some notes here',
+          };
+        
+          global.fetch = jest.fn((url) => {
+            if (url.includes('/api/checkRequests')) {
+              return Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve({ exists: true, request: initialRequest }),
+              });
+            }
+        
+            // Should be called directly
+            if (url.includes('/api/cancelRequest')) {
+              return Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve({ message: 'Request deleted successfully' }),
+              });
+            }
+        
+            // If deleteForm is ever called, we fail the test
+            if (url.includes('/api/deleteForm')) {
+              throw new Error('deleteDocumentation should not be called');
+            }
+        
+            return Promise.resolve({ ok: true, json: () => ({}) });
+          });
+        
+          render(
+            <UserAccommodations
+              userInfo={mockUserInfo}
+              setAlertMessage={mockSetAlertMessage}
+              setShowAlert={mockSetShowAlert}
+              settingsTabOpen={false}
+            />
+          );
+        
+          const cancelBtn = await screen.findByTestId('cancelBtn');
+          fireEvent.click(cancelBtn);
+        
+          await waitFor(() => {
+            expect(mockSetAlertMessage).toHaveBeenCalledWith('Request cancelled successfully!');
+            expect(mockSetShowAlert).toHaveBeenCalledWith(true);
+          });
+        });
+        
+        
 });

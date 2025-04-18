@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor, act, within } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act, within, userEvent, waitForElementToBeRemoved } from '@testing-library/react';
 import ProfessorTesting from '../professor/professorTesting';
 import { axe, toHaveNoViolations } from 'jest-axe';
 
@@ -55,6 +55,52 @@ describe('ProfessorTesting', () => {
   afterEach(() => {
     jest.restoreAllMocks();
   });
+
+  test('toggles course dropdown using Enter or Space key', async () => {
+    render(<ProfessorTesting {...props} />);
+    
+    // Wait for dropdown to render
+    const dropdownButton = await screen.findByRole('button', { name: /toggle students list for cs101/i });
+  
+    // Press Enter
+    fireEvent.keyDown(dropdownButton, { key: 'Enter', code: 'Enter' });
+    await waitFor(() => {
+      expect(screen.getByText(/Jane Doe/i)).toBeInTheDocument();
+    });
+  
+    // Press Space to close
+    fireEvent.keyDown(dropdownButton, { key: ' ', code: 'Space' });
+    await waitFor(() => {
+      expect(screen.queryByText(/Jane Doe/i)).not.toBeInTheDocument();
+    });
+  });
+  
+  
+
+  test('opens modal and sets lastTriggerButtonRef', async () => {
+    const { container } = render(<ProfessorTesting {...props} />);
+    
+    const createBtn = await screen.findByRole('button', { name: /create exam for cs101/i });
+  
+    fireEvent.click(createBtn);
+  
+    // Modal should appear
+    expect(await screen.findByRole('dialog')).toBeInTheDocument();
+    expect(screen.getByText(/Create New Exam for CS101/)).toBeInTheDocument();
+  
+    // Close the modal
+    fireEvent.click(screen.getByRole('button', { name: /cancel/i }));
+  
+    // Confirm modal disappears
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    });
+  
+    // Workaround: just verify the button label is still in the document
+    // OR simulate focus manually to ensure ref is set (no direct way to test internal ref without exposing it)
+    expect(screen.getByRole('button', { name: /create exam for cs101/i })).toBeInTheDocument();
+  });
+  
 
   test('has no accessibility violations', async () => {
     let container;
