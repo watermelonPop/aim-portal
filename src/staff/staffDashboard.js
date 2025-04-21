@@ -3,6 +3,12 @@ import StaffRequests from './staffRequests';
 import StaffStudentProfile from './staffStudentProfile';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faMagnifyingGlass, faListCheck, faBell} from '@fortawesome/free-solid-svg-icons';
+import { confirmAndSaveRequestStatus, refreshStudentData,
+  fetchForms,
+  handleFormStatusChange,
+  handleSaveChanges,formatFormType,
+  confirmAndSaveStatus } from './staffActions';
+
 
 
 //helper functions
@@ -17,14 +23,14 @@ export function renderNotes(type) {
   }
 }
 
-function formatFormType(type) {
-  if (!type) return 'N/A';
-  return type
-    .toLowerCase()
-    .split('_')
-    .map(word => word[0].toUpperCase() + word.slice(1))
-    .join(' ');
-}
+// function formatFormType(type) {
+//   if (!type) return 'N/A';
+//   return type
+//     .toLowerCase()
+//     .split('_')
+//     .map(word => word[0].toUpperCase() + word.slice(1))
+//     .join(' ');
+// }
 
 
 export function capitalizeWords(text) {
@@ -90,80 +96,80 @@ function StaffDashboard({ userPermissions, userInfo, displayHeaderRef }) {
     };
   };
 
-  const refreshStudentData = async (userId) => {
-    setRefreshingStudent(true);
-    try {
-      const res = await fetch('/api/getStudents');
-      const data = await res.json();
+  // const refreshStudentData = async (userId) => {
+  //   setRefreshingStudent(true);
+  //   try {
+  //     const res = await fetch('/api/getStudents');
+  //     const data = await res.json();
   
-      const updatedStudent = data.students.find(s => s.userId === userId);
-      if (updatedStudent) {
-        // ✅ Replace the updated student in the list
-        setStudentsData(prev =>
-          prev.map(s => (s.userId === userId ? updatedStudent : s))
-        );
+  //     const updatedStudent = data.students.find(s => s.userId === userId);
+  //     if (updatedStudent) {
+  //       // ✅ Replace the updated student in the list
+  //       setStudentsData(prev =>
+  //         prev.map(s => (s.userId === userId ? updatedStudent : s))
+  //       );
   
-        // ✅ Update selected + edited student
-        setSelectedStudent(updatedStudent);
-        setEditedStudent(updatedStudent);
-      }
-    } catch (err) {
-      console.error("❌ Error refreshing student data:", err);
-    } finally {
-      setRefreshingStudent(false);
-    }
-  };
+  //       // ✅ Update selected + edited student
+  //       setSelectedStudent(updatedStudent);
+  //       setEditedStudent(updatedStudent);
+  //     }
+  //   } catch (err) {
+  //     console.error("❌ Error refreshing student data:", err);
+  //   } finally {
+  //     setRefreshingStudent(false);
+  //   }
+  // };
 
   const lastFocusedRef = useRef(null);
 
-  const handleFormStatusChange = (formId, newStatus) => {
-    setFullscreenMessage({
-      title: "Confirm Status Update",
-      message: "Are you sure you want to save this change?",
-      confirm: async () => {
-        setIsRefreshing(true); // start spinner
+  // const handleFormStatusChange = (formId, newStatus) => {
+  //   setFullscreenMessage({
+  //     title: "Confirm Status Update",
+  //     message: "Are you sure you want to save this change?",
+  //     confirm: async () => {
+  //       setIsRefreshing(true); // start spinner
   
-        try {
-          const response = await fetch("/api/updateFormStatus", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ formId, status: newStatus }),
-          });
+  //       try {
+  //         const response = await fetch("/api/updateFormStatus", {
+  //           method: "POST",
+  //           headers: { "Content-Type": "application/json" },
+  //           body: JSON.stringify({ formId, status: newStatus }),
+  //         });
   
-          if (!response.ok) {
-            throw new Error(`Failed to update form status: ${response.status}`);
-          }
+  //         if (!response.ok) {
+  //           throw new Error(`Failed to update form status: ${response.status}`);
+  //         }
   
-          await fetchForms(selectedStudent.userId); // reload forms
+  //         await fetchForms(selectedStudent.userId); // reload forms
   
-          setFullscreenMessage({
-            title: "✅ Success!",
-            message: "Form status updated successfully!",
-          });
+  //         setFullscreenMessage({
+  //           title: "✅ Success!",
+  //           message: "Form status updated successfully!",
+  //         });
   
-        } catch (err) {
-          console.error("Form status update error:", err);
-          setFullscreenMessage({
-            title: "❌ Error",
-            message: "An error occurred while updating the status.",
-          });
-        } finally {
-          setIsRefreshing(false); // hide spinner
-        }
-      },
-    });
-  };
+  //       } catch (err) {
+  //         console.error("Form status update error:", err);
+  //         setFullscreenMessage({
+  //           title: "❌ Error",
+  //           message: "An error occurred while updating the status.",
+  //         });
+  //       } finally {
+  //         setIsRefreshing(false); // hide spinner
+  //       }
+  //     },
+  //   });
+  // };
   
-  const fetchForms = async (userId) => {
-    try {
-      const res = await fetch(`/api/getForms?userId=${userId}`);
-      const data = await res.json();
-      setSubmittedForms(data.forms || []);
-    } catch (err) {
-      console.error("Error fetching forms:", err);
-      setSubmittedForms([]);
-    }
-  };
+  // const fetchForms = async (userId) => {
+  //   try {
+  //     const res = await fetch(`/api/getForms?userId=${userId}`);
+  //     const data = await res.json();
+  //     setSubmittedForms(data.forms || []);
+  //   } catch (err) {
+  //     console.error("Error fetching forms:", err);
+  //     setSubmittedForms([]);
+  //   }
+  // };
 
   // const handleStatusChange = (accId, newStatus) => {
   //   setEditedAccommodations(prev => ({
@@ -322,41 +328,41 @@ function StaffDashboard({ userPermissions, userInfo, displayHeaderRef }) {
 
   };
 
-  const confirmAndSaveStatus = async (accId) => {
-    const newStatus = editedAccommodations[accId];
-    if (!newStatus) return;
+  // const confirmAndSaveStatus = async (accId) => {
+  //   const newStatus = editedAccommodations[accId];
+  //   if (!newStatus) return;
 
-    setFullscreenMessage({
-      title: "Confirm Action",
-      message: "Are you sure you want to perform this action?",
-      confirm: () => {
-        // put your action that was previously after the "confirmed" check here
-        confirmAndSaveStatus(accId);  // example function
-      }
-    });    
+  //   setFullscreenMessage({
+  //     title: "Confirm Action",
+  //     message: "Are you sure you want to perform this action?",
+  //     confirm: () => {
+  //       // put your action that was previously after the "confirmed" check here
+  //       confirmAndSaveStatus(accId);  // example function
+  //     }
+  //   });    
 
-    try {
-      const res = await fetch('/api/updateAccommodationStatus', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ accommodationId: accId, status: newStatus })
-      });
+  //   try {
+  //     const res = await fetch('/api/updateAccommodationStatus', {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({ accommodationId: accId, status: newStatus })
+  //     });
 
-      if (res.ok) {
-        alert('✅ Status updated successfully!');
-      } else {
-        setFullscreenMessage({
-          title: "❌ Error",
-          message: "Failed to update status."
-        });
-      }
-    } catch (error) {
-      console.error('Error updating status:', error);
-      alert('❌ Error while updating status.');
-    }
+  //     if (res.ok) {
+  //       alert('✅ Status updated successfully!');
+  //     } else {
+  //       setFullscreenMessage({
+  //         title: "❌ Error",
+  //         message: "Failed to update status."
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error('Error updating status:', error);
+  //     alert('❌ Error while updating status.');
+  //   }
 
     
-  };
+  // };
 
   const [activeTooltip, setActiveTooltip] = useState(null);
   const tooltipRefs = {
@@ -403,23 +409,23 @@ function StaffDashboard({ userPermissions, userInfo, displayHeaderRef }) {
   };
   const [savedScrollY, setSavedScrollY] = useState(0);
 
-function openModal() {
-  const scrollY = window.scrollY;
+// function openModal() {
+//   const scrollY = window.scrollY;
 
-  // Keep track of where we were scrolled to
-  setSavedScrollY(scrollY);
+//   // Keep track of where we were scrolled to
+//   setSavedScrollY(scrollY);
 
-  // Lock the body
-  document.body.style.position = 'fixed';
-  document.body.style.top = `-${scrollY}px`;
-  document.body.style.left = '0';
-  document.body.style.right = '0';
-  document.body.style.overflow = 'hidden';
-  document.body.style.width = '100%';
+//   // Lock the body
+//   document.body.style.position = 'fixed';
+//   document.body.style.top = `-${scrollY}px`;
+//   document.body.style.left = '0';
+//   document.body.style.right = '0';
+//   document.body.style.overflow = 'hidden';
+//   document.body.style.width = '100%';
 
-  // Now show the modal:
-  setActiveModal(true);
-}
+//   // Now show the modal:
+//   setActiveModal(true);
+// }
 
   const resetToStudentSearch = async () => {
     if (isEditing && hasChanges()) {
@@ -438,40 +444,40 @@ function openModal() {
     setEditedStudent(null);
   };
 
-  const confirmAndSaveRequestStatus = async (requestId) => {
-    const newStatus = editedRequests[requestId];
-    if (!newStatus) return;
+  // const confirmAndSaveRequestStatus = async (requestId) => {
+  //   const newStatus = editedRequests[requestId];
+  //   if (!newStatus) return;
   
-    const confirmed = window.confirm("Are you sure you want to save this status change?");
-    if (!confirmed) return;
+  //   const confirmed = window.confirm("Are you sure you want to save this status change?");
+  //   if (!confirmed) return;
   
-    try {
-      const res = await fetch('/api/updateRequestStatus', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ requestId, status: newStatus }),
-      });
+  //   try {
+  //     const res = await fetch('/api/updateRequestStatus', {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({ requestId, status: newStatus }),
+  //     });
   
-      if (res.ok) {
-        alert('✅ Request status updated!');
+  //     if (res.ok) {
+  //       alert('✅ Request status updated!');
         
-        // Refresh requests list
-        const updated = await fetch('/api/getRequests');
-        const data = await updated.json();
-        setRequestsData(data.requests || []);
-        setEditedRequests((prev) => {
-          const copy = { ...prev };
-          delete copy[requestId];
-          return copy;
-        });
-      } else {
-        alert('❌ Failed to update request status.');
-      }
-    } catch (err) {
-      console.error("❌ Error updating request status:", err);
-      alert("❌ Error while saving request status.");
-    }
-  };
+  //       // Refresh requests list
+  //       const updated = await fetch('/api/getRequests');
+  //       const data = await updated.json();
+  //       setRequestsData(data.requests || []);
+  //       setEditedRequests((prev) => {
+  //         const copy = { ...prev };
+  //         delete copy[requestId];
+  //         return copy;
+  //       });
+  //     } else {
+  //       alert('❌ Failed to update request status.');
+  //     }
+  //   } catch (err) {
+  //     console.error("❌ Error updating request status:", err);
+  //     alert("❌ Error while saving request status.");
+  //   }
+  // };
   const modalRef = useRef(null);
 
 
