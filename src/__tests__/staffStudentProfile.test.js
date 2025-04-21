@@ -50,6 +50,10 @@ const defaultProps = {
   fetchForms: jest.fn().mockResolvedValue(),
   settingsTabOpen: false,
   lastIntendedFocusRef: { current: null },
+  hasChanges: jest.fn(() => true), // or false, depending on test
+  setView: jest.fn(),
+  setShowAccommodations: jest.fn(),
+  setShowAssistiveTech: jest.fn(),
   selectedStudent: dummyStudent,
   setSelectedStudent: jest.fn(),
   showStudentInfo: true,
@@ -90,6 +94,8 @@ const defaultProps = {
   formatFormType: (type) => type, // identity function for testing
   isRefreshing: false,
   userInfo: { id: 999 },
+  setStudentsData: jest.fn(),
+
 };
 
 // -----------------
@@ -178,13 +184,32 @@ test('renders editing form when isEditing is true, triggers save and cancel acti
   // Simulate clicking Save Changes
   const saveBtn = screen.getByRole('button', { name: /save changes to student profile/i });
   fireEvent.click(saveBtn);
-  expect(props.handleSaveChanges).toHaveBeenCalled();
+  expect(props.handleSaveChanges).toHaveBeenCalledWith(
+    expect.objectContaining({
+      editedStudent: expect.any(Object),
+      hasChanges: expect.any(Function),
+      setLoading: expect.any(Function),
+      setSuccessMessage: expect.any(Function),
+      setInfoMessage: expect.any(Function),
+      setFullscreenMessage: expect.any(Function),
+      refreshStudentData: expect.any(Function),
+      setStudentNeedsRefresh: expect.any(Function)
+    })
+  );
+  
+  
 
   // Simulate clicking Cancel Edit
   const cancelEditBtn = screen.getByRole('button', { name: /cancel edit/i });
   fireEvent.click(cancelEditBtn);
   expect(props.setIsEditing).toHaveBeenCalledWith(false);
-  expect(props.refreshStudentData).toHaveBeenCalledWith(props.editedStudent?.userId);
+  expect(props.refreshStudentData).toHaveBeenCalledWith(dummyStudent.userId, expect.objectContaining({
+    setRefreshingStudent: expect.any(Function),
+    setStudentsData: expect.any(Function),
+    setSelectedStudent: expect.any(Function),
+    setEditedStudent: expect.any(Function)
+  }));
+  
 });
 
 test('renders read-only student info and Edit Profile button when not editing', () => {
@@ -200,14 +225,36 @@ test('renders read-only student info and Edit Profile button when not editing', 
   expect(props.setIsEditing).toHaveBeenCalledWith(true);
 });
 
-test('Back to Search button calls resetToStudentSearch and disables editing', () => {
-  const props = { ...defaultProps, activeModal: { type: 'studentInfo' } };
+test('Back to Search button calls resetToStudentSearch', () => {
+  window.confirm = jest.fn(() => true);
+
+  const props = {
+    ...defaultProps,
+    isEditing: true,
+    hasChanges: jest.fn(() => true),
+    activeModal: { type: 'studentInfo' }
+  };
+
   render(<StaffStudentProfile {...props} />);
+
   const backBtn = screen.getByRole('button', { name: /back to search/i });
   fireEvent.click(backBtn);
-  expect(props.resetToStudentSearch).toHaveBeenCalled();
-  expect(props.setIsEditing).toHaveBeenCalledWith(false);
+
+  expect(props.resetToStudentSearch).toHaveBeenCalledWith(
+    expect.objectContaining({
+      isEditing: expect.any(Boolean),
+      hasChanges: expect.any(Function),
+      setView: expect.any(Function),
+      setShowAccommodations: expect.any(Function),
+      setShowAssistiveTech: expect.any(Function),
+      setIsEditing: expect.any(Function),
+      setShowStudentInfo: expect.any(Function),
+      setSelectedStudent: expect.any(Function),
+      setEditedStudent: expect.any(Function)
+    })
+  );
 });
+
 
 // -----------------
 // Right Column Buttons: Forms, Accommodations, Assistive Tech
@@ -225,8 +272,11 @@ test('clicking "View Submitted Forms" calls fetchForms and sets activeModal to f
     await new Promise((r) => setTimeout(r, 10));
   });
   // Expect setIsRefreshing was toggled and fetchForms called
-  expect(props.fetchForms).toHaveBeenCalledWith(dummyStudent.userId);
-  expect(props.setActiveModal).toHaveBeenCalledWith({ type: 'forms' });
+  expect(props.fetchForms).toHaveBeenCalledWith(
+    dummyStudent.userId,
+    expect.any(Function)
+  );
+    expect(props.setActiveModal).toHaveBeenCalledWith({ type: 'forms' });
 });
 
 test('clicking "View student accommodations" shows accommodations modal when permission exists', async () => {
@@ -299,7 +349,17 @@ test('renders formStatus modal and Save button calls handleFormStatusChange', ()
     fireEvent.click(saveBtn);
     
     // Expect handleFormStatusChange to have been called with the updated value.
-    expect(props.handleFormStatusChange).toHaveBeenCalledWith(formData.id, 'APPROVED');
+    expect(props.handleFormStatusChange).toHaveBeenCalledWith(
+      formData.id,
+      'APPROVED',
+      expect.objectContaining({
+        setFullscreenMessage: expect.any(Function),
+        setIsRefreshing: expect.any(Function),
+        selectedStudent: expect.any(Object),
+        fetchForms: expect.any(Function)
+      })
+    );
+    
     
     // Cancel button – verify it closes the modal.
     const cancelBtn = screen.getByRole('button', { name: /^cancel$/i });
@@ -738,11 +798,21 @@ test('accommodations modal: editing type, status, and date fields trigger setEdi
     render(<StaffStudentProfile {...props} />);
     
     // Query for the Save button by its visible text "✅ Save"
-    const saveBtn = screen.getByRole('button', { name: /✅ save/i });
+    const saveBtn = screen.getByRole('button', { name: /save/i });
     fireEvent.click(saveBtn);
     
     // Assert that handleFormStatusChange is called with the updated value.
-    expect(props.handleFormStatusChange).toHaveBeenCalledWith(formData.id, 'APPROVED');
+    expect(props.handleFormStatusChange).toHaveBeenCalledWith(
+      formData.id,
+      'APPROVED',
+      expect.objectContaining({
+        setFullscreenMessage: expect.any(Function),
+        setIsRefreshing: expect.any(Function),
+        selectedStudent: expect.any(Object),
+        fetchForms: expect.any(Function)
+      })
+    );
+    
   });
 
   test('tech modal: Back to Top button scrolls modal top into view and focuses after delay', async () => {
@@ -915,7 +985,16 @@ test('accommodations modal: editing type, status, and date fields trigger setEdi
       message: "Accommodation updated successfully!",
     });
   
-    expect(mockRefreshStudentData).toHaveBeenCalledWith(dummyStudent.userId);
+    expect(mockRefreshStudentData).toHaveBeenCalledWith(
+      dummyStudent.userId,
+      expect.objectContaining({
+        setRefreshingStudent: expect.any(Function),
+        setStudentsData: expect.any(Function),
+        setSelectedStudent: expect.any(Function),
+        setEditedStudent: expect.any(Function)
+      })
+    );
+    
   });
   
   
@@ -1035,7 +1114,17 @@ test('accommodations modal: editing type, status, and date fields trigger setEdi
   
     fireEvent.click(saveBtn);
   
-    expect(handleFormStatusChangeMock).toHaveBeenCalledWith(form.id, 'APPROVED');
+    expect(handleFormStatusChangeMock).toHaveBeenCalledWith(
+      form.id,
+      'APPROVED',
+      expect.objectContaining({
+        setFullscreenMessage: expect.any(Function),
+        setIsRefreshing: expect.any(Function),
+        selectedStudent: expect.any(Object),
+        fetchForms: expect.any(Function)
+      })
+    );
+    
   });
   
   

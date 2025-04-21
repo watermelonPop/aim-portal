@@ -9,6 +9,7 @@ expect.extend(toHaveNoViolations);
 
 // Default props for StaffRequests component
 const defaultProps = {
+  setRequestsData: jest.fn(),
   selectedRequest: null,
   setSelectedRequest: jest.fn(),
   currentPage: 1,
@@ -387,7 +388,15 @@ test('renders updating overlay when updatingRequestId is truthy', async () => {
     const saveBtn = screen.getByRole('button', { name: /save status change/i });
     expect(saveBtn).toBeInTheDocument();
     fireEvent.click(saveBtn);
-    expect(defaultProps.confirmAndSaveRequestStatus).toHaveBeenCalledWith(selectedRequest.id);
+    expect(defaultProps.confirmAndSaveRequestStatus).toHaveBeenCalledWith(
+      expect.objectContaining({
+        requestId: selectedRequest.id,
+        editedRequests: expect.any(Object),
+        setEditedRequests: expect.any(Function),
+        setRequestsData: expect.any(Function)
+      })
+    );
+    
   });
   
   test('search input onChange calls setSearchTerm with new value', async () => {

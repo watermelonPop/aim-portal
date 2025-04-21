@@ -8,8 +8,12 @@ function StaffStudentProfile({
     handleEditChange,
     setIsRefreshing,
     handleSaveChanges,
+    setView,
+    setShowAssistiveTech,
+    setShowAccommodations,
     resetToStudentSearch,
     refreshStudentData,
+    setStudentsData,
     fetchForms,
     settingsTabOpen, 
     lastIntendedFocusRef,
@@ -53,6 +57,7 @@ function StaffStudentProfile({
     formatFormType,
     isRefreshing,
     userInfo,
+    hasChanges
 
 }) {
 
@@ -99,7 +104,12 @@ function StaffStudentProfile({
         message: "Accommodation updated successfully!",
       });
   
-      refreshStudentData(selectedStudent.userId);
+      await refreshStudentData(selectedStudent.userId, {
+        setRefreshingStudent,
+        setStudentsData,
+        setSelectedStudent,
+        setEditedStudent
+      });
     } catch (err) {
       console.error("Failed to update accommodation:", err);
       setFullscreenMessage({
@@ -320,7 +330,29 @@ function StaffStudentProfile({
                     />
                   </div>
       
-                  <button onClick={handleSaveChanges} aria-label="Save Changes to Student Profile" disabled={loading}>
+                  <button
+                    onClick={() =>
+                      handleSaveChanges({
+                        editedStudent,
+                        selectedStudent,
+                        setSuccessMessage,
+                        setInfoMessage,
+                        setLoading,
+                        setFullscreenMessage,
+                        refreshStudentData: (uid) =>
+                          refreshStudentData(uid, {
+                            setRefreshingStudent,
+                            setStudentsData,
+                            setSelectedStudent,
+                            setEditedStudent
+                          }),
+                        hasChanges,
+                        setStudentNeedsRefresh
+                      })
+                    }
+                    aria-label="Save Changes to Student Profile"
+                    disabled={loading}
+                  >
                     {loading ? 'Saving...' : 'Save Changes'}
                     {loading && <div className="staffDash-loading-spinner"></div>}
                   </button>
@@ -330,7 +362,12 @@ function StaffStudentProfile({
                     aria_label="Cancel edit / go back to students profile and update information"
                     onClick={() => {
                       setIsEditing(false);
-                      refreshStudentData(editedStudent?.userId);
+                      refreshStudentData(selectedStudent.userId, {
+                        setRefreshingStudent,
+                        setStudentsData,
+                        setSelectedStudent,
+                        setEditedStudent
+                      })
                     }}
       
                   >
@@ -365,30 +402,40 @@ function StaffStudentProfile({
       
       
       <button
-            className="staffDash-cancel-btn"
-            onClick={() => {
-              resetToStudentSearch();
-              setIsEditing(false);
-            }}
-          >
-            Back to Search
-          </button>
+  className="staffDash-cancel-btn"
+  onClick={() =>
+    resetToStudentSearch({
+      isEditing,
+      hasChanges,
+      setView,
+      setShowAccommodations,
+      setShowAssistiveTech,
+      setIsEditing,
+      setShowStudentInfo,
+      setSelectedStudent,
+      setEditedStudent
+    })
+  }
+>
+  Back to Search
+</button>
+
         </div>
       
       
       {/* RIGHT COLUMN – Dropdowns */}
       <div className="staffDash-student-modal-buttons ">
-          <button
-            onClick={async () => {
-              setIsRefreshing(true); // show spinner
-              await fetchForms(selectedStudent.userId); // make sure you're using correct key
-              setIsRefreshing(false);
-              setActiveModal({ type: 'forms' });
-            }}
-            aria-label="View submitted forms"
-          >
-            View Submitted Forms
-          </button>
+      <button
+        onClick={async () => {
+          setIsRefreshing(true);
+          await fetchForms(selectedStudent.userId, setSubmittedForms); // ✅ fixed
+          setIsRefreshing(false);
+          setActiveModal({ type: 'forms' });
+        }}
+        aria-label="View submitted forms"
+      >
+        View Submitted Forms
+      </button>
         
         {userPermissions?.accomodation_modules && (
           <button
@@ -461,9 +508,26 @@ function StaffStudentProfile({
             )}
 
             <div className="viewToggle" style={{ marginTop: '1rem' }}>
-                <button data-testid="updateFormStatusBtn" ref={lastFocusedRef} aria_label="Save" onClick={() => handleFormStatusChange(activeModal.form.id, formEdits[activeModal.form.id] || activeModal.form.status)}>
-                ✅ Save
-                </button>
+            <button
+              data-testid="updateFormStatusBtn"
+              ref={lastFocusedRef}
+              aria-label="Save"
+              onClick={() =>
+                handleFormStatusChange(
+                  activeModal.form.id,
+                  formEdits[activeModal.form.id] || activeModal.form.status,
+                  {
+                    setFullscreenMessage,
+                    setIsRefreshing,
+                    selectedStudent,
+                    fetchForms: (uid) => fetchForms(uid, setSubmittedForms)
+                  }
+                )
+              }
+            >
+              ✅ Save
+            </button>
+
                 <button onClick={() => setActiveModal(null)}>Cancel</button>
             </div>
             </div>
@@ -529,12 +593,23 @@ function StaffStudentProfile({
                 </select>
 
                 <button
-                
-                    onClick={() => handleFormStatusChange(form.id, formEdits[form.id] || form.status)}
-                    aria-label={`Save status change for ${formatFormType(form.type)} form`}
+                  onClick={() =>
+                    handleFormStatusChange(
+                      form.id,
+                      formEdits[form.id] || form.status,
+                      {
+                        setFullscreenMessage,
+                        setIsRefreshing,
+                        selectedStudent,
+                        fetchForms: (uid) => fetchForms(uid, setSubmittedForms) // 🔁 wrap setter
+                      }
+                    )
+                  }
+                  aria-label={`Save status change for ${formatFormType(form.type)} form`}
                 >
-                    <FontAwesomeIcon icon={faFloppyDisk} aria-hidden="true" /> Save
+                  <FontAwesomeIcon icon={faFloppyDisk} aria-hidden="true" /> Save
                 </button>
+
                 
                 </section>
 

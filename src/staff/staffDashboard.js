@@ -7,7 +7,8 @@ import { confirmAndSaveRequestStatus, refreshStudentData,
   fetchForms,
   handleFormStatusChange,
   handleSaveChanges,formatFormType,
-  confirmAndSaveStatus } from './staffActions';
+  confirmAndSaveStatus,
+resetToStudentSearch } from './staffActions';
 
 
 
@@ -244,89 +245,89 @@ function StaffDashboard({ userPermissions, userInfo, displayHeaderRef }) {
     return JSON.stringify(editedStudent) !== JSON.stringify(selectedStudent);
   };
 
-  const handleSaveChanges = async () => {
+  // const handleSaveChanges = async () => {
     
-    setInfoMessage('');
-    setSuccessMessage('');
+  //   setInfoMessage('');
+  //   setSuccessMessage('');
   
-    if (!hasChanges()) {
-      setInfoMessage('⚠️ No changes to save.');
-      setTimeout(() => setInfoMessage(''), 4000);
-      return;
-    }
-    const errors = [];
+  //   if (!hasChanges()) {
+  //     setInfoMessage('⚠️ No changes to save.');
+  //     setTimeout(() => setInfoMessage(''), 4000);
+  //     return;
+  //   }
+  //   const errors = [];
   
-    const nameRegex = /^[A-Za-z\s.,'-]+$/;
-    if (!editedStudent.student_name || !nameRegex.test(editedStudent.student_name)) {
-      errors.push("• Name must only contain letters and spaces.");
-    }
+  //   const nameRegex = /^[A-Za-z\s.,'-]+$/;
+  //   if (!editedStudent.student_name || !nameRegex.test(editedStudent.student_name)) {
+  //     errors.push("• Name must only contain letters and spaces.");
+  //   }
   
-    if (!/^\d{9}$/.test(editedStudent.UIN)) {
-      errors.push("• UIN must be exactly 9 digits.");
-    }
+  //   if (!/^\d{9}$/.test(editedStudent.UIN)) {
+  //     errors.push("• UIN must be exactly 9 digits.");
+  //   }
   
-    if (!editedStudent.dob || isNaN(new Date(editedStudent.dob).getTime())) {
-      errors.push("• Date of Birth is not valid.");
-    }
+  //   if (!editedStudent.dob || isNaN(new Date(editedStudent.dob).getTime())) {
+  //     errors.push("• Date of Birth is not valid.");
+  //   }
   
-    // const tamuEmailRegex = /^[^\s@]+@tamu\.edu$/i;
-    // if (!tamuEmailRegex.test(editedStudent.email)) {
-    //   errors.push("• Email must end with @tamu.edu.");
-    // }
+  //   // const tamuEmailRegex = /^[^\s@]+@tamu\.edu$/i;
+  //   // if (!tamuEmailRegex.test(editedStudent.email)) {
+  //   //   errors.push("• Email must end with @tamu.edu.");
+  //   // }
   
-    const phoneRegex = /^[()\d.\-\s]+(?: x\d+)?$/;
-    if (!phoneRegex.test(editedStudent.phone_number)) {
-      errors.push("• Phone number format is invalid.");
-    }
+  //   const phoneRegex = /^[()\d.\-\s]+(?: x\d+)?$/;
+  //   if (!phoneRegex.test(editedStudent.phone_number)) {
+  //     errors.push("• Phone number format is invalid.");
+  //   }
   
-    if (errors.length > 0) {
-      setInfoMessage(`❌ Please fix the following:\n${errors.join("\n")}`);
-      setSuccessMessage('');
-      setLoading(false);
-      return;
-    }
+  //   if (errors.length > 0) {
+  //     setInfoMessage(`❌ Please fix the following:\n${errors.join("\n")}`);
+  //     setSuccessMessage('');
+  //     setLoading(false);
+  //     return;
+  //   }
   
-    setLoading(true);
-    setInfoMessage('');
-    setSuccessMessage('');
+  //   setLoading(true);
+  //   setInfoMessage('');
+  //   setSuccessMessage('');
   
-    const studentUpdatePayload = {
-      userId: editedStudent.userId,
-      student_name: editedStudent.student_name.trim(),
-      UIN: parseInt(editedStudent.UIN, 10),
-      dob: editedStudent.dob,
-      email: editedStudent.email.trim(),
-      phone_number: editedStudent.phone_number.trim(),
-    };
+  //   const studentUpdatePayload = {
+  //     userId: editedStudent.userId,
+  //     student_name: editedStudent.student_name.trim(),
+  //     UIN: parseInt(editedStudent.UIN, 10),
+  //     dob: editedStudent.dob,
+  //     email: editedStudent.email.trim(),
+  //     phone_number: editedStudent.phone_number.trim(),
+  //   };
   
-    try {
-      const response = await fetch('/api/updateStudent', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(studentUpdatePayload),
-      });
+  //   try {
+  //     const response = await fetch('/api/updateStudent', {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify(studentUpdatePayload),
+  //     });
   
-      const result = await response.json();
+  //     const result = await response.json();
   
-      if (!response.ok) throw new Error(result.error || 'Failed to update student.');
+  //     if (!response.ok) throw new Error(result.error || 'Failed to update student.');
   
-      setFullscreenMessage({
-        title: "✅ Success!",
-        message: "Changes saved successfully!"
-      });
-    setStudentNeedsRefresh(true); // mark that changes were made
+  //     setFullscreenMessage({
+  //       title: "✅ Success!",
+  //       message: "Changes saved successfully!"
+  //     });
+  //   setStudentNeedsRefresh(true); // mark that changes were made
 
-      setTimeout(() => setSuccessMessage(''), 2500);
+  //     setTimeout(() => setSuccessMessage(''), 2500);
   
-    } catch (err) {
-      console.error("❌ Update error:", err);
-      setInfoMessage('❌ Failed to update student.');
-    } finally {
-      setLoading(false);
-    }
-    refreshStudentData(editedStudent?.userId);
+  //   } catch (err) {
+  //     console.error("❌ Update error:", err);
+  //     setInfoMessage('❌ Failed to update student.');
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  //   refreshStudentData(editedStudent?.userId);
 
-  };
+  // };
 
   // const confirmAndSaveStatus = async (accId) => {
   //   const newStatus = editedAccommodations[accId];
@@ -427,22 +428,22 @@ function StaffDashboard({ userPermissions, userInfo, displayHeaderRef }) {
 //   setActiveModal(true);
 // }
 
-  const resetToStudentSearch = async () => {
-    if (isEditing && hasChanges()) {
-      const confirmLeave = window.confirm(
-        "⚠️ Are you sure you want to leave? Unsaved changes will be discarded."
-      );
-      if (!confirmLeave) return;
-    }
+  // const resetToStudentSearch = async () => {
+  //   if (isEditing && hasChanges()) {
+  //     const confirmLeave = window.confirm(
+  //       "⚠️ Are you sure you want to leave? Unsaved changes will be discarded."
+  //     );
+  //     if (!confirmLeave) return;
+  //   }
 
-    setView('students');
-    setShowAccommodations(false);
-    setShowAssistiveTech(false);
-    setIsEditing(false);
-    setShowStudentInfo(false);
-    setSelectedStudent(null);
-    setEditedStudent(null);
-  };
+  //   setView('students');
+  //   setShowAccommodations(false);
+  //   setShowAssistiveTech(false);
+  //   setIsEditing(false);
+  //   setShowStudentInfo(false);
+  //   setSelectedStudent(null);
+  //   setEditedStudent(null);
+  // };
 
   // const confirmAndSaveRequestStatus = async (requestId) => {
   //   const newStatus = editedRequests[requestId];
@@ -770,6 +771,10 @@ function StaffDashboard({ userPermissions, userInfo, displayHeaderRef }) {
 
       {view === 'studentDetails' && (
         <StaffStudentProfile
+        setStudentsData={setStudentsData}
+        setView={setView}
+        setShowAccommodations={setShowAccommodations}
+        setShowAssistiveTech={setShowAssistiveTech}
           userInfo={userInfo}
           userPermissions={userPermissions}
           lastIntendedFocusRef={lastIntendedFocusRef}
@@ -819,6 +824,7 @@ function StaffDashboard({ userPermissions, userInfo, displayHeaderRef }) {
           modalTopRef={modalTopRef}
           formatFormType={formatFormType}
           isRefreshing={isRefreshing}
+          hasChanges={hasChanges}
         />
       )}
 

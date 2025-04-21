@@ -12,6 +12,7 @@ function StaffRequests(
   filteredRequests,
   setFilteredRequests,
   editedRequests,
+  setRequestsData,
   setEditedRequests,
   loadingRequests,
   searchTerm,
@@ -135,13 +136,21 @@ function StaffRequests(
             </select>
 
             <button
-              className="save-icon-button"
-              onClick={() => confirmAndSaveRequestStatus(selectedRequest.id)}
-              title="Save status change"
-              aria-label="Save status change"
-            >
-              <FontAwesomeIcon icon={faFloppyDisk} aria-hidden="true" />
-            </button>
+                className="save-icon-button"
+                onClick={() =>
+                  confirmAndSaveRequestStatus({
+                    requestId: selectedRequest.id,
+                    editedRequests,
+                    setEditedRequests,
+                    setRequestsData
+                  })
+                }
+                title="Save status change"
+                aria-label="Save status change"
+              >
+                <FontAwesomeIcon icon={faFloppyDisk} aria-hidden="true" />
+              </button>
+
           </div>
 
           <div className="request-notes" aria-label="Request Notes">

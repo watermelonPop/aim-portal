@@ -36,7 +36,7 @@ export async function confirmAndSaveRequestStatus({
     }
   }
   
-  export async function refreshStudentData(userId, {
+export async function refreshStudentData(userId, {
     setRefreshingStudent,
     setStudentsData,
     setSelectedStudent,
@@ -61,7 +61,7 @@ export async function confirmAndSaveRequestStatus({
     }
   }
   
-  export async function fetchForms(userId, setSubmittedForms) {
+export async function fetchForms(userId, setSubmittedForms) {
     try {
       const res = await fetch(`/api/getForms?userId=${userId}`);
       const data = await res.json();
@@ -72,7 +72,7 @@ export async function confirmAndSaveRequestStatus({
     }
   }
   
-  export function handleFormStatusChange(formId, newStatus, {
+export function handleFormStatusChange(formId, newStatus, {
     setFullscreenMessage,
     setIsRefreshing,
     selectedStudent,
@@ -113,7 +113,7 @@ export async function confirmAndSaveRequestStatus({
     });
   }
   
-  export async function handleSaveChanges({
+export async function handleSaveChanges({
     editedStudent,
     selectedStudent,
     setSuccessMessage,
@@ -121,7 +121,8 @@ export async function confirmAndSaveRequestStatus({
     setLoading,
     setFullscreenMessage,
     refreshStudentData,
-    hasChanges
+    hasChanges,
+    setStudentNeedsRefresh
   }) {
     setInfoMessage('');
     setSuccessMessage('');
@@ -195,15 +196,14 @@ export async function confirmAndSaveRequestStatus({
     }
   }
 
-  export function formatFormType(type) {
+export function formatFormType(type) {
   if (!type) return 'N/A';
   return type
     .toLowerCase()
     .split('_')
     .map(word => word[0].toUpperCase() + word.slice(1))
     .join(' ');
-}
-
+  }
 
 export async function confirmAndSaveStatus(accId, {
   editedAccommodations,
@@ -239,4 +239,31 @@ export async function confirmAndSaveStatus(accId, {
     console.error('Error updating status:', error);
     alert('❌ Error while updating status.');
   }
-}
+  }
+
+export async function resetToStudentSearch({
+  isEditing,
+  hasChanges,
+  setView,
+  setShowAccommodations,
+  setShowAssistiveTech,
+  setIsEditing,
+  setShowStudentInfo,
+  setSelectedStudent,
+  setEditedStudent
+}) {
+  if (isEditing && hasChanges()) {
+    const confirmLeave = window.confirm(
+      "⚠️ Are you sure you want to leave? Unsaved changes will be discarded."
+    );
+    if (!confirmLeave) return;
+  }
+
+  setView('students');
+  setShowAccommodations(false);
+  setShowAssistiveTech(false);
+  setIsEditing(false);
+  setShowStudentInfo(false);
+  setSelectedStudent(null);
+  setEditedStudent(null);
+  }
