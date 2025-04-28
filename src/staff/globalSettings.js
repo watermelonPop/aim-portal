@@ -25,12 +25,13 @@ function GlobalSettings({ userInfo, settingsTabOpen, displayHeaderRef}) {
 
 
   useEffect(() => {
+
     const timer = setTimeout(() => {
       async function fetchAdv() {
         fetch(`/api/getAdvisors`)
           .then((response) => response.json())
           .then((data) => {
-            setAdvisorList(data.advisors || []);
+            setAdvisorList(data.advisors.filter(item => item.userId !== userInfo.id) || []);
             setCurrentPage(0);
             setTotalPages(Math.ceil((data.advisors || []).length / 9));
             setLoaded(true);
@@ -46,7 +47,8 @@ function GlobalSettings({ userInfo, settingsTabOpen, displayHeaderRef}) {
 
   useEffect(() => {
     if (loaded) {
-      //console.log("advisorList:", advisorList);
+      console.log("userInfo:", userInfo);
+      console.log("advisorList:", advisorList);
     }
   }, [loaded]);
 
